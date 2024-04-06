@@ -1,0 +1,133 @@
+﻿@model KPILib.Models.UserMaster
+
+@{
+    ViewBag.Title = "AddUser";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="container">
+    @*<div class="row">
+            <div class="col-md-12">
+                @Html.ActionLink("Back to List", "GetUsers", "", new { @class = "btn btn-primary" })
+            </div>
+        </div>*@
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(x => x.UserID)
+
+            <div class="form-group">
+                @*<div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.Label("First Name", htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextBox("FirstName", "", new { @class = "form-control", @placeholder = "Enter First Name" })
+                                @Html.ValidationMessage("FirstName", "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.Label("Middle Name", htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextBox("SecondName", "", new { @class = "form-control", @placeholder = "Enter Middle Name" })
+                                @Html.ValidationMessage("SecondName", "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.Label("Last Name", htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextBox("LastName", "", new { @class = "form-control", @placeholder = "Enter Last Name" })
+                                @Html.ValidationMessage("SecondName", "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.Label("EmailID", htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextBoxFor(model => model.Email, "", new { @class = "form-control", @placeholder = "Enter EmailID" })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>*@
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Role</label>
+                            @Html.DropDownListFor(model => model.RoleID, null, "--Select--", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3">
+                            <label>Mobile</label>
+                            @Html.TextBoxFor(model => model.Mobile, "", new { @class = "form-control", @placeholder = "Enter Mobile" })
+                            @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>User Name</label>
+                            @Html.TextBoxFor(model => model.Username, "", new { @class = "form-control", @placeholder = "Enter Username", @onchange = "ValidateUserName(this)" })
+                            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3">
+                            <label>Password</label>
+                            @Html.TextBoxFor(model => model.Password, "", new { @class = "form-control", @placeholder = "Enter Password" })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            @Html.Label("EmailID", htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.TextBoxFor(model => model.Email, "", new { @class = "form-control", @placeholder = "Enter EmailID" })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3">
+                            <label>&nbsp;</label><br />
+                            <input type="submit" value="Save" name="Save" class="btn btn-primary" id="SaveFormBtn" />
+                            @Html.ActionLink("Back", "GetUsers", "", new { @class = "btn btn-info" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+
+    function ValidateUserName(obj) {
+
+        $('#SaveFormBtn').prop('disabled', true);
+
+        var UserID = $("#UserID").val();
+        var username = $(obj).val();
+
+        $.ajax({
+            url: "/UserMaster/ValidateUserName",
+            method: "GET",
+            contentType: "application/json",
+            data: { Username: username, UserId: UserID },
+            success: function (response) {
+                if (response != null) {
+                    if (response.Response.ResponseCode != 200) {
+                        alert(response.Response.ResponseMsg);
+                        return false;
+                    }
+                    else {
+                        $('#SaveFormBtn').prop('disabled', false);
+                        return true;
+                    }
+                }
+            },
+            error: function (result) {
+                return false;
+            }
+        })
+    }
+
+</script>

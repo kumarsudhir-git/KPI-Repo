@@ -1,0 +1,190 @@
+﻿@model IEnumerable<KPILib.Models.RoleMaster>
+
+@{
+    ViewBag.Title = "GetRoles";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+
+    @*<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>*@
+
+    int i = 1;
+}
+
+<div class="container container-fluid">
+
+    <div class="container mt-3">
+        @*<p>Click on the button to Add New Role</p>*@
+        <a href="#" class="btn btn-primary" id="NewRole" data-bs-toggle="modal" data-bs-target="#myModal" onclick="CreateUpdateNewRole()">Add New</a>
+    </div>
+
+    <table class="table help-page-table table-sm table-striped AddDataTable" cellspacing="0" style="border:1px solid #000">
+        <thead>
+            <tr>
+                <th>
+                    SNo.
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.RoleID)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.RoleName)
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.RoleID)
+                        </td>*@
+                    <td>
+                        @i
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoleName)
+                    </td>
+                    <td>
+                        <a href="#" title="Edit" class="" id="NewRole" data-bs-toggle="modal" data-bs-target="#myModal" onclick="CreateUpdateRole('@item.RoleID')"><i style="font-size:24px;" class="fa">&#xf044;</i></a>
+                        |
+                        <a href="#" title="Delete" class="" onclick="DeleteRole('@item.RoleName','@item.RoleID')"><i style="font-size:24px; color:red" class="fa">&#xf014;</i></a>
+                        |
+                        <a href="~/UserMaster/AssignRoleRightsToMenu?RoleId=@item.RoleID" title="Assign Rights"><i style="font-size:24px" class="fa">&#xf023;</i></a>
+                    </td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Role</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                Modal Body Loading..
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+
+    function CreateUpdateNewRole() {
+        CreateUpdateRole(0);
+    }
+
+    function CreateUpdateRole(roleId) {
+        $.ajax({
+            url: "/UserMaster/AddRoles",
+            method: "GET",
+            contentType: "application/json",
+            data: { roleId },
+            success: function (data) {
+                $mymodal = $("#myModal");
+                //update the modal's body with the response received
+                $mymodal.find("div.modal-body").html(data);
+                // Show the modal
+                //$mymodal.modal("show");
+            },
+            error: function (response) {
+                alert("Something went wrong");
+                $mymodal.modal("hide");
+                return false;
+            }
+        });
+    }
+
+    function ValidateRoleName() {
+        $('#SubmitRoleBtn').prop('disabled', true);
+        var RoleId = $("#RoleID").val();
+        var RoleName = $("#RoleName").val();
+
+        $.ajax({
+            url: "/UserMaster/ValidateRoleName",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ RoleID: RoleId, RoleName: RoleName }),
+            async: false,
+            success: function (data) {
+                if (data.Response.ResponseCode == 200) {
+                    $('#SubmitRoleBtn').prop('disabled', false);
+                    return true;
+                }
+                else {
+                    alert(data.Response.ResponseMsg);
+                    $('#SubmitRoleBtn').prop('disabled', true);
+                    return false;
+                }
+            },
+            error: function (response) {
+                alert("Something went wrong");
+                return false;
+            }
+        });
+    }
+
+    function DeleteRole(RoleName, RoleId) {
+        if (confirm("Are you sure want to delete role :- " + RoleName)) {
+            $.ajax({
+                url: "/UserMaster/DeleteRole",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ RoleID: RoleId }),
+                async: false,
+                success: function (data) {
+                    if (data.Response.ResponseCode == 440) {
+                        alert(data.Response.ResponseMsg);
+                        window.location.href = "/Login/Login";
+                    }
+                    else if (data.Response.ResponseCode == 200) {
+                        alert('Role deleted successfully');
+                        window.location.reload();
+                    }
+                    else if (data.Response.ResponseCode == 401) {
+                        alert(data.Response.ResponseMsg);
+                        window.location.href = "/Login/Login";
+                    }
+                    else {
+                        alert(data.Response.ResponseMsg);
+                        return false;
+                    }
+                },
+                error: function (response) {
+                    alert("Something went wrong");
+                    return false;
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    }
+
+    function AssignRoleRights(RoleId) {
+        var strURL = "/UserMaster/AssignRoleRightsToMenu?RoleId=" + RoleId;
+        var selector = "#myModal div.modal-body";
+        AddLineItemRowGeneric(strURL, "GET", selector, false);
+    }
+
+</script>

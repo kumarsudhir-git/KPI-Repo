@@ -1,0 +1,197 @@
+﻿@model KPILib.Models.ProductionPlan
+
+@{
+    ViewBag.Title = "GetProductionPlan";
+    Layout = "~/Views/Shared/_ExtLayout.cshtml";
+
+    decimal BAG_KG = 25;    //TODO: 25 to replace with setting from WebConfig
+}
+
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    tr, td, th {
+        border: solid 1px;
+        padding: 10px;
+    }
+</style>
+<h2>Production Plan</h2>
+
+<div>
+    <table style="border-collapse:collapse; border-style:solid; border-width:1px; width:600px;">
+        <tr>
+            <td style="text-align:center">
+                <label>Production Program ID</label><br />
+                @Html.DisplayFor(model => model.ProductionProgramID)
+            </td>
+            <td style="text-align:center">
+                <label>Program Date</label><br />
+                @KPI.Classes.ExtMethods.DefaultDateFormat(Model.ProductionProgramDate)
+            </td>
+            <td colspan="2" style="text-align:center">
+                <label>Production Owner</label><br />
+                @Html.DisplayFor(model => model.ProductionUser)
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <label>SO No</label><br />
+                @Html.DisplayFor(model => model.SalesID)
+            </td>
+            <td style="text-align:center">
+                <label>SO Date Date</label><br />
+                @KPI.Classes.ExtMethods.DefaultDateFormat(Model.SalesDate)
+            </td>
+            <td colspan="2" style="text-align:center">
+                <label>Sales Person</label><br />
+                @Html.DisplayFor(model => model.SalesUser)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center">
+                <label>Product Name</label><br />
+                @Html.DisplayFor(model => model.ProductName)
+            </td>
+            <td colspan="2" style="text-align:center">
+                <label>Production Qty</label><br />
+                @Html.DisplayFor(model => model.ProductQty)
+            </td>
+            @*<td style="text-align:center">
+                <label>Raw Material Qty</label><br />
+                @Html.DisplayFor(model => model.RMQty) Kgs
+            </td>*@
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center">
+                <label>Mould</label><br />
+                @Html.DisplayFor(model => model.MouldName)
+            </td>
+            <td colspan="2" style="text-align:center">
+                <label>Machine</label><br />
+                @Html.DisplayFor(model => model.MachineName)
+            </td>
+        </tr>
+        <tr>
+            <th style="text-align:center">
+                Material Name
+            </th>
+            <th style="text-align:center">
+                Pallet
+            </th>
+            <th style="text-align:center">
+                Tag Colour
+            </th>
+            <th style="text-align:center">
+                Qty (Kgs)
+            </th>
+        </tr>
+        @{
+            KPILib.Models.RMInventory rm = new KPILib.Models.RMInventory();
+        }
+
+        @foreach (var itm in Model.RawMaterialList)
+        {
+            if (itm.PalletNo != rm.PalletNo || itm.TagColour != rm.TagColour || itm.RawMaterialName != rm.RawMaterialName)
+            {
+                if (!string.IsNullOrEmpty(rm.RawMaterialName))
+                {
+                    <tr>
+                        <td style="text-align:center">
+                            @rm.RawMaterialName
+                        </td>
+                        <td style="text-align:center">
+                            @rm.PalletNo
+                        </td>
+                        <td style="text-align:center">
+                            @rm.TagColour
+                        </td>
+                        <td style="text-align:center">
+                            @(rm.Qty >= BAG_KG ? (rm.Qty / BAG_KG).ToString("#") + " x " + BAG_KG + " Kgs" : 1 + " x " + rm.Qty.ToString("#") + " Kgs")
+                        </td>
+                    </tr>
+                }
+                //else
+                //{
+                rm = itm;
+                //}
+
+                if (itm.Qty != 25)      //TODO: 25 to replace with setting from WebConfig
+                {
+                    <tr>
+                        <td style="text-align:center">
+                            @rm.RawMaterialName
+                        </td>
+                        <td style="text-align:center">
+                            @rm.PalletNo
+                        </td>
+                        <td style="text-align:center">
+                            @rm.TagColour
+                        </td>
+                        <td style="text-align:center">
+                            @(rm.Qty >= BAG_KG ? (rm.Qty / BAG_KG).ToString("#") + " x " + BAG_KG + " Kgs" : 1 + " x " + rm.Qty.ToString("#") + " Kgs")
+                        </td>
+                    </tr>
+                    rm = itm;
+                }
+            }
+            else
+            {
+                if (itm.Qty != 25)      //TODO: 25 to replace with setting from WebConfig
+                {
+                    <tr>
+                        <td style="text-align:center">
+                            @rm.RawMaterialName
+                        </td>
+                        <td style="text-align:center">
+                            @rm.PalletNo
+                        </td>
+                        <td style="text-align:center">
+                            @rm.TagColour
+                        </td>
+                        <td style="text-align:center">
+                            @(rm.Qty >= BAG_KG ? (rm.Qty / BAG_KG).ToString("#") + " x " + BAG_KG + " Kgs" : 1 + " x " + rm.Qty.ToString("#") + " Kgs")
+                        </td>
+                    </tr>
+                    rm = itm;
+                }
+                else
+                {
+                    rm.Qty += itm.Qty;
+                }
+            }
+
+            @*<tr>
+                <td style="text-align:center">
+                    @itm.RawMaterialName
+                </td>
+                <td style="text-align:center">
+                    @itm.PalletNo
+                </td>
+                <td style="text-align:center">
+                    @itm.TagColour
+                </td>
+                <td style="text-align:center">
+                    @itm.Qty
+                </td>
+            </tr>*@
+        }
+        <tr>
+            <td style="text-align:center">
+                @rm.RawMaterialName
+            </td>
+            <td style="text-align:center">
+                @rm.PalletNo
+            </td>
+            <td style="text-align:center">
+                @rm.TagColour
+            </td>
+            <td style="text-align:center">
+                @(rm.Qty >= BAG_KG ? (rm.Qty / BAG_KG).ToString("#") + " x " + BAG_KG + " Kgs" : 1 + " x " + rm.Qty.ToString("#") + " Kgs")
+            </td>
+        </tr>
+    </table>
+
+    <label>Production Received By: </label> <label>@Html.DisplayFor(model => model.ProductionUser)</label><br />
+</div>

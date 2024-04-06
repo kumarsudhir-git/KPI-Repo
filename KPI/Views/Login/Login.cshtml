@@ -1,0 +1,126 @@
+﻿@{
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Bootstrap core CSS -->
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+
+<body class="body-content">
+
+    <div class="pageloader" style="visibility:hidden; display:none"></div>
+    <!--Step 1 : Adding HTML-->
+    <form action="/" class="form-horizontal form-label-left" id="UserLoginForm" method="post">
+
+        <div class="container" style="border:none; background-color: #ffffff;">
+
+            @*<div class="imgcontainer">
+            <img src="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20190710102234/download3.png"
+                 alt="Avatar" class="avatar">
+        </div>*@
+
+            <center><h3>Khatri Plastic Industries</h3></center>
+            <center><h5>User Authentication</h5></center>
+            <br />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-offset-4 col-md-4">
+                        <label><b>Username</b></label>
+                        <input type="text" placeholder="Enter Username" id="Username" name="Username" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-offset-4 col-md-4">
+                        <label><b>Password</b></label>
+                        <input type="password" placeholder="Enter Password" id="Password" name="Password" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-offset-4 col-md-4">
+                        <button type="submit" name="Login" class="btn btn-success">Login</button>
+                        @*<input type="checkbox" checked="checked"> Remember me*@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        @*<div class="container" style="background-color:#f1f1f1; width:auto">
+            <button type="button" class="cancelbtn" onclick="ClearData()">Cancel</button>
+            <span class="psw">Forgot <a href="#">password?</a></span>
+        </div>*@
+    </form>
+
+    <script>
+
+        $(function () { })
+
+        function ClearData() {
+            $('form').find('input[type=text]').val('');
+            $('form').find('input[type=password]').val('');
+            return true;
+        }
+
+        /* attach a submit handler to the form */
+        $("#UserLoginForm").submit(function (event) {
+
+            $('.pageloader').css('visibility', 'visible');
+            $('.pageloader').show();
+
+            /* stop form from submitting normally */
+            event.preventDefault();
+
+            /* get the action attribute from the <form action=""> element */
+            //var $form = $(this),
+            //    url = $form.attr('action');
+
+            /* Send the data using post with element id name and name2*/
+            var posting = $.post("/Login/UserLogin", {
+                debugger;
+                Username: $('#Username').val(),
+                Password: $('#Password').val()
+            });
+
+            /* Alerts the results */
+            posting.done(function (data) {
+                if (data != null) {
+                    if (data.Response.ResponseCode == 200) {
+                        //alert('Login Successfull');
+                        // similar behavior as clicking on a link
+                        window.location.href = "/Home/Index";
+                    }
+                    else {
+                        alert(data.Response.ResponseMsg);
+                        $('.pageloader').css('visibility', 'hidden');
+                        $('.pageloader').hide();
+                        return false;
+                    }
+                }
+            });
+            posting.fail(function () {
+                alert('Login failed !!! Contact Administrator');
+                alert(data.Response.ResponseMsg);
+                $('.pageloader').css('visibility', 'hidden');
+                $('.pageloader').hide();
+                return false;
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+﻿@using KPILib.Models
+@model KPILib.Models.MenuMasterResponse
+
+@{
+    List<KPILib.Models.RoleRights> roleRights = (List<KPILib.Models.RoleRights>)ViewBag.RoleRightsData;
+}
+
+<table class="table table-bordered" id="RoleRightsToAccessMenu">
+    <thead class="tableThead">
+        <tr>
+            @*<th>Main Menu</th>*@
+            <th>Menu Name</th>
+            <th>View</th>
+            <th>Add</th>
+            <th>Update</th>
+            <th>Delete</th>
+            @*<th>Action</th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.menuMasterListObj != null && Model.menuMasterListObj.Count() > 0)
+        {
+            foreach (var item in Model.menuMasterListObj)
+            {
+                RoleRights roleRightObj = new RoleRights();
+
+                if (roleRights != null && roleRights.Count() > 0)
+                {
+                    roleRightObj = (from rlrgt in roleRights
+                                    where rlrgt.MenuID == item.MenuID
+                                    select rlrgt).FirstOrDefault();
+                }
+
+                if (roleRightObj == null)
+                {
+                    roleRightObj = new RoleRights();
+                    roleRightObj.RoleID = Model.menuMasterObj.RoleID;
+                }
+                roleRightObj.MenuID = item.MenuID;
+                roleRightObj.MenuName = item.MenuName;
+
+                Html.RenderAction("RoleRightsPartialView", roleRightObj);
+            }
+
+        }
+    </tbody>
+</table>

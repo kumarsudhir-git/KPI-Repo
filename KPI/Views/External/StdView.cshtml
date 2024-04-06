@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+@{
+    ViewBag.Title = "Purchase Order";
+    Layout = "~/Views/Shared/_ExtLayout.cshtml";
+}
+
+<div class="form-horizontal">
+    <h2>@ViewBag.Title</h2>
+
+    <hgroup>
+        <span><b>Server Message:</b> </span>
+        <span>@ViewBag.Msg</span>
+    </hgroup>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

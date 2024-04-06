@@ -1,0 +1,44 @@
+﻿@using KPI.Classes;
+@model IEnumerable<KPILib.Models.SalesMaster>
+
+@{
+    ViewBag.Title = "Sales Orders";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        var table = $('#tblData').DataTable({
+            "scrollCollapse": false,
+            "paging": true,
+            select: false,
+            data: @Html.Raw(Json.Encode(Model)),
+            columns: [
+                {
+                    data: null, title: "SO No.",
+                    render: function (data, type, row) {
+                        return "<a href='Get/" + data.SalesID + "'>" + data.SalesID + "</a>";
+                    }
+                },
+                {
+                    data: "SalesDate", title: "SO Date", "sType": "date",
+                    render: function (d) {
+                        return new Date(Number(d.toString().substring(6, 19))).toShortDateFormat();
+                    }
+                },
+                { data: "CompanyLocation", title: "Customer / Location" },
+                { data: "User", title: "User" },
+                { data: "Status", title: "Status" },
+                { data: "Instructions", title: "Instructions" }
+            ]
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("Add New", "New", new { area = "" }, new { @class = "btn btn-primary" })
+
+<table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
+</table>

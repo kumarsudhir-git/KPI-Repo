@@ -1,0 +1,67 @@
+﻿@model IEnumerable<KPILib.Models.Mould>
+
+@{
+    ViewBag.Title = "Moulds";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        var table = $('#tblData').DataTable({
+            "scrollCollapse": false,
+            "paging": true,
+            select: false,
+            data: @Html.Raw(Json.Encode(Model)),
+            columns: [
+                {
+                    data: null, title: "Mould Name",
+                    render: function (data, type, row) {
+                        return "<a href='Get/" + data.MouldID + "'>" + data.MouldName + "</a>";
+                    }
+                },
+                {
+                    data: null, title: "Used for Products",
+                    render: function (data, type, row) {
+                        let htmlString = "";
+
+                        if (data.AllProducts != null) {
+                            const d = data.AllProducts.split(",");
+                            if (d.length > 0) {
+                                $.each(d, function (index, value) {
+                                    htmlString += "<span class='badge rounded-pill bg-success'>" + value + "</span> ";
+                                });
+                            }
+                        }
+                        return htmlString;   //ColumnBuilder;
+                   }
+                },
+                {
+                    data: null, title: "Used with Machines",
+                    render: function (data, type, row) {
+                        let htmlString = "";
+
+                        if (data.AllMachines != null) {
+                            const d = data.AllMachines.split(",");
+                            if (d.length > 0) {
+                                $.each(d, function (index, value) {
+                                    htmlString += "<span class='badge rounded-pill bg-dark'>" + value + "</span> ";
+                                });
+                            }
+                        }
+                        return htmlString;   //ColumnBuilder;
+                    }
+                },
+                //{ data: "MouldStatus", title: "Mould Status" },
+                { data: "MouldStatus", title: "Mould Status" }
+            ]
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("Add New", "New", new { area = "" }, new { @class = "btn btn-primary" })
+
+<table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
+</table>

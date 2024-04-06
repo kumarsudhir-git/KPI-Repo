@@ -1,0 +1,67 @@
+﻿@using System.Collections.Generic;
+@model KPILib.Models.RawMaterial
+
+@{
+    ViewBag.Title = "Raw Material - New";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<div>
+    @Html.ActionLink("Back to List", "GetAll")
+</div>
+
+@using (Html.BeginForm("Add", "RawMaterial"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RawMaterialName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.RawMaterialName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.RawMaterialName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UOMID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.UOMID, ViewBag.UOMs as SelectList, "--Select Unit of Measurement--", new { @class = "form-control" })
+                @*//@Html.DropDownListFor(model => model.UOMID, new SelectList(Enum.GetValues(typeof(model.UOMs)), "Select Units of Measurement")   // new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.UOMID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsDiscontinued, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.IsDiscontinued)
+                    @Html.ValidationMessageFor(model => model.IsDiscontinued, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-dark" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

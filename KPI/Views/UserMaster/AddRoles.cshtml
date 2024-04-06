@@ -1,0 +1,42 @@
+﻿@model KPILib.Models.RoleMaster
+
+@{
+    ViewBag.Title = "AddRoles";
+    Layout = null;
+}
+
+<body class="body-content">
+
+    <div class="container">
+
+        @using (Html.BeginForm("AddRoles", "UserMaster", FormMethod.Post))
+        {
+            <div class="row" id="HiddenRoleId">
+                <span class="RoleId">@Html.HiddenFor(Model => Model.RoleID)</span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <label><b>RoleName</b></label>
+                        @Html.TextBoxFor(Model => Model.RoleName, new { @class = "form-control", @required = "required", @placeholder = "Enter Role Name", @onchange = "ValidateRoleName(this)" })
+                    </div>
+                    <br />
+                    <div class="col-md-4">
+                        <label>&nbsp;</label>
+                        @if (Model.RoleID == 0)
+                        {
+                            <button type="submit" id="SubmitRoleBtn" name="Login" class="btn btn-success" disabled>Submit</button>
+                        }
+                        else
+                        {
+                            <button type="submit" id="SubmitRoleBtn" name="Login" class="btn btn-success">Submit</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</body>
+

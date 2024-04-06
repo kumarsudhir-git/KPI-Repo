@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @*<title>@ViewBag.Title - My ASP.NET Application</title>*@
+    <title>@KPILib.ApplicationConstants.APP_NAME - @ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @*<script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <link href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" type="text/css" rel="stylesheet" />*@ 
+</head>
+<body>
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">@Html.Raw(KPILib.ApplicationConstants.APP_NAME)</span>
+            </div>
+            <div class="navbar-collapse collapse">
+
+            </div>
+        </div>
+    </div>*@
+    <div class="container-fluid body-content">
+        @RenderBody()
+        @*<hr />*@
+        <footer>
+            @*<p>&copy; @DateTime.Now.Year - @KPILib.ApplicationConstants.APP_NAME</p>*@
+            @*<p>Developed by - <a href="https://www.carrotconsultancy.com" target="_blank">Carrot Consultancy Services Pvt. Ltd.</a>*@
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

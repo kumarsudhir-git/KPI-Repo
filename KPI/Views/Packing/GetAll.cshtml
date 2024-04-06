@@ -1,0 +1,66 @@
+﻿@model IEnumerable<KPILib.Models.SalesDispatchMaster>
+
+@{
+    ViewBag.Title = "Packing List";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="btn-group">
+    <div class="btn btn-info active" aria-current="page" style="cursor:default;">Ready to Dispatch</div>
+    @*<a href="../Packing/GetAllClosed" class="btn btn-light">Dispatched</a>*@
+</div>
+<hr style="margin-top:0px;" />
+
+<table class="table table-sm table-striped table-hover" style="display:normal;">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SalesID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SalesDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyLocation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User)
+        </th>
+        <th>
+            Product
+        </th>
+        <th>
+            Dispatch Qty
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.SalesID)
+            </td>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.SalesDate)
+            </td>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.CompanyLocation)
+            </td>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.User)
+            </td>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.Item.ProductName)
+            </td>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.Item.QtyToDispatch)
+            </td>
+            <td>
+                @Html.ActionLink("Dispatch", "PrintPackingDetails", "Packing", new { id = item.Item.SalesDetailsID }, null)
+            </td>
+        </tr>
+    }
+</table>

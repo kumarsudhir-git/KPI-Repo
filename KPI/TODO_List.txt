@@ -1,0 +1,7 @@
+﻿- implement automapper
+- implement ELMAH
+- implement erro handling
+- implement object and moodule level access to users
+- implement unique GUID for each record. view baed on GUID
+- implement LastUpdatedOn (new/edit - server timestamp UTC to local)
+

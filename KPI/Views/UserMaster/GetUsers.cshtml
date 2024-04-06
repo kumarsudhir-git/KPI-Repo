@@ -1,0 +1,151 @@
+﻿@model IEnumerable<KPILib.Models.UserMaster>
+
+@{
+    ViewBag.Title = "GetUsers";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>@*GetUsers*@</h2>
+
+<div class="container container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                @Html.ActionLink("Create New", "AddUser", "", new { @class = "btn btn-primary" })
+            </p>
+        </div>
+    </div>
+
+    <table class="table help-page-table table-sm table-striped AddDataTable" cellspacing="0" style="border:1px solid #000">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Username)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Password)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RoleID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mobile)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsDiscontinued)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastModifiedOn)
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Password)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoleID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mobile)
+                    </td>
+                    <td>
+                        @if (item.IsDiscontinued)
+                        {
+                            <span>Yes</span>
+                        }
+                        else
+                        {
+                            <span>No</span>
+                        }
+                        @*@Html.DisplayFor(modelItem => item.IsDiscontinued)*@
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddedOn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastModifiedOn)
+                    </td>
+                    <td>
+                        <a href="/UserMaster/AddUser?UserId=@item.UserID" title="Edit" class="" id="UpdateUser"><i style="font-size:24px;" class="fa">&#xf044;</i></a>
+                        |
+                        <a href="#" title="Delete" class="" onclick="DeleteUserData('@item.Username', '@item.UserID')"><i style="font-size:24px; color:red" class="fa">&#xf014;</i></a>
+
+                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    function DeleteUserData(userName, userID) {
+
+        if (confirm("Are you sure want to delete User :- " + userName)) {
+            $.ajax({
+                url: "/UserMaster/DeleteUser",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ UserId: userID }),
+                async: false,
+                success: function (data) {
+                    if (data.Response.ResponseCode == 440) {
+                        alert(data.Response.ResponseMsg);
+                        window.location.href = "/Login/Login";
+                    }
+                    else if (data.Response.ResponseCode == 200) {
+                        alert('User deleted successfully');
+                        window.location.reload();
+                    }
+                    else if (data.Response.ResponseCode == 401) {
+                        alert(data.Response.ResponseMsg);
+                        window.location.href = "/Login/Login";
+                    }
+                    else {
+                        alert(data.Response.ResponseMsg);
+                        return false;
+                    }
+                },
+                error: function (response) {
+                    alert("Something went wrong");
+                    return false;
+                }
+            });
+        }
+        else {
+            return false;
+        }
+
+    }
+</script>

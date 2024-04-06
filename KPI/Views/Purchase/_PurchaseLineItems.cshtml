@@ -1,0 +1,42 @@
+﻿@using KPI.Classes;
+@using HtmlHelpers.BeginCollectionItem;
+@model KPILib.Models.PurchaseDetails
+
+<tr>
+    @using (Html.BeginCollectionItem("LineItems"))
+    {
+        <!--<td width="70px">-->
+            @*@Html.ImageActionLink("", "GetAll", "Rack", new { id = item.PurchaseDetailsID }, null, "~/images/garbage.png")*@
+        <!--</td>-->
+        @*<td>
+                @Html.DisplayFor(model => model.PurchaseDetailsID)
+            </td>*@
+        <td>
+            @*@Html.DropDownListFor(model => model.RawMatarialID, ViewBag.Materials as SelectList, "--Select Raw Material--", new { @class = "form-control" })*@
+
+            @Html.DropDownListFor(model => model.RawMatarialID, ViewBag.Materials as SelectList, new { @class = "form-control", @required = "required" })
+            @Html.ValidationMessage("Required", "", new { @class = "text-danger" })
+        </td>
+        <td>
+            @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control", @style="width:100px", @maxlength="5", @onchange = "calcKgs(this)" , @required = "required" } })
+            @Html.ValidationMessageFor(model => model.Qty, "", new { @class = "text-danger" })
+        </td>
+        <td>
+            <span id="lblQtyBags">@(Model.Qty / @KPILib.ApplicationConstants.RM_CAPACITY_PER_BAG_INKG) </span>
+        </td>
+        <td>
+            @Html.EditorFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" } })
+        </td>
+        <td>
+            <input type="button" value="Delete" class="btn btn-primary btn-sm" onclick="DeleteLineItemRow(this)" />
+        </td>
+    }
+</tr>
+
+<script>
+    function calcKgs(ctrl) {
+        var qty = parseInt(ctrl.value);
+        var qtyBags = ctrl.parentElement.nextElementSibling.childNodes[1];  //document.getElementById("lblQtyKgs");
+        qtyBags.innerText = qty / @KPILib.ApplicationConstants.RM_CAPACITY_PER_BAG_INKG;
+    }
+</script>

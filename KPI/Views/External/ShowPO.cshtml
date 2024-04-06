@@ -1,0 +1,152 @@
+﻿@using KPI.Classes;
+@model KPILib.Models.PurchaseMaster
+@{
+    ViewBag.Title = "Purchase Order";
+    Layout = "~/Views/Shared/_ExtLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@*@using (Html.BeginForm("POResponse", "External", FormMethod.Post, new { @id = "frm" }))
+{
+    @Html.AntiForgeryToken()*@
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-row">
+            <div class="col-md-6">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PurchaseID, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.DisplayFor(model => model.PurchaseID, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PurchaseDate, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.DisplayFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.DisplayFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.User, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.DisplayFor(model => model.User, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyLocation, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.DisplayFor(model => model.CompanyLocation, new { @class = "form-control", style = "max-width:100%;" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.DisplayFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" }, style = "max-width:100%;" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <h4>Line Items</h4>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        @*<input type="button" value="Add Line Item" class="btn btn-primary  btn-sm" />*@
+                    </div>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>
+                            Raw Material
+                        </th>
+                        <th>
+                            Qty
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model.LineItems)
+                    {
+                        if (item.RawMatarialID != 0)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RawMatarialName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Qty)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.HiddenFor(model => model.PurchaseID)
+                @Html.HiddenFor(model => model.Status)
+                <input type="hidden" id="action" />
+                <input type="button" value="Accept" class="btn btn-primary" onclick="submitForm(this);" />      @*map to different methods*@
+                <input type="button" value="Reject" class="btn btn-danger" onclick="submitForm(this);" />       @*map to differen t methods*@
+            </div>
+        </div>
+    </div>
+@*}*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    function submitForm(btn) {
+        debugger;
+        var id = document.getElementById("PurchaseID").value;   // = btn.value;
+        var resp = btn.value;
+        //document.getElementById("Status").value = btn.value;
+
+        //var f = document.getElementById("frm");
+
+        @*if (btn.value == "Accept")
+            f.action = "/External/ShowPO/POResponse/" + @Html.Raw(Model.PurchaseID + btn.value;
+        if (btn.value == "Reject")
+            f.action = "/External/ShowPO/POResponse/" + @Html.Raw(Model.PurchaseI + btn.value;*@
+
+        window.location.href = "http://localhost:44345/External/POResponse/" + id + resp;
+
+        //f.action = "/External/POResponse/" + id + resp;
+
+        //f.submit();
+    }
+</script>
+

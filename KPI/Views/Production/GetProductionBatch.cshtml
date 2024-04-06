@@ -1,0 +1,570 @@
+﻿@model KPILib.Models.ProductionPrograme
+@using KPILib.Models
+
+@{
+    ViewBag.Title = "GetProductionBatch";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h3>Production Batches</h3>
+
+<div class="form-horizontal">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="label"><b>Program ID</b>&nbsp;&nbsp;&nbsp;@Model.ProductionProgramID</div>
+        </div>
+        <div class="col-md-3">
+            <div class="label"><b>SO No</b>&nbsp;&nbsp;&nbsp;@Model.SalesDetailsID</div>
+        </div>
+        <div class="col-md-3">
+            <div class="label"><b>To Produce (Qty)</b>&nbsp;&nbsp;&nbsp;@Model.ProductQty</div>
+        </div>
+        <div class="col-md-3">
+            <div class="label"><b>In Production (Qty)</b>&nbsp;&nbsp;&nbsp;@Model.InProductionQty</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="label"><b>Date</b>&nbsp;&nbsp;&nbsp;@Model.SalesDate.ToShortDateString()</div>
+        </div>
+        <div class="col-md-3">
+            <div class="label"><b>Sales Person</b>&nbsp;&nbsp;&nbsp;@Model.SalesUser</div>
+        </div>
+        <div class="col-md-3">
+            <div class="label"><b>Can Produce(Qty)</b>&nbsp;&nbsp;&nbsp;@Model.CanProduceQty</div>
+        </div>
+        <div class="col-md-3">
+            <div class="label"><b>Balance (Qty)</b>&nbsp;&nbsp;&nbsp;@Model.BalanceQty</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="label"><b>Owner</b>&nbsp;&nbsp;&nbsp;@Model.SalesUser</div>
+        </div>
+        <div class="col-md-3">
+            <div class="label"><b>Company Name</b>&nbsp;&nbsp;&nbsp;@Model.CompanyLocation</div>
+        </div>
+        <div class="col-md-3">
+            <div class="label"><b>Produced Qty</b>&nbsp;&nbsp;&nbsp;@Model.ProductQtyCompleted</div>
+        </div>
+        <div class="col-md-3">
+            <div class="label"><b>Product</b>&nbsp;&nbsp;&nbsp;@Model.ProductName</div>
+        </div>
+    </div>
+
+    <br />
+    <div class="clearfix"></div>
+
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Batch ID/Date</th>
+                    <th>RM/Mould/Machine</th>
+                    <th>Reqd RM Qty</th>
+                    <th>Available RM Qty</th>
+                    <th>To Produce Qty</th>
+                    <th>Can Produce Qty</th>
+                    <th>Produced Qty</th>
+                    <th>In Production Qty</th>
+                    <th>Balance Qty</th>
+                    <th>Batches</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.ProgramBatches != null && Model.ProgramBatches.Count > 0)
+                {
+                    foreach (var item in Model.ProgramBatches)
+                    {
+                        Html.RenderAction("GetBatchPartialView", item);
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:800px;">
+            @*<div id='myModalContent'>*@
+
+            <div>
+                <div class="modal-header">
+                    <h4 class="modal-title">Start Production Program</h4>
+                    <button id="closbtn" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+
+                @using (Html.BeginForm("StartProduction", "Production", FormMethod.Post, new { onsubmit = "return validateForm()" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <input type="hidden" id="hidProductionProgramID" name="hidProductionProgramID" />
+                            <div class="col-md-3"><label>Program ID</label></div>
+                            <div class="col-md-3"><label>Program Date</label></div>
+                            <div class="col-md-6"><label>Program Owner</label></div>
+                            <div class="col-md-3"><span id="spnProgramID"></span></div>
+                            <div class="col-md-3"><span id="spnProgramDate"></span></div>
+                            <div class="col-md-6"><span id="spnProgramOwner"></span></div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3"><label>SO No</label></div>
+                            <div class="col-md-3"><label>SO Date</label></div>
+                            <div class="col-md-6"><label>Sales Person</label></div>
+                            <div class="col-md-3"><span id="spnSOID"></span></div>
+                            <div class="col-md-3"><span id="spnSODate"></span></div>
+                            <div class="col-md-6"><span id="spnSalesUser"></span></div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><label>Customer / Location</label></div>
+                            <div class="col-md-12"><span id="spnCompany"></span></div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6"><label>Product</label></div>
+                            <div class="col-md-2"><label>Can Produce Qty</label></div>
+                            <div class="col-md-2"><label>To Produce Qty</label></div>
+                            <div class="col-md-2"><label>Produced Qty</label></div>
+                            <div class="col-md-6"><span id="spnProduct"></span></div>
+                            <input type="hidden" id="hidSpnCanProduce" name="hidSpnCanProduce" />
+                            <div class="col-md-2">
+                                <span id="spnCanProduce"></span>
+                            </div>
+                            <div class="col-md-2">
+                                <input id="spnToProduce" name="spnToProduce" class="form-control" type="number" min="0" onchange="ValidateProducedNow(this,'spnCanProduce','spnToProduce')" />
+                            </div>
+                            <div class="col-md-2"><span id="spnProducedQty"></span></div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                @*<div class="col-md-8"><label>Raw Material</label></div>
+                                    <div class="col-md-2"><label>Reqd Qty (Kgs)</label></div>
+                                    <div class="col-md-2"><label></label></div>
+                                    <div class="col-md-8"><span id="spnRawMaterial"></span></div>
+                                    <div class="col-md-2"><span id="spnRMQty"></span></div>
+                                    <div class="col-md-2">&nbsp;</div>*@
+                                <table class="table" id="myModal_RM_Mapping" style="border:1px solid #000">
+                                    <thead>
+                                        <tr>
+                                            <th><label><b>Raw Material</b></label></th>
+                                            <th><label><b>Reqd Qty (Kgs)</b></label></th>
+                                            <th><label><b>Available Qty (Kgs)</b></label></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6"><label>Mould</label></div>
+                            <div class="col-md-6"><label>Machine</label></div>
+                            <div class="col-md-6"><span id="spnMould"></span></div>
+                            <div class="col-md-6"><span id="spnMachine"></span></div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div style="float:right;">
+                                <span id="spnError" class="text-danger"></span>
+                            </div>
+                            <div>
+                                <input id="btnRequest" type="submit" value="Start Production" class="btn btn-dark" />
+                                @*<input type="button" value="cancel" id="btnCancel" class="vknButtonLabelRed" />*@
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            @*</div>*@
+        </div>
+
+    </div>
+</div>
+
+<div id='myModal02' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:800px;">
+            @*<div id='myModalContent'>*@
+
+            <div>
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Production Program</h4>
+                    <button id="closbtn02" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+
+                @using (Html.BeginForm("UpdateProduction", "Production", FormMethod.Post, new { onsubmit = "return validateForm()" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <input type="hidden" id="hidProductionProgramID02" name="hidProductionProgramID02" />
+                            <input type="hidden" id="iBatchId" name="iBatchId" />
+                            <div class="col-md-3"><label>Program ID</label></div>
+                            <div class="col-md-3"><label>Program Date</label></div>
+                            <div class="col-md-6"><label>Program Owner</label></div>
+                            <div class="col-md-3"><span id="spnProgramID02"></span></div>
+                            <div class="col-md-3"><span id="spnProgramDate02"></span></div>
+                            <div class="col-md-6"><span id="spnProgramOwner02"></span></div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3"><label>SO No</label></div>
+                            <div class="col-md-3"><label>SO Date</label></div>
+                            <div class="col-md-6"><label>Sales Person</label></div>
+                            <div class="col-md-3"><span id="spnSOID02"></span></div>
+                            <div class="col-md-3"><span id="spnSODate02"></span></div>
+                            <div class="col-md-6"><span id="spnSalesUser02"></span></div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><label>Customer / Location</label></div>
+                            <div class="col-md-12"><span id="spnCompany02"></span></div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"><label>Product</label></div>
+                            <div class="col-md-2"><label>To Produce Qty</label></div>
+                            <div class="col-md-2"><label>Already Produced</label></div>
+                            <div class="col-md-2"><label>In Production</label></div>
+                            <div class="col-md-2"><label>Produced Now</label></div>
+                            <div class="col-md-4"><span id="spnProduct02"></span></div>
+                            <div class="col-md-2"><span id="spnToProduce02"></span></div>
+                            <div class="col-md-2"><span id="spnProducedQty02"></span></div>
+                            <input type="hidden" id="hidSpnCanProduce02" name="hidSpnCanProduce02" />
+                            <div class="col-md-2">
+                                <span id="spnCanProduce02"></span>
+                            </div>
+                            <div class="col-md-2"><input id="txtProducedNow02" name="txtProducedNow02" class="form-control" type="number" min="0" /></div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            @*<div class="col-md-6"><label>Raw Material</label></div>
+                                <div class="col-md-2"><label>Reqd Qty (Kgs)</label></div>
+                                <div class="col-md-4"><label></label></div>
+                                <div class="col-md-6"><span id="spnRawMaterial02"></span></div>
+                                <div class="col-md-2"><span id="spnRMQty02"></span></div>
+                                <div class="col-md-4">&nbsp;</div>*@
+                            <div class="col-md-12">
+                                <table class="table" id="myModal02_RM_Mapping" style="border:1px solid #000">
+                                    <thead>
+                                        <tr>
+                                            <th><label><b>Raw Material</b></label></th>
+                                            <th><label><b>Reqd Qty (Kgs)</b></label></th>
+                                            <th><label><b>Available Qty (Kgs)</b></label></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6"><label>Mould</label></div>
+                            <div class="col-md-6"><label>Machine</label></div>
+                            <div class="col-md-6"><span id="spnMould02"></span></div>
+                            <div class="col-md-6"><span id="spnMachine02"></span></div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div style="float:right;">
+                                <span id="spnError" class="text-danger"></span>
+                            </div>
+                            <div>
+                                <input id="btnRequest02" type="submit" value="Update Production" class="btn btn-dark" />
+                                @*<input type="button" value="cancel" id="btnCancel" class="vknButtonLabelRed" />*@
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            @*</div>*@
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+
+    var hidProductionProgramID = document.getElementById("hidProductionProgramID");
+    var spnProgramID = document.getElementById("spnProgramID");
+    var spnProgramDate = document.getElementById("spnProgramDate");
+    var spnProgramOwner = document.getElementById("spnProgramOwner");
+
+    var spnSOID = document.getElementById("spnSOID");
+    var spnSODate = document.getElementById("spnSODate");
+    var spnSalesUser = document.getElementById("spnSalesUser");
+    var spnCompany = document.getElementById("spnCompany");
+
+    var spnProduct = document.getElementById("spnProduct");
+    var spnCanProduce = document.getElementById("spnCanProduce");
+    var hidSpnCanProduce = document.getElementById("hidSpnCanProduce");
+    var spnToProduce = document.getElementById("spnToProduce");
+    var spnProducedQty = document.getElementById("spnProducedQty");
+
+    //var spnRawMaterial = document.getElementById("spnRawMaterial");
+    //var spnRMQty = document.getElementById("spnRMQty");
+
+    //var rmMapTable = document.getElementById("myModal_RM_Mapping");
+
+    var spnMould = document.getElementById("spnMould");
+    var spnMachine = document.getElementById("spnMachine");
+
+    var spnError = document.getElementById("spnError");
+
+    var btnRequest = document.getElementById("btnRequest");
+
+    var bRMAvailable, bMouldAvailable, bMachineAvailable;
+
+
+    var hidProductionProgramID02 = document.getElementById("hidProductionProgramID02");
+    var iBatchId = document.getElementById("iBatchId");
+    var spnProgramID02 = document.getElementById("spnProgramID02");
+    var spnProgramDate02 = document.getElementById("spnProgramDate02");
+    var spnProgramOwner02 = document.getElementById("spnProgramOwner02");
+
+    var spnSOID02 = document.getElementById("spnSOID02");
+    var spnSODate02 = document.getElementById("spnSODate02");
+    var spnSalesUser02 = document.getElementById("spnSalesUser02");
+    var spnCompany02 = document.getElementById("spnCompany02");
+
+    var spnProduct02 = document.getElementById("spnProduct02");
+    var spnToProduce02 = document.getElementById("spnToProduce02");
+    var spnCanProduce02 = document.getElementById("spnCanProduce02");
+    var hidSpnCanProduce02 = document.getElementById("hidSpnCanProduce02");
+    var spnProducedQty02 = document.getElementById("spnProducedQty02");
+
+    //var spnRawMaterial02 = document.getElementById("spnRawMaterial02");
+    //var spnRMQty02 = document.getElementById("spnRMQty02");
+
+    var spnMould02 = document.getElementById("spnMould02");
+    var spnMachine02 = document.getElementById("spnMachine02");
+
+    var spnError02 = document.getElementById("spnError02");
+
+    var btnRequest02 = document.getElementById("btnRequest02");
+
+    function loadItem(item) {
+        hidProductionProgramID.value = item.ProductionProgramID;
+        spnProgramID.innerText = item.ProductionProgramID;
+        if (item.AddedOn != null) {
+            spnProgramDate.innerText = (new Date(parseInt(item.AddedOn.substr(6)))).toJSON().slice(0, 10).split('-').reverse().join('-');
+        }
+        else {
+            spnProgramDate.innerText = "";
+        }
+        spnProgramOwner.innerText = item.ProductionUser;
+
+        spnSOID.innerText = item.SalesID;
+        if (item.SalesDate != null) {
+            spnSODate.innerText = (new Date(parseInt(item.SalesDate.substr(6)))).toJSON().slice(0, 10).split('-').reverse().join('-');
+        }
+        else {
+            spnSODate.innerText = "";
+        }
+        spnSalesUser.innerText = item.SalesUser;
+        spnCompany.innerText = item.CompanyLocation;
+
+        spnProduct.innerText = item.ProductName;
+        spnCanProduce.innerText = item.CanProduceQty;
+        hidSpnCanProduce.value = item.CanProduceQty;
+        spnToProduce.value = item.ProductQty;
+        spnProducedQty.innerText = item.ProductQtyCompleted;
+
+        //spnRawMaterial.innerText = item.RawMaterialName;
+        //spnRMQty.innerText = item.RMQty;
+
+        var tableData = ''
+        for (var mappedRM of item.MappedRawMaterials) {
+            tableData += '<tr><td>' + mappedRM.RawMaterialName + '</td> ' + '<td>' + mappedRM.RMQty + '</td>' + '<td>' + mappedRM.RMAvailableQty + '</td></tr>';
+        }
+
+        $('#myModal_RM_Mapping tbody').empty();
+        $('#myModal_RM_Mapping > tbody').append(tableData);
+
+        spnMould.innerText = item.MouldName;
+        spnMachine.innerText = item.MachineNames;
+
+        bRMAvailable = item.RMAvailable;
+        bMouldAvailable = item.MouldAvailable;
+        bMachineAvailable = item.MachineAvailable;
+
+        if (bRMAvailable && bMouldAvailable && bMachineAvailable) {
+            btnRequest.disabled = false;
+            btnRequest.class = 'btn btn-dark';
+        } else {
+            btnRequest.disabled = true;
+            btnRequest.class = 'btn btn-dark btn-warning';
+        }
+
+        var options = { "backdrop": "static", keyboard: true };
+        $('#myModal').modal(options);
+        $('#myModal').modal('show');
+    }
+
+    function loadItem02(item) {
+        hidProductionProgramID02.value = item.ProductionProgramID;
+        iBatchId.value = item.ProgramBatchID;
+        spnProgramID02.innerText = item.ProductionProgramID;
+        spnProgramDate02.innerText = (new Date(parseInt(item.AddedOn.substr(6)))).toJSON().slice(0, 10).split('-').reverse().join('-');
+        spnProgramOwner02.innerText = item.ProductionUser;
+
+        spnSOID02.innerText = item.SalesID;
+        spnSODate02.innerText = (new Date(parseInt(item.SalesDate.substr(6)))).toJSON().slice(0, 10).split('-').reverse().join('-');
+        spnSalesUser02.innerText = item.SalesUser;
+        spnCompany02.innerText = item.CompanyLocation;
+
+        spnProduct02.innerText = item.ProductName;
+        spnToProduce02.innerText = item.ProductQty;
+        //spnCanProduce02.innerText = item.CanProduceQty;
+        //hidSpnCanProduce02.value = item.CanProduceQty;
+
+        spnCanProduce02.innerText = item.InProductionQty;
+        hidSpnCanProduce02.value = item.InProductionQty;
+        spnProducedQty02.innerText = item.ProductQtyCompleted;
+
+        btnRequest02.disabled = true;
+        btnRequest02.class = 'btn btn-dark btn-warning';
+
+        //for setting max and min
+        let max = item.ProductQty - item.ProductQtyCompleted;
+        txtProducedNow02.addEventListener("change", function () {
+            
+            let num = parseInt(this.value);
+            if (num < 0) this.value = 0;
+            if (num > max) this.value = max;
+            if (num <= 0) {
+                btnRequest02.disabled = true;
+                btnRequest02.class = 'btn btn-dark btn-warning';
+            }
+            else {
+                btnRequest02.disabled = false;
+                btnRequest02.class = 'btn btn-dark';
+            }
+            ValidateProducedNow(this, 'spnCanProduce02');
+        });
+
+        //spnRawMaterial02.innerText = item.RawMaterialName;
+        //spnRMQty02.innerText = item.RMQty;
+
+        var tableData = ''
+        for (var mappedRM of item.MappedRawMaterials) {
+            tableData += '<tr><td>' + mappedRM.RawMaterialName + '</td> ' + '<td>' + mappedRM.RMQty + '</td>' + '<td>' + mappedRM.RMAvailableQty + '</td></tr>';
+        }
+
+        $('#myModal02_RM_Mapping tbody').empty();
+        $('#myModal02_RM_Mapping > tbody').append(tableData);
+
+
+        spnMould02.innerText = item.MouldName;
+        spnMachine02.innerText = item.MachineName;
+
+        //bRMAvailable = item.RMAvailable;
+        //bMouldAvailable = item.MouldAvailable;
+        //bMachineAvailable = item.MachineAvailable;
+
+        //if (bRMAvailable && bMouldAvailable && bMachineAvailable) {
+        //    btnRequest.disabled = false;
+        //    btnRequest.class = 'btn btn-dark';
+        //} else {
+        //    btnRequest.disabled = true;
+        //    btnRequest.class = 'btn btn-dark btn-warning';
+        //}
+
+        var options = { "backdrop": "static", keyboard: true };
+        $('#myModal02').modal(options);
+        $('#myModal02').modal('show');
+    }
+
+    $(function loadItem() {
+
+        //$("#divDispatch").click(function () {
+        //    //debugger;
+        //    //$("#Request_UniqueID").val(data[i]["UniqueID"].toString());
+        //    //$("#Request_Heading").val(data[i]["Heading"].toString());
+        //    //$("#spnHeading").text(data[i]["Heading"].toString());
+
+        //    var options = { "backdrop": "static", keyboard: true };
+        //    $('#myModal').modal(options);
+        //    $('#myModal').modal('show');
+        //});
+
+        //$("#divBlocked").click(function () {
+        //    //debugger;
+        //    //$("#Request_UniqueID").val(data[i]["UniqueID"].toString());
+        //    //$("#Request_Heading").val(data[i]["Heading"].toString());
+        //    //$("#spnHeading").text(data[i]["Heading"].toString());
+
+        //    var options = { "backdrop": "static", keyboard: true };
+        //    $('#myModal').modal(options);
+        //    $('#myModal').modal('show');
+        //});
+
+        $("#closbtn").click(function () {
+            $('#myModal').modal('hide');
+        });
+
+        $("#closbtn02").click(function () {
+            $('#myModal02').modal('hide');
+        });
+    });
+
+    function ValidateProducedNow(obj, spnCanProduceId) {
+        var $produceNowVal = $(obj).val();
+        var $spnCanProduceVal = $(obj).parent().parent().find("#" + spnCanProduceId).html();
+
+        if ($produceNowVal != null && $produceNowVal != '' && $spnCanProduceVal != null && $spnCanProduceVal != '') {
+
+            $produceNowVal = parseInt($produceNowVal, 10);
+            $spnCanProduceVal = parseInt($spnCanProduceVal, 10);
+
+            if ($produceNowVal > $spnCanProduceVal) {
+                //alert('PRODUCED NOW can not be greater than CAN PRODUCE');
+                alert('PRODUCED NOW can not be greater than IN PRODUCTION');
+                $("input[type=submit]").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("input[type=submit]").prop('disabled', false);
+                return true;
+            }
+        }
+    }
+
+</script>

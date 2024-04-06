@@ -1,0 +1,182 @@
+﻿@using KPI.Classes;
+@model IEnumerable<KPILib.Models.CompanyLocation>
+
+@{
+    ViewBag.Title = "Locations";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        var table = $('#tblData').DataTable({
+            "scrollCollapse": false,
+            "paging": true,
+            select: false,
+            data: @Html.Raw(Json.Encode(Model)),
+            columns: [
+                {
+                    data: null, title: "Location",
+                    render: function (data, type, row) {
+                        return "<a href='../Get/" + data.CompanyLocationID + "'>" + data.LocationName + "</a>";
+                    }
+                },
+                {
+                    data: null, title: "Address",
+                    render: function (data, type, row) {
+                        return data.Address + "<br/>" + data.City + " " + data.State + " " + data.PostalCode + "<br/>" + data.Country;
+                    }
+                },
+                {
+                    data: null, title: "Contact Person",
+                    render: function (data, type, row) {
+                        return data.ContactPerson + "<br/>(P) <a href='tel:" + data.Phone + "'>" + data.Phone + "</a><br/>(M) <a href='tel:" + data.Mobile + "'>" + data.Mobile + "</a><br/>(E) <a href='mailto:" + data.Email + "'>" + data.Email + "</a>";
+                    }
+                },
+                {
+                    data: null, title: "Website",
+                    render: function (data, type, row) {
+                        return "<a href='http://" + data.Website + "' target='_blank'>" + data.Website + "</a>";
+                    }
+                },
+                {
+                    data: null, title: "PAN / GSTN",
+                    render: function (data, type, row) {
+                        return data.PAN + "<br/>" + data.GSTN;
+                    }
+                },
+                /*{ data: "CompanyTypes", title: "Company Types" }*/
+            ]
+        });
+    });
+</script>
+
+<h2>@ViewBag.Comp.CompanyName</h2>
+
+<h4>@ViewBag.Title</h4>
+
+@Html.ActionLink("Add New", "New", new { id = ViewBag.Comp.CompanyID, sCompanyName = ViewBag.Comp.CompanyName }, new { @class = "btn btn-primary" })
+
+<table id="tblData" class="table table-striped " cellspacing="0" width="100%">
+</table>
+
+@*<table class="table">
+        <tr>
+            <th></th>
+            <th>
+                    @Html.DisplayNameFor(model => model.CompanyID)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LocationName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.City)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.State)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Country)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PostalCode)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactPerson)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.Phone)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mobile)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Website)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PAN) / @Html.DisplayNameFor(model => model.GSTN)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.Notes)
+                </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.CompanyTypeIDs)
+                </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.IsDiscontinued)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastModifiedOn)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeOfCompany)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td width="70px">
+                    @Html.ImageActionLink("", "Get", "CompanyLocation", new { id = item.CompanyLocationID }, null, "~/images/edit.png")
+                    @Html.ImageActionLink("", "GetAll", "CompanyLocation", null, null, "~/images/garbage.png")
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.CompanyID)
+                    </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LocationName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)<br />
+                    @Html.DisplayFor(modelItem => item.City) @Html.DisplayFor(modelItem => item.State) @Html.DisplayFor(modelItem => item.PostalCode)<br />
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactPerson)<br />
+                    <a href="tel:@Html.DisplayFor(modelItem => item.Phone)">@Html.DisplayFor(modelItem => item.Phone)</a><br />
+                    <a href="tel:@Html.DisplayFor(modelItem => item.Mobile)">@Html.DisplayFor(modelItem => item.Mobile)</a><br />
+                    <a href='mailto:@Html.DisplayFor(modelItem => item.Email)'>@Html.DisplayFor(modelItem => item.Email)</a><br />
+                </td>
+                <td>
+                    @Html.Raw(item.Website)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PAN)<br />
+                    @Html.DisplayFor(modelItem => item.GSTN)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.CompanyTypeIDs)
+                    </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.IsDiscontinued)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddedOn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastModifiedOn)
+                    </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeOfCompany)
+                </td>
+                <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.CompanyLocationID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.CompanyLocationID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.CompanyLocationID })
+                    </td>
+            </tr>
+        }
+
+    </table>*@

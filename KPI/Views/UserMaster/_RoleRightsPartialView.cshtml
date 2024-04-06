@@ -1,0 +1,43 @@
+﻿@using HtmlHelpers.BeginCollectionItem;
+@model KPILib.Models.RoleRights
+
+
+<tr>
+    @using (Html.BeginCollectionItem("roleRights"))
+    {
+        @Html.HiddenFor(model => model.RoleRightsID);
+        @Html.HiddenFor(model => model.RoleID);
+        @Html.HiddenFor(model => model.MenuID);
+
+        <td class="ParentMenuId">
+            @Html.DisplayFor(model => model.MenuName)
+            @*@Html.ValidationMessageFor(model => model.ParentMenuID, "", new { @class = "text-danger" })*@
+        </td>
+        @*<td class="ChildMenuId">
+            @Html.DropDownListFor(model => model.MenuID, null, "--Select--", new { @class = "form-control", @onchange = "ValidateDuplicate(this)" })
+            @Html.ValidationMessageFor(model => model.MenuID, "", new { @class = "text-danger" })
+        </td>*@
+        <td>
+            @Html.CheckBoxFor(model => model.View)
+        </td>
+        <td>
+            @Html.CheckBoxFor(model => model.Add)
+        </td>
+        <td>
+            @Html.EditorFor(model => model.Update)
+        </td>
+        <td>
+            @Html.EditorFor(model => model.Delete)
+        </td>
+        @*<td>
+            <input type="button" value="Delete" class="btn btn-primary btn-sm" onclick="DeleteLineItemRow(this)" />
+        </td>*@
+    }
+</tr>
+
+@*<script>
+ 
+    $(function () {
+            $(this).find('td.ChildMenuId').find('select').find('option:nth-child(1)').val("0");
+    })
+</script>*@

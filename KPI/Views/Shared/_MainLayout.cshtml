@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@KPILib.ApplicationConstants.APP_NAME - @ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="~/Content/Custom.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <link type="text/css" rel="stylesheet" src="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <script src="~/Scripts/Custom.js"></script>
+</head>
+<body>
+
+    @*<div class="navbar navbar-inverse navbar-fixed-top">*@
+    <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            @Html.ActionLink(KPILib.ApplicationConstants.APP_NAME, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link active" })
+                    </li>
+
+
+                    @if (Session["UserRights"] != null)
+                    {
+                        var menuDetails = (List<KPILib.Models.UserRoleRights>)Session["UserRights"];
+
+                        if (menuDetails != null)
+                        {
+                            var mainMenus = menuDetails.Where(x => x.MenuParentID is null);
+                            if (mainMenus != null)
+                            {
+                                foreach (var mainMenu in mainMenus)
+                                {
+                                    var subMenus = menuDetails.Where(a => a.MenuParentID == mainMenu.MenuID);
+
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            @mainMenu.MenuName
+                                        </a>
+
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            @foreach (var subMenu in subMenus)
+                                            {
+                                                var url = subMenu.Link.Split('/');
+                                                <li>
+                                                    @Html.ActionLink(subMenu.MenuName, url[0], url[1], new { area = "" }, new { @class = "dropdown-item" })
+                                                </li>
+                                            }
+                                        </ul>
+
+                                    </li>
+                                }
+                            }
+
+                        }
+                    }
+
+                    <!--<li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Masters
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li>@Html.ActionLink("Pallets", "GetAll", "Pallet", new { area = "" }, new { @class = "dropdown-item" })</li>
+                        <li>@Html.ActionLink("Racks", "GetAll", "Rack", new { area = "" }, new { @class = "dropdown-item" })</li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>@Html.ActionLink("Raw Materials", "GetAll", "RawMaterial", new { area = "" }, new { @class = "dropdown-item" })</li>
+                        <li>@Html.ActionLink("Products", "GetAll", "Product", new { area = "" }, new { @class = "dropdown-item" })</li>-->
+                    @*<li>@Html.ActionLink("Product Groups", "GetAll", "Inventory", new { area = "" }, new { @class = "dropdown-item" })</li>*@
+                    <!--<li><hr class="dropdown-divider"></li>
+                            <li>@Html.ActionLink("Moulds", "GetAll", "Mould", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Machines", "GetAll", "Machine", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>@Html.ActionLink("Vendors", "GetAll", "Company", new { id = 101 }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Customers", "GetAll", "Company", new { id = 103 }, new { @class = "dropdown-item" })</li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>@Html.ActionLink("Users", "GetUsers", "UserMaster", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Roles", "GetRoles", "UserMaster", new { area = "" }, new { @class = "dropdown-item" })</li>
+                        </ul>
+                    </li>-->
+                    <!--<li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Inventory
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li>@Html.ActionLink("Raw Materials", "GetAll", "RMInventory", new { area = "" }, new { @class = "dropdown-item" })</li>-->
+                    @*<li>@Html.ActionLink("Products", "GetAll", "Inventory", new { area = "" }, new { @class = "dropdown-item" })</li>*@
+                    @*<li>@Html.ActionLink("Moulds", "GetAll", "Moulds", new { area = "" }, new { @class = "dropdown-item" })</li>*@
+                    @*<li><hr class="dropdown-divider"></li>
+                        <li>@Html.ActionLink("Mould History", "GetAll", "MouldsHistory", new { area = "" }, new { @class = "dropdown-item" })</li>
+                        <li>@Html.ActionLink("Machine History", "GetAll", "MachinesHistory", new { area = "" }, new { @class = "dropdown-item" })</li>*@
+                    <!--</ul>
+                    </li>-->
+                    @*<li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Trasactions
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>@Html.ActionLink("Purchase Orders", "GetAll", "Purchase", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                <li>@Html.ActionLink("Purchase Received", "GetAll", "PurchaseRcv", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>@Html.ActionLink("Sales Orders", "GetAll", "Sales", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                <li>@Html.ActionLink("Open Sales Orders", "GetAll", "Dispatch", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>@Html.ActionLink("Production Programs", "GetAll", "Production", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>@Html.ActionLink("Dispatch", "GetAll", "Packing", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            </ul>
+                        </li>*@
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            User Admin
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a href="#" class="dropdown-item">Change Password</a></li>
+                            <li><a href="~/Login/Login" class="dropdown-item">Logout</a></li>
+                        </ul>
+                    </li>
+                    @*<li class="nav-item">
+                            <a class="nav-link disabled">Disabled</a>
+                        </li>*@
+                </ul>
+                @*<form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>*@
+                @*<div style="float:right">
+                        <div class="glyphicon glyphicon-user" alt="user" width="32" height="32"></div>
+                    </div>*@
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid body-content">
+        <br />
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - @KPILib.ApplicationConstants.APP_NAME</p>
+            @*<p>Developed by - <a href="https://www.carrotconsultancy.com" target="_blank">Carrot Consultancy Services Pvt. Ltd.</a>*@
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/ccspl.functions.js"></script>
+
+    @*<script>
+            $(document).ready(function () {
+                $('#tblRacks').DataTable();
+            });
+        </script>*@
+</body>
+</html>

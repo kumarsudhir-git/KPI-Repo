@@ -1,0 +1,418 @@
+﻿@model IEnumerable<KPILib.Models.SalesDispatchMaster>
+
+@{
+    ViewBag.Title = "Sales Orders";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+
+}
+@*<script>
+        $(document).ready(function () {
+            $.noConflict();
+            var table = $('#tblData').DataTable({
+                "scrollCollapse": false,
+                "paging": true,
+                select: false,
+                data: @Html.Raw(Json.Encode(Model)),
+                columns: [
+                    { data: "SalesID", title: "SO Number" },
+                    { data: "SalesDate", title: "SO Date" },
+                    { data: "CompanyLocation", title: "Customer / Location" },
+                    { data: "User", title: "User" },
+                    { data: "Item.ProductName", title: "Product Name" },
+                    {
+                        data: null, title: "Block / Dispatch Quantites",
+                        render: function (data, type, row) {
+                            var html = "";
+                            var bDispatch = (Item.QtyAvailable > 0 && Item.QtyBal > 0);
+                            var bBlocked = (Item.QtyAvailable > 0 && Item.QtyBal > 0 && Item.QtyBlocked < Item.QtyBal);
+
+                            html += "<div class='row'><div class='col-sm-12'><div class='row seven-cols'>";
+                            html += "<div class='qty col-md-1' style='padding: 5px;'>" + Item.QtyBooked + "<div class='qtyCap'>Ordered</div></div>";
+                            html += "<div class='qty col-md-1' style='padding: 5px;'>" + Item.QtyDispatche + "<div class='qtyCap'>Dispatched</div></div>";
+                            html += "<div class='qty col-md-1' style='padding: 5px;'>" + Item.QtyBal + "<div class='qtyCap'>Balance</div></div>";
+                            //html += "<div id='divBlocked' class='qty col-md-1' style='padding: 5px; " + (bBlocked ? "background-color: #daeaf6; cursor: pointer;" : "") + "'>" + Item.QtyBlocked + "<div class='qtyCap'>Blocked</div></div>";
+                            //html += "<div id='divToDispatch' class='qty col-md-1' style='padding: 5px; " + (bDispatch ? "background-color: #ffee93; cursor: pointer;" : "") + "' " + (bDispatch ? "onclick='loadItem(" + Json.Encode(model) + "," + Json.Encode(Item) + ")';" : "") + ">" + Item.QtyToDispatch + "<div class='qtyCap'>To Dispatch</div></div>";
+                            html += "<div class='qty col-md-1' style='padding: 5px;'>" + Item.QtyAvailable + "<div class='qtyCap'>Available</div></div>";
+                            html += "<div class='qty col-md-1' style='padding: 5px;'>" + Item.QtyInProduction + "<div class='qtyCap'>In Production</div></div>";
+                            html += "</div></div></div>";
+
+                            return html;
+                        }
+                    },
+                ]
+            });
+        });
+    </script>*@
+
+
+<h2>@ViewBag.Title</h2>
+<div class="btn-group">
+    <div class="btn btn-info active" aria-current="page" style="cursor:default;">Open Sales Orders</div>
+    <a href="../Dispatch/GetAllClosed" class="btn btn-light">Closed Sales Orders</a>
+</div>
+<hr style="margin-top:0px;" />
+
+
+@*<table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
+    </table>
+
+    <br />
+    <br />
+    <br />*@
+
+<table class="table table-sm table-striped table-hover" style="display:normal;">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SalesID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SalesDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyLocation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User)
+        </th>
+        <th>
+            Product
+        </th>
+        <th style="text-align:center;">
+            Block / Dispatch Quantites
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.SalesID)
+            </td>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.SalesDate)
+            </td>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.CompanyLocation)
+            </td>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.User)
+            </td>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.Item.ProductName)
+            </td>
+            <td valign="middle" align="center">
+                @{
+                    var bDispatch = (item.Item.QtyAvailable > 0 && item.Item.QtyBal > 0);
+                    var bBlocked = (item.Item.QtyAvailable > 0 && item.Item.QtyBal > 0 && item.Item.QtyBlocked < item.Item.QtyBal);
+                    var bToProduce = (item.Item.QtyBal > (item.Item.QtyBlocked + item.Item.QtyToDispatch));
+                }
+                <div class="row">
+                    <!--<div class="col-sm-3">
+                        @Html.DisplayFor(modelItem => item.Item.ProductName)-->
+                    <!--</div>-->
+                    <div class="col-sm-12">
+                        <div class="row eight-cols">
+                            <div class="qty col-md-1" style="padding: 5px;">
+                                @Html.DisplayFor(modelItem => item.Item.QtyBooked)
+                                <div class="qtyCap">Ordered</div>
+                            </div>
+                            <div class="qty col-md-1" style="padding: 5px;">
+                                @Html.DisplayFor(modelItem => item.Item.QtyDispatched)
+                                <div class="qtyCap">Dispatched</div>
+                            </div>
+                            <div class="qty col-md-1 red" style="padding: 5px;">
+                                @Html.DisplayFor(modelItem => item.Item.QtyBal)
+                                <div class="qtyCap">Balance</div>
+                            </div>
+                            <div id="divBlocked" class="qty col-md-1 blue" style="padding: 5px; @if (bBlocked) { @Html.Raw(" background-color: #daeaf6; cursor: pointer;"); }" @if (bBlocked) { @Html.Raw("onclick='loadItem(" + Json.Encode(item) + "," + Json.Encode(item.Item) + ");'") ; }>
+                                @Html.DisplayFor(modelItem => item.Item.QtyBlocked)
+                                <div class="qtyCap">Blocked</div>
+                            </div>
+                            <div id="divToDispatch" class="qty col-md-1" style="padding: 5px; @if (bDispatch) { @Html.Raw(" background-color: #ffee93; cursor: pointer;"); }" @if (bDispatch) { @Html.Raw("onclick='loadItem(" + Json.Encode(item) + "," + Json.Encode(item.Item) + ");'") ; }>
+                                @Html.DisplayFor(modelItem => item.Item.QtyToDispatch)
+                                <div class="qtyCap">To Dispatch</div>
+                            </div>
+                            <div class="qty col-md-1 green" style="padding: 5px;">
+                                @Html.DisplayFor(modelItem => item.Item.QtyAvailable)
+                                <div class="qtyCap">Available</div>
+                            </div>
+                            <div class="qty col-md-1" style="padding: 5px;">
+                                @Html.DisplayFor(modelItem => item.Item.QtyInProduction)
+                                <div class="qtyCap">In Production</div>
+                            </div>
+                            <div class="qty col-md-1" style="padding: 5px; @if (bToProduce) { @Html.Raw(" background-color: lightgreen; cursor: pointer;"); }" @if (bToProduce) { @Html.Raw("onclick='loadItem(" + Json.Encode(item) + "," + Json.Encode(item.Item) + ");'") ; }>
+                                @Html.DisplayFor(modelItem => item.Item.QtyToProduce)
+                                <div class="qtyCap">To Produce</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:800px;">
+            @*<div id='myModalContent'>*@
+
+            <div>
+                <div class="modal-header">
+                    <h4 class="modal-title">Assign Quantities</h4>
+                    <button id="closbtn" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+
+                @*@using (Html.BeginForm(new { onsubmit = "return validateForm()" })) //"EmailMe", "Judgment", FormMethod.Post, new { onsubmit = "return validateForm()" }))*@
+                @using (Html.BeginForm("SetBookingDispatch", "Dispatch", FormMethod.Post, new { onsubmit = "return validateForm()" })) //"EmailMe", "Judgment", FormMethod.Post, new { onsubmit = "return validateForm()" }))*@
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <input type="hidden" id="hidSalesDetailsID" name="hidSalesDetailsID" />
+                            <input type="hidden" id="hidBlocked" />
+                            <input type="hidden" id="hidToDispatch" />
+                            <input type="hidden" id="hidAvailable" />
+                            <div class="col-md-4"><label>SO No</label></div>
+                            <div class="col-md-4"><label>SO Date</label></div>
+                            <div class="col-md-4"><label>User</label></div>
+                            <div class="col-md-4"><span id="spnSOID"></span></div>
+                            <div class="col-md-4"><span id="spnSODate"></span></div>
+                            <div class="col-md-4"><span id="spnUser"></span></div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><label>Customer / Location</label></div>
+                            <div class="col-md-12"><span id="spnCompany"></span></div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="form-group">
+                            <div class="row eight-cols">
+                                <div class="qty col-md-1" style="padding: 5px; vertical-align:middle;">
+                                    <span id="txtOrdered"></span>
+                                    <div class="qtyCap">Ordered</div>
+                                </div>
+                                <div class="qty col-md-1" style="padding: 5px; vertical-align: middle;">
+                                    <span id="txtDispatched"></span>
+                                    <div class="qtyCap">Dispatched</div>
+                                </div>
+                                <div class="qty col-md-1" style="padding: 5px; vertical-align: middle;">
+                                    <span id="txtBal"></span>
+                                    <div class="qtyCap">Balance</div>
+                                </div>
+                                <div class="qty col-md-1" style="padding: 5px; vertical-align: middle;">
+                                    <input type="number" id="txtBlocked" name="txtBlocked" class="qty" style="width: 100px; border: none; padding: 0px 5px 0px 5px; background-color:lightgoldenrodyellow;" maxlength="6" min="0" onchange="qtyChanged();" />       @*Blocked cannot be more than Balance*@
+                                    <div class="qtyCap">Blocked</div>
+                                </div>
+                                <div class="qty col-md-1" style="padding: 5px; vertical-align: middle;">
+                                    <input type="number" id="txtToDispatch" name="txtToDispatch" class="qty" style="width: 100px; border: none; padding: 0px 5px 0px 5px; background-color: lightgoldenrodyellow; " maxlength="6" min="0" onchange="qtyChanged();" />    @*ToDispatch cannot be more than Balance*@
+                                    <div class="qtyCap">To Dispatch</div>
+                                </div>
+                                <div class="qty col-md-1" style="padding: 5px; vertical-align: middle;">
+                                    <span id="txtAvailable"></span>
+                                    <div class="qtyCap">Available</div>
+                                </div>
+                                <div class="qty col-md-1" style="padding: 5px; vertical-align: middle;">
+                                    <span id="txtInProduction"></span>
+                                    <div class="qtyCap">In Production</div>
+                                </div>
+                                <div class="qty col-md-1" style="padding: 5px; vertical-align: middle;">
+                                    <input type="number" id="txtToProduce" name="txtToProduce" class="qty" style="width: 100px; border: none; padding: 0px 5px 0px 5px; background-color: lightgoldenrodyellow; " maxlength="6" min="0" onchange="qtyChanged();" />    @*ToDispatch cannot be more than Balance*@
+                                    <div class="qtyCap">To Produce</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div style="float:right;">
+                                <span id="spnError" class="text-danger"></span>
+                            </div>
+                            <div>
+                                <input id="btnAddBlockToDispatch" type="button" value="'Blocked' ➤ 'To Dispatch'" class="btn btn-outline-secondary" onclick="qtyBlockedToDispatch();" />
+                                <input id="btnRequest" type="submit" value="Save" class="btn btn-dark" />
+                                @*<input type="button" value="cancel" id="btnCancel" class="vknButtonLabelRed" />*@
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            @*</div>*@
+        </div>
+
+    </div>
+</div>
+
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    var frmQuantities = document.getElementById("frmQuantities");
+
+    var hidSalesDetailsID = document.getElementById("hidSalesDetailsID");
+    var hidToDispatch = document.getElementById("hidToDispatch");
+    var hidBlocked = document.getElementById("hidBlocked");
+    var hidAvailable = document.getElementById("hidAvailable");
+
+    var spnSOID = document.getElementById("spnSOID");
+    var spnSODate = document.getElementById("spnSODate");
+    var spnUser = document.getElementById("spnUser");
+    var spnCompany = document.getElementById("spnCompany");
+
+    var txtOrdered = document.getElementById("txtOrdered");
+    var txtDispatched = document.getElementById("txtDispatched");
+    var txtBal = document.getElementById("txtBal");
+    var txtToDispatch = document.getElementById("txtToDispatch");
+    var txtBlocked = document.getElementById("txtBlocked");
+    var txtAvailable = document.getElementById("txtAvailable");
+    var txtInProduction = document.getElementById("txtInProduction");
+    var txtToProduce = document.getElementById("txtToProduce");
+
+
+    var spnError = document.getElementById("spnError");
+
+    function loadItem(parentItem, childItem) {
+        spnSOID.innerText = parentItem.SalesID;
+        spnSODate.innerText = (new Date(parseInt(parentItem.SalesDate.substr(6)))).toJSON().slice(0, 10).split('-').reverse().join('-');
+        spnUser.innerText = parentItem.User;
+        spnCompany.innerText = parentItem.CompanyLocation;
+
+        hidSalesDetailsID.value = childItem.SalesDetailsID;
+        hidBlocked.value = childItem.QtyBlocked;
+        hidToDispatch.value = childItem.QtyToDispatch;
+        hidAvailable.value = childItem.QtyAvailable;
+
+        txtOrdered.innerText = childItem.QtyBooked;
+        txtDispatched.innerText = childItem.QtyDispatched;
+        txtBal.innerText = childItem.QtyBal;
+        txtBlocked.value = childItem.QtyBlocked;
+        txtToDispatch.value = childItem.QtyToDispatch;
+        txtAvailable.innerText = childItem.QtyAvailable;
+        txtInProduction.innerText = childItem.QtyInProduction;
+        txtToProduce.value = childItem.QtyToProduce;
+
+        txtToDispatch.max = childItem.QtyBal;
+        txtBlocked.max = childItem.QtyBal;
+
+            var options = { "backdrop": "static", keyboard: true };
+            //$('#myModal').modal(options);
+            $('#myModal').modal('show');
+        }
+
+    function qtyBlockedToDispatch() {
+        //debugger;
+        txtToDispatch.value = parseInt(txtToDispatch.value) + parseInt(txtBlocked.value);
+        txtBlocked.value = 0;
+    }
+
+    function qtyChanged() {
+        //debugger;
+        txtAvailable.innerText = parseInt(hidAvailable.value) - (parseInt(txtBlocked.value) - parseInt(hidBlocked.value)) - (parseInt(txtToDispatch.value) - parseInt(hidToDispatch.value));
+        doValidation();
+    }
+
+    //function changedToDispatch() {
+    //    //debugger;
+    //    txtAvailable.innerText = parseInt(hidAvailable.value) - (parseInt(txtToDispatch.value) - parseInt(hidToDispatch.value));
+    //}
+
+    function validateForm() {
+        debugger;
+        return doValidation();
+    }
+
+    function doValidation() {
+        //spnError.innerText = txtToDispatch.value + "|" + txtBlocked.value + "|" + txtBal.value + "|" + hidAvailable.value + "|" + hidToDispatch.value + "|" + hidBlocked.value;
+
+        if (parseInt(txtToDispatch.value) > parseInt(txtBal.innerText)) {
+            //alert("'To Dispatch' Qty cannot be greater than 'Balance' Qty");
+            spnError.innerText = "'To Dispatch' qty cannot be greater than 'Balance' qty";
+            txtToDispatch.focus();
+            return false;
+        }
+        else if (parseInt(txtBlocked.value) > parseInt(txtBal.innerText)) {
+            //alert("'Blocked' Qty cannot be greater than 'Balance' Qty");
+            spnError.innerText = "'Blocked' qty cannot be greater than 'Balance' qty";
+            txtToDispatch.focus();
+            return false;
+        }
+        else if (parseInt(txtBlocked.value) + parseInt(txtToDispatch.value) > parseInt(txtBal.innerText)) {
+            //alert("'To Dispatch' Qty + 'Blocked' Qty cannot be greater than 'Balance' Qty");
+            spnError.innerText = "'To Dispatch' qty + 'Blocked' qty cannot be greater than 'Balance' qty";
+            txtToDispatch.focus();
+            return false;
+        }
+        else if (parseInt(txtToDispatch.value) - parseInt(hidToDispatch.value) > parseInt(hidAvailable.value)) {
+            //alert("'To Dispatch' Qty cannot be greater than 'Available' Qty");
+            spnError.innerText = "'To Dispatch' qty cannot be greater than 'Available' qty";
+            txtToDispatch.focus();
+            return false;
+        }
+        else if (parseInt(txtBlocked.value) - parseInt(hidBlocked.value) > parseInt(txtAvailable.value)) {
+            //alert("'Blocked' Qty cannot be greater than 'Available' Qty");
+            spnError.innerText = "'Blocked' qty cannot be greater than 'Available' qty";
+            txtToDispatch.focus();
+            return false;
+        }
+        else if ((parseInt(txtToDispatch.value) - parseInt(hidToDispatch.value)) + (parseInt(txtBlocked.value) - parseInt(hidBlocked.value)) > parseInt(txtAvailable.value)) {
+            //alert("'To Dispatch' Qty + 'Blocked' Qty cannot be greater than 'Available' Qty");
+            spnError.innerText = "'To Dispatch' qty + 'Blocked' qty cannot be greater than 'Available' qty";
+            txtToDispatch.focus();
+            return false;
+        }
+        else if (parseInt(txtToProduce.value) > (parseInt(txtBal.innerText) - parseInt(txtBlocked.value) - parseInt(txtToDispatch.value))) {
+            //alert("'To Produce' qty cannot be greater than 'Balance' qty - ('Blocked' qty + 'To Dispatch' qty)");
+            spnError.innerText = "'To Produce' qty cannot be greater than 'Balance' qty - ('Blocked' qty + 'To Dispatch' qty)";
+            txtToProduce.focus();
+            return false;
+        }
+        else {
+            spnError.innerText = "";
+            //frmQuantities.action = "../Dispatch/SetBookingDispatch";
+            return true;
+        }
+    }
+
+
+    $(function loadItem() {
+
+        //$("#divDispatch").click(function () {
+        //    //debugger;
+        //    //$("#Request_UniqueID").val(data[i]["UniqueID"].toString());
+        //    //$("#Request_Heading").val(data[i]["Heading"].toString());
+        //    //$("#spnHeading").text(data[i]["Heading"].toString());
+
+        //    var options = { "backdrop": "static", keyboard: true };
+        //    $('#myModal').modal(options);
+        //    $('#myModal').modal('show');
+        //});
+
+        //$("#divBlocked").click(function () {
+        //    //debugger;
+        //    //$("#Request_UniqueID").val(data[i]["UniqueID"].toString());
+        //    //$("#Request_Heading").val(data[i]["Heading"].toString());
+        //    //$("#spnHeading").text(data[i]["Heading"].toString());
+
+        //    var options = { "backdrop": "static", keyboard: true };
+        //    $('#myModal').modal(options);
+        //    $('#myModal').modal('show');
+        //});
+
+    });
+
+    $("#closbtn").click(function () {
+        $('#myModal').modal('hide');
+    });
+</script>

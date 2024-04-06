@@ -1,0 +1,45 @@
+﻿@using KPI.Classes;
+@model IEnumerable<KPILib.Models.RackMaster>
+
+@{
+    ViewBag.Title = "Racks";
+    if (ViewBag.ProdName != null)
+    {
+        ViewBag.Title += " (" + ViewBag.ProdName + ")";
+    }
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        var table = $('#tblData').DataTable({
+            "scrollCollapse": false,
+            "paging": true,
+            select: false,
+            data: @Html.Raw(Json.Encode(Model)),
+            columns: [
+                {
+                    data: null, title: "Rack No",
+                    render: function (data, type, row) {
+                        return "<a href='Get/" + data.RackID + "'>" + data.RackNo + "</a>";
+                    }
+                },
+                { data: "Description", title: "Description" },
+                /*{ data: "IsDiscontinued", title: "Discontinued?" },*/
+                { data: "ProductName", title: "Product Name" },
+                { data: "PkgQty", title: "Pkg Qty", "sType": "int", "width": "100", "className": "text-right" },
+                { data: "Pkts", title: "Pkts", "sType": "int", "width": "100", "className": "text-right" },
+                { data: "OpenPkts", title: "Open Pkts", "sType": "int", "width": "100", "className": "text-right" },
+                { data: "Qty", title: "Total Qty", "sType": "int", "width": "100", "className": "text-right" },
+            ]
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("Add New", "New", new { area = "" }, new { @class = "btn btn-primary" })
+
+<table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
+</table>

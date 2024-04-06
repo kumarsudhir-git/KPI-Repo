@@ -1,0 +1,174 @@
+﻿@using KPI.Classes;
+@model KPILib.Models.PurchaseMaster
+@{
+    ViewBag.Title = "Purchase Order - Edit";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<div>
+    @Html.ActionLink("Back to List", "GetAll")
+</div>
+
+@using (Html.BeginForm("Edit", "Purchase"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row g-3">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-row">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="col-12">
+                        <tr>
+                            <td>
+                                @Html.LabelFor(model => model.PurchaseID, htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div>
+                                    @Html.DisplayFor(model => model.PurchaseID, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.HiddenFor(model => model.PurchaseID)
+                                    @*@Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
+                                </div>
+                            </td>
+                            <td>
+                                @Html.LabelFor(model => model.PurchaseDate, htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div>
+                                    @Html.DisplayFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control" } })
+                                    @*@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control datepicker", @disabled = "disabled" }, type = "date" })*@
+                                    @*@Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div>
+                                    @Html.DisplayFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+                                    @*@Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })*@
+                                    @*@Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })*@
+                                </div>
+                            </td>
+                            <td>
+                                @Html.LabelFor(model => model.User, htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div>
+                                    @Html.DisplayFor(model => model.User, new { htmlAttributes = new { @class = "form-control" } })
+                                    @*@Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })*@
+                                    @*@Html.ValidationMessageFor(model => model.User, "", new { @class = "text-danger" })*@
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CompanyLocation, htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div class="col-md-12">
+                                    @*@Html.DisplayFor(model => model.CompanyLocation, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @Html.DropDownListFor(model => model.CompanyLocationID, ViewBag.Locations as SelectList, "--Select Company and Location--", new { @class = "form-control", style = "max-width:100%;", @disabled = "disabled" })
+                                    @*@Html.ValidationMessageFor(model => model.CompanyLocationID, "", new { @class = "text-danger" })*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div class="col-md-12">
+                                    @*@Html.DisplayFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @Html.TextAreaFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" }, @rows = 6, @cols = 1000, style = "max-width:100%;", @disabled = "disabled" })
+                                    @*@Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h4>Line Items</h4>
+                            </div>
+                            <!--<div class="col-md-6 text-right">-->
+                            @*<input type="button" value="Add Line Item" class="btn btn-primary  btn-sm" />*@
+                            <!--</div>-->
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4 text-right">
+                                <label>&nbsp;</label>
+                                <input type="button" value="Add Line Item" class="btn btn-primary btn-sm" onclick="AddLineItemRow()" />
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <table class="table" id="PurchaseOrderTbl" style="border:1px solid #000">
+                            <thead>
+                                <tr>
+                                    @*<th>
+                                            Purchase Detail ID
+                                        </th>*@
+                                    <th>
+                                        Raw Material
+                                    </th>
+                                    <th>
+                                        Qty (in Kgs)
+                                    </th>
+                                    <th>
+                                        Qty (in Bags)
+                                    </th>
+                                    <th>
+                                        Instructions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.LineItems)
+                                {
+                                    Html.RenderPartial("_PurchaseLineItems", item);
+
+                                    <!--<tr>
+                                    <td width="70px">-->
+                                    @*@Html.ImageActionLink("", "GetPurchaseDetail", "Purchase", new { id = item.PurchaseDetailsID }, null, "~/images/edit.png")
+                                        @Html.ImageActionLink("", "GetPurchaseDetail", "Purchase", null, null, "~/images/garbage.png")*@
+                                    <!--</td>-->
+                                    @*<td>
+                                            @Html.DisplayFor(modelItem => item.PurchaseDetailsID)
+                                        </td>*@
+                                    <!--<td>-->
+                                    @*                                @Html.DisplayFor(modelItem => item.RawMatarialName)*@
+                                    <!--</td>
+                                    <td>-->
+                                    @*                              @Html.DisplayFor(modelItem => item.Qty)*@
+                                    <!--</td>
+                                    </tr>-->
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-dark" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    function AddLineItemRow() {
+
+        var strURL = "/Purchase/PurchaseLineItemsPartialAction";
+        var selector = "#PurchaseOrderTbl tbody";
+        AddLineItemRowGeneric(strURL, "GET", selector);
+    };
+</script>

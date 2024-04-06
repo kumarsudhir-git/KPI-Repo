@@ -1,0 +1,51 @@
+﻿@using KPI.Classes;
+@model IEnumerable<KPILib.Models.SalesMastDetail>
+
+@{
+    ViewBag.Title = "Sales Orders";
+    if (ViewBag.RMName != null)
+    {
+        ViewBag.Title += " (" + ViewBag.ProductName + ")";
+    }
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        var table = $('#tblData').DataTable({
+            "scrollCollapse": false,
+            "paging": true,
+            select: false,
+            data: @Html.Raw(Json.Encode(Model)),
+            columns: [
+                { data: "SalesID", title: "SO No.", "sType": "int" },
+                {
+                    data: "SalesDate", title: "SO Date", "sType": "date",
+                    render: function (d) {
+                        return new Date(Number(d.toString().substring(6, 19))).toShortDateFormat();
+                    }
+                },
+                { data: "CompanyLocation", title: "Customer / Location" },
+                { data: "User", title: "User" },
+                { data: "Status", title: "Status" },
+                { data: "Qty", title: "Qty" },
+                //{ data: "Instructions", title: "Instructions" }
+                {
+                    data: null, title: "Instructions",
+                    render: function (data, type, row) {
+                        //return "<span>" + data.SalesDetailsInstructions + "</span><span>" + data.SalesMasterInstructions + "</span>";
+                        return data.SalesMasterInstructions;
+                    }
+                },
+            ]
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+@*@Html.ActionLink("Add New", "New")*@ &nbsp;
+
+<table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
+</table>

@@ -1,0 +1,165 @@
+﻿@using System.Collections.Generic;
+@model KPILib.Models.Product
+
+@{
+    ViewBag.Title = "Product - Edit";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+}
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+    <div class="row">
+        <div class="col-md-6">
+            @Html.ActionLink("Back to List", "GetAll")
+        </div>
+
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>Line Items</h4>
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <input type="button" value="Add Line Item" class="btn btn-primary btn-sm" onclick="AddLineItemRow()" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    @using (Html.BeginForm("Edit", "Product"))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ProductID)
+
+            <div class="row">
+                <div class="col-md-6">
+
+                    <div class="row g-3 col-md-12">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.EditorFor(model => model.ProductCode, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ProductCode, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row col-md-12">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.MouldID, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.DropDownListFor(model => model.MouldID, ViewBag.Moulds as SelectList, "--Select Moulds--", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.MouldID, "", new { @class = "text-danger" })
+                        </div>
+                        @*<div class="col-md-2">
+                @Html.LabelFor(model => model.RawMaterialID, htmlAttributes: new { @class = "control-label" })<br />
+                @Html.DropDownListFor(model => model.RawMaterialID, ViewBag.RawMaterials as SelectList, "--Select Raw Material--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RawMaterialID, "", new { @class = "text-danger" })
+            </div>*@
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.MinQtyUOM, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.EditorFor(model => model.MinQtyUOM, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MinQtyUOM, "", new { @class = "text-danger" })
+                        </div>
+                        @*<div class="col-md-2">
+                @Html.LabelFor(model => model.RMReqdForUOMQty, htmlAttributes: new { @class = "control-label" })<br />
+                @Html.EditorFor(model => model.RMReqdForUOMQty, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.RMReqdForUOMQty, "", new { @class = "text-danger" })
+            </div>*@
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.PkgQty, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.EditorFor(model => model.PkgQty, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PkgQty, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row col-md-12">
+                        <div class="col-md-4">
+                            @Html.LabelFor(model => model.PkgsPerRack, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.EditorFor(model => model.PkgsPerRack, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PkgsPerRack, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-4 col-lg-offset-4">
+                            @Html.LabelFor(model => model.IsDiscontinued, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.IsDiscontinued)
+                                    @Html.ValidationMessageFor(model => model.IsDiscontinued, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-10">
+                            <label>&nbsp;</label>
+                            <input type="submit" value="Save" class="btn btn-dark" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <br />
+                    <div class="row">
+                        <div class="form-group">
+
+                            <table class="table" id="ProductTbl" style="border:1px solid #000">
+                                <thead>
+                                    <tr>
+                                        <th>RAW MATERIAL</th>
+                                        <th>RM REQD FOR MIN QTY (KGS)</th>
+                                        @*<th>Unit</th>*@
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.productRawMaterialMappings != null && Model.productRawMaterialMappings.Count > 0)
+                                    {
+                                        foreach (var item in Model.productRawMaterialMappings)
+                                        {
+                                            Html.RenderAction("PartialProduct", item);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Html.RenderAction("PartialProduct");
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    function AddLineItemRow() {
+
+        var strURL = "/Product/PartialProduct";
+        var selector = "#ProductTbl tbody";
+        AddLineItemRowGeneric(strURL, "GET", selector);
+    }
+</script>

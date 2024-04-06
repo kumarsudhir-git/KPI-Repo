@@ -1,0 +1,113 @@
+﻿@model KPILib.Models.ProductionBatches
+
+<tr>
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+   
+    @{
+        var cssMaterial = (Model.RMAvailable ? "available" : "notavailable");
+        var cssMould = (Model.MouldAvailable ? "available" : "notavailable");
+        var cssMachine = (Model.MachineAvailable ? "available" : "notavailable");
+    }
+    <td>
+        <div class="form-group">
+            @if (Model.ProgramBatchID != 0)
+            {
+                @Html.DisplayFor(modelModel => Model.ProgramBatchID)<br />
+                if (Model.AddedOn.HasValue)
+                {
+                    <span>/</span>
+                    @Html.Raw(Model.AddedOn.Value.ToString("dd-MMM-yyyy"))
+                }
+            }
+        </div>
+    </td>
+    <td>
+        @if (!Model.ProgramInProgress)
+        {
+            <div class="@cssMaterial" title="raw material">
+                @foreach (var rmItem in Model.MappedRawMaterials)
+                {
+                    <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName</span>
+                }
+            </div>
+
+            <div class="@cssMould" title="mould"><span class="badge rounded-pill bg-info">@Html.DisplayFor(modelItem => Model.MouldName)</span></div>
+            <div class="@cssMachine" title="machine">
+                @foreach (var itm in Model.MachineNames.Split('|'))
+                {
+                    <span class="badge rounded-pill bg-dark">@itm.Trim()</span>
+                }
+            </div>
+        }
+        @if (Model.ProgramInProgress)
+        {
+            <div class="@cssMachine" title="raw material">
+                @foreach (var rmItem in Model.MappedRawMaterials)
+                {
+                    <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName</span>
+                }
+            </div>
+
+            <div class="@cssMachine" title="mould"><span class="badge rounded-pill bg-info">@Html.DisplayFor(modelItem => Model.MouldName)</span></div>
+            @*<div title="machine"><span class="badge rounded-pill bg-dark">@Html.DisplayFor(modelItem => Model.MachineName)</span></div>*@
+            <div class="@cssMachine" title="machine">
+                @foreach (var itm in Model.MachineNames.Split('|'))
+                {
+                    <span class="badge rounded-pill bg-dark">@itm.Trim()</span>
+                }
+            </div>
+        }
+    </td>
+    <td>
+        <div class="@cssMaterial" title="raw material">
+            @foreach (var rmItem in Model.MappedRawMaterials)
+            {
+                <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName (@rmItem.RMQty) Kgs </span>
+            }
+        </div>
+    </td>
+    <td>
+        <div class="@cssMaterial" title="raw material">
+            @foreach (var rmItem in Model.MappedRawMaterials)
+            {
+                <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName (@rmItem.RMAvailableQty) Kgs </span>
+            }
+        </div>
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.ProductQty)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.CanProduceQty)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.ProductQtyCompleted)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.InProductionQty)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.BalanceQty)
+    </td>
+    <td>
+        @if (Model.RMAvailable && Model.MouldAvailable && Model.MachineAvailable && Model.CanProduceQty > 0 && !Model.ProgramInProgress)
+        {
+            <div style="text-align:center; padding:5px;">
+                <button class="btn btn-success btn-sm" @Html.Raw("onclick='loadItem(" + Json.Encode(Model) + ");'")>START&nbsp;PROGRAM</button>
+            </div>
+        }
+        @if (Model.ProgramInProgress && Model.ProgramBatchID > 0)
+        {
+            <div style="text-align:center; padding:5px;">
+                <a href='../Production/GetProductionPlan/@Html.Raw(Model.ProductionProgramID)' target='_blank'>
+                    <span class="btn-outline-danger small">PROGRAM&nbsp;RUNNING</span>
+                </a><br />
+                <a href='../Production/GetRackingPlan/@Html.Raw(Model.ProductionProgramID)' target='_blank'>
+                    <span class="btn-outline-warning small">RACKING&nbsp;PLAN</span>
+                </a><br />
+                <button class="btn btn-dark btn-sm" @Html.Raw("onclick='loadItem02(" + Json.Encode(Model) + ");'")>UPDATE&nbsp;PROGRAM</button>
+            </div>
+        }
+    </td>
+</tr>

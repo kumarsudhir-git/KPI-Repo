@@ -1,0 +1,615 @@
+﻿using KPILib.Models;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+
+namespace KPI.Classes
+{
+    public static class KPIAPIManager
+    {
+        #region API calls for Pallets
+        public static PalletMastersResponse GetAllPallets()
+        {
+            var result = CommonFunctions.client.GetAsync("PalletMasterAPI/GetAll").Result.Content.ReadAsAsync<PalletMastersResponse>().Result;
+            return result;
+        }
+
+        public static PalletMastersResponse GetAllPallets(int rmid)
+        {
+            var result = CommonFunctions.client.GetAsync("PalletMasterAPI/GetAllByRMID/" + rmid.ToString()).Result.Content.ReadAsAsync<PalletMastersResponse>().Result;
+            return result;
+        }
+
+        public static PalletMasterResponse GetPallet(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("PalletMasterAPI/Get/" + id.ToString()).Result.Content.ReadAsAsync<PalletMasterResponse>().Result;
+            return result;
+        }
+
+        public static PalletMasterResponse AddPallet(PalletMaster obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("PalletMasterAPI/Add", obj).Result.Content.ReadAsAsync<PalletMasterResponse>().Result;
+            return result;
+        }
+
+        public static PalletMasterResponse EditPallet(PalletMaster obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("PalletMasterAPI/Edit", obj).Result.Content.ReadAsAsync<PalletMasterResponse>().Result;
+            return result;
+        }
+        #endregion
+
+        #region API calls for Racks
+        public static RackMastersResponse GetAllRacks()
+        {
+            var result = CommonFunctions.client.GetAsync("RackMasterAPI/GetAll").Result.Content.ReadAsAsync<RackMastersResponse>().Result;
+            return result;
+        }
+
+        public static RackMastersResponse GetAllRacks(int prodid)
+        {
+            var result = CommonFunctions.client.GetAsync("RackMasterAPI/GetAllByProdID/" + prodid.ToString()).Result.Content.ReadAsAsync<RackMastersResponse>().Result;
+            return result;
+        }
+
+        public static RackMasterResponse GetRack(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("RackMasterAPI/Get/" + id.ToString()).Result.Content.ReadAsAsync<RackMasterResponse>().Result;
+            return result;
+        }
+
+        public static RackMasterResponse AddRack(RackMaster obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RackMasterAPI/Add", obj).Result.Content.ReadAsAsync<RackMasterResponse>().Result;
+            return result;
+        }
+
+        public static RackMasterResponse EditRack(RackMaster obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RackMasterAPI/Edit", obj).Result.Content.ReadAsAsync<RackMasterResponse>().Result;
+            return result;
+        }
+        #endregion
+
+        #region API calls for RawMaterials
+        public static RawMaterialsResponse GetAllRawMaterials()
+        {
+            var result = CommonFunctions.client.GetAsync("RawMaterialMasterAPI/GetAll").Result.Content.ReadAsAsync<RawMaterialsResponse>().Result;
+            return result;
+        }
+
+        public static RawMaterialResponse GetRawMaterial(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("RawMaterialMasterAPI/Get/" + id.ToString()).Result.Content.ReadAsAsync<RawMaterialResponse>().Result;
+            return result;
+        }
+
+        public static RawMaterialResponse AddRawMaterial(RawMaterial obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RawMaterialMasterAPI/Add", obj).Result.Content.ReadAsAsync<RawMaterialResponse>().Result;
+            return result;
+        }
+
+        public static RawMaterialResponse EditRawMaterial(RawMaterial obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RawMaterialMasterAPI/Edit", obj).Result.Content.ReadAsAsync<RawMaterialResponse>().Result;
+            return result;
+        }
+        #endregion
+
+        #region API calls for RMInventory
+        public static RMInventorysResponse GetAllRMInventory()
+        {
+            var result = CommonFunctions.client.GetAsync("RMInventoryAPI/GetAll").Result.Content.ReadAsAsync<RMInventorysResponse>().Result;
+            return result;
+        }
+
+        public static RMInventorysResponse GetAllRMInventoryByRack(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("RMInventoryAPI/GetAllByRack/" + id.ToString()).Result.Content.ReadAsAsync<RMInventorysResponse>().Result;
+            return result;
+        }
+
+        public static RMInventorysResponse GetAllRMInventoryByRM(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("RMInventoryAPI/GetAllByRM/" + id.ToString()).Result.Content.ReadAsAsync<RMInventorysResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryResponse GetRMInventory(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("RMInventoryAPI/Get/" + id.ToString()).Result.Content.ReadAsAsync<RMInventoryResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryResponse AddRMInventory(RMInventory obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RMInventoryAPI/Add", obj).Result.Content.ReadAsAsync<RMInventoryResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryResponse EditRMInventory(RMInventory obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RMInventoryAPI/Edit", obj).Result.Content.ReadAsAsync<RMInventoryResponse>().Result;
+            return result;
+        }
+        #endregion
+
+        #region API calls for Companies
+        public static CompaniesResponse GetAllCompanies(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("CompanyAPI/GetAll/" + id.ToString()).Result.Content.ReadAsAsync<CompaniesResponse>().Result;
+            return result;
+        }
+
+        public static CompanyResponse GetCompany(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("CompanyAPI/Get/" + id.ToString()).Result.Content.ReadAsAsync<CompanyResponse>().Result;
+            return result;
+        }
+
+        public static CompanyResponse AddCompany(Company obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("CompanyAPI/Add", obj).Result.Content.ReadAsAsync<CompanyResponse>().Result;
+            return result;
+        }
+
+        public static CompanyResponse EditCompany(Company obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("CompanyAPI/Edit", obj).Result.Content.ReadAsAsync<CompanyResponse>().Result;
+            return result;
+        }
+        #endregion
+
+        #region API calls for CompanyLocations
+        public static CompanyLocationsResponse GetAllCompanyLocations(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("CompanyLocationAPI/GetAll/" + id.ToString()).Result.Content.ReadAsAsync<CompanyLocationsResponse>().Result;
+            return result;
+        }
+
+        public static CompanyLocationResponse GetCompanyLocation(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("CompanyLocationAPI/Get/" + id.ToString()).Result.Content.ReadAsAsync<CompanyLocationResponse>().Result;
+            return result;
+        }
+
+        public static CompanyLocationResponse AddCompanyLocation(CompanyLocation obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("CompanyLocationAPI/Add", obj).Result.Content.ReadAsAsync<CompanyLocationResponse>().Result;
+            return result;
+        }
+
+        public static CompanyLocationResponse EditCompanyLocation(CompanyLocation obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("CompanyLocationAPI/Edit", obj).Result.Content.ReadAsAsync<CompanyLocationResponse>().Result;
+            return result;
+        }
+        #endregion
+
+        #region API calls for Purchase
+        public static PurchaseMastersResponse GetAllPurchases()
+        {
+            var result = CommonFunctions.client.GetAsync("PurchaseAPI/GetAll").Result.Content.ReadAsAsync<PurchaseMastersResponse>().Result;
+            return result;
+        }
+
+        public static PurchaseMastDetailsResponse GetAllByRMID(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("PurchaseAPI/GetAllByRMID/" + id.ToString()).Result.Content.ReadAsAsync<PurchaseMastDetailsResponse>().Result;
+            return result;
+        }
+
+        public static PurchaseMasterResponse GetPurchase(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("PurchaseAPI/Get/" + id.ToString()).Result.Content.ReadAsAsync<PurchaseMasterResponse>().Result;
+            return result;
+        }
+
+        public static PurchaseMasterResponse AddPurchase(PurchaseMaster obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("PurchaseAPI/Add", obj).Result.Content.ReadAsAsync<PurchaseMasterResponse>().Result;
+            return result;
+        }
+
+        public static PurchaseMasterResponse EditPurchase(PurchaseMaster obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("PurchaseAPI/Edit", obj).Result.Content.ReadAsAsync<PurchaseMasterResponse>().Result;
+            return result;
+        }
+        #endregion
+
+        #region API calls for PurchaseRcv
+        public static PurchaseRcvMastsResponse GetAllPurchaseRcvMasts()
+        {
+            var result = CommonFunctions.client.GetAsync("PurchaseRcvAPI/GetAll").Result.Content.ReadAsAsync<PurchaseRcvMastsResponse>().Result;
+            return result;
+        }
+
+        public static PurchaseRcvMastResponse GetNewRcv(int id) //pass PO ID
+        {
+            var result = CommonFunctions.client.GetAsync("PurchaseRcvAPI/GetNewRcv/" + id.ToString()).Result.Content.ReadAsAsync<PurchaseRcvMastResponse>().Result;
+            return result;
+        }
+
+        public static PurchaseRcvMastResponse AddPurchaseRcv(PurchaseRcvMast obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("PurchaseRcvAPI/Add", obj).Result.Content.ReadAsAsync<PurchaseRcvMastResponse>().Result;
+            return result;
+        }
+
+        //public static PurchaseRcvMastResponse GetPurchaseRcvMast(int id)
+        //{
+        //    var result = CommonFunctions.client.GetAsync("PurchaseRcvAPI/Get/" + id.ToString()).Result.Content.ReadAsAsync<PurchaseRcvMastResponse>().Result;
+        //    return result;
+        //}
+
+        public static PurchaseRcvPrintResponse GetRMStackingPlan(int id) //pass PO ID
+        {
+            var result = CommonFunctions.client.GetAsync("PurchaseRcvAPI/GetRMStackingPlan/" + id.ToString()).Result.Content.ReadAsAsync<PurchaseRcvPrintResponse>().Result;
+            return result;
+        }
+
+        #endregion
+
+        #region API calls for Products
+        public static ProductsResponse GetAllProducts()
+        {
+            var result = CommonFunctions.client.GetAsync("ProductMasterAPI/GetAll").Result.Content.ReadAsAsync<ProductsResponse>().Result;
+            return result;
+        }
+
+        public static ProductResponse GetProduct(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("ProductMasterAPI/Get/" + id.ToString()).Result.Content.ReadAsAsync<ProductResponse>().Result;
+            return result;
+        }
+
+        public static ProductResponse AddProduct(Product obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("ProductMasterAPI/Add", obj).Result.Content.ReadAsAsync<ProductResponse>().Result;
+            return result;
+        }
+
+        public static ProductResponse EditProduct(Product obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("ProductMasterAPI/Edit", obj).Result.Content.ReadAsAsync<ProductResponse>().Result;
+            return result;
+        }
+        #endregion
+
+        #region API calls for Sales
+        public static SalesMastersResponse GetAllSales()
+        {
+            var result = CommonFunctions.client.GetAsync("SalesAPI/GetAll").Result.Content.ReadAsAsync<SalesMastersResponse>().Result;
+            return result;
+        }
+
+        public static SalesMastDetailsResponse GetAllByProductID(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("SalesAPI/GetAllByProductID/" + id.ToString()).Result.Content.ReadAsAsync<SalesMastDetailsResponse>().Result;
+            return result;
+        }
+
+        public static SalesMasterResponse GetSales(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("SalesAPI/Get/" + id.ToString()).Result.Content.ReadAsAsync<SalesMasterResponse>().Result;
+            return result;
+        }
+
+        public static ProductMasterResponse GetProductsDetails()
+        {
+            ProductMasterResponse result = CommonFunctions.client.GetAsync("SalesAPI/GetProductsDetails").Result.Content.ReadAsAsync<ProductMasterResponse>().Result;
+            return result;
+        }
+
+        public static SalesMasterResponse GetCompanyLocationDetails(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("SalesAPI/GetCompanyLocationDetails/" + id.ToString()).Result.Content.ReadAsAsync<SalesMasterResponse>().Result;
+            return result;
+        }
+
+        public static SalesMasterResponse AddSales(SalesMaster obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("SalesAPI/Add", obj).Result.Content.ReadAsAsync<SalesMasterResponse>().Result;
+            return result;
+        }
+
+        public static SalesMasterResponse EditSales(SalesMaster obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("SalesAPI/Edit", obj).Result.Content.ReadAsAsync<SalesMasterResponse>().Result;
+            return result;
+        }
+        #endregion
+
+        #region API calls for Dispatch
+        public static SalesDispatchMasterResponse GetAllDispatch01(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("DispatchAPI/GetAll/" + id.ToString()).Result.Content.ReadAsAsync<SalesDispatchMasterResponse>().Result;
+            return result;
+        }
+
+        public static ResponseObj SetNewDispatchBlockValues(int iSalesDetailsID, int iBlockedQty, int iToDispatchQty, int iToProduceQty)
+        {
+            var parameters = new Dictionary<string, int> { { "iSalesDetailsID", iSalesDetailsID }, { "iBlockedQty", iBlockedQty }, { "iToDispatchQty", iToDispatchQty }, { "iToProduceQty", iToProduceQty } };
+            var result = CommonFunctions.client.PostAsJsonAsync("DispatchAPI/SetNewDispatchBlockValues", parameters).Result.Content.ReadAsAsync<ResponseObj>().Result;
+            return result;
+        }
+
+        //public static SalesMastDetailsResponse GetAllByProductID(int id)
+        //{
+        //    var result = CommonFunctions.client.GetAsync("SalesAPI/GetAllByProductID/" + id.ToString()).Result.Content.ReadAsAsync<SalesMastDetailsResponse>().Result;
+        //    return result;
+        //}
+
+        //public static SalesMasterResponse GetSales(int id)
+        //{
+        //    var result = CommonFunctions.client.GetAsync("SalesAPI/Get/" + id.ToString()).Result.Content.ReadAsAsync<SalesMasterResponse>().Result;
+        //    return result;
+        //}
+
+        //public static SalesMasterResponse AddSales(SalesMaster obj)
+        //{
+        //    var result = CommonFunctions.client.PostAsJsonAsync("SalesAPI/Add", obj).Result.Content.ReadAsAsync<SalesMasterResponse>().Result;
+        //    return result;
+        //}
+
+        //public static SalesMasterResponse EditSales(SalesMaster obj)
+        //{
+        //    var result = CommonFunctions.client.PostAsJsonAsync("SalesAPI/Edit", obj).Result.Content.ReadAsAsync<SalesMasterResponse>().Result;
+        //    return result;
+        //}
+        #endregion
+
+        #region API calls for Production
+        public static ProductionProgramesResponse GetAllProduction(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("ProductionAPI/GetAll/" + id.ToString()).Result.Content.ReadAsAsync<ProductionProgramesResponse>().Result;
+            return result;
+        }
+        public static ProductionProgramesResponse GetProductionBatch(int ProductionProgramID)
+        {
+            try
+            {
+                var result = CommonFunctions.client.GetAsync("ProductionAPI/GetProductionBatch?ProductionProgramID=" + ProductionProgramID.ToString()).Result.Content.ReadAsAsync<ProductionProgramesResponse>().Result;
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static ResponseObj StartProduction(int iProductionProgramID)
+        {
+            var parameters = new Dictionary<string, int> { { "iProductionProgramID", iProductionProgramID } };
+            var result = CommonFunctions.client.PostAsJsonAsync("ProductionAPI/StartProduction", parameters).Result.Content.ReadAsAsync<ResponseObj>().Result;
+            return result;
+        }
+
+        public static ResponseObj StartProduction(Dictionary<string, int> param)
+        {            
+            var result = CommonFunctions.client.PostAsJsonAsync("ProductionAPI/StartProduction", param).Result.Content.ReadAsAsync<ResponseObj>().Result;
+            return result;
+        }
+
+        public static ResponseObj UpdateProduction(int iProductionProgramID, int iProducedNow,int iBatchId)
+        {
+            var parameters = new Dictionary<string, int> { { "iProductionProgramID", iProductionProgramID }, { "iProducedNow", iProducedNow }, { "iBatchId", iBatchId } };
+            var result = CommonFunctions.client.PostAsJsonAsync("ProductionAPI/UpdateProduction", parameters).Result.Content.ReadAsAsync<ResponseObj>().Result;
+            return result;
+        }
+
+        public static ProductionPlanResponse GetProductionPlan(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("ProductionAPI/GetProductionPlan/" + id.ToString()).Result.Content.ReadAsAsync<ProductionPlanResponse>().Result;
+            return result;
+        }
+
+        public static ProductRackingPlanResponse GetRackingPlan(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("ProductionAPI/GetRackingPlan/" + id.ToString()).Result.Content.ReadAsAsync<ProductRackingPlanResponse>().Result;
+            return result;
+        }
+
+        #endregion
+
+        #region API calls for External
+        public static ResponseObj POResponse(object id)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("ExternalAPI/POResponse", id).Result.Content.ReadAsAsync<ResponseObj>().Result;
+            return result;
+        }
+
+        #endregion
+
+        #region API calls for Mould
+        public static MouldMastersResponse GetAllMoulds()
+        {
+            var result = CommonFunctions.client.GetAsync("MouldAPI/GetAll").Result.Content.ReadAsAsync<MouldMastersResponse>().Result;
+            return result;
+        }
+
+        #endregion    
+
+        #region API calls for Machine
+        public static MachineMastersResponse GetAllMachines()
+        {
+            var result = CommonFunctions.client.GetAsync("MachineAPI/GetAll").Result.Content.ReadAsAsync<MachineMastersResponse>().Result;
+            return result;
+        }
+
+        #endregion    
+
+        #region API calls for Packing
+        public static SalesDispatchMasterResponse GetAllPacking(int id)
+        {
+            var result = CommonFunctions.client.GetAsync("PackingAPI/GetAll/" + id.ToString()).Result.Content.ReadAsAsync<SalesDispatchMasterResponse>().Result;
+            return result;
+        }
+        public static PackingDispatchMasterResponse GetPackingDetails(int id)
+        {
+            //var result = CommonFunctions.client.PostAsJsonAsync("PackingAPI/GetPackingDetails/", SalesIDProductID).Result.Content.ReadAsAsync<PackingDispatchMasterResponse>().Result;
+
+            var result = CommonFunctions.client.GetAsync("PackingAPI/GetPackingDetails/" + id.ToString()).Result.Content.ReadAsAsync<PackingDispatchMasterResponse>().Result;
+            return result;
+        }
+        #endregion
+
+        #region Login Manager
+
+        public static UserMasterResponse LoginUserResponse(UserMaster userMaster)
+        {
+            string url = "LoginAPI/UserLogin";
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(userMaster), Encoding.UTF8, "application/json");
+            UserMasterResponse result = CommonFunctions.client.PostAsync(url, content).Result.Content.ReadAsAsync<UserMasterResponse>().Result;
+            return result;
+        }
+
+        public static UserMasterResponse LogOutUserResponse(string JWTTokenKey)
+        {
+            try
+            {
+                string url = $"LoginAPI/LogOutUser?JWTTokenKey={JWTTokenKey}";
+                UserMasterResponse result = CommonFunctions.client.PostAsync(url, null).Result.Content.ReadAsAsync<UserMasterResponse>().Result;
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region UserMaster CRUD
+
+        public static UserMasterResponse GetUserMasterListResponse(int UserId = 0)
+        {
+            string url = $"UserMasterAPI/GetUsers?UserId={UserId}";
+            UserMasterResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<UserMasterResponse>().Result;
+            return result;
+        }
+
+        public static UserMasterResponse GetUserMasterResponse(int UserId = 0)
+        {
+            string url = $"UserMasterAPI/GetUserMasterData?UserId={UserId}";
+            UserMasterResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<UserMasterResponse>().Result;
+            return result;
+        }
+        public static UserMasterResponse ValidateUsername(string Username, int UserId = 0)
+        {
+            string url = $"UserMasterAPI/ValidateUsername?Username={Username}&UserId={UserId}";
+            UserMasterResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<UserMasterResponse>().Result;
+            return result;
+        }
+
+        public static UserMasterResponse AddUpdateUserResponse(UserMaster userMaster, int SessionUserID)
+        {
+            string url = $"UserMasterAPI/AddUser?SessionUserID={SessionUserID}";
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(userMaster), Encoding.UTF8, "application/json");
+            UserMasterResponse result = CommonFunctions.client.PostAsync(url, content).Result.Content.ReadAsAsync<UserMasterResponse>().Result;
+            return result;
+        }
+
+        public static UserMasterResponse DeleteUserResponse(int UserId, int SessionUserId)
+        {
+            string url = $"UserMasterAPI/DeleteUser?UserId={UserId}&SessionUserId={SessionUserId}";
+            UserMasterResponse result = CommonFunctions.client.PostAsync(url, null).Result.Content.ReadAsAsync<UserMasterResponse>().Result;
+            return result;
+        }
+
+        public static UserMasterResponse ForgotPasswordResponse(UserMaster userMaster)
+        {
+            string url = $"UserMasterAPI/ForgotPassword";
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(userMaster), Encoding.UTF8, "application/json");
+            UserMasterResponse result = CommonFunctions.client.PostAsync(url, content).Result.Content.ReadAsAsync<UserMasterResponse>().Result;
+            return result;
+        }
+
+        #endregion
+
+        #region RoleMaster CRUD
+
+        public static RoleMasterResponse GetRoleResponse(int RoleId = 0)
+        {
+            string url = $"UserMasterAPI/GetRoles?RoleId={RoleId}";
+            RoleMasterResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<RoleMasterResponse>().Result;
+            return result;
+        }
+
+        public static RoleMasterResponse AddUpdateRoleResponse(RoleMaster roleMaster)
+        {
+            string url = "UserMasterAPI/AddRoles";
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(roleMaster), Encoding.UTF8, "application/json");
+            RoleMasterResponse result = CommonFunctions.client.PostAsync(url, content).Result.Content.ReadAsAsync<RoleMasterResponse>().Result;
+            return result;
+        }
+
+        public static RoleMasterResponse ValidateRoleNameResponse(RoleMaster roleMaster)
+        {
+            string url = "UserMasterAPI/ValidateRoleName";
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(roleMaster), Encoding.UTF8, "application/json");
+            RoleMasterResponse result = CommonFunctions.client.PostAsync(url, content).Result.Content.ReadAsAsync<RoleMasterResponse>().Result;
+            return result;
+        }
+
+        public static RoleMasterResponse DeleteRoleResponse(int RoleId = 0, int UserId = 0)
+        {
+            string url = $"UserMasterAPI/DeleteRole?RoleId={RoleId}&UserId={UserId}";
+            RoleMasterResponse result = CommonFunctions.client.PostAsync(url, null).Result.Content.ReadAsAsync<RoleMasterResponse>().Result;
+            return result;
+        }
+
+        public static RoleRightsResponse RoleRightsResponse(int RoleId)
+        {
+            string url = $"UserMasterAPI/GetAssignedRoleRightsToMenu?RoleId={RoleId}";
+            RoleRightsResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<RoleRightsResponse>().Result;
+            return result;
+        }
+
+        public static MenuMasterResponse GetParentMenuMasterData()
+        {
+            string url = $"UserMasterAPI/GetParentMenuMasterData";
+            MenuMasterResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<MenuMasterResponse>().Result;
+            return result;
+        }
+
+        public static MenuMasterResponse GetChildMenuMasterData(int ParentMenuID)
+        {
+            string url = $"UserMasterAPI/GetChildMenuMasterData?ParentMenuID=" + ParentMenuID;
+            MenuMasterResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<MenuMasterResponse>().Result;
+            return result;
+        }
+
+        public static RoleRightsResponse SaveRoleRightsForMenu(List<RoleRights> roleRights, int MenuParentID, int RoleID, int UserId)
+        {
+            string url = $"UserMasterAPI/SaveRoleRightsForMenu?MenuParentID={MenuParentID}&RoleID={RoleID}&UserId={UserId}";
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(roleRights), Encoding.UTF8, "application/json");
+            RoleRightsResponse result = CommonFunctions.client.PostAsync(url, content).Result.Content.ReadAsAsync<RoleRightsResponse>().Result;
+            return result;
+        }
+
+        #endregion
+
+        #region Get data for ddl
+
+        public static RawMaterialsResponse GetRawMaterialData()
+        {
+            string url = $"ProductMasterAPI/GetRawMaterialData";
+            RawMaterialsResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<RawMaterialsResponse>().Result;
+            return result;
+        }
+
+        public static UnitResponse GetUnitData()
+        {
+            string url = $"ProductMasterAPI/GetUnitData";
+            UnitResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<UnitResponse>().Result;
+            return result;
+        }
+        #endregion
+
+    }
+}

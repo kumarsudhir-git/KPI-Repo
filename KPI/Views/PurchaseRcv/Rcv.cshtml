@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Purchase Received - New";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("New", "PurchaseRcv"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-row">
+            <div class="col-md-6">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <span class = "control-labell col-md-12">Your PO No.:</span>
+                            <div class="col-md-12">
+                                <input type="text" id="PONo" name="PONo" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Search" class="btn btn-dark" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

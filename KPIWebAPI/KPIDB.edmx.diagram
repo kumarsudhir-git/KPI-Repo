@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4417e6fdda5a4d06852a32d3b690d704" Name="Diagram1" ZoomLevel="72">
+        <AssociationConnector Association="KPIModel.FK_ProductionProgram_RawMaterialMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductMaster_RawMaterialMaster" />
+        <EntityTypeShape EntityType="KPIModel.CompanyLocationMaster" Width="1.5" PointX="0.75" PointY="32.75" />
+        <EntityTypeShape EntityType="KPIModel.CompanyMaster" Width="1.5" PointX="1.5" PointY="42.125" />
+        <EntityTypeShape EntityType="KPIModel.CompanyTypeMaster" Width="1.5" PointX="1.5" PointY="46.375" />
+        <EntityTypeShape EntityType="KPIModel.DynamicURL" Width="1.5" PointX="5.75" PointY="9.5" />
+        <EntityTypeShape EntityType="KPIModel.MachineHistory" Width="1.5" PointX="7.5" PointY="4.125" />
+        <EntityTypeShape EntityType="KPIModel.MachineMaster" Width="1.5" PointX="5.25" PointY="4.75" />
+        <EntityTypeShape EntityType="KPIModel.MachineMouldMapping" Width="1.5" PointX="8.5" PointY="10.875" />
+        <EntityTypeShape EntityType="KPIModel.MachineStatusMaster" Width="1.5" PointX="5.25" PointY="1.375" />
+        <EntityTypeShape EntityType="KPIModel.MachineTypeMaster" Width="1.5" PointX="3" PointY="5.25" />
+        <EntityTypeShape EntityType="KPIModel.MailMaster" Width="1.5" PointX="9.75" PointY="2.5" />
+        <EntityTypeShape EntityType="KPIModel.MenuMaster" Width="1.5" PointX="10.75" PointY="7.5" />
+        <EntityTypeShape EntityType="KPIModel.MouldHistory" Width="1.5" PointX="11" PointY="12.5" />
+        <EntityTypeShape EntityType="KPIModel.MouldInventoryMaster" Width="1.5" PointX="11.75" PointY="2.5" />
+        <EntityTypeShape EntityType="KPIModel.MouldMaster" Width="1.5" PointX="0.75" PointY="16.125" />
+        <EntityTypeShape EntityType="KPIModel.MouldStatusMaster" Width="1.5" PointX="8.75" PointY="7.75" />
+        <EntityTypeShape EntityType="KPIModel.MouldTypeMaster" Width="1.5" PointX="1.5" PointY="12.625" />
+        <EntityTypeShape EntityType="KPIModel.OrderStatusMaster" Width="1.5" PointX="12.75" PointY="5.5" />
+        <EntityTypeShape EntityType="KPIModel.PalletMaster" Width="1.5" PointX="6" PointY="34.375" />
+        <EntityTypeShape EntityType="KPIModel.ProdReadyStored" Width="1.5" PointX="9.75" PointY="21" />
+        <EntityTypeShape EntityType="KPIModel.ProductCategoryMaster" Width="1.5" PointX="0.75" PointY="25.25" />
+        <EntityTypeShape EntityType="KPIModel.ProductGroupDetail" Width="1.5" PointX="5.25" PointY="16" />
+        <EntityTypeShape EntityType="KPIModel.ProductGroupMaster" Width="1.5" PointX="3" PointY="8.875" />
+        <EntityTypeShape EntityType="KPIModel.ProductInventoryMaster" Width="1.5" PointX="8.25" PointY="16.125" />
+        <EntityTypeShape EntityType="KPIModel.ProductionProgram" Width="1.5" PointX="7.5" PointY="19.875" />
+        <EntityTypeShape EntityType="KPIModel.ProductionProgramBatch" Width="1.5" PointX="9.75" PointY="33" />
+        <EntityTypeShape EntityType="KPIModel.ProductionProgramRMMapping" Width="1.5" PointX="12.75" PointY="21.375" />
+        <EntityTypeShape EntityType="KPIModel.ProductionRawMaterial" Width="1.5" PointX="13.5" PointY="25.125" />
+        <EntityTypeShape EntityType="KPIModel.ProductMaster" Width="1.5" PointX="3" PointY="19.25" />
+        <EntityTypeShape EntityType="KPIModel.ProductRawMaterialMapping" Width="1.5" PointX="11.25" PointY="24.75" />
+        <EntityTypeShape EntityType="KPIModel.PurchaseDetail" Width="1.5" PointX="5.25" PointY="28" />
+        <EntityTypeShape EntityType="KPIModel.PurchaseMaster" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="KPIModel.PurchaseRcvdDetail" Width="1.5" PointX="10.5" PointY="29.125" />
+        <EntityTypeShape EntityType="KPIModel.PurchaseRcvdMaster" Width="1.5" PointX="8.25" PointY="37" />
+        <EntityTypeShape EntityType="KPIModel.PurchaseRcvdStored" Width="1.5" PointX="12.75" PointY="28.875" />
+        <EntityTypeShape EntityType="KPIModel.PurchaseStatusMaster" Width="1.5" PointX="0.75" PointY="8.5" />
+        <EntityTypeShape EntityType="KPIModel.RackMaster" Width="1.5" PointX="6" PointY="12" />
+        <EntityTypeShape EntityType="KPIModel.RawMaterialInventoryMaster" Width="1.5" PointX="8.25" PointY="27.75" />
+        <EntityTypeShape EntityType="KPIModel.RawMaterialMaster" Width="1.5" PointX="3" PointY="27.5" />
+        <EntityTypeShape EntityType="KPIModel.RoleMaster" Width="1.5" PointX="1.5" PointY="55.5" />
+        <EntityTypeShape EntityType="KPIModel.RoleRight" Width="1.5" PointX="13.75" PointY="8.5" />
+        <EntityTypeShape EntityType="KPIModel.SalesDetail" Width="1.5" PointX="5.25" PointY="20.25" />
+        <EntityTypeShape EntityType="KPIModel.SalesDispatchDetail" Width="1.5" PointX="10.5" PointY="16.75" />
+        <EntityTypeShape EntityType="KPIModel.SalesDispatchRack" Width="1.5" PointX="12.75" PointY="17.75" />
+        <EntityTypeShape EntityType="KPIModel.SalesMaster" Width="1.5" PointX="3" PointY="37.75" />
+        <EntityTypeShape EntityType="KPIModel.SalesStatusMaster" Width="1.5" PointX="0.75" PointY="39" />
+        <EntityTypeShape EntityType="KPIModel.TagColourMaster" Width="1.5" PointX="6" PointY="31.625" />
+        <EntityTypeShape EntityType="KPIModel.Unit" Width="1.5" PointX="13.75" PointY="2.5" />
+        <EntityTypeShape EntityType="KPIModel.UOMMaster" Width="1.5" PointX="0.75" PointY="21.125" />
+        <EntityTypeShape EntityType="KPIModel.UserMaster" Width="1.5" PointX="0.75" PointY="49.625" />
+        <AssociationConnector Association="KPIModel.FK_CompanyLocationMaster_CompanyMaster" />
+        <AssociationConnector Association="KPIModel.FK_PurchaseMaster_CompanyLocationMaster" />
+        <AssociationConnector Association="KPIModel.FK_SalesMaster_CompanyLocationMaster" />
+        <AssociationConnector Association="KPIModel.FK_CompanyMaster_CompanyTypeMaster" />
+        <AssociationConnector Association="KPIModel.FK_MachineHistory_MachineMaster" />
+        <AssociationConnector Association="KPIModel.FK_MachineHistory_MachineStatusMaster" />
+        <AssociationConnector Association="KPIModel.FK_MachineMaster_MachineTypeMaster" />
+        <AssociationConnector Association="KPIModel.FK_MachineMouldMapping_MachineMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductionProgram_MachineMaster" />
+        <AssociationConnector Association="KPIModel.FK_MachineMouldMapping_MouldMaster" />
+        <AssociationConnector Association="KPIModel.FK_MouldHistory_MouldMaster" />
+        <AssociationConnector Association="KPIModel.FK_MouldInventoryHistory_MouldStatusMaster" />
+        <AssociationConnector Association="KPIModel.FK_MouldMaster_MouldTypeMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductionProgram_MouldMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductMaster_MouldMaster" />
+        <AssociationConnector Association="KPIModel.FK_PurchaseRcvdStored_PalletMaster" />
+        <AssociationConnector Association="KPIModel.FK_RawMaterialInventoryMaster_PalletMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProdReadyStored_ProductionProgram" />
+        <AssociationConnector Association="KPIModel.FK_ProdReadyStored_ProductMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProdReadyStored_RackMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductGroupMaster_ProductCategoryMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductMaster_ProductCategoryMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductGroupDetails_ProductGroupMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductGroupDetails_ProductMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductInventoryMaster_ProductMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductInventoryMaster_RackMaster" />
+        <AssociationConnector Association="KPIModel.FK__Productio__Produ__1B9317B3" />
+        <AssociationConnector Association="KPIModel.FK_ProductionProgam_ID" />
+        <AssociationConnector Association="KPIModel.FK_ProductionProgram_ProductMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductionProgram_SalesDetails" />
+        <AssociationConnector Association="KPIModel.FK_ProductionProgram_UserMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductionRawMaterial_ProductionProgram" />
+        <AssociationConnector Association="KPIModel.FK_RawMaterial_ID" />
+        <AssociationConnector Association="KPIModel.FK_ProductionRawMaterial_RawMaterialInventoryMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductionRawMaterial_RawMaterialMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductMaster_ID" />
+        <AssociationConnector Association="KPIModel.FK_ProductMaster_UOMMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductMaster_UOMMaster1" />
+        <AssociationConnector Association="KPIModel.FK_SalesDetails_ProductMaster" />
+        <AssociationConnector Association="KPIModel.FK_SalesDispatchDetails_ProductMaster" />
+        <AssociationConnector Association="KPIModel.FK_SalesDispatchRacks_ProductMaster" />
+        <AssociationConnector Association="KPIModel.FK_ProductRawMaterial_ID" />
+        <AssociationConnector Association="KPIModel.FK_PurchaseDetails_PurchaseMaster" />
+        <AssociationConnector Association="KPIModel.FK_PurchaseDetails_RawMaterialMaster" />
+        <AssociationConnector Association="KPIModel.FK_PurchaseRcvdDetails_PurchaseDetails" />
+        <AssociationConnector Association="KPIModel.FK_PurchaseMaster_PurchaseStatusMaster" />
+        <AssociationConnector Association="KPIModel.FK_PurchaseMaster_UserMaster" />
+        <AssociationConnector Association="KPIModel.FK_PurchaseRcvdMaster_PurchaseMaster" />
+        <AssociationConnector Association="KPIModel.FK_PurchaseRcvdDetails_PurchaseRcvdMaster" />
+        <AssociationConnector Association="KPIModel.FK_PurchaseRcvdStored_PurchaseRcvdDetails" />
+        <AssociationConnector Association="KPIModel.FK_PurchaseRcvdMaster_UserMaster" />
+        <AssociationConnector Association="KPIModel.FK_PurchaseRcvdStored_RawMaterialMaster" />
+        <AssociationConnector Association="KPIModel.FK_PurchaseRcvdStored_TagColourMaster" />
+        <AssociationConnector Association="KPIModel.FK_SalesDispatchRacks_RackMaster" />
+        <AssociationConnector Association="KPIModel.FK_RawMaterialInventoryMaster_RawMaterialMaster" />
+        <AssociationConnector Association="KPIModel.FK_RawMaterialInventoryMaster_TagColourMaster" />
+        <AssociationConnector Association="KPIModel.FK_RawMaterialMaster_UOMMaster" />
+        <AssociationConnector Association="KPIModel.FK_UserMaster_RoleMaster" />
+        <AssociationConnector Association="KPIModel.FK_SalesDetails_SalesMaster" />
+        <AssociationConnector Association="KPIModel.FK_SalesDispatchDetails_SalesDetails" />
+        <AssociationConnector Association="KPIModel.FK_SalesDispatchDetails_UserMaster" />
+        <AssociationConnector Association="KPIModel.FK_SalesDispatchRacks_SalesDispatchDetails" />
+        <AssociationConnector Association="KPIModel.FK_SalesMaster_SalesStatusMaster" />
+        <AssociationConnector Association="KPIModel.FK_SalesMaster_UserMaster" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

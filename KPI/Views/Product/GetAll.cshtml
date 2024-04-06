@@ -1,0 +1,56 @@
+﻿@using KPI.Classes;
+@model IEnumerable<KPILib.Models.Product>
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        var table = $('#tblData').DataTable({
+            "scrollCollapse": false,
+            "paging": true,
+            select: false,
+            data: @Html.Raw(Json.Encode(Model)),
+            columns: [
+                {
+                    data: null, title: "Product Code",
+                    render: function (data, type, row) {
+                        return "<a href='Get/" + data.ProductID + "'>" + data.ProductCode + "</a>";
+                    }
+                },
+                { data: "ProductName", title: "Product Name" },
+                /*{ data: "Description", title: "Description" },*/
+                //{ data: "ProductCategory", title: "Product Category" },
+                //{ data: "UOM", title: "UOM" },
+                { data: "Mould", title: "Mould" },
+                //{ data: "RawMaterial", title: "Raw Material" },
+                { data: "MinQtyUOM", title: "Min Order Qty" },
+                { data: "RMReqdForUOMQty", title: "RM for Min Qty (Kgs)", "sType": "int" },
+                { data: "PkgQty", title: "Pkg Qty" },
+                { data: "PkgsPerRack", title: "Pkgs/Rack" },
+                /*{ data: "IsDiscontinued", title: "Discontinued?" },*/
+                {
+                    data: null, title: "In Stock",
+                    render: function (data, type, row) {
+                        return "<a href='../Rack/GetAllByProdID/" + data.ProductID + "'>" + data.InStock + "</a>";
+                    }
+                },
+                { data: "Reserved", title: "Reserved", "sType": "int" },
+                { data: "Short", title: "Short", "sType": "int" },
+            //    { data: "Ordered", title: "Ordered", "sType": "int" },
+            //    { data: "LoanedOut", title: "Loaned Out", "sType": "int" },
+            //    { data: "LoanedIn", title: "Loaned In", "sType": "int" }
+            ]
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("Add New", "New", new { area = "" }, new { @class = "btn btn-primary" })
+
+<table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
+</table>

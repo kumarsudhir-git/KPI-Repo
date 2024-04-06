@@ -1,0 +1,42 @@
+﻿@using KPI.Classes;
+@using HtmlHelpers.BeginCollectionItem;
+@model KPILib.Models.PurchaseRcvDet
+
+<tr>
+    @using (Html.BeginCollectionItem("LineItems"))
+    {
+        <!--<td width="70px">-->
+        @*@Html.ImageActionLink("", "GetAll", "Rack", new { id = item.PurchaseDetailsID }, null, "~/images/garbage.png")*@
+        <!--</td>-->
+        @*<td>
+                @Html.DisplayFor(model => model.PurchaseDetailsID)
+            </td>*@
+        <td>
+            @Html.HiddenFor(model => model.RawMatarialID)
+            @Html.HiddenFor(model => model.PurchaseDetailsID)
+            @Html.DisplayFor(model => model.RawMatarialName, new { htmlAttributes = new { @class = "form-control" } })
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control" } })
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.QtyRcvdSoFar, new { htmlAttributes = new { @class = "form-control" } })
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.QtyBalance, new { htmlAttributes = new { @class = "form-control" } })
+        </td>
+        <td>
+            @{int bal = Model.QtyBalance;}
+            @Html.EditorFor(model => model.QtyRcvdNow, new { htmlAttributes = new { @class = "form-control", @min=0, @max=bal } })
+            @*@Html.ValidationMessageFor(model => model.QtyRcvdNow, "", new { @class = "text-danger" })*@
+        </td>
+        <!--<td>
+            <input type="button" value="Get Racks"/>
+        </td>
+        <td>
+            @Html.EditorFor(model => model.StoredLocation, new { htmlAttributes = new { @class = "form-control" } })-->
+            @*@Html.ValidationMessageFor(model => model.StoredLocation, "", new { @class = "text-danger" })*@
+        <!--</td>-->
+    }
+</tr>
+

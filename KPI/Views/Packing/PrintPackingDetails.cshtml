@@ -1,0 +1,121 @@
+﻿@model KPILib.Models.PackingDispatchMaster
+
+@{
+    ViewBag.Title = "PrintPackingDetails";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    tr, td, th {
+        border: solid 1px;
+        padding: 10px;
+    }
+</style>
+<h2>Packing Details</h2>
+
+<div>
+    <table style="border-collapse:collapse; border-style:solid; border-width:1px; width:600px;">
+        <tr>
+            <td style="text-align:left" colspan="4">
+                <label>Ship To</label><br />
+                <div>
+                    <b>@Html.DisplayFor(model => model.CompanyName)</b><br />
+                    @Html.DisplayFor(model => model.CompanyLocation)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <label>SO No.</label><br />
+                @Html.DisplayFor(model => model.SalesID)
+            </td>
+            <td style="text-align:center">
+                <label>SO Date</label><br />
+                @KPI.Classes.ExtMethods.DefaultDateFormat(Model.SalesDate)
+            </td>
+            <td colspan="2" style="text-align:center">
+                <label>Sales Person</label><br />
+                @Html.DisplayFor(model => model.User)
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <label>Contact Person</label><br />
+                @Html.DisplayFor(model => model.ContactPerson)
+            </td>
+            <td style="text-align:center">
+                <label>Phone</label><br />
+                @Html.DisplayFor(model => model.Phone)
+            </td>
+            <td style="text-align:center">
+                <label>Mobile</label><br />
+                @Html.DisplayFor(model => model.Mobile)
+            </td>
+            <td style="text-align:center">
+                <label>Email</label><br />
+                @Html.DisplayFor(model => model.Email)
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <label>Product Name</label><br />
+                @Html.DisplayFor(model => model.Item.ProductName)
+            </td>
+            <td style="text-align:center">
+                <label>Order Qty</label><br />
+                @Html.DisplayFor(model => model.Item.QtyBooked)
+            </td>
+            <td style="text-align:center">
+                <label>Already Dispatched</label><br />
+                @Html.DisplayFor(model => model.Item.QtyDispatched)
+            </td>
+            <td style="text-align:center">
+                <label>Current Dispatch Qty</label><br />
+                @Html.DisplayFor(model => model.Item.QtyToDispatch)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="margin:0px; padding:0px;">
+                <table style="border-collapse:collapse; border-style:solid; border-width:1px; width:100%;">
+                    <tr>
+                        <th style="text-align:center">
+                            Product Name
+                        </th>
+                        <th style="text-align:center">
+                            Rack No
+                        </th>
+                        <th style="text-align:center">
+                            Date
+                        </th>
+                        <th style="text-align:center">
+                            Qty
+                        </th>
+                    </tr>
+                    @foreach (var itm in Model.RackDetails)
+                    {
+                        <tr>
+                            <td style="text-align:center">
+                                @itm.ProductName
+                            </td>
+                            <td style="text-align:center">
+                                @itm.RackNo
+                            </td>
+                            <td style="text-align:center">
+                                @KPI.Classes.ExtMethods.DefaultDateFormat(itm.RcvdDate)
+                            </td>
+                            <td style="text-align:center">
+                                @itm.Qty
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <label>Printed On: </label> <label>@KPI.Classes.ExtMethods.DefaultDateTimeFormat(DateTime.Now)</label><br />
+</div>

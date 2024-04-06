@@ -1,0 +1,33 @@
+﻿@model IEnumerable<KPILib.Models.Machine>
+
+@{
+    ViewBag.Title = "Machines";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        var table = $('#tblData').DataTable({
+            "scrollCollapse": false,
+            "paging": true,
+            select: false,
+            data: @Html.Raw(Json.Encode(Model)),
+            columns: [
+                {
+                    data: null, title: "Machine Name",
+                    render: function (data, type, row) {
+                        return "<a href='Get/" + data.MachineID + "'>" + data.MachineName + "</a>";
+                    }
+                },
+                { data: "MachineStatus", title: "Machine Status" }
+            ]
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("Add New", "New", new { area = "" }, new { @class = "btn btn-primary" })
+
+<table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
+</table>

@@ -1,0 +1,173 @@
+﻿@model KPILib.Models.MenuMasterResponse
+
+@{
+    ViewBag.Title = "AssignRoleRightsToMenu";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+
+    KPILib.Models.RoleRights roleRights = new KPILib.Models.RoleRights();
+}
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="row">
+                @*<div class="col-md-4">
+                        <h2>Role Rights</h2>
+                    </div>*@
+                <div class="col-md-4">
+                    @Html.ActionLink("Back To List", "GetRoles")
+                </div>
+                @*<div class="col-md-4">
+                        <input type="button" value="Add Line Item" class="btn btn-primary btn-sm" onclick="AddRoleItemRow()" />
+                    </div>*@
+            </div>
+        </div>
+
+    </div>
+
+    @*<div class="clearfix"></div>*@
+    @*<br />*@
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        if (Model != null && Model.menuMasterObj != null)
+        {
+            @Html.Hidden("MenuParentID", Model.menuMasterObj.MenuParentID);
+        }
+
+        <div class="form-horizontal">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <h2>Main Menu</h2>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-12">
+                        <div class="MenuButtonClass" id="MenuBtn">
+                            @if (Model != null && Model.menuMasterListObj != null && Model.menuMasterListObj.Count() > 0)
+                            {
+                                foreach (var item in Model.menuMasterListObj)
+                                {
+                                    if (roleRights.ParentMenuID == 0)
+                                    {
+                                        roleRights.ParentMenuID = item.MenuID;
+                                        roleRights.RoleID = Model.menuMasterObj.RoleID;
+
+                                        <input type="button" value="@item.MenuName" name="@item.MenuName" class="btn btn-primary activeBtn" onclick="LoadSubMenuItem(this,'@item.MenuID','@roleRights.RoleID')" />
+                                    }
+                                    else
+                                    {
+                                        <input type="button" value="@item.MenuName" name="@item.MenuName" class="btn btn-primary deactiveBtn" onclick="LoadSubMenuItem(this,'@item.MenuID','@Model.menuMasterObj.RoleID')" />
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="SelectAll" id="SelectAll" onclick="SelectAllCheckBox(this)" />
+                        <span>Select All</span>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="row" id="RoleRightsPartialView">
+                    @if (roleRights != null)
+                    {
+                        Html.RenderAction("GetRoleRightsWithSubMenuData", roleRights);
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+
+    function LoadSubMenuItem(obj, MenuId, RoleId) {
+
+        $("#MenuParentID").val(MenuId);
+
+        $('#MenuBtn').find('.btn').removeClass('activeBtn').addClass('deactiveBtn');
+        $(obj).removeClass('deactiveBtn').addClass('activeBtn');
+
+        var strURL = "/UserMaster/GetRoleRightsWithSubMenuData?ParentMenuID=" + MenuId + "&RoleID=" + RoleId;
+        var selector = "#RoleRightsPartialView";
+        AddLineItemRowGeneric(strURL, "GET", selector, false);
+    }
+
+    function SelectAllCheckBox(obj) {
+        var $checked = $(obj).prop('checked');
+
+        $('table#RoleRightsToAccessMenu tbody').find(':checkbox').prop('checked', $checked);
+    }
+
+    function LoadChildMenuList(obj) {
+        var ParentMenuId = $(obj).closest('tr').find('td.ParentMenuId').find("option:selected").val();
+        var $childMenuObj = $(obj).closest('tr').find('td.ChildMenuId').find("select");
+        $($childMenuObj).html('');
+        $($childMenuObj).append('<option value = "0">--Select--</option>')
+        $.ajax({
+            type: "GET",
+            url: "/UserMaster/GetChildMenuList",
+            data: { ParentMenuId: ParentMenuId }
+        }).done(function (data) {
+            if (data != null && data.ResponseObj != null && data.ResponseObj.ResponseCode == 200) {
+                $.each(data.menuMasterListObj, function (indx, elem) {
+                    $($childMenuObj).append('<option value =' + elem.MenuID + '>' + elem.MenuName + '</option>')
+                });
+            }
+        });
+    }
+
+    function ValidateDuplicate(obj) {
+
+        var isDuplicateData = 0;
+
+        var ParentMenuId = $(obj).closest('tr').find('td.ParentMenuId').find("option:selected").val();
+        var ChildMenuId = $(obj).closest('tr').find('td.ChildMenuId').find("option:selected").val();
+
+        $('table#RoleRightsToAccessMenu tbody tr').each(function (indx, elm) {
+
+            var loopParentMenuId = $(elm).find('td.ParentMenuId').find("option:selected").val();
+            var loopChildMenuId = $(elm).find('td.ChildMenuId').find("option:selected").val();
+
+            if (ParentMenuId == loopParentMenuId && ChildMenuId == loopChildMenuId) {
+                isDuplicateData = isDuplicateData + 1;
+            }
+        })
+
+        if (isDuplicateData > 1) {
+            $(obj).closest('tr').find('td.ChildMenuId').find("select").prop("selectedIndex", 0).val();
+            alert('Duplicate data not allowed');
+            return false;
+        }
+    }
+
+</script>

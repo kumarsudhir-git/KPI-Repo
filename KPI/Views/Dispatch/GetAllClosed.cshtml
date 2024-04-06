@@ -1,0 +1,146 @@
+﻿@model IEnumerable<KPILib.Models.SalesDispatchMaster>
+
+@{
+    ViewBag.Title = "Sales Orders";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@*<script>
+        $(document).ready(function () {
+            $.noConflict();
+            var table = $('#tblData').DataTable({
+                "scrollCollapse": false,
+                "paging": true,
+                select: false,
+                data: @Html.Raw(Json.Encode(Model)),
+                columns: [
+                    { data: "SalesID", title: "SO Number" },
+                    { data: "SalesDate", title: "SO Date" },
+                    { data: "CompanyLocation", title: "Customer / Location" },
+                    { data: "User", title: "User" },
+                    { data: "Item.ProductName", title: "Product Name" },
+                    {
+                        data: null, title: "Block / Dispatch Quantites",
+                        render: function (data, type, row) {
+                            var html = "";
+                            var bDispatch = (Item.QtyAvailable > 0 && Item.QtyBal > 0);
+                            var bBlocked = (Item.QtyAvailable > 0 && Item.QtyBal > 0 && Item.QtyBlocked < Item.QtyBal);
+
+                            html += "<div class='row'><div class='col-sm-12'><div class='row seven-cols'>";
+                            html += "<div class='qty col-md-1' style='padding: 5px;'>" + Item.QtyBooked + "<div class='qtyCap'>Ordered</div></div>";
+                            html += "<div class='qty col-md-1' style='padding: 5px;'>" + Item.QtyDispatche + "<div class='qtyCap'>Dispatched</div></div>";
+                            html += "<div class='qty col-md-1' style='padding: 5px;'>" + Item.QtyBal + "<div class='qtyCap'>Balance</div></div>";
+                            //html += "<div id='divBlocked' class='qty col-md-1' style='padding: 5px; " + (bBlocked ? "background-color: #daeaf6; cursor: pointer;" : "") + "'>" + Item.QtyBlocked + "<div class='qtyCap'>Blocked</div></div>";
+                            //html += "<div id='divToDispatch' class='qty col-md-1' style='padding: 5px; " + (bDispatch ? "background-color: #ffee93; cursor: pointer;" : "") + "' " + (bDispatch ? "onclick='loadItem(" + Json.Encode(model) + "," + Json.Encode(Item) + ")';" : "") + ">" + Item.QtyToDispatch + "<div class='qtyCap'>To Dispatch</div></div>";
+                            html += "<div class='qty col-md-1' style='padding: 5px;'>" + Item.QtyAvailable + "<div class='qtyCap'>Available</div></div>";
+                            html += "<div class='qty col-md-1' style='padding: 5px;'>" + Item.QtyInProduction + "<div class='qtyCap'>In Production</div></div>";
+                            html += "</div></div></div>";
+
+                            return html;
+                        }
+                    },
+                ]
+            });
+        });
+    </script>*@
+
+
+<h2>@ViewBag.Title</h2>
+<div class="btn-group">
+    <a href="../Dispatch/GetAll" class="btn btn-light">Open Sales Orders</a>
+    <div class="btn btn-info active" aria-current="page" style="cursor:default;">Closed Sales Orders</div>
+</div>
+<hr style="margin-top:0px;" />
+
+@*<table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
+    </table>
+
+    <br />
+    <br />
+    <br />*@
+
+<table class="table table-sm table-striped table-hover" style="display:normal;">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SalesID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SalesDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyLocation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User)
+        </th>
+        <th>
+            Product
+        </th>
+        <th style="text-align:center;">
+            Block / Dispatch Quantites
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.SalesID)
+            </td>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.SalesDate)
+            </td>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.CompanyLocation)
+            </td>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.User)
+            </td>
+            <td valign="middle">
+                @Html.DisplayFor(modelItem => item.Item.ProductName)
+            </td>
+            <td valign="middle" align="center">
+                <div class="row">
+                    <!--<div class="col-sm-3">-->
+                    @Html.DisplayFor(modelItem => item.Item.ProductName)
+                    <!--</div>-->
+                    <div class="col-sm-12">
+                        <div class="row eight-cols">
+                            <div class="qty col-md-1" style="padding: 5px;">
+                                @Html.DisplayFor(modelItem => item.Item.QtyBooked)
+                                <div class="qtyCap">Ordered</div>
+                            </div>
+                            <div class="qty col-md-1" style="padding: 5px;">
+                                @Html.DisplayFor(modelItem => item.Item.QtyDispatched)
+                                <div class="qtyCap">Dispatched</div>
+                            </div>
+                            <div class="qty col-md-1 red" style="padding: 5px;">
+                                @Html.DisplayFor(modelItem => item.Item.QtyBal)
+                                <div class="qtyCap">Balance</div>
+                            </div>
+                            <div class="qty col-md-1" style="padding: 5px;">
+                                @Html.DisplayFor(modelItem => item.Item.QtyBlocked)
+                                <div class="qtyCap">Blocked</div>
+                            </div>
+                            <div class="qty col-md-1" style="padding: 5px;">
+                                @Html.DisplayFor(modelItem => item.Item.QtyToDispatch)
+                                <div class="qtyCap">To Dispatch</div>
+                            </div>
+                            <div class="qty col-md-1" style="padding: 5px;">
+                                @Html.DisplayFor(modelItem => item.Item.QtyAvailable)
+                                <div class="qtyCap">Available</div>
+                            </div>
+                            <div class="qty col-md-1" style="padding: 5px;">
+                                @Html.DisplayFor(modelItem => item.Item.QtyInProduction)
+                                <div class="qtyCap">In Production</div>
+                            </div>
+                            <div class="qty col-md-1" style="padding: 5px;">
+                                @Html.DisplayFor(modelItem => item.Item.QtyToProduce)
+                                <div class="qtyCap">To Produce</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+</table>

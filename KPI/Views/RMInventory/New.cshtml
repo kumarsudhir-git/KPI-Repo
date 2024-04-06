@@ -1,0 +1,79 @@
+﻿@using System.Collections.Generic;
+@model KPILib.Models.RMInventory
+
+@{
+    ViewBag.Title = "Raw Material Inventory - New";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<div>
+    @Html.ActionLink("Back to List", "GetAll")
+</div>
+
+@using (Html.BeginForm("Add", "RMInventory"))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PalletNo, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.PalletID, ViewBag.Pallets as SelectList, "--Select Pallet--", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.PalletID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.RawMaterialName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.RawMaterialID, ViewBag.RMs as SelectList, "--Select Raw Material--", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RawMaterialID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TagColour , htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.TagColourID, ViewBag.Tags as SelectList, "--Select Tag Colour--", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.TagColourID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Qty, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control", @onchange = "calcKgs()" } })
+            @Html.ValidationMessageFor(model => model.Qty, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Qty (Kgs)</label>
+        <div class="col-md-10">
+            <span class="col-md-2" id="lblQtyKgs">0</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-dark" />
+        </div>
+    </div>
+</div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    function calcKgs() {
+        var qty = parseInt(document.getElementById("Qty").value);
+        var qtyKgs = document.getElementById("lblQtyKgs");
+        qtyKgs.innerText = qty * @KPILib.ApplicationConstants.RM_CAPACITY_PER_BAG_INKG;
+    }
+</script>

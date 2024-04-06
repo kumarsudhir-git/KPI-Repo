@@ -1,0 +1,136 @@
+﻿@using KPI.Classes;
+@model IEnumerable<KPILib.Models.PalletMaster>
+
+@{
+    ViewBag.Title = "Pallets";
+    if (ViewBag.RMName != null)
+    {
+        ViewBag.Title += " (" + ViewBag.RMName + ")";
+    }
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        var table = $('#tblData').DataTable({
+            "scrollCollapse": false,
+            "paging": true,
+            select: false,
+            data: @Html.Raw(Json.Encode(Model)),
+            columns: [
+                {
+                    data: null, title: "Pallet No",
+                    render: function (data, type, row) {
+                        var lbl = data["TagColours"].split(",");
+                        var html = "";
+                        for (let i = 0; i < lbl.length; i++) {
+                            html += '<span style="background-color:' + lbl[i] + '">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;';
+                        }
+                        return "<a href='Get/" + data.PalletID + "'>" + data.PalletNo + "</a>" + "&nbsp;" + html;
+                    }
+                },
+                { data: "Description", title: "Description" },
+                /*{ data: "IsDiscontinued", title: "Discontinued?" },*/
+                //{ data: "RawMaterialName", title: "Raw Material Name" },
+/*                { data: null, title: "Raw Material Name", render: function (data) { return '<span style="background-color:' + data["TagColour"] + '">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;' + data["RawMaterialName"]} },*/
+                { data: "Qty", title: "Occupancy (Kgs)", "sType": "int", "width": "100", "className": "text-right" },
+                { data: "QtyBags", title: "Occupancy (Bags)", "sType": "int", "width": "100", "className": "text-right" },
+                { data: "QtyOpened", title: "Open Bags", "sType": "int", "width": "100", "className": "text-right" },
+                { data: "AvailablityKgs", title: "Available Space (Kgs)", "sType": "int", "width": "100", "className": "text-right"},
+
+                //{
+                //    data: null, title: "Qty (Kgs [Bags])",
+                //    render: function (data, type, row) {
+                //        return data.QtyKgs + " [" + data.Qty + "]" ;
+                //    }
+                //},
+                /*{ data: "AddedOn", title: "Added On", "sType": "int" }*/
+            ],
+            fixedColumns: false
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("Add New", "New", new { area = "" }, new { @class = "btn btn-primary" })
+
+<table id="tblData" class="table table-sm table-striped" width="100%">
+</table>
+
+
+@*<table class="table">
+        <tr>
+            <th></th>
+            <th>
+                    @Html.DisplayNameFor(model => model.PalletID)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PalletNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDiscontinued)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.RawMaterialName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Qty) @ViewBag.TotalQty
+            </th>
+
+            <th>
+                    @Html.DisplayNameFor(model => model.AddedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastModifiedOn)
+                </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td width="70px">
+                    @Html.ImageActionLink("", "Get", "Pallet", new { id = item.PalletID }, null, "~/images/edit.png")
+                    @Html.ImageActionLink("", "GetAll", "Pallet", null, null, "~/images/garbage.png")
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.PalletID)
+                    </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PalletNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsDiscontinued)
+                    @(item.IsDiscontinued == true ? "Discontinued" : "Active")
+                </td>
+
+                <td>
+                    @if (item.RawMaterialID != 0)
+                        {
+                            @Html.ActionLink(item.RawMaterialName, "GetAllByRM", "RMInventory", new { @id = item.RawMaterialID }, new { })
+                        }
+
+                    @Html.DisplayFor(modelItem => item.RawMaterialName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Qty)
+                </td>
+
+                <td>
+                        @Html.DisplayFor(modelItem => item.AddedOn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastModifiedOn)
+                    </td>
+            </tr>
+        }
+
+    </table>*@

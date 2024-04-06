@@ -1,0 +1,8 @@
+﻿Dear %NAME%,
+
+We have raised a PO on your company.
+Kindly click on the bellow link to view it and to accept or reject it.
+http://localhost:44345/External/ShowPO/%PO_NO%
+
+Regards,
+%USER%
