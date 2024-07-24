@@ -165,6 +165,7 @@ namespace KPIWebAPI.Controllers
                     o.RackNo = data.RackNo;
                     o.Description = data.Description;
                     o.IsDiscontinued = data.IsDiscontinued;
+                    o.Location = data.Location;
                     o.LastModifiedOn = DateTime.Now;
 
                     db.Entry(o).State = System.Data.Entity.EntityState.Modified;

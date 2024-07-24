@@ -15,8 +15,9 @@
         </td>
         <td>
             @*@Html.LabelFor(model => model.RMReqdForUOMQty, htmlAttributes: new { @class = "control-label" })<br />*@
-            @Html.EditorFor(model => model.RMReqdForUOMQty, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.RMReqdForUOMQty, "", new { @class = "text-danger" })
+            @*@Html.EditorFor(model => model.RMReqdForUOMQty, new { htmlAttributes = new { @class = "form-control" } })*@
+            @Html.EditorFor(model => model.RMGradeUsed, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.RMGradeUsed, "", new { @class = "text-danger" })
         </td>
         <!--<td>-->
             @*@Html.LabelFor(model => model.UnitType, htmlAttributes: new { @class = "control-label" })<br />*@

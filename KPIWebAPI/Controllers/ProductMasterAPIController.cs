@@ -1,10 +1,10 @@
 ﻿using KPILib.Models;
 using KPIWebAPI.AuthFilters;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace KPIWebAPI.Controllers
@@ -161,6 +161,11 @@ namespace KPIWebAPI.Controllers
                 o.AddedOn = DateTime.Now;
                 o.LastModifiedOn = DateTime.Now;
 
+                o.ProductRawMaterialMappings.ForEach(z =>
+                {
+                    z.AddedOn = DateTime.Now;
+                });
+
                 db.ProductMasters.Add(o);
                 db.SaveChanges();
 
@@ -290,7 +295,7 @@ namespace KPIWebAPI.Controllers
             catch (Exception ex)
             {
                 rawMaterialsResponse.Response.ResponseCode = 500;
-                rawMaterialsResponse.Response.ResponseMsg = $"Internal Server Error { ex.Message}";
+                rawMaterialsResponse.Response.ResponseMsg = $"Internal Server Error {ex.Message}";
             }
             return Json(rawMaterialsResponse);
         }
@@ -307,7 +312,7 @@ namespace KPIWebAPI.Controllers
             catch (Exception ex)
             {
                 unitResponse.Response.ResponseCode = 500;
-                unitResponse.Response.ResponseMsg = $"Internal Server Error { ex.Message}";
+                unitResponse.Response.ResponseMsg = $"Internal Server Error {ex.Message}";
             }
             return Json(unitResponse);
         }
@@ -367,6 +372,7 @@ namespace KPIWebAPI.Controllers
                     {
                         x.IsDeleted = false;
                         x.ProductID = data.ProductID;
+                        //x.RMGradeUsed = data.RMGradeUsed;
                         //x.UnitType = x.UnitType == 0 ? 1 : x.UnitType;
                         x.AddedOn = DateTime.Now;
                     });

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace KPILib.Models
 {
@@ -17,6 +15,8 @@ namespace KPILib.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Required")]
         [Display(Name = "RM Reqd for Min Qty (Kgs)")]
         public int RMReqdForUOMQty { get; set; }
+        [Display(Name = "RM Grade Used")]
+        public int RMGradeUsed { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Required")]
         [Display(Name = "Unit Type")]

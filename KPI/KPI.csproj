@@ -560,6 +560,7 @@
     <Content Include="Views\Production\GetAllProduction.cshtml" />
     <Content Include="Views\Production\GetProductionBatch.cshtml" />
     <Content Include="Views\Production\GetBatchPartialView.cshtml" />
+    <Content Include="Views\Mould\New.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

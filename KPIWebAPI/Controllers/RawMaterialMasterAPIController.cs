@@ -125,6 +125,7 @@ namespace KPIWebAPI.Controllers
                     o.Description = data.Description;
                     o.UOMID = data.UOMID;
                     o.IsDiscontinued = data.IsDiscontinued;
+                    o.SupplierDetails = data.SupplierDetails;
                     o.LastModifiedOn = DateTime.Now;
 
                     db.Entry(o).State = System.Data.Entity.EntityState.Modified;

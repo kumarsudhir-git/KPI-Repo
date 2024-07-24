@@ -431,6 +431,24 @@ namespace KPI.Classes
             return result;
         }
 
+        public static MouldMasterResponse GetMoulds(int id = 0)
+        {
+            var result = CommonFunctions.client.GetAsync("MouldAPI/Get/" + id.ToString()).Result.Content.ReadAsAsync<MouldMasterResponse>().Result;
+            return result;
+        }
+
+        public static MouldMasterResponse AddMoulds(Mould obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("MouldAPI/Add", obj).Result.Content.ReadAsAsync<MouldMasterResponse>().Result;
+            return result;
+        }
+
+        public static MouldMasterResponse EditMoulds(Mould obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("MouldAPI/Edit", obj).Result.Content.ReadAsAsync<MouldMasterResponse>().Result;
+            return result;
+        }
+
         #endregion    
 
         #region API calls for Machine

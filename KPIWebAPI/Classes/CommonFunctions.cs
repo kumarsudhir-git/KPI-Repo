@@ -176,5 +176,25 @@ namespace KPIWebAPI.Classes
                 return (int)ParentMenuId;
             }
         }
+
+        public static List<MouldTypeMaster> GetMouldTypeMasterListData(int MouldTypeId = 0)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<MouldTypeMaster> mouldTypeMasters = (from mouldTypeMstr in db.MouldTypeMasters
+                                                          where mouldTypeMstr.IsDiscontinued == false
+                                                          //orderby (mouldTypeMstr.LastModifiedOn != null ? mouldTypeMstr.LastModifiedOn : mouldTypeMstr.AddedOn)
+                                                          //descending
+                                                          orderby mouldTypeMstr.MouldType ascending
+                                                          select mouldTypeMstr).ToList();
+                if (MouldTypeId != 0)
+                {
+                    mouldTypeMasters = (from roleLstData in mouldTypeMasters
+                                        where roleLstData.MouldTypeID == MouldTypeId
+                                        select roleLstData).ToList();
+                }
+                return mouldTypeMasters;
+            }
+        }
     }
 }

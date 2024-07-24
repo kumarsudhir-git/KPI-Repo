@@ -3,6 +3,31 @@
 @{
     ViewBag.Title = "Moulds";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+
+    <head>
+        @*<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>*@
+
+        @*<style>
+            .dataTables_paginate .paginate_button {
+                background-color: #f2f2f2;
+                border: 1px solid #ddd;
+                padding: 5px 10px;
+                margin: 2px;
+                cursor: pointer;
+            }
+
+                .dataTables_paginate .paginate_button:hover {
+                    background-color: #ddd;
+                }
+
+                .dataTables_paginate .paginate_button.current {
+                    background-color: #4285f4;
+                    color: white;
+                    border: 1px solid #4285f4;
+                }
+        </style>*@
+
+    </head>
 }
 
 <script>
@@ -12,16 +37,23 @@
             "scrollCollapse": false,
             "paging": true,
             select: false,
+            initComplete: function () {
+                var btns = $('.dt-button');
+                btns.addClass('btn btn-success btn-sm');
+                btns.removeClass('dt-button');
+
+            },
             data: @Html.Raw(Json.Encode(Model)),
             columns: [
                 {
-                    data: null, title: "Mould Name",
+                    data: null, title: "Mould Code",
                     render: function (data, type, row) {
-                        return "<a href='Get/" + data.MouldID + "'>" + data.MouldName + "</a>";
+                        return "<a href='New/" + data.MouldID + "'>" + data.MouldName + "</a>";
                     }
                 },
                 {
-                    data: null, title: "Used for Products",
+                    //data: null, title: "Used for Products",
+                    data: null, title: "Product Name",
                     render: function (data, type, row) {
                         let htmlString = "";
 
@@ -53,6 +85,10 @@
                     }
                 },
                 //{ data: "MouldStatus", title: "Mould Status" },
+                { data: "Location", title: "Location" },
+                { data: "TotalCavities", title: "Total No Of Cavities" },
+                { data: "RunningCavities", title: "Running Cavities" },
+                { data: "CorePins", title: "CorePins" },
                 { data: "MouldStatus", title: "Mould Status" }
             ]
         });

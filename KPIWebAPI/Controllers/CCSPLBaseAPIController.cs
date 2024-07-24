@@ -131,6 +131,9 @@ namespace KPIWebAPI.Controllers
             
             cfg.CreateMap<KPILib.Models.ProductionPrograme, KPILib.Models.ProductionBatches>();
             cfg.CreateMap<KPILib.Models.ProductionBatches, KPILib.Models.ProductionPrograme>();
+
+            cfg.CreateMap<MouldTypeMaster, KPILib.Models.MouldTypeMaster>();
+            cfg.CreateMap<KPILib.Models.MouldTypeMaster, MouldTypeMaster>();
         });
 
         public static IMapper mapper = config.CreateMapper();

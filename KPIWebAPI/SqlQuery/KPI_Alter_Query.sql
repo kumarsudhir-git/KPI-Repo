@@ -194,3 +194,12 @@ UserID int not null,
 AddedOn Date default getdate()
 )
 Go
+
+Alter table RackMaster Add Location NVARCHAR(MAX) NULL
+Alter table RawMaterialMaster Add SupplierDetails NVARCHAR(MAX) NULL
+Alter table ProductRawMaterialMapping ADD RMGradeUsed INT NULL
+ALTER Table MouldMaster ADD Location NVARCHAR(MAX) NULL
+ALTER Table MouldMaster ADD TotalCavities NVARCHAR(MAX) NULL
+ALTER Table MouldMaster ADD RunningCavities NVARCHAR(MAX) NULL
+ALTER Table MouldMaster ADD CorePins NVARCHAR(MAX) NULL
+GO

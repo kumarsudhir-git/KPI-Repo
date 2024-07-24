@@ -39,6 +39,8 @@ namespace KPILib.Models
         public decimal Ordered { get; set; }
         public decimal LoanedOut { get; set; }
         public decimal LoanedIn { get; set; }
+        [Display(Name = "Supplier Details")]
+        public string SupplierDetails { get; set; }
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }
     }

@@ -22,6 +22,7 @@ namespace KPIWebAPI
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }
         public bool IsDeleted { get; set; }
+        public Nullable<int> RMGradeUsed { get; set; }
     
         public virtual ProductMaster ProductMaster { get; set; }
         public virtual RawMaterialMaster RawMaterialMaster { get; set; }

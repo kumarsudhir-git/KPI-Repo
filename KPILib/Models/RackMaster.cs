@@ -30,6 +30,7 @@ namespace KPILib.Models
         public int PkgQty { get; set; }
         public int Pkts { get; set; }
         public int OpenPkts { get; set; }
+        public string Location { get; set; }
 
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }

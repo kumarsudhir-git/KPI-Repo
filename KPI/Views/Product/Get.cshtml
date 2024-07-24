@@ -66,20 +66,20 @@
                             @Html.ValidationMessageFor(model => model.MouldID, "", new { @class = "text-danger" })
                         </div>
                         @*<div class="col-md-2">
-                @Html.LabelFor(model => model.RawMaterialID, htmlAttributes: new { @class = "control-label" })<br />
-                @Html.DropDownListFor(model => model.RawMaterialID, ViewBag.RawMaterials as SelectList, "--Select Raw Material--", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.RawMaterialID, "", new { @class = "text-danger" })
-            </div>*@
+                                @Html.LabelFor(model => model.RawMaterialID, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.DropDownListFor(model => model.RawMaterialID, ViewBag.RawMaterials as SelectList, "--Select Raw Material--", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.RawMaterialID, "", new { @class = "text-danger" })
+                            </div>*@
                         <div class="col-md-4">
                             @Html.LabelFor(model => model.MinQtyUOM, htmlAttributes: new { @class = "control-label" })<br />
                             @Html.EditorFor(model => model.MinQtyUOM, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.MinQtyUOM, "", new { @class = "text-danger" })
                         </div>
                         @*<div class="col-md-2">
-                @Html.LabelFor(model => model.RMReqdForUOMQty, htmlAttributes: new { @class = "control-label" })<br />
-                @Html.EditorFor(model => model.RMReqdForUOMQty, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RMReqdForUOMQty, "", new { @class = "text-danger" })
-            </div>*@
+                                @Html.LabelFor(model => model.RMReqdForUOMQty, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.EditorFor(model => model.RMReqdForUOMQty, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.RMReqdForUOMQty, "", new { @class = "text-danger" })
+                            </div>*@
                         <div class="col-md-4">
                             @Html.LabelFor(model => model.PkgQty, htmlAttributes: new { @class = "control-label" })<br />
                             @Html.EditorFor(model => model.PkgQty, new { htmlAttributes = new { @class = "form-control" } })
@@ -122,7 +122,8 @@
                                 <thead>
                                     <tr>
                                         <th>RAW MATERIAL</th>
-                                        <th>RM REQD FOR MIN QTY (KGS)</th>
+                                        @*<th>RM REQD FOR MIN QTY (KGS)</th>*@
+                                        <th>RM Grade Used</th>
                                         @*<th>Unit</th>*@
                                         <th>Action</th>
                                     </tr>

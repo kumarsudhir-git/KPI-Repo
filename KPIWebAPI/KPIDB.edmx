@@ -180,6 +180,10 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="Location" Type="nvarchar(max)" />
+          <Property Name="TotalCavities" Type="nvarchar(max)" />
+          <Property Name="RunningCavities" Type="nvarchar(max)" />
+          <Property Name="CorePins" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="MouldStatusMaster">
           <Key>
@@ -359,6 +363,7 @@
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="RMGradeUsed" Type="int" />
         </EntityType>
         <EntityType Name="PurchaseDetails">
           <Key>
@@ -432,6 +437,7 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="Location" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="RawMaterialInventoryMaster">
           <Key>
@@ -456,6 +462,7 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="SupplierDetails" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="RoleMaster">
           <Key>
@@ -590,7 +597,7 @@
           <Property Name="AddedBy" Type="int" Nullable="false" />
           <Property Name="ModifiedBy" Type="int" />
         </EntityType>
-        <Association Name="FK__Productio__Produ__1B9317B3">
+        <Association Name="FK__Productio__Produ__6BE40491">
           <End Role="ProductionProgram" Type="Self.ProductionProgram" Multiplicity="0..1" />
           <End Role="ProductionProgramBatch" Type="Self.ProductionProgramBatch" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1414,7 +1421,7 @@
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UOMMaster" EntityType="Self.UOMMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Productio__Produ__1B9317B3" Association="Self.FK__Productio__Produ__1B9317B3">
+          <AssociationSet Name="FK__Productio__Produ__6BE40491" Association="Self.FK__Productio__Produ__6BE40491">
             <End Role="ProductionProgram" EntitySet="ProductionProgram" />
             <End Role="ProductionProgramBatch" EntitySet="ProductionProgramBatch" />
           </AssociationSet>
@@ -1835,7 +1842,7 @@
             <End Role="RackMaster" EntitySet="RackMasters" />
             <End Role="ProductInventoryMaster" EntitySet="ProductInventoryMasters" />
           </AssociationSet>
-          <AssociationSet Name="FK__Productio__Produ__1B9317B3" Association="KPIModel.FK__Productio__Produ__1B9317B3">
+          <AssociationSet Name="FK__Productio__Produ__6BE40491" Association="KPIModel.FK__Productio__Produ__6BE40491">
             <End Role="ProductionProgram" EntitySet="ProductionPrograms" />
             <End Role="ProductionProgramBatch" EntitySet="ProductionProgramBatches" />
           </AssociationSet>
@@ -2192,6 +2199,10 @@
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TotalCavities" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RunningCavities" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CorePins" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MachineMouldMappings" Relationship="KPIModel.FK_MachineMouldMapping_MouldMaster" FromRole="MouldMaster" ToRole="MachineMouldMapping" />
           <NavigationProperty Name="MouldHistories" Relationship="KPIModel.FK_MouldHistory_MouldMaster" FromRole="MouldMaster" ToRole="MouldHistory" />
           <NavigationProperty Name="MouldTypeMaster" Relationship="KPIModel.FK_MouldMaster_MouldTypeMaster" FromRole="MouldMaster" ToRole="MouldTypeMaster" />
@@ -2328,7 +2339,7 @@
           <NavigationProperty Name="MachineMaster" Relationship="KPIModel.FK_ProductionProgram_MachineMaster" FromRole="ProductionProgram" ToRole="MachineMaster" />
           <NavigationProperty Name="MouldMaster" Relationship="KPIModel.FK_ProductionProgram_MouldMaster" FromRole="ProductionProgram" ToRole="MouldMaster" />
           <NavigationProperty Name="ProdReadyStoreds" Relationship="KPIModel.FK_ProdReadyStored_ProductionProgram" FromRole="ProductionProgram" ToRole="ProdReadyStored" />
-          <NavigationProperty Name="ProductionProgramBatches" Relationship="KPIModel.FK__Productio__Produ__1B9317B3" FromRole="ProductionProgram" ToRole="ProductionProgramBatch" />
+          <NavigationProperty Name="ProductionProgramBatches" Relationship="KPIModel.FK__Productio__Produ__6BE40491" FromRole="ProductionProgram" ToRole="ProductionProgramBatch" />
           <NavigationProperty Name="ProductionProgramRMMappings" Relationship="KPIModel.FK_ProductionProgam_ID" FromRole="ProductionProgram" ToRole="ProductionProgramRMMapping" />
           <NavigationProperty Name="ProductMaster" Relationship="KPIModel.FK_ProductionProgram_ProductMaster" FromRole="ProductionProgram" ToRole="ProductMaster" />
           <NavigationProperty Name="SalesDetail" Relationship="KPIModel.FK_ProductionProgram_SalesDetails" FromRole="ProductionProgram" ToRole="SalesDetail" />
@@ -2345,7 +2356,7 @@
           <Property Name="ProductQtyCompleted" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ProductionProgram" Relationship="KPIModel.FK__Productio__Produ__1B9317B3" FromRole="ProductionProgramBatch" ToRole="ProductionProgram" />
+          <NavigationProperty Name="ProductionProgram" Relationship="KPIModel.FK__Productio__Produ__6BE40491" FromRole="ProductionProgramBatch" ToRole="ProductionProgram" />
         </EntityType>
         <EntityType Name="ProductionProgramRMMapping">
           <Key>
@@ -2418,6 +2429,7 @@
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="RMGradeUsed" Type="Int32" />
           <NavigationProperty Name="ProductMaster" Relationship="KPIModel.FK_ProductMaster_ID" FromRole="ProductRawMaterialMapping" ToRole="ProductMaster" />
           <NavigationProperty Name="RawMaterialMaster" Relationship="KPIModel.FK_ProductRawMaterial_ID" FromRole="ProductRawMaterialMapping" ToRole="RawMaterialMaster" />
         </EntityType>
@@ -2512,6 +2524,7 @@
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ProdReadyStoreds" Relationship="KPIModel.FK_ProdReadyStored_RackMaster" FromRole="RackMaster" ToRole="ProdReadyStored" />
           <NavigationProperty Name="ProductInventoryMasters" Relationship="KPIModel.FK_ProductInventoryMaster_RackMaster" FromRole="RackMaster" ToRole="ProductInventoryMaster" />
           <NavigationProperty Name="SalesDispatchRacks" Relationship="KPIModel.FK_SalesDispatchRacks_RackMaster" FromRole="RackMaster" ToRole="SalesDispatchRack" />
@@ -2543,6 +2556,7 @@
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="SupplierDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ProductionProgramRMMappings" Relationship="KPIModel.FK_RawMaterial_ID" FromRole="RawMaterialMaster" ToRole="ProductionProgramRMMapping" />
           <NavigationProperty Name="ProductionRawMaterials" Relationship="KPIModel.FK_ProductionRawMaterial_RawMaterialMaster" FromRole="RawMaterialMaster" ToRole="ProductionRawMaterial" />
           <NavigationProperty Name="ProductRawMaterialMappings" Relationship="KPIModel.FK_ProductRawMaterial_ID" FromRole="RawMaterialMaster" ToRole="ProductRawMaterialMapping" />
@@ -3024,7 +3038,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Productio__Produ__1B9317B3">
+        <Association Name="FK__Productio__Produ__6BE40491">
           <End Type="KPIModel.ProductionProgram" Role="ProductionProgram" Multiplicity="0..1" />
           <End Type="KPIModel.ProductionProgramBatch" Role="ProductionProgramBatch" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3684,6 +3698,10 @@
           <EntitySetMapping Name="MouldMasters">
             <EntityTypeMapping TypeName="KPIModel.MouldMaster">
               <MappingFragment StoreEntitySet="MouldMaster">
+                <ScalarProperty Name="CorePins" ColumnName="CorePins" />
+                <ScalarProperty Name="RunningCavities" ColumnName="RunningCavities" />
+                <ScalarProperty Name="TotalCavities" ColumnName="TotalCavities" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />
@@ -3877,6 +3895,7 @@
           <EntitySetMapping Name="ProductRawMaterialMappings">
             <EntityTypeMapping TypeName="KPIModel.ProductRawMaterialMapping">
               <MappingFragment StoreEntitySet="ProductRawMaterialMapping">
+                <ScalarProperty Name="RMGradeUsed" ColumnName="RMGradeUsed" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
@@ -3959,6 +3978,7 @@
           <EntitySetMapping Name="RackMasters">
             <EntityTypeMapping TypeName="KPIModel.RackMaster">
               <MappingFragment StoreEntitySet="RackMaster">
+                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />
@@ -3984,6 +4004,7 @@
           <EntitySetMapping Name="RawMaterialMasters">
             <EntityTypeMapping TypeName="KPIModel.RawMaterialMaster">
               <MappingFragment StoreEntitySet="RawMaterialMaster">
+                <ScalarProperty Name="SupplierDetails" ColumnName="SupplierDetails" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />
