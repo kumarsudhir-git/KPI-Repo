@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace KPI.Controllers
 {
-    [CustomAuthFilter("M_Vendor")]
+    [CustomAuthFilter("M_Vendors")]
     public class VendorMasterController : CCSPLBaseController
     {
         // GET: VendorMaster
@@ -62,7 +62,7 @@ namespace KPI.Controllers
             {
                 if (vendorMasterModelObj.Response.ResponseCode == 200)
                 {
-                    return RedirectToAction("GetUsers");
+                    return RedirectToAction("GetAll");
                 }
             }
             return View("Error");

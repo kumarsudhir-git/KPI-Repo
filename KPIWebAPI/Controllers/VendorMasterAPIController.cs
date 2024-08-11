@@ -9,7 +9,7 @@ using System.Data.Entity;
 
 namespace KPIWebAPI.Controllers
 {
-    [CustomAuthFilter("M_Vendor")]
+    [CustomAuthFilter("M_Vendors")]
     public class VendorMasterAPIController : CCSPLBaseAPIController
     {
         static object myLock = new object();
@@ -76,7 +76,7 @@ namespace KPIWebAPI.Controllers
                     {
                         if (vendorMasterModel.VendorId == 0)
                         {
-                            VendorMaster vendorMaster = mapper.Map<KPILib.Models.VendorMasterModel, VendorMaster>(vendorMasterModel);
+                            VendorMaster vendorMaster = mapper.Map<VendorMasterModel, VendorMaster>(vendorMasterModel);
                             vendorMaster.AddedOn = DateTime.Now;
                             db.VendorMasters.Add(vendorMaster);
                         }
@@ -85,8 +85,12 @@ namespace KPIWebAPI.Controllers
                             VendorMaster vendorMaster = GetVendorMaster(vendorMasterModel.VendorId);
                             if (vendorMaster != null)
                             {
-                                vendorMaster = mapper.Map<VendorMasterModel, VendorMaster>(vendorMasterModel);
-                                //vendorMaster.IsDiscontinued = vendorMasterModel.IsDiscontinued;
+                                //vendorMaster = mapper.Map<VendorMasterModel, VendorMaster>(vendorMasterModel);
+                                vendorMaster.VendorName = vendorMasterModel.VendorName;
+                                vendorMaster.Notes = vendorMasterModel.Notes;
+                                vendorMaster.ContactNumber = vendorMasterModel.ContactNumber;
+                                vendorMaster.Address = vendorMasterModel.Address;
+                                vendorMaster.LastModifiedBy = vendorMasterModel.LastModifiedBy;
                                 vendorMaster.LastModifiedOn = DateTime.Now;
                                 db.Entry(vendorMaster).State = EntityState.Modified;
                             }

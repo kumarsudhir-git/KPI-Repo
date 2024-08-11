@@ -205,18 +205,21 @@ ALTER Table MouldMaster ADD CorePins NVARCHAR(MAX) NULL
 
 GO
 
+
 CREATE TABLE VendorMaster
 (
 VendorId INT NOT NULL PRIMARY KEY IDENTITY(1,1),
 VendorName NVARCHAR(MAX) NOT NULL,
 Notes NVARCHAR(MAX) NULL,
 Address NVARCHAR(MAX) NULL,
-ContactNumber INT NULL,
+ContactNumber NVARCHAR(MAX) NULL,
 IsDiscontinued BIT NOT NULL DEFAULT(0),
 AddedBy INT NOT NULL,
 AddedOn DATETIME NOT NULL DEFAULT(getDate()),
 LastModifiedBy INT NULL,
 LastModifiedOn DATETIME NULL
 )
+
+update MenuMaster set Link = 'GetAll/VendorMaster' where MenuID = 10
 
 ------------------------------------------------------END-----------------------------

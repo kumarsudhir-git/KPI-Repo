@@ -605,7 +605,7 @@
           <Property Name="VendorName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="Address" Type="nvarchar(max)" />
-          <Property Name="ContactNumber" Type="int" />
+          <Property Name="ContactNumber" Type="nvarchar(max)" />
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedBy" Type="int" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
@@ -2751,7 +2751,7 @@
           <Property Name="VendorName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ContactNumber" Type="Int32" />
+          <Property Name="ContactNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedBy" Type="Int32" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />

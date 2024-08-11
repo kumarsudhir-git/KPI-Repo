@@ -4,7 +4,7 @@
     ViewBag.Title = "GetAll";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-<div class="container container-fluid">
+<div class="form-horizontal">
 
     <div class="row">
         <div class="col-md-12">
@@ -79,12 +79,16 @@
                         @Html.DisplayFor(modelItem => item.LastModifiedOn)
                     </td>
                     <td>
+                        <a href="/VendorMaster/AddNew?id=@item.VendorId" title="Edit" class="" id="UpdateVendor"><i style="font-size:24px;" class="fa">&#xf044;</i></a>
+                        |
+                        <a href="#" title="Delete" class="" onclick="DeleteVendorData('@item.VendorName', '@item.VendorId')"><i style="font-size:24px; color:red" class="fa">&#xf014;</i></a>
                     </td>
                 </tr>
             }
         </tbody>
 
     </table>
+
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -99,9 +103,9 @@
         });
     });
 
-    function DeleteUserData(VendorName, VendorId) {
+    function DeleteVendorData(VendorName, VendorId) {
 
-        if (confirm("Are you sure want to delete User :- " + VendorName)) {
+        if (confirm("Are you sure want to delete Vendor :- " + VendorName)) {
             $.ajax({
                 url: "/VendorMaster/DeleteVendor",
                 method: "POST",

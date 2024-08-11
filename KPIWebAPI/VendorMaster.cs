@@ -18,7 +18,7 @@ namespace KPIWebAPI
         public string VendorName { get; set; }
         public string Notes { get; set; }
         public string Address { get; set; }
-        public Nullable<int> ContactNumber { get; set; }
+        public string ContactNumber { get; set; }
         public bool IsDiscontinued { get; set; }
         public int AddedBy { get; set; }
         public System.DateTime AddedOn { get; set; }

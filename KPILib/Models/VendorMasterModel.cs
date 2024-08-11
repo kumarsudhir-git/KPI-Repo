@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace KPILib.Models
@@ -7,10 +8,12 @@ namespace KPILib.Models
     public class VendorMasterModel
     {
         public int VendorId { get; set; }
+        [Required(ErrorMessage = "Required")]
         public string VendorName { get; set; }
         public string Notes { get; set; }
         public string Address { get; set; }
-        public int? ContactNumber { get; set; }
+        [Required(ErrorMessage = "Required")]
+        public string ContactNumber { get; set; }
         public bool IsDiscontinued { get; set; }
         public int AddedBy { get; set; }
         public DateTime AddedOn { get; set; }

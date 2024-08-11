@@ -634,7 +634,7 @@ namespace KPI.Classes
 
         public static VendorMasterModelResponse GetAllVendorData()
         {
-            string url = $"VendorMasterAPI/GetAllVendorData";
+            string url = $"VendorMasterAPI/GetAll";
             VendorMasterModelResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<VendorMasterModelResponse>().Result;
             return result;
         }
