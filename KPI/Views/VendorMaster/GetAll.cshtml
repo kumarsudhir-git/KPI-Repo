@@ -1,48 +1,45 @@
-﻿@model IEnumerable<KPILib.Models.UserMaster>
+﻿@model IEnumerable<KPILib.Models.VendorMasterModel>
 
 @{
-    ViewBag.Title = "GetUsers";
+    ViewBag.Title = "GetAll";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-
-<h2>@*GetUsers*@</h2>
-
 <div class="container container-fluid">
 
     <div class="row">
         <div class="col-md-12">
             <p>
-                @Html.ActionLink("Create New", "AddUser", "", new { @class = "btn btn-primary" })
+                @Html.ActionLink("Create New", "AddNew", "", new { @class = "btn btn-primary" })
             </p>
         </div>
     </div>
 
-    <table class="table help-page-table table-sm table-striped AddDataTable" cellspacing="0" style="border:1px solid #000">
+    <table class="table help-page-table table-sm table-striped AddDataTable" cellspacing="0" style="border:1px solid #000" @*id="VendorTbl"*@>
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.UserID)
+                    @Html.DisplayNameFor(model => model.VendorName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Username)
+                    @Html.DisplayNameFor(model => model.Notes)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Password)
+                    @Html.DisplayNameFor(model => model.Address)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.RoleID)
+                    @Html.DisplayNameFor(model => model.ContactNumber)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Mobile)
-                </th>
-                <th>rctc
                     @Html.DisplayNameFor(model => model.IsDiscontinued)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.AddedBy)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.AddedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastModifiedBy)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.LastModifiedOn)
@@ -55,69 +52,61 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.UserID)
+                        @Html.DisplayFor(modelItem => item.VendorName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Username)
+                        @Html.DisplayFor(modelItem => item.Notes)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Password)
+                        @Html.DisplayFor(modelItem => item.Address)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.RoleID)
+                        @Html.DisplayFor(modelItem => item.ContactNumber)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Email)
+                        @Html.DisplayFor(modelItem => item.IsDiscontinued)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Mobile)
-                    </td>
-                    <td>
-                        @if (item.IsDiscontinued)
-                        {
-                            <span>Yes</span>
-                        }
-                        else
-                        {
-                            <span>No</span>
-                        }
-                        @*@Html.DisplayFor(modelItem => item.IsDiscontinued)*@
+                        @Html.DisplayFor(modelItem => item.AddedBy)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.AddedOn)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.LastModifiedBy)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.LastModifiedOn)
                     </td>
                     <td>
-                        <a href="/UserMaster/AddUser?UserId=@item.UserID" title="Edit" class="" id="UpdateUser"><i style="font-size:24px;" class="fa">&#xf044;</i></a>
-                        |
-                        <a href="#" title="Delete" class="" onclick="DeleteUserData('@item.Username', '@item.UserID')"><i style="font-size:24px; color:red" class="fa">&#xf014;</i></a>
-
-                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                     </td>
                 </tr>
             }
         </tbody>
+
     </table>
-
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
 <script>
-    function DeleteUserData(userName, userID) {
+    $(document).ready(function () {
+        $.noConflict();
+        $("#VendorTbl").DataTable({
+            "scrollCollapse": false,
+            "paging": true,
+            select: false
+        });
+    });
 
-        if (confirm("Are you sure want to delete User :- " + userName)) {
+    function DeleteUserData(VendorName, VendorId) {
+
+        if (confirm("Are you sure want to delete User :- " + VendorName)) {
             $.ajax({
-                url: "/UserMaster/DeleteUser",
+                url: "/VendorMaster/DeleteVendor",
                 method: "POST",
                 contentType: "application/json",
-                data: JSON.stringify({ UserId: userID }),
+                data: JSON.stringify({ VendorId: VendorId }),
                 async: false,
                 success: function (data) {
                     if (data.Response.ResponseCode == 440) {
@@ -148,4 +137,5 @@
         }
 
     }
+
 </script>

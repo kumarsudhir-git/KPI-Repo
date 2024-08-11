@@ -76,6 +76,7 @@ namespace KPIWebAPI
         public virtual DbSet<Unit> Units { get; set; }
         public virtual DbSet<UOMMaster> UOMMasters { get; set; }
         public virtual DbSet<UserMaster> UserMasters { get; set; }
+        public virtual DbSet<VendorMaster> VendorMasters { get; set; }
     
         public virtual ObjectResult<Nullable<int>> sp_GetEmptyPallets()
         {

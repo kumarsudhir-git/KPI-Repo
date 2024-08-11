@@ -597,6 +597,21 @@
           <Property Name="AddedBy" Type="int" Nullable="false" />
           <Property Name="ModifiedBy" Type="int" />
         </EntityType>
+        <EntityType Name="VendorMaster">
+          <Key>
+            <PropertyRef Name="VendorId" />
+          </Key>
+          <Property Name="VendorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VendorName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="ContactNumber" Type="int" />
+          <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
+          <Property Name="AddedBy" Type="int" Nullable="false" />
+          <Property Name="AddedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+        </EntityType>
         <Association Name="FK__Productio__Produ__6BE40491">
           <End Role="ProductionProgram" Type="Self.ProductionProgram" Multiplicity="0..1" />
           <End Role="ProductionProgramBatch" Type="Self.ProductionProgramBatch" Multiplicity="*" />
@@ -1421,6 +1436,7 @@
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UOMMaster" EntityType="Self.UOMMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VendorMaster" EntityType="Self.VendorMaster" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Productio__Produ__6BE40491" Association="Self.FK__Productio__Produ__6BE40491">
             <End Role="ProductionProgram" EntitySet="ProductionProgram" />
             <End Role="ProductionProgramBatch" EntitySet="ProductionProgramBatch" />
@@ -1738,6 +1754,7 @@
           <EntitySet Name="Units" EntityType="KPIModel.Unit" />
           <EntitySet Name="UOMMasters" EntityType="KPIModel.UOMMaster" />
           <EntitySet Name="UserMasters" EntityType="KPIModel.UserMaster" />
+          <EntitySet Name="VendorMasters" EntityType="KPIModel.VendorMaster" />
           <AssociationSet Name="FK_CompanyLocationMaster_CompanyMaster" Association="KPIModel.FK_CompanyLocationMaster_CompanyMaster">
             <End Role="CompanyMaster" EntitySet="CompanyMasters" />
             <End Role="CompanyLocationMaster" EntitySet="CompanyLocationMasters" />
@@ -2725,6 +2742,21 @@
           <NavigationProperty Name="RoleMaster" Relationship="KPIModel.FK_UserMaster_RoleMaster" FromRole="UserMaster" ToRole="RoleMaster" />
           <NavigationProperty Name="SalesDispatchDetails" Relationship="KPIModel.FK_SalesDispatchDetails_UserMaster" FromRole="UserMaster" ToRole="SalesDispatchDetail" />
           <NavigationProperty Name="SalesMasters" Relationship="KPIModel.FK_SalesMaster_UserMaster" FromRole="UserMaster" ToRole="SalesMaster" />
+        </EntityType>
+        <EntityType Name="VendorMaster">
+          <Key>
+            <PropertyRef Name="VendorId" />
+          </Key>
+          <Property Name="VendorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VendorName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNumber" Type="Int32" />
+          <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
+          <Property Name="AddedBy" Type="Int32" Nullable="false" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="FK_CompanyLocationMaster_CompanyMaster">
           <End Type="KPIModel.CompanyMaster" Role="CompanyMaster" Multiplicity="1" />
@@ -4156,6 +4188,22 @@
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VendorMasters">
+            <EntityTypeMapping TypeName="KPIModel.VendorMaster">
+              <MappingFragment StoreEntitySet="VendorMaster">
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

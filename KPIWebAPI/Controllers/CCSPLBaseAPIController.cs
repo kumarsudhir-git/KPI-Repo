@@ -23,7 +23,8 @@ namespace KPIWebAPI.Controllers
         //    return RANDOM_NUMBER.Next();
         //}
 
-        static MapperConfiguration config = new MapperConfiguration(cfg => {
+        static MapperConfiguration config = new MapperConfiguration(cfg =>
+        {
             cfg.CreateMap<PalletMaster, KPILib.Models.PalletMaster>();
             cfg.CreateMap<KPILib.Models.PalletMaster, PalletMaster>();
 
@@ -94,7 +95,7 @@ namespace KPIWebAPI.Controllers
 
             cfg.CreateMap<ProductionProgram, KPILib.Models.ProductionPrograme>();
             cfg.CreateMap<KPILib.Models.ProductionPrograme, ProductionProgram>();
-            
+
             cfg.CreateMap<ProductionProgram, KPILib.Models.ProductionPlan>();
             //cfg.CreateMap<KPILib.Models.ProductionPlan, ProductionProgram>();
 
@@ -110,30 +111,32 @@ namespace KPIWebAPI.Controllers
 
             cfg.CreateMap<RoleMaster, KPILib.Models.RoleMaster>();
             cfg.CreateMap<KPILib.Models.RoleMaster, RoleMaster>();
-            
+
             cfg.CreateMap<UserMaster, KPILib.Models.UserMaster>();
             cfg.CreateMap<KPILib.Models.UserMaster, UserMaster>();
-            
+
             cfg.CreateMap<ProductRawMaterialMapping, KPILib.Models.ProductRawMaterialMapping>();
             cfg.CreateMap<KPILib.Models.ProductRawMaterialMapping, ProductRawMaterialMapping>();
-            
+
             cfg.CreateMap<Unit, KPILib.Models.Unit>();
             cfg.CreateMap<KPILib.Models.Unit, Unit>();
-            
+
             cfg.CreateMap<RoleRight, KPILib.Models.RoleRights>();
             cfg.CreateMap<KPILib.Models.RoleRights, RoleRight>();
-            
+
             cfg.CreateMap<MenuMaster, KPILib.Models.MenuMaster>();
             cfg.CreateMap<KPILib.Models.MenuMaster, MenuMaster>();
 
             cfg.CreateMap<ProductionProgramBatch, KPILib.Models.ProductionBatches>();
             cfg.CreateMap<KPILib.Models.ProductionBatches, ProductionProgramBatch>();
-            
+
             cfg.CreateMap<KPILib.Models.ProductionPrograme, KPILib.Models.ProductionBatches>();
             cfg.CreateMap<KPILib.Models.ProductionBatches, KPILib.Models.ProductionPrograme>();
 
             cfg.CreateMap<MouldTypeMaster, KPILib.Models.MouldTypeMaster>();
             cfg.CreateMap<KPILib.Models.MouldTypeMaster, MouldTypeMaster>();
+            cfg.CreateMap<VendorMaster, KPILib.Models.VendorMasterModel>();
+            cfg.CreateMap<KPILib.Models.VendorMasterModel, VendorMaster>();
         });
 
         public static IMapper mapper = config.CreateMapper();

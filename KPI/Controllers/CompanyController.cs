@@ -12,8 +12,10 @@ namespace KPI.Controllers
     [SessionCheckFilter]
     public class CompanyController : CCSPLBaseController
     {
+        #region Created new methods for customer and Vendor CRUD
+
         // GET: Company
-        public ActionResult GetAll(int id)       //TODO: 101 = Raw Material Supplier, 103 = Customer
+        public ActionResult GetAll(int id = 0)       //TODO: 101 = Raw Material Supplier, 103 = Customer
         {
             KPI.Classes.CommonFunctions.WriteToLog("success!");
 
@@ -47,9 +49,9 @@ namespace KPI.Controllers
             }
         }
 
-        public ActionResult New(int id)     //TODO: 101 = Raw Material Supplier, 103 = Customer
+        public ActionResult New(int id = 0)     //TODO: 101 = Raw Material Supplier, 103 = Customer
         {
-            Company company = new Company() { CompanyTypeID = id };   
+            Company company = new Company() { CompanyTypeID = id };
 
             ViewBag.TypeID = id;
             if (id == 101) ViewBag.Type = "Vendor";
@@ -106,6 +108,8 @@ namespace KPI.Controllers
                 ViewBag.Error = "Data provided is not valid";
                 return View("Error");
             }
-        }
+        } 
+
+        #endregion
     }
 }

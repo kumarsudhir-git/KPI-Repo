@@ -389,12 +389,12 @@ namespace KPI.Classes
         }
 
         public static ResponseObj StartProduction(Dictionary<string, int> param)
-        {            
+        {
             var result = CommonFunctions.client.PostAsJsonAsync("ProductionAPI/StartProduction", param).Result.Content.ReadAsAsync<ResponseObj>().Result;
             return result;
         }
 
-        public static ResponseObj UpdateProduction(int iProductionProgramID, int iProducedNow,int iBatchId)
+        public static ResponseObj UpdateProduction(int iProductionProgramID, int iProducedNow, int iBatchId)
         {
             var parameters = new Dictionary<string, int> { { "iProductionProgramID", iProductionProgramID }, { "iProducedNow", iProducedNow }, { "iBatchId", iBatchId } };
             var result = CommonFunctions.client.PostAsJsonAsync("ProductionAPI/UpdateProduction", parameters).Result.Content.ReadAsAsync<ResponseObj>().Result;
@@ -627,6 +627,41 @@ namespace KPI.Classes
             UnitResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<UnitResponse>().Result;
             return result;
         }
+
+        #endregion
+
+        #region API Call for Vendor Master
+
+        public static VendorMasterModelResponse GetAllVendorData()
+        {
+            string url = $"VendorMasterAPI/GetAllVendorData";
+            VendorMasterModelResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<VendorMasterModelResponse>().Result;
+            return result;
+        }
+
+        public static VendorMasterModelResponse GetVendorMasterData(int id = 0)
+        {
+            string url = $"VendorMasterAPI/GetVendor/{id}";
+            VendorMasterModelResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<VendorMasterModelResponse>().Result;
+            return result;
+        }
+
+        public static VendorMasterModelResponse AddUpdateVendorDataResponse(VendorMasterModel vendorMaster)
+        {
+            string url = $"VendorMasterAPI/AddNew";
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(vendorMaster), Encoding.UTF8, "application/json");
+            VendorMasterModelResponse result = CommonFunctions.client.PostAsync(url, content).Result.Content.ReadAsAsync<VendorMasterModelResponse>().Result;
+            return result;
+        }
+
+        public static VendorMasterModelResponse DeleteVendorDataResponse(VendorMasterModel vendorMaster)
+        {
+            string url = $"VendorMasterAPI/DeleteVendor";
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(vendorMaster), Encoding.UTF8, "application/json");
+            VendorMasterModelResponse result = CommonFunctions.client.PostAsync(url, content).Result.Content.ReadAsAsync<VendorMasterModelResponse>().Result;
+            return result;
+        }
+
         #endregion
 
     }

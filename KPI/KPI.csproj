@@ -150,6 +150,7 @@
     <Compile Include="Controllers\RMInventoryController.cs" />
     <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="Controllers\UserMasterController.cs" />
+    <Compile Include="Controllers\VendorMasterController.cs" />
     <Compile Include="Filters\CustomAuthFilter.cs" />
     <Compile Include="Filters\SessionCheckFilter.cs" />
     <Compile Include="Global.asax.cs">
@@ -561,6 +562,8 @@
     <Content Include="Views\Production\GetProductionBatch.cshtml" />
     <Content Include="Views\Production\GetBatchPartialView.cshtml" />
     <Content Include="Views\Mould\New.cshtml" />
+    <Content Include="Views\VendorMaster\GetAll.cshtml" />
+    <Content Include="Views\VendorMaster\AddNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

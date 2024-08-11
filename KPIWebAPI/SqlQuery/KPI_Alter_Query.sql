@@ -194,7 +194,7 @@ UserID int not null,
 AddedOn Date default getdate()
 )
 Go
-
+------------------------28-07-2024-------------------------------------------------
 Alter table RackMaster Add Location NVARCHAR(MAX) NULL
 Alter table RawMaterialMaster Add SupplierDetails NVARCHAR(MAX) NULL
 Alter table ProductRawMaterialMapping ADD RMGradeUsed INT NULL
@@ -202,4 +202,21 @@ ALTER Table MouldMaster ADD Location NVARCHAR(MAX) NULL
 ALTER Table MouldMaster ADD TotalCavities NVARCHAR(MAX) NULL
 ALTER Table MouldMaster ADD RunningCavities NVARCHAR(MAX) NULL
 ALTER Table MouldMaster ADD CorePins NVARCHAR(MAX) NULL
+
 GO
+
+CREATE TABLE VendorMaster
+(
+VendorId INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+VendorName NVARCHAR(MAX) NOT NULL,
+Notes NVARCHAR(MAX) NULL,
+Address NVARCHAR(MAX) NULL,
+ContactNumber INT NULL,
+IsDiscontinued BIT NOT NULL DEFAULT(0),
+AddedBy INT NOT NULL,
+AddedOn DATETIME NOT NULL DEFAULT(getDate()),
+LastModifiedBy INT NULL,
+LastModifiedOn DATETIME NULL
+)
+
+------------------------------------------------------END-----------------------------

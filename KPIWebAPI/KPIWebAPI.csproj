@@ -241,6 +241,7 @@
     <Compile Include="Controllers\RMInventoryAPIController.cs" />
     <Compile Include="Controllers\SalesAPIController.cs" />
     <Compile Include="Controllers\UserMasterAPIController.cs" />
+    <Compile Include="Controllers\VendorMasterAPIController.cs" />
     <Compile Include="Controllers\x_HomeController.cs" />
     <Compile Include="Controllers\x_ValuesController.cs" />
     <Compile Include="DynamicURL.cs">
@@ -401,6 +402,9 @@
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
     <Compile Include="UserMaster.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorMaster.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -589,6 +593,7 @@
     <Folder Include="Views\Packing\" />
     <Folder Include="Views\PurchaseAPI\" />
     <Folder Include="Views\RMinventory\" />
+    <Folder Include="Views\VendorMasterAPI\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
