@@ -6,8 +6,10 @@
 }
 <div class="form-horizontal">
 
-    <div class="row">
-        <div class="col-md-12">
+    <h2>Vendor</h2>
+    <hr />
+    <div class="col-md-12">
+        <div class="row">
             <p>
                 @Html.ActionLink("Create New", "AddNew", "", new { @class = "btn btn-primary" })
             </p>
@@ -29,20 +31,14 @@
                 <th>
                     @Html.DisplayNameFor(model => model.ContactNumber)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IsDiscontinued)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AddedBy)
-                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.IsDiscontinued)
+                    </th>*@
+                @*<th>
+                        @Html.DisplayNameFor(model => model.AddedBy)
+                    </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.AddedOn)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LastModifiedBy)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LastModifiedOn)
                 </th>
                 <th>Action</th>
             </tr>
@@ -63,20 +59,21 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ContactNumber)
                     </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.IsDiscontinued)
+                        </td>*@
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.AddedBy)
+                        </td>*@
                     <td>
-                        @Html.DisplayFor(modelItem => item.IsDiscontinued)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AddedBy)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AddedOn)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LastModifiedBy)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LastModifiedOn)
+                        @if (item.AddedOn != DateTime.MinValue)
+                        {
+                            <span>@item.AddedOn.ToShortDateString()</span>
+                        }
+                        else
+                        {
+                            <label>NA</label>
+                        }
                     </td>
                     <td>
                         <a href="/VendorMaster/AddNew?id=@item.VendorId" title="Edit" class="" id="UpdateVendor"><i style="font-size:24px;" class="fa">&#xf044;</i></a>

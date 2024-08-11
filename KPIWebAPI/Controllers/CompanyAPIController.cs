@@ -1,5 +1,6 @@
 ﻿using KPILib.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
@@ -10,19 +11,24 @@ namespace KPIWebAPI.Controllers
         // GET: CompanyAPI
 
         #region
-        public IHttpActionResult GetAll(int id)
+        public IHttpActionResult GetAll()
         {
             var returnValue = new CompaniesResponse();
 
             try
             {
-                var data = db.CompanyMasters.Where(x => !x.IsDiscontinued && x.CompanyTypeID == id).OrderBy(x => x.CompanyName).ToList();
+                //List<CompanyMaster> data = db.CompanyMasters.Where(x => !x.IsDiscontinued).OrderBy(x => x.CompanyName).ToList();
+                List<CompanyMaster> data = (from CM in db.CompanyMasters
+                                            where CM.CompanyTypeID == 103 //Harcoded value for CompanyTypeId
+                                            && CM.IsDiscontinued == false
+                                            orderby (CM.LastModifiedOn != null && CM.LastModifiedOn != DateTime.MinValue ? CM.LastModifiedOn : CM.AddedOn) descending
+                                            select CM).ToList();
                 foreach (var obj in data)
                 {
-                    var o = mapper.Map<CompanyMaster, KPILib.Models.Company>(obj);
-                    o.LocationCount = obj.CompanyLocationMasters.Where(x => !x.IsDiscontinued).Count();
+                    Company companyObj = mapper.Map<CompanyMaster, Company>(obj);
+                    companyObj.LocationCount = obj.CompanyLocationMasters.Where(x => !x.IsDiscontinued).Count();
 
-                    returnValue.data.Add(o);
+                    returnValue.data.Add(companyObj);
                 }
 
                 returnValue.Response.IsSuccessful();
@@ -43,7 +49,7 @@ namespace KPIWebAPI.Controllers
 
             try
             {
-                var data = db.CompanyMasters.SingleOrDefault(x => x.CompanyID == id);
+                var data = db.CompanyMasters.Where(x => x.CompanyID == id && x.IsDiscontinued == false).FirstOrDefault();
                 if (data != null)
                 {
                     var o = mapper.Map<CompanyMaster, KPILib.Models.Company>(data);
@@ -69,7 +75,8 @@ namespace KPIWebAPI.Controllers
             {
                 var o = mapper.Map<KPILib.Models.Company, CompanyMaster>(data);
                 o.AddedOn = DateTime.Now;
-                o.LastModifiedOn = DateTime.Now;
+                o.CompanyTypeID = 103; //Harcoded value for CompanyTypeId
+                //o.LastModifiedOn = DateTime.Now;
 
                 db.CompanyMasters.Add(o);
                 db.SaveChanges();
@@ -101,6 +108,7 @@ namespace KPIWebAPI.Controllers
                     o.Notes = data.Notes;
                     o.IsDiscontinued = data.IsDiscontinued;
                     o.LastModifiedOn = DateTime.Now;
+                    o.CompanyTypeID = 103;//Harcoded value for CompanyTypeId
 
                     db.Entry(o).State = System.Data.Entity.EntityState.Modified;
 

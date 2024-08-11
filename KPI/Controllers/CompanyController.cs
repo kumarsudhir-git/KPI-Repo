@@ -15,16 +15,16 @@ namespace KPI.Controllers
         #region Created new methods for customer and Vendor CRUD
 
         // GET: Company
-        public ActionResult GetAll(int id = 0)       //TODO: 101 = Raw Material Supplier, 103 = Customer
+        public ActionResult GetAll()       //TODO: 101 = Raw Material Supplier, 103 = Customer
         {
             KPI.Classes.CommonFunctions.WriteToLog("success!");
 
-            var response = KPIAPIManager.GetAllCompanies(id);
+            var response = KPIAPIManager.GetAllCompanies();
             if (response.Response.ResponseCode == 200)
             {
-                ViewBag.TypeID = id;
-                if (id == 101) ViewBag.Type = "Vendors";
-                if (id == 103) ViewBag.Type = "Customers";
+                //ViewBag.TypeID = id;
+                //if (id == 101) ViewBag.Type = "Vendors";
+                //if (id == 103) ViewBag.Type = "Customers";
 
                 return View(response.data);
             }
@@ -52,10 +52,6 @@ namespace KPI.Controllers
         public ActionResult New(int id = 0)     //TODO: 101 = Raw Material Supplier, 103 = Customer
         {
             Company company = new Company() { CompanyTypeID = id };
-
-            ViewBag.TypeID = id;
-            if (id == 101) ViewBag.Type = "Vendor";
-            if (id == 103) ViewBag.Type = "Customer";
 
             return View(company);
         }

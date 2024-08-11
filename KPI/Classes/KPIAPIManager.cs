@@ -137,9 +137,9 @@ namespace KPI.Classes
         #endregion
 
         #region API calls for Companies
-        public static CompaniesResponse GetAllCompanies(int id)
+        public static CompaniesResponse GetAllCompanies()
         {
-            var result = CommonFunctions.client.GetAsync("CompanyAPI/GetAll/" + id.ToString()).Result.Content.ReadAsAsync<CompaniesResponse>().Result;
+            var result = CommonFunctions.client.GetAsync("CompanyAPI/GetAll").Result.Content.ReadAsAsync<CompaniesResponse>().Result;
             return result;
         }
 

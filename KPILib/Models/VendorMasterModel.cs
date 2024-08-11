@@ -16,8 +16,10 @@ namespace KPILib.Models
         public string ContactNumber { get; set; }
         public bool IsDiscontinued { get; set; }
         public int AddedBy { get; set; }
+        public string AddedByName { get; set; }
         public DateTime AddedOn { get; set; }
         public int? LastModifiedBy { get; set; }
+        public string ModifiedByName { get; set; }
         public DateTime? LastModifiedOn { get; set; }
     }
 
