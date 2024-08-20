@@ -364,3 +364,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/KPI/LOG_2024_08_15.txt
+/KPIWebAPI/LOG_2024_08_15.txt

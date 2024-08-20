@@ -137,6 +137,12 @@ namespace KPIWebAPI.Controllers
             cfg.CreateMap<KPILib.Models.MouldTypeMaster, MouldTypeMaster>();
             cfg.CreateMap<VendorMaster, KPILib.Models.VendorMasterModel>();
             cfg.CreateMap<KPILib.Models.VendorMasterModel, VendorMaster>();
+            
+            cfg.CreateMap<LocationMaster, KPILib.Models.LocationMasterModel>();
+            cfg.CreateMap<KPILib.Models.LocationMasterModel, LocationMaster>();
+            
+            cfg.CreateMap<usp_GetLocationMasterAllData_Result, KPILib.Models.LocationMasterModel>();
+            cfg.CreateMap<KPILib.Models.LocationMasterModel, usp_GetLocationMasterAllData_Result>();
         });
 
         public static IMapper mapper = config.CreateMapper();

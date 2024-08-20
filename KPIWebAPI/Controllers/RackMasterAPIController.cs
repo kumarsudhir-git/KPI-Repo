@@ -24,7 +24,10 @@ namespace KPIWebAPI.Controllers
                 {
                     var o = mapper.Map<RackMaster, KPILib.Models.RackMaster>(obj);
                     //var rackData = obj.ProductInventoryMasters.SingleOrDefault();
-
+                    if (o.LocationId != null && o.LocationId != 0)
+                    {
+                        o.LocationName = getLocationNameFromId((int)o.LocationId);
+                    }
                     var rackData = obj.ProdReadyStoreds.ToList();
                     if (rackData.Count() > 0)
                     {
@@ -165,7 +168,7 @@ namespace KPIWebAPI.Controllers
                     o.RackNo = data.RackNo;
                     o.Description = data.Description;
                     o.IsDiscontinued = data.IsDiscontinued;
-                    o.Location = data.Location;
+                    o.LocationId = data.LocationId;
                     o.LastModifiedOn = DateTime.Now;
 
                     db.Entry(o).State = System.Data.Entity.EntityState.Modified;
@@ -241,6 +244,18 @@ namespace KPIWebAPI.Controllers
             }
 
             return Json(returnValue);
+        }
+
+        private string getLocationNameFromId(int LocationId = 0)
+        {
+            string locationName = "";
+            if (LocationId > 0)
+            {
+                locationName = (from LM in db.LocationMasters
+                                where LM.LocationId == LocationId
+                                select LM.LocationName).FirstOrDefault();
+            }
+            return locationName;
         }
 
         #endregion

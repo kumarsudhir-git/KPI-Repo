@@ -664,5 +664,42 @@ namespace KPI.Classes
 
         #endregion
 
+        #region Location Master
+        public static LocationMasterResponse GetAllLocations()
+        {
+            var result = CommonFunctions.client.GetAsync("LocationMasterAPI/GetAllLocation").Result.Content.ReadAsAsync<LocationMasterResponse>().Result;
+            return result;
+        }
+
+        public static LocationMasterResponse GetLocation(int LocationId)
+        {
+            var result = CommonFunctions.client.GetAsync("LocationMasterAPI/GetLocation?LocationId=" + LocationId.ToString()).Result.Content.ReadAsAsync<LocationMasterResponse>().Result;
+            return result;
+        }
+
+        public static LocationMasterResponse SaveLocation(LocationMasterModel obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("LocationMasterAPI/SaveLocation", obj).Result.Content.ReadAsAsync<LocationMasterResponse>().Result;
+            return result;
+        }
+
+        public static LocationMasterResponse DeleteLocation(LocationMasterModel obj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("LocationMasterAPI/DeleteLocation", obj).Result.Content.ReadAsAsync<LocationMasterResponse>().Result;
+            return result;
+        }
+        public static LocationMasterResponse GetListOfLocationMasterData()
+        {
+            var result = CommonFunctions.client.GetAsync("LocationMasterAPI/GetLocationMasterData").Result.Content.ReadAsAsync<LocationMasterResponse>().Result;
+            return result;
+        }
+        public static LocationMasterResponse ValidateLocationName(LocationMasterModel locationMasterObj)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("LocationMasterAPI/ValidateLocationName", locationMasterObj).Result.Content.ReadAsAsync<LocationMasterResponse>().Result;
+            return result;
+        }
+
+        #endregion
+
     }
 }

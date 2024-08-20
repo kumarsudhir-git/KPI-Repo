@@ -31,6 +31,7 @@ namespace KPIWebAPI
         public virtual DbSet<CompanyMaster> CompanyMasters { get; set; }
         public virtual DbSet<CompanyTypeMaster> CompanyTypeMasters { get; set; }
         public virtual DbSet<DynamicURL> DynamicURLs { get; set; }
+        public virtual DbSet<LocationMaster> LocationMasters { get; set; }
         public virtual DbSet<MachineHistory> MachineHistories { get; set; }
         public virtual DbSet<MachineMaster> MachineMasters { get; set; }
         public virtual DbSet<MachineMouldMapping> MachineMouldMappings { get; set; }
@@ -100,6 +101,11 @@ namespace KPIWebAPI
                 new ObjectParameter("MouldID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_GetAvailableMachineID", mouldIDParameter);
+        }
+    
+        public virtual ObjectResult<usp_GetLocationMasterAllData_Result> usp_GetLocationMasterAllData()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetLocationMasterAllData_Result>("usp_GetLocationMasterAllData");
         }
     }
 }

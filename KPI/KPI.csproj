@@ -136,6 +136,7 @@
     <Compile Include="Controllers\DispatchController.cs" />
     <Compile Include="Controllers\ExternalController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LocationMasterController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MachineController.cs" />
     <Compile Include="Controllers\MouldController.cs" />
@@ -564,6 +565,8 @@
     <Content Include="Views\Mould\New.cshtml" />
     <Content Include="Views\VendorMaster\GetAll.cshtml" />
     <Content Include="Views\VendorMaster\AddNew.cshtml" />
+    <Content Include="Views\LocationMaster\SaveLocation.cshtml" />
+    <Content Include="Views\LocationMaster\GetAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -22,7 +22,7 @@ namespace KPIWebAPI.Controllers
                 if (comp.CompanyID != 0)
                 {
                     returnValue.comp = mapper.Map<CompanyMaster, KPILib.Models.Company>(comp);
-                    foreach (var obj in comp.CompanyLocationMasters.Where(x=> !x.IsDiscontinued))
+                    foreach (var obj in comp.CompanyLocationMasters.Where(x => !x.IsDiscontinued))
                     {
                         var o = mapper.Map<CompanyLocationMaster, KPILib.Models.CompanyLocation>(obj);
 
@@ -147,7 +147,6 @@ namespace KPIWebAPI.Controllers
 
             return Json(returnValue);
         }
-
 
         //public IHttpActionResult Delete(KPILib.Models.Company data)
         //{

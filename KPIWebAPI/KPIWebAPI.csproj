@@ -227,6 +227,7 @@
     <Compile Include="Controllers\CompanyLocationAPIController.cs" />
     <Compile Include="Controllers\DispatchAPIController.cs" />
     <Compile Include="Controllers\ExternalAPIController.cs" />
+    <Compile Include="Controllers\LocationMasterAPIController.cs" />
     <Compile Include="Controllers\LoginAPIController.cs" />
     <Compile Include="Controllers\MachineAPIController.cs" />
     <Compile Include="Controllers\MouldAPIController.cs" />
@@ -264,6 +265,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>KPIDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="LocationMaster.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
     <Compile Include="MachineHistory.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
@@ -402,6 +406,9 @@
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
     <Compile Include="UserMaster.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="usp_GetLocationMasterAllData_Result.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
     <Compile Include="VendorMaster.cs">

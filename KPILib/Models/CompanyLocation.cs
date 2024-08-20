@@ -75,5 +75,4 @@ namespace KPILib.Models
             this.Response = new ResponseObj();
         }
     }
-
 }

@@ -1,0 +1,132 @@
+﻿@model IEnumerable<KPILib.Models.LocationMasterModel>
+
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+
+<div class="form-horizontal">
+
+    <h2>Location</h2>
+    <hr />
+    <div class="col-md-12">
+        <div class="row">
+            <p>
+                @Html.ActionLink("Create New", "SaveLocation", "", new { @class = "btn btn-primary" })
+            </p>
+        </div>
+    </div>
+
+    <table class="table help-page-table table-sm table-striped AddDataTable" cellspacing="0" style="border:1px solid #000">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.LocationName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifiedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifiedOn)
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LocationName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddedByName)
+                    </td>
+                    <td>
+                        @if (item.AddedOn != DateTime.MinValue)
+                        {
+                            <span>@item.AddedOn.ToShortDateString()</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifiedByName)
+                    </td>
+                    <td>
+                        @if (item.ModifiedOn.HasValue && item.ModifiedOn.Value != DateTime.MinValue)
+                        {
+                            <span>@item.ModifiedOn.Value.ToShortDateString()</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="/LocationMaster/SaveLocation?LocationId=@item.LocationId" title="Edit" class="" id="UpdateVendor"><i style="font-size:24px;" class="fa">&#xf044;</i></a>
+                        |
+                        <a href="#" title="Delete" class="" onclick="DeleteLocationData('@item.LocationName', '@item.LocationId')"><i style="font-size:24px; color:red" class="fa">&#xf014;</i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    //$(document).ready(function () {
+    //    $.noConflict();
+    //    $("#VendorTbl").DataTable({
+    //        "scrollCollapse": false,
+    //        "paging": true,
+    //        select: false
+    //    });
+    //});
+
+    function DeleteLocationData(LocationName, LocationId) {
+
+        if (confirm("Are you sure want to delete Location :- " + LocationName)) {
+            $.ajax({
+                url: "/LocationMaster/DeleteLocation",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ LocationId: LocationId }),
+                async: false,
+                success: function (data) {
+                    if (data.Response.ResponseCode == 440) {
+                        alert(data.Response.ResponseMsg);
+                        window.location.href = "/Login/Login";
+                    }
+                    else if (data.Response.ResponseCode == 200) {
+                        alert('Location deleted successfully');
+                        window.location.reload();
+                    }
+                    else if (data.Response.ResponseCode == 401) {
+                        alert(data.Response.ResponseMsg);
+                        window.location.href = "/Login/Login";
+                    }
+                    else {
+                        alert(data.Response.ResponseMsg);
+                        return false;
+                    }
+                },
+                error: function (response) {
+                    alert("Something went wrong");
+                    return false;
+                }
+            });
+        }
+        else {
+            return false;
+        }
+
+    }
+
+</script>

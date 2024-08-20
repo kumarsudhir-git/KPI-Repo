@@ -1,6 +1,7 @@
 ﻿using KPI.Classes;
 using KPI.Filters;
 using KPILib.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -46,9 +47,23 @@ namespace KPI.Controllers
 
         public ActionResult Get(int id)
         {
+            ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+
             var response = KPIAPIManager.GetRack(id);
             if (response.Response.ResponseCode == 200)
             {
+                LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
+
+                if (locationMasterResponse != null && locationMasterResponse.Response != null)
+                {
+                    if (locationMasterResponse.Response.ResponseCode == 200)
+                    {
+                        if (locationMasterResponse.data != null && locationMasterResponse.data.Count() > 0)
+                        {
+                            ViewData["LocationId"] = new SelectList(locationMasterResponse.data, "LocationId", "LocationName");
+                        }
+                    }
+                }
                 return View(response.data);
             }
             else
@@ -60,6 +75,20 @@ namespace KPI.Controllers
 
         public ActionResult New()
         {
+            ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+
+            LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
+
+            if (locationMasterResponse != null && locationMasterResponse.Response != null)
+            {
+                if (locationMasterResponse.Response.ResponseCode == 200)
+                {
+                    if (locationMasterResponse.data != null && locationMasterResponse.data.Count() > 0)
+                    {
+                        ViewData["LocationId"] = new SelectList(locationMasterResponse.data, "LocationId", "LocationName");
+                    }
+                }
+            }
             RackMaster rack = new RackMaster();
             return View(rack);
         }

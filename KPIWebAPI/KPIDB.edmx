@@ -60,6 +60,18 @@
           <Property Name="Timestamp" Type="datetime" Nullable="false" />
           <Property Name="URL" Type="varchar(max)" Nullable="false" />
         </EntityType>
+        <EntityType Name="LocationMaster">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationName" Type="nvarchar" MaxLength="250" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="AddedBy" Type="int" />
+          <Property Name="AddedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
         <EntityType Name="MachineHistory">
           <Key>
             <PropertyRef Name="MachineHistoryID" />
@@ -437,7 +449,7 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
-          <Property Name="Location" Type="nvarchar(max)" />
+          <Property Name="LocationId" Type="int" />
         </EntityType>
         <EntityType Name="RawMaterialInventoryMaster">
           <Key>
@@ -1386,11 +1398,13 @@
         <Function Name="sp_GetEmptyPallets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_GetEmptyRacks" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_GetRMInventory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="usp_GetLocationMasterAllData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="KPIModelStoreContainer">
           <EntitySet Name="CompanyLocationMaster" EntityType="Self.CompanyLocationMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyMaster" EntityType="Self.CompanyMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyTypeMaster" EntityType="Self.CompanyTypeMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DynamicURLs" EntityType="Self.DynamicURLs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LocationMaster" EntityType="Self.LocationMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MachineHistory" EntityType="Self.MachineHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MachineMaster" EntityType="Self.MachineMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MachineMouldMapping" EntityType="Self.MachineMouldMapping" Schema="dbo" store:Type="Tables" />
@@ -1709,6 +1723,7 @@
           <EntitySet Name="CompanyMasters" EntityType="KPIModel.CompanyMaster" />
           <EntitySet Name="CompanyTypeMasters" EntityType="KPIModel.CompanyTypeMaster" />
           <EntitySet Name="DynamicURLs" EntityType="KPIModel.DynamicURL" />
+          <EntitySet Name="LocationMasters" EntityType="KPIModel.LocationMaster" />
           <EntitySet Name="MachineHistories" EntityType="KPIModel.MachineHistory" />
           <EntitySet Name="MachineMasters" EntityType="KPIModel.MachineMaster" />
           <EntitySet Name="MachineMouldMappings" EntityType="KPIModel.MachineMouldMapping" />
@@ -2011,6 +2026,7 @@
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="SalesMaster" EntitySet="SalesMasters" />
           </AssociationSet>
+          <FunctionImport Name="usp_GetLocationMasterAllData" ReturnType="Collection(KPIModel.usp_GetLocationMasterAllData_Result)" />
           </EntityContainer>
         <ComplexType Name="sp_GetRMInventory_Result">
           <Property Type="Int32" Name="PalletID" Nullable="false" />
@@ -2083,6 +2099,18 @@
           <Property Name="URLID" Type="Guid" Nullable="false" />
           <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="URL" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="LocationMaster">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="AddedBy" Type="Int32" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="MachineHistory">
           <Key>
@@ -2541,7 +2569,7 @@
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LocationId" Type="Int32" />
           <NavigationProperty Name="ProdReadyStoreds" Relationship="KPIModel.FK_ProdReadyStored_RackMaster" FromRole="RackMaster" ToRole="ProdReadyStored" />
           <NavigationProperty Name="ProductInventoryMasters" Relationship="KPIModel.FK_ProductInventoryMaster_RackMaster" FromRole="RackMaster" ToRole="ProductInventoryMaster" />
           <NavigationProperty Name="SalesDispatchRacks" Relationship="KPIModel.FK_SalesDispatchRacks_RackMaster" FromRole="RackMaster" ToRole="SalesDispatchRack" />
@@ -3526,6 +3554,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="usp_GetLocationMasterAllData_Result">
+          <Property Type="Int32" Name="LocationId" Nullable="false" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="AddedByName" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="ModifiedByName" Nullable="false" MaxLength="20" />
+          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3606,6 +3642,19 @@
                 <ScalarProperty Name="URL" ColumnName="URL" />
                 <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
                 <ScalarProperty Name="URLID" ColumnName="URLID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LocationMasters">
+            <EntityTypeMapping TypeName="KPIModel.LocationMaster">
+              <MappingFragment StoreEntitySet="LocationMaster">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4010,7 +4059,7 @@
           <EntitySetMapping Name="RackMasters">
             <EntityTypeMapping TypeName="KPIModel.RackMaster">
               <MappingFragment StoreEntitySet="RackMaster">
-                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />
@@ -4207,6 +4256,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="usp_GetLocationMasterAllData" FunctionName="KPIModel.Store.usp_GetLocationMasterAllData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KPIModel.usp_GetLocationMasterAllData_Result">
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
+                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

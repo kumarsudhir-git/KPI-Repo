@@ -222,4 +222,60 @@ LastModifiedOn DATETIME NULL
 
 update MenuMaster set Link = 'GetAll/VendorMaster' where MenuID = 10
 
+
+-------------------------------------------------20-08-2024-----------------------------------
+
+GO
+
+CREATE TABLE LocationMaster
+(
+LocationId INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+LocationName NvarChar(250) NULL,
+IsActive BIT NOT NULL DEFAULT(1),
+AddedBy INT NULL,
+AddedOn DateTime NOT NULL DEFAULT(GETDATE()),
+ModifiedBy INT NULL,
+ModifiedOn DateTime NULL
+)
+
+GO
+
+Alter table RackMaster Drop Column Location
+
+GO
+
+Alter table RackMaster Add LocationId INT NULL
+GO
+
+CREATE PROCEDURE usp_GetLocationMasterAllData
+
+AS
+BEGIN
+
+Select LM.LocationId,
+LM.LocationName,
+ISNULL(UM.Username,'') AS 'AddedByName',
+ISNULL(UsrMstr.Username,'') AS 'ModifiedByName',
+LM.AddedOn,
+LM.ModifiedOn
+from
+LocationMaster LM
+LEFT JOIN UserMaster UM
+ON LM.AddedBy = UM.UserID
+LEFT JOIN UserMaster UsrMstr
+ON LM.ModifiedBy = UsrMstr.UserID
+WHERE LM.IsActive = 1
+
+END
+
+GO
+INSERT INTO MenuMaster
+(MenuCode,MenuName,MenuParentID,Link)
+VALUES
+('M_Location','Location',1,'GetAll/LocationMaster')
+
+GO
+
 ------------------------------------------------------END-----------------------------
+
+

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace KPILib.Models
 {
@@ -30,7 +31,9 @@ namespace KPILib.Models
         public int PkgQty { get; set; }
         public int Pkts { get; set; }
         public int OpenPkts { get; set; }
-        public string Location { get; set; }
+        [DisplayName("Location")]
+        public int? LocationId { get; set; }
+        public string LocationName { get; set; }
 
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }
