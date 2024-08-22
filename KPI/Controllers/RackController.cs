@@ -58,7 +58,7 @@ namespace KPI.Controllers
                 {
                     if (locationMasterResponse.Response.ResponseCode == 200)
                     {
-                        if (locationMasterResponse.data != null && locationMasterResponse.data.Count() > 0)
+                        if (locationMasterResponse.data != null && locationMasterResponse.data.Count > 0)
                         {
                             ViewData["LocationId"] = new SelectList(locationMasterResponse.data, "LocationId", "LocationName");
                         }
@@ -83,7 +83,7 @@ namespace KPI.Controllers
             {
                 if (locationMasterResponse.Response.ResponseCode == 200)
                 {
-                    if (locationMasterResponse.data != null && locationMasterResponse.data.Count() > 0)
+                    if (locationMasterResponse.data != null && locationMasterResponse.data.Count > 0)
                     {
                         ViewData["LocationId"] = new SelectList(locationMasterResponse.data, "LocationId", "LocationName");
                     }

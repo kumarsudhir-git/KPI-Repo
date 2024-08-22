@@ -1,5 +1,6 @@
 ﻿using KPILib.Models;
 using KPIWebAPI.AuthFilters;
+using KPIWebAPI.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,10 +40,30 @@ namespace KPIWebAPI.Controllers
                 foreach (var obj in data)
                 {
                     var o = mapper.Map<sp_GetRMInventory_Result, RMInventory>(obj);
-                    
+
                     //o.Qty = o.Qty;
                     //o.QtyBags = o.Qty / RM_BAG_CAPACITY;
                     //o.QtyOpened
+                    if (o.AddedBy != null && o.AddedBy > 0)
+                    {
+                        UserMaster userMaster = CommonFunctions.GetUserMasterData((int)o.AddedBy);
+                        if (userMaster != null)
+                        {
+                            o.AddedByName = userMaster.Username;
+                        }
+                    }
+                    if (o.ModifiedBy != null && o.ModifiedBy > 0)
+                    {
+                        UserMaster userMaster = CommonFunctions.GetUserMasterData((int)o.ModifiedBy);
+                        if (userMaster != null)
+                        {
+                            o.ModifiedByName = userMaster.Username;
+                        }
+                    }
+                    if (o.LocationId != null && o.LocationId > 0)
+                    {
+                        o.LocationName = CommonFunctions.getLocationNameFromId((int)o.LocationId);
+                    }
 
                     returnValue.data.Add(o);
                 }
@@ -201,7 +222,7 @@ namespace KPIWebAPI.Controllers
             {
                 var o = mapper.Map<RMInventory, RawMaterialInventoryMaster>(data);
                 o.AddedOn = DateTime.Now;
-                o.LastModifiedOn = DateTime.Now;
+                //o.LastModifiedOn = DateTime.Now;
 
                 db.RawMaterialInventoryMasters.Add(o);
                 db.SaveChanges();
@@ -233,6 +254,7 @@ namespace KPIWebAPI.Controllers
                     o.RawMaterialID = data.RawMaterialID;
                     o.Qty = data.Qty;
                     o.LastModifiedOn = DateTime.Now;
+                    o.ModifiedBy = data.ModifiedBy;
 
                     db.Entry(o).State = System.Data.Entity.EntityState.Modified;
 
@@ -250,5 +272,6 @@ namespace KPIWebAPI.Controllers
 
             return Json(returnValue);
         }
+
     }
 }

@@ -275,6 +275,10 @@ VALUES
 ('M_Location','Location',1,'GetAll/LocationMaster')
 
 GO
+ALTER TABLE RawMaterialInventoryMaster ADD AddedBy INT NULL, ModifiedBy INT NULL, LocationId INT NULL
+
+GO
+
 
 ------------------------------------------------------END-----------------------------
 

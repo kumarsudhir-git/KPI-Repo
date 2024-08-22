@@ -1,10 +1,13 @@
 ﻿using KPI.Classes;
 using KPI.Filters;
+using KPILib.Models;
+using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace KPI.Controllers
 {
-    [CustomAuthFilter("M_RMInventory")]  
+    [CustomAuthFilter("M_RMInventory")]
     public class RMInventoryController : Controller
     {
         // GET: RMInventory
@@ -52,11 +55,26 @@ namespace KPI.Controllers
 
         public ActionResult Get(int id)
         {
+            ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+
             var response = KPIAPIManager.GetRMInventory(id);
             if (response.Response.ResponseCode == 200)
             {
                 ViewBag.Pallets = new SelectList(response.data.Pallets, "PalletID", "PalletNo");
                 ViewBag.RMs = new SelectList(response.data.RawMaterials, "RawMaterialID", "RawMaterialName");
+
+                LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
+
+                if (locationMasterResponse != null && locationMasterResponse.Response != null)
+                {
+                    if (locationMasterResponse.Response.ResponseCode == 200)
+                    {
+                        if (locationMasterResponse.data != null && locationMasterResponse.data.Count > 0)
+                        {
+                            ViewData["LocationId"] = new SelectList(locationMasterResponse.data, "LocationId", "LocationName");
+                        }
+                    }
+                }
                 return View(response.data);
             }
             else
@@ -67,6 +85,8 @@ namespace KPI.Controllers
         }
         public ActionResult New()
         {
+            ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+
             var response = KPIAPIManager.GetRMInventory(0);
             if (response.Response.ResponseCode == 200)
             {
@@ -74,6 +94,18 @@ namespace KPI.Controllers
                 ViewBag.RMs = new SelectList(response.data.RawMaterials, "RawMaterialID", "RawMaterialName");
                 ViewBag.Tags = new SelectList(response.data.TagColours, "TagColourID", "TagColour");
 
+                LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
+
+                if (locationMasterResponse != null && locationMasterResponse.Response != null)
+                {
+                    if (locationMasterResponse.Response.ResponseCode == 200)
+                    {
+                        if (locationMasterResponse.data != null && locationMasterResponse.data.Count > 0)
+                        {
+                            ViewData["LocationId"] = new SelectList(locationMasterResponse.data, "LocationId", "LocationName");
+                        }
+                    }
+                }
                 //ViewBag.QtyKgs = 
                 return View(response.data);
             }
@@ -90,6 +122,7 @@ namespace KPI.Controllers
         {
             if (ModelState.IsValid)
             {
+                obj.AddedBy = Convert.ToInt32(Session["UserID"]);
                 var response = KPIAPIManager.AddRMInventory(obj);
                 if (response.Response.ResponseCode == 200)
                 {
@@ -114,6 +147,7 @@ namespace KPI.Controllers
         {
             if (ModelState.IsValid)
             {
+                obj.ModifiedBy = Convert.ToInt32(Session["UserID"]);
                 var response = KPIAPIManager.EditRMInventory(obj);
                 if (response.Response.ResponseCode == 200)
                 {

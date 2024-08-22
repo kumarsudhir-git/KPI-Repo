@@ -196,5 +196,20 @@ namespace KPIWebAPI.Classes
                 return mouldTypeMasters;
             }
         }
+
+        public static string getLocationNameFromId(int LocationId = 0)
+        {
+            string locationName = "";
+            if (LocationId > 0)
+            {
+                using (KPIEntities db = new KPIEntities())
+                {
+                    locationName = (from LM in db.LocationMasters
+                                    where LM.LocationId == LocationId
+                                    select LM.LocationName).FirstOrDefault();
+                }
+            }
+            return locationName;
+        }
     }
 }

@@ -41,6 +41,13 @@ namespace KPILib.Models
 
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }
+        public int? AddedBy { get; set; }
+        public string AddedByName { get; set; }
+        public int? ModifiedBy { get; set; }
+        public string ModifiedByName { get; set; }
+        [Display(Name = "Location")]
+        public int? LocationId { get; set; }
+        public string LocationName { get; set; }
     }
 
     public class RMInventoryResponse

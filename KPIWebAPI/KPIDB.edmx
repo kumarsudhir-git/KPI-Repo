@@ -462,6 +462,9 @@
           <Property Name="Qty" Type="numeric" Precision="18" Scale="2" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="AddedBy" Type="int" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="LocationId" Type="int" />
         </EntityType>
         <EntityType Name="RawMaterialMaster">
           <Key>
@@ -1719,6 +1722,7 @@
           <FunctionImport Name="sp_GetAvailableMachineID" ReturnType="Collection(Int32)">
           <Parameter Name="MouldID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="usp_GetLocationMasterAllData" ReturnType="Collection(KPIModel.usp_GetLocationMasterAllData_Result)" />
           <EntitySet Name="CompanyLocationMasters" EntityType="KPIModel.CompanyLocationMaster" />
           <EntitySet Name="CompanyMasters" EntityType="KPIModel.CompanyMaster" />
           <EntitySet Name="CompanyTypeMasters" EntityType="KPIModel.CompanyTypeMaster" />
@@ -2026,7 +2030,6 @@
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="SalesMaster" EntitySet="SalesMasters" />
           </AssociationSet>
-          <FunctionImport Name="usp_GetLocationMasterAllData" ReturnType="Collection(KPIModel.usp_GetLocationMasterAllData_Result)" />
           </EntityContainer>
         <ComplexType Name="sp_GetRMInventory_Result">
           <Property Type="Int32" Name="PalletID" Nullable="false" />
@@ -2038,6 +2041,14 @@
           <Property Type="Decimal" Name="Qty" Nullable="true" Precision="38" Scale="2" />
           <Property Type="Int32" Name="QtyBags" Nullable="true" />
           <Property Type="Int32" Name="QtyOpened" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_GetLocationMasterAllData_Result">
+          <Property Type="Int32" Name="LocationId" Nullable="false" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="AddedByName" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="ModifiedByName" Nullable="false" MaxLength="20" />
+          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
         </ComplexType>
         <EntityType Name="CompanyLocationMaster">
           <Key>
@@ -2585,6 +2596,9 @@
           <Property Name="Qty" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="AddedBy" Type="Int32" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="LocationId" Type="Int32" />
           <NavigationProperty Name="PalletMaster" Relationship="KPIModel.FK_RawMaterialInventoryMaster_PalletMaster" FromRole="RawMaterialInventoryMaster" ToRole="PalletMaster" />
           <NavigationProperty Name="ProductionRawMaterials" Relationship="KPIModel.FK_ProductionRawMaterial_RawMaterialInventoryMaster" FromRole="RawMaterialInventoryMaster" ToRole="ProductionRawMaterial" />
           <NavigationProperty Name="RawMaterialMaster" Relationship="KPIModel.FK_RawMaterialInventoryMaster_RawMaterialMaster" FromRole="RawMaterialInventoryMaster" ToRole="RawMaterialMaster" />
@@ -3554,14 +3568,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="usp_GetLocationMasterAllData_Result">
-          <Property Type="Int32" Name="LocationId" Nullable="false" />
-          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
-          <Property Type="String" Name="AddedByName" Nullable="false" MaxLength="20" />
-          <Property Type="String" Name="ModifiedByName" Nullable="false" MaxLength="20" />
-          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
-          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
-        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3586,6 +3592,18 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_GetAvailableMachineID" FunctionName="KPIModel.Store.sp_GetAvailableMachineID" />
+          <FunctionImportMapping FunctionImportName="usp_GetLocationMasterAllData" FunctionName="KPIModel.Store.usp_GetLocationMasterAllData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KPIModel.usp_GetLocationMasterAllData_Result">
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
+                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <EntitySetMapping Name="CompanyLocationMasters">
             <EntityTypeMapping TypeName="KPIModel.CompanyLocationMaster">
               <MappingFragment StoreEntitySet="CompanyLocationMaster">
@@ -4072,6 +4090,9 @@
           <EntitySetMapping Name="RawMaterialInventoryMasters">
             <EntityTypeMapping TypeName="KPIModel.RawMaterialInventoryMaster">
               <MappingFragment StoreEntitySet="RawMaterialInventoryMaster">
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="Qty" ColumnName="Qty" />
@@ -4256,18 +4277,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="usp_GetLocationMasterAllData" FunctionName="KPIModel.Store.usp_GetLocationMasterAllData">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="KPIModel.usp_GetLocationMasterAllData_Result">
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
-                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
-                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
