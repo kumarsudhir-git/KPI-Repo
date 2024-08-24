@@ -371,6 +371,7 @@ ON MB.VendorId = VM.VendorId
 LEFT JOIN LocationMaster LM
 ON MB.LocationId = LM.LocationId
 WHERE MB.IsActive = 1
+ORDER BY CASE WHEN MB.ModifiedOn != null THEN MB.ModifiedOn ELSE MB.AddedOn END DESC
 
 END
 
@@ -402,6 +403,7 @@ ON PB.LocationId = LM.LocationId
 LEFT JOIN VendorMaster VM
 ON PB.VendorId = VM.VendorId
 WHERE PB.IsActive = 1
+ORDER BY CASE WHEN PB.ModifiedOn != null THEN PB.ModifiedOn ELSE PB.AddedOn END DESC
 
 END
 
@@ -438,6 +440,7 @@ ON FG.ProductId = PM.ProductID
 LEFT JOIN RackMaster RM
 ON FG.RackId = RM.RackID
 WHERE FG.IsActive = 1
+ORDER BY CASE WHEN FG.ModifiedOn != null THEN FG.ModifiedOn ELSE FG.AddedOn END DESC
 
 END
 
