@@ -1,0 +1,89 @@
+﻿@model KPILib.Models.RMInventoryFinishedGoodModel
+
+@{
+    ViewBag.Title = "SaveFinishedGood";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>Finished Good</h2>
+<hr />
+
+<div class="form-horizontal">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(modelItem => modelItem.FinishedGoodId)
+
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.ProductId, null, "--Select--", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.RackId, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.DropDownListFor(model => model.RackId, null, "--Select--", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RackId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Package, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.EditorFor(model => model.Package, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Package, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Qty, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Qty, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.MinOrderLevel, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.EditorFor(model => model.MinOrderLevel, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MinOrderLevel, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.DropDownListFor(model => model.LocationId, null, "--Select--", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label>&nbsp;</label>
+                    <div class="">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <input type="button" value="Back" class="btn btn-danger" onclick="window.location.href='/RMInventory/GetAllFinishedGood'" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

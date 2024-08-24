@@ -1,0 +1,152 @@
+﻿@model IEnumerable<KPILib.Models.RMInventoryFinishedGoodModel>
+
+@{
+    ViewBag.Title = "GetAllFinishedGood";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>Finished Goods</h2>
+<hr />
+<div class="col-md-12">
+    <div class="row">
+        <p>
+            @Html.ActionLink("Create New", "SaveFinishedGood", "", new { @class = "btn btn-primary" })
+        </p>
+    </div>
+</div>
+
+<div class="form-horizontal">
+
+    <table class="table help-page-table table-sm table-striped AddDataTable" cellspacing="0" style="border:1px solid #000">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RackId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Package)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Qty)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MinOrderLevel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LocationId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifiedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifiedOn)
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RackNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Package)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Qty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MinOrderLevel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LocationName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddedByName)
+                    </td>
+                    <td>
+                        @if (item.AddedOn != DateTime.MinValue)
+                        {
+                            <span>@item.AddedOn.ToShortDateString()</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifiedByName)
+                    </td>
+                    <td>
+                        @if (item.ModifiedOn.HasValue && item.ModifiedOn.Value != DateTime.MinValue)
+                        {
+                            <span>@item.ModifiedOn.Value.ToShortDateString()</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="/RMInventory/SaveFinishedGood?FinishedGoodId=@item.FinishedGoodId" title="Edit" class="" id="UpdateMasterBatch"><i style="font-size:24px;" class="fa">&#xf044;</i></a>
+                        |
+                        <a href="#" title="Delete" class="" onclick="DeleteFinishedGoodData('@item.FinishedGoodId')"><i style="font-size:24px; color:red" class="fa">&#xf014;</i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+
+    function DeleteFinishedGoodData(FinishedGoodId) {
+
+        if (confirm("Are you sure want to delete data")) {
+            $.ajax({
+                url: "/RMInventory/DeleteFinishedGood",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ FinishedGoodId: FinishedGoodId }),
+                async: false,
+                success: function (data) {
+                    if (data.Response.ResponseCode == 440) {
+                        alert(data.Response.ResponseMsg);
+                        window.location.href = "/Login/Login";
+                    }
+                    else if (data.Response.ResponseCode == 200) {
+                        alert('Data deleted successfully');
+                        window.location.reload();
+                    }
+                    else if (data.Response.ResponseCode == 401) {
+                        alert(data.Response.ResponseMsg);
+                        window.location.href = "/Login/Login";
+                    }
+                    else {
+                        alert(data.Response.ResponseMsg);
+                        return false;
+                    }
+                },
+                error: function (response) {
+                    alert("Something went wrong");
+                    return false;
+                }
+            });
+        }
+        else {
+            return false;
+        }
+
+    }
+
+</script>

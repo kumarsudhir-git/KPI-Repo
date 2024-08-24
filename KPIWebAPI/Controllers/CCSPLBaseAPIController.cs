@@ -137,12 +137,30 @@ namespace KPIWebAPI.Controllers
             cfg.CreateMap<KPILib.Models.MouldTypeMaster, MouldTypeMaster>();
             cfg.CreateMap<VendorMaster, KPILib.Models.VendorMasterModel>();
             cfg.CreateMap<KPILib.Models.VendorMasterModel, VendorMaster>();
-            
+
             cfg.CreateMap<LocationMaster, KPILib.Models.LocationMasterModel>();
             cfg.CreateMap<KPILib.Models.LocationMasterModel, LocationMaster>();
-            
+
             cfg.CreateMap<usp_GetLocationMasterAllData_Result, KPILib.Models.LocationMasterModel>();
             cfg.CreateMap<KPILib.Models.LocationMasterModel, usp_GetLocationMasterAllData_Result>();
+
+            cfg.CreateMap<RMInventoryMasterBatch, KPILib.Models.RMInventoryMasterBatchModel>();
+            cfg.CreateMap<KPILib.Models.RMInventoryMasterBatchModel, RMInventoryMasterBatch>();
+            
+            cfg.CreateMap<usp_GetRMInventoryMasterBatch_Result, KPILib.Models.RMInventoryMasterBatchModel>();
+            cfg.CreateMap<KPILib.Models.RMInventoryMasterBatchModel, usp_GetRMInventoryMasterBatch_Result>();
+
+            cfg.CreateMap<RMInventoryPackageBag, KPILib.Models.RMInventoryPackageBagsModel>();
+            cfg.CreateMap<KPILib.Models.RMInventoryPackageBagsModel, RMInventoryPackageBag>();
+            
+            cfg.CreateMap<usp_GetRMInventoryPackageBags_Result, KPILib.Models.RMInventoryPackageBagsModel>();
+            cfg.CreateMap<KPILib.Models.RMInventoryPackageBagsModel, usp_GetRMInventoryPackageBags_Result>();
+
+            cfg.CreateMap<RMInventoryFinishedGood, KPILib.Models.RMInventoryFinishedGoodModel>();
+            cfg.CreateMap<KPILib.Models.RMInventoryFinishedGoodModel, RMInventoryFinishedGood>();
+            
+            cfg.CreateMap<usp_GetRMInventoryFinishedGood_Result, KPILib.Models.RMInventoryFinishedGoodModel>();
+            cfg.CreateMap<KPILib.Models.RMInventoryFinishedGoodModel, usp_GetRMInventoryFinishedGood_Result>();
         });
 
         public static IMapper mapper = config.CreateMapper();

@@ -30,6 +30,7 @@ namespace KPIWebAPI
         public Nullable<int> AddedBy { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<int> LocationId { get; set; }
+        public Nullable<int> MinOrderlevel { get; set; }
     
         public virtual PalletMaster PalletMaster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

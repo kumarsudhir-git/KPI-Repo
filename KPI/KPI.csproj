@@ -567,6 +567,12 @@
     <Content Include="Views\VendorMaster\AddNew.cshtml" />
     <Content Include="Views\LocationMaster\SaveLocation.cshtml" />
     <Content Include="Views\LocationMaster\GetAll.cshtml" />
+    <Content Include="Views\RMInventory\GetAllMasterBatch.cshtml" />
+    <Content Include="Views\RMInventory\SaveMasterBatch.cshtml" />
+    <Content Include="Views\RMInventory\GetAllPackagBags.cshtml" />
+    <Content Include="Views\RMInventory\SavePackageBags.cshtml" />
+    <Content Include="Views\RMInventory\GetAllFinishedGood.cshtml" />
+    <Content Include="Views\RMInventory\SaveFinishedGood.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

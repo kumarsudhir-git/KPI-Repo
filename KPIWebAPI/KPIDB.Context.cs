@@ -66,6 +66,9 @@ namespace KPIWebAPI
         public virtual DbSet<RackMaster> RackMasters { get; set; }
         public virtual DbSet<RawMaterialInventoryMaster> RawMaterialInventoryMasters { get; set; }
         public virtual DbSet<RawMaterialMaster> RawMaterialMasters { get; set; }
+        public virtual DbSet<RMInventoryFinishedGood> RMInventoryFinishedGoods { get; set; }
+        public virtual DbSet<RMInventoryMasterBatch> RMInventoryMasterBatches { get; set; }
+        public virtual DbSet<RMInventoryPackageBag> RMInventoryPackageBags { get; set; }
         public virtual DbSet<RoleMaster> RoleMasters { get; set; }
         public virtual DbSet<RoleRight> RoleRights { get; set; }
         public virtual DbSet<SalesDetail> SalesDetails { get; set; }
@@ -106,6 +109,21 @@ namespace KPIWebAPI
         public virtual ObjectResult<usp_GetLocationMasterAllData_Result> usp_GetLocationMasterAllData()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetLocationMasterAllData_Result>("usp_GetLocationMasterAllData");
+        }
+    
+        public virtual ObjectResult<usp_GetRMInventoryFinishedGood_Result> usp_GetRMInventoryFinishedGood()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryFinishedGood_Result>("usp_GetRMInventoryFinishedGood");
+        }
+    
+        public virtual ObjectResult<usp_GetRMInventoryMasterBatch_Result> usp_GetRMInventoryMasterBatch()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryMasterBatch_Result>("usp_GetRMInventoryMasterBatch");
+        }
+    
+        public virtual ObjectResult<usp_GetRMInventoryPackageBags_Result> usp_GetRMInventoryPackageBags()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryPackageBags_Result>("usp_GetRMInventoryPackageBags");
         }
     }
 }

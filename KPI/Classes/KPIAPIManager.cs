@@ -701,5 +701,88 @@ namespace KPI.Classes
 
         #endregion
 
+        #region Master Batch 
+
+        public static RMInventoryMasterBatchResponse GetAllMasterBatch()
+        {
+            var result = CommonFunctions.client.GetAsync("RMInventoryAPI/GetAllMasterBatch").Result.Content.ReadAsAsync<RMInventoryMasterBatchResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryMasterBatchResponse GetMasterBatchData(int BatchId = 0)
+        {
+            var result = CommonFunctions.client.GetAsync("RMInventoryAPI/GetMasterBatchData?BatchId=" + BatchId.ToString()).Result.Content.ReadAsAsync<RMInventoryMasterBatchResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryMasterBatchResponse SaveMasterBatch(RMInventoryMasterBatchModel data)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RMInventoryAPI/SaveMasterBatch", data).Result.Content.ReadAsAsync<RMInventoryMasterBatchResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryMasterBatchResponse DeleteMasterBatch(RMInventoryMasterBatchModel data)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RMInventoryAPI/DeleteMasterBatch", data).Result.Content.ReadAsAsync<RMInventoryMasterBatchResponse>().Result;
+            return result;
+        }
+
+        #endregion
+
+        #region Packaging Bags
+
+        public static RMInventoryPackageBagsModelResponse GetAllPackagBags()
+        {
+            var result = CommonFunctions.client.GetAsync("RMInventoryAPI/GetAllPackagBags").Result.Content.ReadAsAsync<RMInventoryPackageBagsModelResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryPackageBagsModelResponse GetPackagBagData(int PackagBagId = 0)
+        {
+            var result = CommonFunctions.client.GetAsync("RMInventoryAPI/GetPackagBagData?PackagBagId=" + PackagBagId.ToString()).Result.Content.ReadAsAsync<RMInventoryPackageBagsModelResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryPackageBagsModelResponse SavePackageBags(RMInventoryPackageBagsModel data)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RMInventoryAPI/SavePackageBags", data).Result.Content.ReadAsAsync<RMInventoryPackageBagsModelResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryPackageBagsModelResponse DeletePackageBags(RMInventoryPackageBagsModel data)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RMInventoryAPI/DeletePackageBags", data).Result.Content.ReadAsAsync<RMInventoryPackageBagsModelResponse>().Result;
+            return result;
+        }
+
+        #endregion
+
+        #region Finished Good
+
+        public static RMInventoryFinishedGoodResponse GetAllFinishedGood()
+        {
+            var result = CommonFunctions.client.GetAsync("RMInventoryAPI/GetAllFinishedGood").Result.Content.ReadAsAsync<RMInventoryFinishedGoodResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryFinishedGoodResponse GetFinishedGoodData(int FinishedGoodId = 0)
+        {
+            var result = CommonFunctions.client.GetAsync("RMInventoryAPI/GetFinishedGoodData?FinishedGoodId=" + FinishedGoodId.ToString()).Result.Content.ReadAsAsync<RMInventoryFinishedGoodResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryFinishedGoodResponse SaveFinishedGood(RMInventoryFinishedGoodModel data)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RMInventoryAPI/SaveFinishedGood", data).Result.Content.ReadAsAsync<RMInventoryFinishedGoodResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryFinishedGoodResponse DeleteFinishedGood(RMInventoryFinishedGoodModel data)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RMInventoryAPI/DeleteFinishedGood", data).Result.Content.ReadAsAsync<RMInventoryFinishedGoodResponse>().Result;
+            return result;
+        }
+
+        #endregion
     }
 }

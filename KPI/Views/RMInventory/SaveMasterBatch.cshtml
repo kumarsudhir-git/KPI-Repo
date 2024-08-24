@@ -1,0 +1,89 @@
+﻿@model KPILib.Models.RMInventoryMasterBatchModel
+
+@{
+    ViewBag.Title = "SaveMasterBatch";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>Save Master Batch</h2>
+<hr />
+<div class="form-horizontal">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(modelItem => modelItem.MasterBatchId)
+
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.CodeNo, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.EditorFor(model => model.CodeNo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CodeNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Colour, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.EditorFor(model => model.Colour, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Colour, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.VendorId, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.DropDownListFor(model => model.VendorId, null, "--Select--", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.VendorId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.QtyInStock, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.EditorFor(model => model.QtyInStock, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.QtyInStock, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.MinOrderLevel, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.EditorFor(model => model.MinOrderLevel, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MinOrderLevel, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.DropDownListFor(model => model.LocationId, null, "--Select--", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label>&nbsp;</label>
+                    <div class="">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <input type="button" value="Back" class="btn btn-danger" onclick="window.location.href='/RMInventory/GetAllMasterBatch'" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

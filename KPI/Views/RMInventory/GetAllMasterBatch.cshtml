@@ -1,0 +1,152 @@
+﻿@model IEnumerable<KPILib.Models.RMInventoryMasterBatchModel>
+
+@{
+    ViewBag.Title = "GetAllMasterBatch";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>Master Batch</h2>
+<hr />
+<div class="col-md-12">
+    <div class="row">
+        <p>
+            @Html.ActionLink("Create New", "SaveMasterBatch", "", new { @class = "btn btn-primary" })
+        </p>
+    </div>
+</div>
+
+<div class="form-horizontal">
+
+    <table class="table help-page-table table-sm table-striped AddDataTable" cellspacing="0" style="border:1px solid #000">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CodeNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Colour)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VendorId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QtyInStock)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MinOrderLevel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LocationId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifiedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifiedOn)
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CodeNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Colour)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VendorName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QtyInStock)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MinOrderLevel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LocationName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddedByName)
+                    </td>
+                    <td>
+                        @if (item.AddedOn != null && item.AddedOn != DateTime.MinValue)
+                        {
+                            <span>@item.AddedOn.ToShortDateString()</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifiedByName)
+                    </td>
+                    <td>
+                        @if (item.ModifiedOn.HasValue && item.ModifiedOn.Value != DateTime.MinValue)
+                        {
+                            <span>@item.ModifiedOn.Value.ToShortDateString()</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="/RMInventory/SaveMasterBatch?MasterBatchId=@item.MasterBatchId" title="Edit" class="" id="UpdateMasterBatch"><i style="font-size:24px;" class="fa">&#xf044;</i></a>
+                        |
+                        <a href="#" title="Delete" class="" onclick="DeleteMasterBatchData('@item.CodeNo', '@item.MasterBatchId')"><i style="font-size:24px; color:red" class="fa">&#xf014;</i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+
+    function DeleteMasterBatchData(CodeNo, MasterBatchId) {
+
+        if (confirm("Are you sure want to delete data :- " + CodeNo)) {
+            $.ajax({
+                url: "/RMInventory/DeleteMasterBatch",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ MasterBatchId: MasterBatchId }),
+                async: false,
+                success: function (data) {
+                    if (data.Response.ResponseCode == 440) {
+                        alert(data.Response.ResponseMsg);
+                        window.location.href = "/Login/Login";
+                    }
+                    else if (data.Response.ResponseCode == 200) {
+                        alert('Data deleted successfully');
+                        window.location.reload();
+                    }
+                    else if (data.Response.ResponseCode == 401) {
+                        alert(data.Response.ResponseMsg);
+                        window.location.href = "/Login/Login";
+                    }
+                    else {
+                        alert(data.Response.ResponseMsg);
+                        return false;
+                    }
+                },
+                error: function (response) {
+                    alert("Something went wrong");
+                    return false;
+                }
+            });
+        }
+        else {
+            return false;
+        }
+
+    }
+
+</script>

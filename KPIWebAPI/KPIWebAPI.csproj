@@ -372,6 +372,15 @@
     <Compile Include="RawMaterialMaster.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="RMInventoryFinishedGood.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RMInventoryMasterBatch.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RMInventoryPackageBag.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="RoleMaster.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
@@ -409,6 +418,15 @@
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
     <Compile Include="usp_GetLocationMasterAllData_Result.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="usp_GetRMInventoryFinishedGood_Result.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="usp_GetRMInventoryMasterBatch_Result.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="usp_GetRMInventoryPackageBags_Result.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
     <Compile Include="VendorMaster.cs">

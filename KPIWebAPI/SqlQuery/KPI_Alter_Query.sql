@@ -278,7 +278,168 @@ GO
 ALTER TABLE RawMaterialInventoryMaster ADD AddedBy INT NULL, ModifiedBy INT NULL, LocationId INT NULL
 
 GO
+ALTER TABLE RawMaterialInventoryMaster ADD MinOrderlevel INT NULL
 
+GO
+INSERT INTO MenuMaster
+(MenuCode,MenuName,MenuParentID,Link)
+VALUES
+('M_RMInventory','Master Batch',2,'GetAllMasterBatch/RMInventory'),
+('M_RMInventory','Package Bags',2,'GetAllPackagBags/RMInventory'),
+('M_RMInventory','Finished Goods',2,'GetAllFinishedGood/RMInventory')
+
+GO
+
+CREATE TABLE RMInventoryMasterBatch
+(
+MasterBatchId INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+CodeNo NVARCHAR(250) NULL, 
+Colour NVARCHAR(250) NULL, 
+VendorId INT NULL, 
+QtyInStock INT NULL, 
+MinOrderLevel INT NULL,
+LocationId INT NULL,
+IsActive BIT NOT NULL DEFAULT(1),
+AddedBy INT NULL,
+AddedOn DATETIME NOT NULL DEFAULT(GETDATE()),
+ModifiedBy INT NULL,
+ModifiedOn DATETIME NULL
+)
+
+GO
+
+CREATE TABLE RMInventoryPackageBags
+(
+PackageBagId INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+Size INT NULL,  
+VendorId INT NULL, 
+QtyInStock INT NULL, 
+MinOrderLevel INT NULL,
+LocationId INT NULL,
+IsActive BIT NOT NULL DEFAULT(1),
+AddedBy INT NULL,
+AddedOn DATETIME NOT NULL DEFAULT(GETDATE()),
+ModifiedBy INT NULL,
+ModifiedOn DATETIME NULL
+)
+
+GO
+
+CREATE TABLE RMInventoryFinishedGood
+(
+FinishedGoodId INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+ProductId INT NULL,  
+RackId INT NULL,
+Package INT NULL,
+Qty INT NULL, 
+MinOrderLevel INT NULL,
+LocationId INT NULL,
+IsActive BIT NOT NULL DEFAULT(1),
+AddedBy INT NULL,
+AddedOn DATETIME NOT NULL DEFAULT(GETDATE()),
+ModifiedBy INT NULL,
+ModifiedOn DATETIME NULL
+)
+
+GO
+
+CREATE PROCEDURE usp_GetRMInventoryMasterBatch
+
+AS
+BEGIN
+
+Select MB.MasterBatchId,
+MB.CodeNo,
+MB.Colour,
+MB.QtyInStock,
+MB.MinOrderLevel,
+MB.VendorId,
+VM.VendorName,
+MB.LocationId,
+LM.LocationName,
+MB.AddedOn,
+UM.Username AS 'AddedByName',
+MB.ModifiedOn,
+usrMstr.Username AS 'ModifiedByName'
+from RMInventoryMasterBatch MB
+LEFT JOIN UserMaster UM
+ON MB.AddedBy = UM.UserID
+LEFT JOIN UserMaster usrMstr
+ON MB.ModifiedBy = usrMstr.UserID
+LEFT JOIN VendorMaster VM
+ON MB.VendorId = VM.VendorId
+LEFT JOIN LocationMaster LM
+ON MB.LocationId = LM.LocationId
+WHERE MB.IsActive = 1
+
+END
+
+GO
+
+CREATE PROCEDURE usp_GetRMInventoryPackageBags
+
+AS
+BEGIN
+
+Select PB.PackageBagId,
+PB.Size,
+VM.VendorName,
+PB.QtyInStock,
+PB.MinOrderLevel,
+PB.LocationId,
+LM.LocationName,
+PB.AddedOn,
+UM.Username AS 'AddedByName',
+PB.ModifiedOn,
+usrMstr.Username AS 'ModifiedByName'
+from RMInventoryPackageBags PB
+LEFT JOIN UserMaster UM
+ON PB.AddedBy = UM.UserID
+LEFT JOIN UserMaster usrMstr
+ON PB.ModifiedBy = usrMstr.UserID
+LEFT JOIN LocationMaster LM
+ON PB.LocationId = LM.LocationId
+LEFT JOIN VendorMaster VM
+ON PB.VendorId = VM.VendorId
+WHERE PB.IsActive = 1
+
+END
+
+GO
+
+CREATE PROCEDURE usp_GetRMInventoryFinishedGood
+
+AS
+BEGIN
+
+Select FG.FinishedGoodId,
+FG.ProductId,
+PM.ProductName,
+FG.RackId,
+RM.RackNo AS 'RackNumber',
+FG.Package,
+FG.Qty,
+FG.MinOrderLevel,
+FG.LocationId,
+LM.LocationName,
+FG.AddedOn,
+UM.Username AS 'AddedByName',
+FG.ModifiedOn,
+usrMstr.Username AS 'ModifiedByName'
+from RMInventoryFinishedGood FG
+LEFT JOIN UserMaster UM
+ON FG.AddedBy = UM.UserID
+LEFT JOIN UserMaster usrMstr
+ON FG.ModifiedBy = usrMstr.UserID
+LEFT JOIN LocationMaster LM
+ON FG.LocationId = LM.LocationId
+LEFT JOIN ProductMaster PM
+ON FG.ProductId = PM.ProductID
+LEFT JOIN RackMaster RM
+ON FG.RackId = RM.RackID
+WHERE FG.IsActive = 1
+
+END
 
 ------------------------------------------------------END-----------------------------
 

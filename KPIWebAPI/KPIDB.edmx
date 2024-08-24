@@ -465,6 +465,7 @@
           <Property Name="AddedBy" Type="int" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="LocationId" Type="int" />
+          <Property Name="MinOrderlevel" Type="int" />
         </EntityType>
         <EntityType Name="RawMaterialMaster">
           <Key>
@@ -478,6 +479,56 @@
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
           <Property Name="SupplierDetails" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="RMInventoryFinishedGood">
+          <Key>
+            <PropertyRef Name="FinishedGoodId" />
+          </Key>
+          <Property Name="FinishedGoodId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="int" />
+          <Property Name="RackId" Type="int" />
+          <Property Name="Package" Type="int" />
+          <Property Name="Qty" Type="int" />
+          <Property Name="MinOrderLevel" Type="int" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="AddedBy" Type="int" />
+          <Property Name="AddedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="RMInventoryMasterBatch">
+          <Key>
+            <PropertyRef Name="MasterBatchId" />
+          </Key>
+          <Property Name="MasterBatchId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodeNo" Type="nvarchar" MaxLength="250" />
+          <Property Name="Colour" Type="nvarchar" MaxLength="250" />
+          <Property Name="VendorId" Type="int" />
+          <Property Name="QtyInStock" Type="int" />
+          <Property Name="MinOrderLevel" Type="int" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="AddedBy" Type="int" />
+          <Property Name="AddedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="RMInventoryPackageBags">
+          <Key>
+            <PropertyRef Name="PackageBagId" />
+          </Key>
+          <Property Name="PackageBagId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Size" Type="int" />
+          <Property Name="VendorId" Type="int" />
+          <Property Name="QtyInStock" Type="int" />
+          <Property Name="MinOrderLevel" Type="int" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="AddedBy" Type="int" />
+          <Property Name="AddedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
         </EntityType>
         <EntityType Name="RoleMaster">
           <Key>
@@ -1402,6 +1453,9 @@
         <Function Name="sp_GetEmptyRacks" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_GetRMInventory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="usp_GetLocationMasterAllData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="usp_GetRMInventoryFinishedGood" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="usp_GetRMInventoryMasterBatch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="usp_GetRMInventoryPackageBags" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="KPIModelStoreContainer">
           <EntitySet Name="CompanyLocationMaster" EntityType="Self.CompanyLocationMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyMaster" EntityType="Self.CompanyMaster" Schema="dbo" store:Type="Tables" />
@@ -1442,6 +1496,9 @@
           <EntitySet Name="RackMaster" EntityType="Self.RackMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RawMaterialInventoryMaster" EntityType="Self.RawMaterialInventoryMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RawMaterialMaster" EntityType="Self.RawMaterialMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RMInventoryFinishedGood" EntityType="Self.RMInventoryFinishedGood" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RMInventoryMasterBatch" EntityType="Self.RMInventoryMasterBatch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RMInventoryPackageBags" EntityType="Self.RMInventoryPackageBags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleMaster" EntityType="Self.RoleMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleRights" EntityType="Self.RoleRights" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SalesDetails" EntityType="Self.SalesDetails" Schema="dbo" store:Type="Tables" />
@@ -1723,6 +1780,8 @@
           <Parameter Name="MouldID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_GetLocationMasterAllData" ReturnType="Collection(KPIModel.usp_GetLocationMasterAllData_Result)" />
+          <FunctionImport Name="usp_GetRMInventoryFinishedGood" ReturnType="Collection(KPIModel.usp_GetRMInventoryFinishedGood_Result)" />
+          <FunctionImport Name="usp_GetRMInventoryMasterBatch" ReturnType="Collection(KPIModel.usp_GetRMInventoryMasterBatch_Result)" />
           <EntitySet Name="CompanyLocationMasters" EntityType="KPIModel.CompanyLocationMaster" />
           <EntitySet Name="CompanyMasters" EntityType="KPIModel.CompanyMaster" />
           <EntitySet Name="CompanyTypeMasters" EntityType="KPIModel.CompanyTypeMaster" />
@@ -1762,6 +1821,9 @@
           <EntitySet Name="RackMasters" EntityType="KPIModel.RackMaster" />
           <EntitySet Name="RawMaterialInventoryMasters" EntityType="KPIModel.RawMaterialInventoryMaster" />
           <EntitySet Name="RawMaterialMasters" EntityType="KPIModel.RawMaterialMaster" />
+          <EntitySet Name="RMInventoryFinishedGoods" EntityType="KPIModel.RMInventoryFinishedGood" />
+          <EntitySet Name="RMInventoryMasterBatches" EntityType="KPIModel.RMInventoryMasterBatch" />
+          <EntitySet Name="RMInventoryPackageBags" EntityType="KPIModel.RMInventoryPackageBag" />
           <EntitySet Name="RoleMasters" EntityType="KPIModel.RoleMaster" />
           <EntitySet Name="RoleRights" EntityType="KPIModel.RoleRight" />
           <EntitySet Name="SalesDetails" EntityType="KPIModel.SalesDetail" />
@@ -2030,6 +2092,7 @@
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="SalesMaster" EntitySet="SalesMasters" />
           </AssociationSet>
+          <FunctionImport Name="usp_GetRMInventoryPackageBags" ReturnType="Collection(KPIModel.usp_GetRMInventoryPackageBags_Result)" />
           </EntityContainer>
         <ComplexType Name="sp_GetRMInventory_Result">
           <Property Type="Int32" Name="PalletID" Nullable="false" />
@@ -2049,6 +2112,37 @@
           <Property Type="String" Name="ModifiedByName" Nullable="false" MaxLength="20" />
           <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
           <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="usp_GetRMInventoryFinishedGood_Result">
+          <Property Type="Int32" Name="FinishedGoodId" Nullable="false" />
+          <Property Type="Int32" Name="ProductId" Nullable="true" />
+          <Property Type="String" Name="ProductName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="RackId" Nullable="true" />
+          <Property Type="String" Name="RackNumber" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="Package" Nullable="true" />
+          <Property Type="Int32" Name="Qty" Nullable="true" />
+          <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
+          <Property Type="Int32" Name="LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
+          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
+          <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ModifiedByName" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="usp_GetRMInventoryMasterBatch_Result">
+          <Property Type="Int32" Name="MasterBatchId" Nullable="false" />
+          <Property Type="String" Name="CodeNo" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="Colour" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="QtyInStock" Nullable="true" />
+          <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
+          <Property Type="Int32" Name="VendorId" Nullable="true" />
+          <Property Type="String" Name="VendorName" Nullable="true" />
+          <Property Type="Int32" Name="LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
+          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
+          <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ModifiedByName" Nullable="true" MaxLength="20" />
         </ComplexType>
         <EntityType Name="CompanyLocationMaster">
           <Key>
@@ -2599,6 +2693,7 @@
           <Property Name="AddedBy" Type="Int32" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="LocationId" Type="Int32" />
+          <Property Name="MinOrderlevel" Type="Int32" />
           <NavigationProperty Name="PalletMaster" Relationship="KPIModel.FK_RawMaterialInventoryMaster_PalletMaster" FromRole="RawMaterialInventoryMaster" ToRole="PalletMaster" />
           <NavigationProperty Name="ProductionRawMaterials" Relationship="KPIModel.FK_ProductionRawMaterial_RawMaterialInventoryMaster" FromRole="RawMaterialInventoryMaster" ToRole="ProductionRawMaterial" />
           <NavigationProperty Name="RawMaterialMaster" Relationship="KPIModel.FK_RawMaterialInventoryMaster_RawMaterialMaster" FromRole="RawMaterialInventoryMaster" ToRole="RawMaterialMaster" />
@@ -2623,6 +2718,56 @@
           <NavigationProperty Name="PurchaseRcvdStoreds" Relationship="KPIModel.FK_PurchaseRcvdStored_RawMaterialMaster" FromRole="RawMaterialMaster" ToRole="PurchaseRcvdStored" />
           <NavigationProperty Name="RawMaterialInventoryMasters" Relationship="KPIModel.FK_RawMaterialInventoryMaster_RawMaterialMaster" FromRole="RawMaterialMaster" ToRole="RawMaterialInventoryMaster" />
           <NavigationProperty Name="UOMMaster" Relationship="KPIModel.FK_RawMaterialMaster_UOMMaster" FromRole="RawMaterialMaster" ToRole="UOMMaster" />
+        </EntityType>
+        <EntityType Name="RMInventoryFinishedGood">
+          <Key>
+            <PropertyRef Name="FinishedGoodId" />
+          </Key>
+          <Property Name="FinishedGoodId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int32" />
+          <Property Name="RackId" Type="Int32" />
+          <Property Name="Package" Type="Int32" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="MinOrderLevel" Type="Int32" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="AddedBy" Type="Int32" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="RMInventoryMasterBatch">
+          <Key>
+            <PropertyRef Name="MasterBatchId" />
+          </Key>
+          <Property Name="MasterBatchId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodeNo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Colour" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="VendorId" Type="Int32" />
+          <Property Name="QtyInStock" Type="Int32" />
+          <Property Name="MinOrderLevel" Type="Int32" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="AddedBy" Type="Int32" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="RMInventoryPackageBag">
+          <Key>
+            <PropertyRef Name="PackageBagId" />
+          </Key>
+          <Property Name="PackageBagId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Size" Type="Int32" />
+          <Property Name="VendorId" Type="Int32" />
+          <Property Name="QtyInStock" Type="Int32" />
+          <Property Name="MinOrderLevel" Type="Int32" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="AddedBy" Type="Int32" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="RoleMaster">
           <Key>
@@ -3568,6 +3713,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="usp_GetRMInventoryPackageBags_Result">
+          <Property Type="Int32" Name="PackageBagId" Nullable="false" />
+          <Property Type="Int32" Name="Size" Nullable="true" />
+          <Property Type="String" Name="VendorName" Nullable="true" />
+          <Property Type="Int32" Name="QtyInStock" Nullable="true" />
+          <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
+          <Property Type="Int32" Name="LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
+          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
+          <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ModifiedByName" Nullable="true" MaxLength="20" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3601,6 +3759,45 @@
                 <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_GetRMInventoryFinishedGood" FunctionName="KPIModel.Store.usp_GetRMInventoryFinishedGood">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KPIModel.usp_GetRMInventoryFinishedGood_Result">
+                <ScalarProperty Name="FinishedGoodId" ColumnName="FinishedGoodId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="RackId" ColumnName="RackId" />
+                <ScalarProperty Name="RackNumber" ColumnName="RackNumber" />
+                <ScalarProperty Name="Package" ColumnName="Package" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_GetRMInventoryMasterBatch" FunctionName="KPIModel.Store.usp_GetRMInventoryMasterBatch">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KPIModel.usp_GetRMInventoryMasterBatch_Result">
+                <ScalarProperty Name="MasterBatchId" ColumnName="MasterBatchId" />
+                <ScalarProperty Name="CodeNo" ColumnName="CodeNo" />
+                <ScalarProperty Name="Colour" ColumnName="Colour" />
+                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
+                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -4090,6 +4287,7 @@
           <EntitySetMapping Name="RawMaterialInventoryMasters">
             <EntityTypeMapping TypeName="KPIModel.RawMaterialInventoryMaster">
               <MappingFragment StoreEntitySet="RawMaterialInventoryMaster">
+                <ScalarProperty Name="MinOrderlevel" ColumnName="MinOrderlevel" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
@@ -4114,6 +4312,59 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="RawMaterialName" ColumnName="RawMaterialName" />
                 <ScalarProperty Name="RawMaterialID" ColumnName="RawMaterialID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMInventoryFinishedGoods">
+            <EntityTypeMapping TypeName="KPIModel.RMInventoryFinishedGood">
+              <MappingFragment StoreEntitySet="RMInventoryFinishedGood">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Package" ColumnName="Package" />
+                <ScalarProperty Name="RackId" ColumnName="RackId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="FinishedGoodId" ColumnName="FinishedGoodId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMInventoryMasterBatches">
+            <EntityTypeMapping TypeName="KPIModel.RMInventoryMasterBatch">
+              <MappingFragment StoreEntitySet="RMInventoryMasterBatch">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
+                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="Colour" ColumnName="Colour" />
+                <ScalarProperty Name="CodeNo" ColumnName="CodeNo" />
+                <ScalarProperty Name="MasterBatchId" ColumnName="MasterBatchId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMInventoryPackageBags">
+            <EntityTypeMapping TypeName="KPIModel.RMInventoryPackageBag">
+              <MappingFragment StoreEntitySet="RMInventoryPackageBags">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
+                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="PackageBagId" ColumnName="PackageBagId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4277,6 +4528,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="usp_GetRMInventoryPackageBags" FunctionName="KPIModel.Store.usp_GetRMInventoryPackageBags">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KPIModel.usp_GetRMInventoryPackageBags_Result">
+                <ScalarProperty Name="PackageBagId" ColumnName="PackageBagId" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
+                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
