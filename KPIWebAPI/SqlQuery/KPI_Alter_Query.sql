@@ -444,6 +444,24 @@ ORDER BY CASE WHEN FG.ModifiedOn != null THEN FG.ModifiedOn ELSE FG.AddedOn END 
 
 END
 
+GO
+
+ALTER TABLE RawMaterialMaster DROP COLUMN SupplierDetails
+GO
+
+ALTER TABLE RawMaterialMaster ADD VendorId INT NULL
+
+GO
+
+ALTER TABLE MouldMaster DROP COLUMN Location
+GO
+
+ALTER TABLE MouldMaster ADD LocationId INT NULL
+
+GO
+
+
+
 ------------------------------------------------------END-----------------------------
 
 

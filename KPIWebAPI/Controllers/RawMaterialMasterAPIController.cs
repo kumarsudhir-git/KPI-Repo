@@ -1,5 +1,6 @@
 ﻿using KPILib.Models;
 using KPIWebAPI.AuthFilters;
+using KPIWebAPI.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,20 @@ namespace KPIWebAPI.Controllers
 
             try
             {
-                var data = db.RawMaterialMasters.Where(x => !x.IsDiscontinued).OrderBy(x=> x.RawMaterialName).ToList();
+                var data = db.RawMaterialMasters.Where(x => !x.IsDiscontinued).OrderBy(x => x.RawMaterialName).ToList();
                 foreach (var obj in data)
                 {
                     var o = mapper.Map<RawMaterialMaster, KPILib.Models.RawMaterial>(obj);
+
+                    if (obj.VendorId != null)
+                    {
+                        VendorMaster vendorMasterObj = CommonFunctions.GetVendorDetailsFromId((int)obj.VendorId);
+                        if (vendorMasterObj != null)
+                        {
+                            o.VendorName = vendorMasterObj.VendorName;
+                        }
+                    }
+
                     o.UOM = obj.UOMMaster.UnitsName;
                     o.InStock = obj.RawMaterialInventoryMasters.Sum(x => x.Qty);
                     o.Ordered = obj.PurchaseDetails.Where(x => x.PurchaseMaster.PurchaseStatusID < ((int)enumPurchaseStatus.Full_Rcvd__Closed) && x.Qty - x.RcvdQty > 0).Sum(x => x.Qty - x.RcvdQty);
@@ -60,7 +71,7 @@ namespace KPIWebAPI.Controllers
                 #endregion
 
                 var data = db.RawMaterialMasters.SingleOrDefault(x => x.RawMaterialID == id);
-                if(data != null)
+                if (data != null)
                 {
                     var o = mapper.Map<RawMaterialMaster, KPILib.Models.RawMaterial>(data);
                     o.UOM = data.UOMMaster.UnitsName;
@@ -118,14 +129,14 @@ namespace KPIWebAPI.Controllers
 
             try
             {
-                var o = db.RawMaterialMasters.SingleOrDefault(x => x.RawMaterialID  == data.RawMaterialID);
+                var o = db.RawMaterialMasters.SingleOrDefault(x => x.RawMaterialID == data.RawMaterialID);
                 if (o != null)
                 {
                     o.RawMaterialName = data.RawMaterialName;
                     o.Description = data.Description;
                     o.UOMID = data.UOMID;
                     o.IsDiscontinued = data.IsDiscontinued;
-                    o.SupplierDetails = data.SupplierDetails;
+                    o.VendorId = data.VendorId;
                     o.LastModifiedOn = DateTime.Now;
 
                     db.Entry(o).State = System.Data.Entity.EntityState.Modified;

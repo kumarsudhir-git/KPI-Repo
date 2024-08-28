@@ -22,6 +22,14 @@ namespace KPIWebAPI.Controllers
                 {
                     var o = mapper.Map<MouldMaster, KPILib.Models.Mould>(obj);
 
+                    if (o.LocationId != null)
+                    {
+                        LocationMaster locationMaster = CommonFunctions.GetLocationMaster((int)o.LocationId);
+                        if (locationMaster != null)
+                        {
+                            o.LocationName = locationMaster.LocationName;
+                        }
+                    }
                     foreach (var product in obj.ProductMasters.ToList())
                     {
                         o.AllProducts += "," + mapper.Map<ProductMaster, KPILib.Models.Product>(product).ProductName;
@@ -102,7 +110,6 @@ namespace KPIWebAPI.Controllers
             {
                 if (data.MouldID == 0)
                 {
-
                     MouldMaster o = mapper.Map<KPILib.Models.Mould, MouldMaster>(data);
 
                     o.AddedOn = DateTime.Now;
@@ -124,7 +131,7 @@ namespace KPIWebAPI.Controllers
                         o.MouldName = data.MouldName;
                         o.Description = data.Description;
                         o.MouldTypeID = data.MouldTypeID; //TODO: Default UOM              //data.UOMID;
-                        o.Location = data.Location;
+                        o.LocationId = data.LocationId;
                         o.TotalCavities = data.TotalCavities;
                         o.RunningCavities = data.RunningCavities;
                         o.CorePins = data.CorePins;

@@ -16,6 +16,7 @@ namespace KPILib.Models
     public class Mould
     {
         public int MouldID { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Mould Code")]
         public string MouldName { get; set; }
         public string Description { get; set; }
@@ -36,7 +37,9 @@ namespace KPILib.Models
         public string AllProducts { get; set; }
         public int? InProductionID { get; set; }
         [Display(Name = "Location")]
-        public string Location { get; set; }
+        public int? LocationId { get; set; }
+        [Display(Name = "Location Name")]
+        public string LocationName { get; set; }
         [Display(Name = "Total No Of Cavities")]
         public string TotalCavities { get; set; }
         [Display(Name = "Running Cavities")]

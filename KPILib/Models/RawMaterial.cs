@@ -17,14 +17,15 @@ namespace KPILib.Models
         [Key]
         public int RawMaterialID { get; set; }
 
-        [Required(ErrorMessage = "{0} is required")]
+        //[Required(ErrorMessage = "{0} is required")]
+        [Required(ErrorMessage = "Required")]
         [StringLength(40, MinimumLength = 1, ErrorMessage = "{0} should be minimum 1 characters and a maximum of 40 characters")]
         [DataType(DataType.Text)]
         [Display(Name = "Raw Matarial")]
         public string RawMaterialName { get; set; }
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "{0} is required")]
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Unit of Measurement")]
         public int UOMID { get; set; }
         [Display(Name = "Unit of Measurement")]
@@ -39,8 +40,10 @@ namespace KPILib.Models
         public decimal Ordered { get; set; }
         public decimal LoanedOut { get; set; }
         public decimal LoanedIn { get; set; }
+        [Display(Name = "Vendor Name")]
+        public int? VendorId { get; set; }
         [Display(Name = "Supplier Details")]
-        public string SupplierDetails { get; set; }
+        public string VendorName { get; set; }
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }
     }
