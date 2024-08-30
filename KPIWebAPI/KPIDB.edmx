@@ -192,6 +192,10 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="TotalCavities" Type="nvarchar(max)" />
+          <Property Name="RunningCavities" Type="nvarchar(max)" />
+          <Property Name="CorePins" Type="nvarchar(max)" />
+          <Property Name="LocationId" Type="int" />
           <Property Name="Location" Type="nvarchar" MaxLength="300" />
           <Property Name="TotalCavities" Type="nvarchar" MaxLength="300" />
           <Property Name="RunningCavities" Type="nvarchar" MaxLength="300" />
@@ -478,6 +482,7 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="VendorId" Type="int" />
           <Property Name="SupplierDetails" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="RMInventoryFinishedGood">
@@ -4011,10 +4016,10 @@
           <EntitySetMapping Name="MouldMasters">
             <EntityTypeMapping TypeName="KPIModel.MouldMaster">
               <MappingFragment StoreEntitySet="MouldMaster">
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="CorePins" ColumnName="CorePins" />
                 <ScalarProperty Name="RunningCavities" ColumnName="RunningCavities" />
                 <ScalarProperty Name="TotalCavities" ColumnName="TotalCavities" />
-                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />
@@ -4321,7 +4326,7 @@
           <EntitySetMapping Name="RawMaterialMasters">
             <EntityTypeMapping TypeName="KPIModel.RawMaterialMaster">
               <MappingFragment StoreEntitySet="RawMaterialMaster">
-                <ScalarProperty Name="SupplierDetails" ColumnName="SupplierDetails" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />

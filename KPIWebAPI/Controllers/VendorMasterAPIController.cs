@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Linq;
 using System.Net;
 using System.Data.Entity;
+using KPIWebAPI.Classes;
 
 namespace KPIWebAPI.Controllers
 {
@@ -48,7 +49,7 @@ namespace KPIWebAPI.Controllers
             {
                 if (id != 0)
                 {
-                    VendorMaster vendorMaster = GetVendorMaster(id);
+                    VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(id);//GetVendorMaster(id);
                     if (vendorMaster != null)
                     {
                         vendorMasterModelResponse.vendorMaster = mapper.Map<VendorMaster, KPILib.Models.VendorMasterModel>(vendorMaster);
@@ -82,7 +83,7 @@ namespace KPIWebAPI.Controllers
                         }
                         else
                         {
-                            VendorMaster vendorMaster = GetVendorMaster(vendorMasterModel.VendorId);
+                            VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(vendorMasterModel.VendorId);//GetVendorMaster(vendorMasterModel.VendorId);
                             if (vendorMaster != null)
                             {
                                 //vendorMaster = mapper.Map<VendorMasterModel, VendorMaster>(vendorMasterModel);
@@ -123,7 +124,7 @@ namespace KPIWebAPI.Controllers
                 {
                     try
                     {
-                        VendorMaster vendorMasterObj = GetVendorMaster(vendorMasterModel.VendorId);
+                        VendorMaster vendorMasterObj = CommonFunctions.GetVendorDetailsFromId(vendorMasterModel.VendorId);// GetVendorMaster(vendorMasterModel.VendorId);
                         if (vendorMasterObj != null)
                         {
                             vendorMasterObj.IsDiscontinued = true;
@@ -148,14 +149,5 @@ namespace KPIWebAPI.Controllers
             }
             return Json(vendorMasterModelResponse);
         }
-
-        private VendorMaster GetVendorMaster(int VendorId)
-        {
-            VendorMaster vendorMaster = (from vm in db.VendorMasters
-                                         where vm.VendorId == VendorId
-                                         select vm).FirstOrDefault();
-            return vendorMaster;
-        }
-
     }
 }

@@ -36,11 +36,11 @@
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
-            <div class="col-md-3 col-sm-12">
-        <div class="form-group">
-            @Html.LabelFor(model => model.SupplierDetails, htmlAttributes: new { @class = "control-label col-md-2" })
-                @Html.EditorFor(model => model.SupplierDetails, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SupplierDetails, "", new { @class = "text-danger" })
+        <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.VendorId, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.DropDownListFor(model => model.VendorId, null, "--Select--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.VendorId, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -69,6 +69,9 @@
         </div>
     </div>
 }
+
+</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

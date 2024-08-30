@@ -47,10 +47,23 @@ namespace KPI.Controllers
         public ActionResult New(int id = 0)
         {
             ViewData["MouldTypeID"] = new SelectList(new List<SelectListItem>(), "MouldTypeID", "RoleName");
+            ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
             MouldMasterResponse response = KPIAPIManager.GetMoulds(id);
             if (response.Response.ResponseCode == 200)
             {
                 ViewData["MouldTypeID"] = new SelectList(response.MouldTypeMasters, "MouldTypeID", "MouldType");
+                LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
+
+                if (locationMasterResponse != null && locationMasterResponse.Response != null)
+                {
+                    if (locationMasterResponse.Response.ResponseCode == 200)
+                    {
+                        if (locationMasterResponse.data != null && locationMasterResponse.data.Count > 0)
+                        {
+                            ViewData["LocationId"] = new SelectList(locationMasterResponse.data, "LocationId", "LocationName");
+                        }
+                    }
+                }
                 return View(response.data);
             }
             else

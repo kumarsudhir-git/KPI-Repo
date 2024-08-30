@@ -211,5 +211,28 @@ namespace KPIWebAPI.Classes
             }
             return locationName;
         }
+
+        public static VendorMaster GetVendorDetailsFromId(int VendorId = 0)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                VendorMaster vendorMaster = (from vm in db.VendorMasters
+                                             where vm.VendorId == VendorId
+                                             select vm).FirstOrDefault();
+                return vendorMaster;
+            }
+        }
+
+        public static LocationMaster GetLocationMaster(int LocationId = 0)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                LocationMaster locationMaster = (from lm in db.LocationMasters
+                                                 where lm.LocationId == LocationId
+                                                 select lm).FirstOrDefault();
+                return locationMaster;
+            }
+        }
+
     }
 }

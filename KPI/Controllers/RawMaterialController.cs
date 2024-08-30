@@ -1,5 +1,7 @@
 ﻿using KPI.Classes;
 using KPI.Filters;
+using KPILib.Models;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace KPI.Controllers
@@ -23,10 +25,24 @@ namespace KPI.Controllers
         }
         public ActionResult Get(int id)
         {
+            ViewData["VendorId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+
             var response = KPIAPIManager.GetRawMaterial(id);
             if (response.Response.ResponseCode == 200)
             {
                 ViewBag.UOMs = new SelectList(response.data.UOMs, "UOMID", "UnitsName");
+                VendorMasterModelResponse vendorMasterModel = KPIAPIManager.GetAllVendorData();
+
+                if (vendorMasterModel != null && vendorMasterModel.Response != null)
+                {
+                    if (vendorMasterModel.Response.ResponseCode == 200)
+                    {
+                        if (vendorMasterModel.data != null && vendorMasterModel.data.Count > 0)
+                        {
+                            ViewData["VendorId"] = new SelectList(vendorMasterModel.data, "VendorId", "VendorName");
+                        }
+                    }
+                }
                 return View(response.data);
             }
             else
@@ -37,10 +53,23 @@ namespace KPI.Controllers
         }
         public ActionResult New()
         {
+            ViewData["VendorId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
             var response = KPIAPIManager.GetRawMaterial(0);
             if (response.Response.ResponseCode == 200)
             {
                 ViewBag.UOMs = new SelectList(response.data.UOMs, "UOMID", "UnitsName");
+                VendorMasterModelResponse vendorMasterModel = KPIAPIManager.GetAllVendorData();
+
+                if (vendorMasterModel != null && vendorMasterModel.Response != null)
+                {
+                    if (vendorMasterModel.Response.ResponseCode == 200)
+                    {
+                        if (vendorMasterModel.data != null && vendorMasterModel.data.Count > 0)
+                        {
+                            ViewData["VendorId"] = new SelectList(vendorMasterModel.data, "VendorId", "VendorName");
+                        }
+                    }
+                }
                 return View(response.data);
             }
             else
