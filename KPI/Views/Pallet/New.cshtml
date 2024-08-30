@@ -4,39 +4,43 @@
     ViewBag.Title = "Pallet - New";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-
-<h2>@ViewBag.Title</h2>
-<div>
-    @Html.ActionLink("Back to List", "GetAll")
+<div class="top_header">
+    <h2>@ViewBag.Title</h2>
+    <div class="back_btn">
+        @Html.ActionLink("Back to List", "GetAll")
+    </div>
 </div>
 
 @using (Html.BeginForm("Add", "Pallet"))
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <hr />
+    <div class="row">
+         
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.PalletNo, htmlAttributes: new { @class = "control-label col-md-1" })
-            <div class="col-md-11">
+        <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.PalletNo, htmlAttributes: new { @class = "control-label  " })
+
                 @Html.EditorFor(model => model.PalletNo, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.PalletNo, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-1" })
-            <div class="col-md-11">
+         <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label  " })
+
                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsDiscontinued, htmlAttributes: new { @class = "control-label col-md-1 justify-content-end" })
-            <div class="col-md-11">
+        <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsDiscontinued, htmlAttributes: new { @class = "control-label   " })
+
                 <div class="checkbox">
                     @Html.EditorFor(model => model.IsDiscontinued)
                     @Html.ValidationMessageFor(model => model.IsDiscontinued, "", new { @class = "text-danger" })
@@ -61,7 +65,7 @@
             </div>*@
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-12">
                 <input type="submit" value="Create" class="btn btn-dark" />
             </div>
         </div>

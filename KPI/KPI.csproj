@@ -338,6 +338,7 @@
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\style.css" />
+    <Content Include="css\responsive.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="HtmlPage1.html" />

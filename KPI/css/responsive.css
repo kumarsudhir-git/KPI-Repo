@@ -1,0 +1,80 @@
+
+:root,
+body {
+    font-family: "Montserrat", sans-serif !important;
+}
+.bg-dark {
+    background-color: #494949 !important;
+    box-shadow: 0px 4px 7px -4px #000000cc;
+}
+footer{
+    text-align:center;
+}
+footer p{
+    margin-bottom:0;
+    padding: 0 15px;
+}
+.navbar-collapse {
+    flex-grow: inherit;
+}
+.body-content {
+    padding-right: 30px;
+}
+.top_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #bcbcbc;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+.top_header h2{
+    font-weight:600;
+    font-size: 19px
+}
+table.dataTable.no-footer {
+    border-bottom: 1px solid #bcbcbc;
+}
+.back_btn a {
+    color: #325d88;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+}
+.wrap_container {
+    display: flex;
+    min-height: 90vh;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.form-group{
+    margin-bottom:20px;
+}
+.field-validation-error{
+    font-size:12px
+}
+@media(max-width:767px) {
+    .body-content{
+        padding-right: 15px;
+    }
+    div.dataTables_wrapper div.dataTables_length {
+        display: flex;
+    }
+    div.dataTables_wrapper div.dataTables_filter {
+        display: flex;
+        justify-content: end;
+        margin-top: -30px;
+    }
+    table.dataTable thead th, table.dataTable thead td {
+        padding: 5px 10px;
+    }
+    .top_header .btn{
+        width:auto;
+    }
+    .btn {
+        width: 100%
+    }
+    div.dataTables_wrapper div.dataTables_length select{
+        width: 70px;
+    }
+}

@@ -6,7 +6,7 @@
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
-    padding-right: 15px;
+    padding-right: 30px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -17,11 +17,11 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/*input,
 select,
 textarea {
     max-width: 280px;
-}
+}*/
 
 /*table {
     border-collapse: collapse;
@@ -43,10 +43,15 @@ th {
 
 
 label, .qtyCap {
-    font-size: x-small;
+    /*    font-size: x-small;
     text-transform: uppercase;
     color: dodgerblue;
-    padding: 10px 2px 2px 2px;
+    padding: 10px 2px 2px 2px;*/
+    font-size: 12px;
+    text-transform: inherit;
+    color: #325d88;
+    margin-bottom: 5px;
+    font-weight: 500;
 }
 
 .qty {

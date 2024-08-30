@@ -192,10 +192,10 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
-          <Property Name="Location" Type="nvarchar(max)" />
-          <Property Name="TotalCavities" Type="nvarchar(max)" />
-          <Property Name="RunningCavities" Type="nvarchar(max)" />
-          <Property Name="CorePins" Type="nvarchar(max)" />
+          <Property Name="Location" Type="nvarchar" MaxLength="300" />
+          <Property Name="TotalCavities" Type="nvarchar" MaxLength="300" />
+          <Property Name="RunningCavities" Type="nvarchar" MaxLength="300" />
+          <Property Name="CorePins" Type="nvarchar" MaxLength="300" />
         </EntityType>
         <EntityType Name="MouldStatusMaster">
           <Key>
@@ -478,7 +478,7 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
-          <Property Name="SupplierDetails" Type="nvarchar(max)" />
+          <Property Name="SupplierDetails" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="RMInventoryFinishedGood">
           <Key>
@@ -678,7 +678,7 @@
           <Property Name="LastModifiedBy" Type="int" />
           <Property Name="LastModifiedOn" Type="datetime" />
         </EntityType>
-        <Association Name="FK__Productio__Produ__6BE40491">
+        <Association Name="FK__Productio__Produ__7EF6D905">
           <End Role="ProductionProgram" Type="Self.ProductionProgram" Multiplicity="0..1" />
           <End Role="ProductionProgramBatch" Type="Self.ProductionProgramBatch" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1511,7 +1511,7 @@
           <EntitySet Name="UOMMaster" EntityType="Self.UOMMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VendorMaster" EntityType="Self.VendorMaster" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Productio__Produ__6BE40491" Association="Self.FK__Productio__Produ__6BE40491">
+          <AssociationSet Name="FK__Productio__Produ__7EF6D905" Association="Self.FK__Productio__Produ__7EF6D905">
             <End Role="ProductionProgram" EntitySet="ProductionProgram" />
             <End Role="ProductionProgramBatch" EntitySet="ProductionProgramBatch" />
           </AssociationSet>
@@ -1782,6 +1782,7 @@
           <FunctionImport Name="usp_GetLocationMasterAllData" ReturnType="Collection(KPIModel.usp_GetLocationMasterAllData_Result)" />
           <FunctionImport Name="usp_GetRMInventoryFinishedGood" ReturnType="Collection(KPIModel.usp_GetRMInventoryFinishedGood_Result)" />
           <FunctionImport Name="usp_GetRMInventoryMasterBatch" ReturnType="Collection(KPIModel.usp_GetRMInventoryMasterBatch_Result)" />
+          <FunctionImport Name="usp_GetRMInventoryPackageBags" ReturnType="Collection(KPIModel.usp_GetRMInventoryPackageBags_Result)" />
           <EntitySet Name="CompanyLocationMasters" EntityType="KPIModel.CompanyLocationMaster" />
           <EntitySet Name="CompanyMasters" EntityType="KPIModel.CompanyMaster" />
           <EntitySet Name="CompanyTypeMasters" EntityType="KPIModel.CompanyTypeMaster" />
@@ -1940,7 +1941,7 @@
             <End Role="RackMaster" EntitySet="RackMasters" />
             <End Role="ProductInventoryMaster" EntitySet="ProductInventoryMasters" />
           </AssociationSet>
-          <AssociationSet Name="FK__Productio__Produ__6BE40491" Association="KPIModel.FK__Productio__Produ__6BE40491">
+          <AssociationSet Name="FK__Productio__Produ__7EF6D905" Association="KPIModel.FK__Productio__Produ__7EF6D905">
             <End Role="ProductionProgram" EntitySet="ProductionPrograms" />
             <End Role="ProductionProgramBatch" EntitySet="ProductionProgramBatches" />
           </AssociationSet>
@@ -2092,7 +2093,6 @@
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="SalesMaster" EntitySet="SalesMasters" />
           </AssociationSet>
-          <FunctionImport Name="usp_GetRMInventoryPackageBags" ReturnType="Collection(KPIModel.usp_GetRMInventoryPackageBags_Result)" />
           </EntityContainer>
         <ComplexType Name="sp_GetRMInventory_Result">
           <Property Type="Int32" Name="PalletID" Nullable="false" />
@@ -2137,6 +2137,19 @@
           <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
           <Property Type="Int32" Name="VendorId" Nullable="true" />
           <Property Type="String" Name="VendorName" Nullable="true" />
+          <Property Type="Int32" Name="LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
+          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
+          <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ModifiedByName" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="usp_GetRMInventoryPackageBags_Result">
+          <Property Type="Int32" Name="PackageBagId" Nullable="false" />
+          <Property Type="Int32" Name="Size" Nullable="true" />
+          <Property Type="String" Name="VendorName" Nullable="true" />
+          <Property Type="Int32" Name="QtyInStock" Nullable="true" />
+          <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
           <Property Type="Int32" Name="LocationId" Nullable="true" />
           <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
           <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
@@ -2349,10 +2362,10 @@
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TotalCavities" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="RunningCavities" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CorePins" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="TotalCavities" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="RunningCavities" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="CorePins" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MachineMouldMappings" Relationship="KPIModel.FK_MachineMouldMapping_MouldMaster" FromRole="MouldMaster" ToRole="MachineMouldMapping" />
           <NavigationProperty Name="MouldHistories" Relationship="KPIModel.FK_MouldHistory_MouldMaster" FromRole="MouldMaster" ToRole="MouldHistory" />
           <NavigationProperty Name="MouldTypeMaster" Relationship="KPIModel.FK_MouldMaster_MouldTypeMaster" FromRole="MouldMaster" ToRole="MouldTypeMaster" />
@@ -2489,7 +2502,7 @@
           <NavigationProperty Name="MachineMaster" Relationship="KPIModel.FK_ProductionProgram_MachineMaster" FromRole="ProductionProgram" ToRole="MachineMaster" />
           <NavigationProperty Name="MouldMaster" Relationship="KPIModel.FK_ProductionProgram_MouldMaster" FromRole="ProductionProgram" ToRole="MouldMaster" />
           <NavigationProperty Name="ProdReadyStoreds" Relationship="KPIModel.FK_ProdReadyStored_ProductionProgram" FromRole="ProductionProgram" ToRole="ProdReadyStored" />
-          <NavigationProperty Name="ProductionProgramBatches" Relationship="KPIModel.FK__Productio__Produ__6BE40491" FromRole="ProductionProgram" ToRole="ProductionProgramBatch" />
+          <NavigationProperty Name="ProductionProgramBatches" Relationship="KPIModel.FK__Productio__Produ__7EF6D905" FromRole="ProductionProgram" ToRole="ProductionProgramBatch" />
           <NavigationProperty Name="ProductionProgramRMMappings" Relationship="KPIModel.FK_ProductionProgam_ID" FromRole="ProductionProgram" ToRole="ProductionProgramRMMapping" />
           <NavigationProperty Name="ProductMaster" Relationship="KPIModel.FK_ProductionProgram_ProductMaster" FromRole="ProductionProgram" ToRole="ProductMaster" />
           <NavigationProperty Name="SalesDetail" Relationship="KPIModel.FK_ProductionProgram_SalesDetails" FromRole="ProductionProgram" ToRole="SalesDetail" />
@@ -2506,7 +2519,7 @@
           <Property Name="ProductQtyCompleted" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ProductionProgram" Relationship="KPIModel.FK__Productio__Produ__6BE40491" FromRole="ProductionProgramBatch" ToRole="ProductionProgram" />
+          <NavigationProperty Name="ProductionProgram" Relationship="KPIModel.FK__Productio__Produ__7EF6D905" FromRole="ProductionProgramBatch" ToRole="ProductionProgram" />
         </EntityType>
         <EntityType Name="ProductionProgramRMMapping">
           <Key>
@@ -2710,7 +2723,7 @@
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="SupplierDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SupplierDetails" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ProductionProgramRMMappings" Relationship="KPIModel.FK_RawMaterial_ID" FromRole="RawMaterialMaster" ToRole="ProductionProgramRMMapping" />
           <NavigationProperty Name="ProductionRawMaterials" Relationship="KPIModel.FK_ProductionRawMaterial_RawMaterialMaster" FromRole="RawMaterialMaster" ToRole="ProductionRawMaterial" />
           <NavigationProperty Name="ProductRawMaterialMappings" Relationship="KPIModel.FK_ProductRawMaterial_ID" FromRole="RawMaterialMaster" ToRole="ProductRawMaterialMapping" />
@@ -3257,7 +3270,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Productio__Produ__6BE40491">
+        <Association Name="FK__Productio__Produ__7EF6D905">
           <End Type="KPIModel.ProductionProgram" Role="ProductionProgram" Multiplicity="0..1" />
           <End Type="KPIModel.ProductionProgramBatch" Role="ProductionProgramBatch" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3713,19 +3726,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="usp_GetRMInventoryPackageBags_Result">
-          <Property Type="Int32" Name="PackageBagId" Nullable="false" />
-          <Property Type="Int32" Name="Size" Nullable="true" />
-          <Property Type="String" Name="VendorName" Nullable="true" />
-          <Property Type="Int32" Name="QtyInStock" Nullable="true" />
-          <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
-          <Property Type="Int32" Name="LocationId" Nullable="true" />
-          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
-          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
-          <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
-          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
-          <Property Type="String" Name="ModifiedByName" Nullable="true" MaxLength="20" />
-        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3792,6 +3792,23 @@
                 <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
                 <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_GetRMInventoryPackageBags" FunctionName="KPIModel.Store.usp_GetRMInventoryPackageBags">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KPIModel.usp_GetRMInventoryPackageBags_Result">
+                <ScalarProperty Name="PackageBagId" ColumnName="PackageBagId" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
+                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
@@ -4528,23 +4545,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="usp_GetRMInventoryPackageBags" FunctionName="KPIModel.Store.usp_GetRMInventoryPackageBags">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="KPIModel.usp_GetRMInventoryPackageBags_Result">
-                <ScalarProperty Name="PackageBagId" ColumnName="PackageBagId" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
-                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
-                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
-                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
