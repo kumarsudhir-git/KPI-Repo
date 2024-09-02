@@ -6,64 +6,59 @@
 <head>
     <!-- Bootstrap core CSS -->
     <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/css/responsive.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 </head>
 
-<body class="body-content">
+<body class="body-content login_body">
 
     <div class="pageloader" style="visibility:hidden; display:none"></div>
     <!--Step 1 : Adding HTML-->
-    <form action="/" class="form-horizontal form-label-left" id="UserLoginForm" method="post">
 
-        <div class="container" style="border:none; background-color: #ffffff;">
+    <div class="login_panel">
+        <form action="/" class="form-horizontal form-label-left" id="UserLoginForm" method="post">
 
-            @*<div class="imgcontainer">
+            <div class="login_content">
+
+                @*<div class="imgcontainer">
             <img src="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20190710102234/download3.png"
                  alt="Avatar" class="avatar">
         </div>*@
 
-            <center><h3>Khatri Plastic Industries</h3></center>
-            <center><h5>User Authentication</h5></center>
-            <br />
+                <center><h3>Khatri Plastic Industries</h3></center>
+                <center><h5>User Authentication</h5></center>
+                <br />
+                <br />
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-offset-4 col-md-4">
-                        <label><b>Username</b></label>
-                        <input type="text" placeholder="Enter Username" id="Username" name="Username" required>
-                    </div>
+
+                <div class="form-group">
+                    <label><b>Username</b></label>
+                    <input type="text" placeholder="Enter Username" id="Username" name="Username" required>
                 </div>
+
+                <div class="form-group">
+                    <label><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" id="Password" name="Password" required>
+                </div>
+                <br/>
+                <div class="form-group">
+                    <button type="submit" name="Login" class="btn btn-primary">Login</button>
+                    @*<input type="checkbox" checked="checked"> Remember me*@
+                </div>
+
+
+
             </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-offset-4 col-md-4">
-                        <label><b>Password</b></label>
-                        <input type="password" placeholder="Enter Password" id="Password" name="Password" required>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-offset-4 col-md-4">
-                        <button type="submit" name="Login" class="btn btn-success">Login</button>
-                        @*<input type="checkbox" checked="checked"> Remember me*@
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        @*<div class="container" style="background-color:#f1f1f1; width:auto">
-            <button type="button" class="cancelbtn" onclick="ClearData()">Cancel</button>
-            <span class="psw">Forgot <a href="#">password?</a></span>
-        </div>*@
-    </form>
-
+            @*<div class="container" style="background-color:#f1f1f1; width:auto">
+                <button type="button" class="cancelbtn" onclick="ClearData()">Cancel</button>
+                <span class="psw">Forgot <a href="#">password?</a></span>
+            </div>*@
+        </form>
+    </div>
     <script>
 
         $(function () { })

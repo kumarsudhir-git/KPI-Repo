@@ -56,6 +56,50 @@ table.dataTable.no-footer {
 .modal-backdrop {
     background-color: rgba(0, 0, 0, 71%);
 }
+/*Login css start*/
+.login_body {
+    background: #def3fc;
+    position: relative
+}
+    .login_body:before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        background: url(https://img.freepik.com/premium-vector/panoramic-industrial-silhouette-oil-industry-factory-buildings-refinery-complex-with-pipes-tanks-landscape-background-vector-illustration_102902-7094.jpg?semt=ais_hybrid);
+        background-size: contain;
+        background-repeat: repeat;
+        height: 200px;
+        width: 100%;
+        left: 0;
+        opacity: 0.5;
+    }
+.login_panel {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+.login_content {
+    background: #fff;
+    padding: 30px 50px;
+    box-shadow: 0px 7px 22px -5px #a8a8a8;
+    margin-top:-30px
+}
+.dash_box{
+    padding: 25px 15px;
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+}
+.horizontal_center{
+    justify-content:center
+}
+.dash_wrap{
+    margin-top:30px;
+}
+.table{
+    font-size:13px;
+}
 @media(max-width:767px) {
     .body-content{
         padding-right: 15px;
@@ -94,5 +138,14 @@ table.dataTable.no-footer {
         width: 300px;
         flex: 1;
         margin: 3px 0;
+    }
+    .login_panel{
+        height:auto;
+    }.login_content{
+
+        margin-top: 30px
+     }
+    .dash_box{
+        margin-bottom:15px;
     }
 }
