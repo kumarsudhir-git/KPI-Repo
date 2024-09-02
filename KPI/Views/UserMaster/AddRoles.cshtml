@@ -16,14 +16,15 @@
             </div>
 
             <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-4">
+                
+                    <div class="col-md-12">
                         <label><b>RoleName</b></label>
-                        @Html.TextBoxFor(Model => Model.RoleName, new { @class = "form-control", @required = "required", @placeholder = "Enter Role Name", @onchange = "ValidateRoleName(this)" })
-                    </div>
-                    <br />
-                    <div class="col-md-4">
-                        <label>&nbsp;</label>
+                        <div class="form-group">
+                            @Html.TextBoxFor(Model => Model.RoleName, new { @class = "form-control", @required = "required", @placeholder = "Enter Role Name", @onchange = "ValidateRoleName(this)" })
+                        </div>
+                        </div>
+                  
+                    <div class="col-md-12"> 
                         @if (Model.RoleID == 0)
                         {
                             <button type="submit" id="SubmitRoleBtn" name="Login" class="btn btn-success" disabled>Submit</button>
@@ -33,7 +34,7 @@
                             <button type="submit" id="SubmitRoleBtn" name="Login" class="btn btn-success">Submit</button>
                         }
                     </div>
-                </div>
+                 
             </div>
         }
 

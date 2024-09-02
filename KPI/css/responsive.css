@@ -53,6 +53,9 @@ table.dataTable.no-footer {
 .field-validation-error{
     font-size:12px
 }
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 71%);
+}
 @media(max-width:767px) {
     .body-content{
         padding-right: 15px;
@@ -68,13 +71,28 @@ table.dataTable.no-footer {
     table.dataTable thead th, table.dataTable thead td {
         padding: 5px 10px;
     }
-    .top_header .btn{
-        width:auto;
+    .modal-footer .btn,
+    .modal-body .btn,
+    .top_header .btn {
+        width: auto;
     }
     .btn {
         width: 100%
     }
     div.dataTables_wrapper div.dataTables_length select{
         width: 70px;
+    }
+
+    .MenuButtonClass {
+        display: flex
+    }
+    .deactiveBtn:nth-child(2){
+        margin: 0 5px;
+    }
+    .eight-cols .qty,
+    .dispatch_tbl .qty {
+        width: 300px;
+        flex: 1;
+        margin: 3px 0;
     }
 }

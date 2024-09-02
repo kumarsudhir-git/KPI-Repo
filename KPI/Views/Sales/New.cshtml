@@ -5,136 +5,120 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
-<div>
-    @Html.ActionLink("Back to List", "GetAll")
+<div class="top_header">
+    <h2>@ViewBag.Title</h2>
+    <div>
+        @Html.ActionLink("Back to List", "GetAll")
+    </div>
 </div>
 
 @using (Html.BeginForm("Add", "Sales"))
 {
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <hr />
+    @Html.AntiForgeryToken() 
+       
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-row">
-            <div class="row">
-                <div class="col-md-6">
-                    <table class="col-12">
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.SalesID, htmlAttributes: new { @class = "control-label col-md-12" })
-                                <div>
-                                    @Html.DisplayFor(model => model.SalesID, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.HiddenFor(model => model.SalesID)
-                                    @*@Html.ValidationMessageFor(model => model.SalesDate, "", new { @class = "text-danger" })*@
-                                </div>
-                            </td>
-                            <td>
-                                @Html.LabelFor(model => model.SalesDate, htmlAttributes: new { @class = "control-label col-md-12" })
-                                <div>
-                                    @Html.EditorFor(model => model.SalesDate, new { htmlAttributes = new { @class = "form-control datepicker" }, type = "date" })
-                                    @Html.ValidationMessageFor(model => model.SalesDate, "", new { @class = "text-danger" })
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-12" })
-                                <div>
-                                    @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
-                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                                </div>
-                            </td>
-                            <td>
-                                @Html.LabelFor(model => model.User, htmlAttributes: new { @class = "control-label col-md-12" })
-                                <div>
-                                    @Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
-                                    @Html.ValidationMessageFor(model => model.User, "", new { @class = "text-danger" })
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+            <div class="row"> 
 
-                    <div class="form-row">
-                        <div class="col-md-12">
+                    <div class="col-md-3 col-sm-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SalesID, htmlAttributes: new { @class = "control-label col-md-12" })
+                            @Html.DisplayFor(model => model.SalesID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(model => model.SalesID)
+                            @*@Html.ValidationMessageFor(model => model.SalesDate, "", new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SalesDate, htmlAttributes: new { @class = "control-label col-md-12" })
+                            @Html.EditorFor(model => model.SalesDate, new { htmlAttributes = new { @class = "form-control datepicker" }, type = "date" })
+                            @Html.ValidationMessageFor(model => model.SalesDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-12" })
+                            @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.User, htmlAttributes: new { @class = "control-label col-md-12" })
+                            @Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.User, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    
+                        <div class="col-md-3 col-sm-12">
                             <div class="form-group">
                                 <label class="control-label col-md-12">Customer / Location</label>
-                                <div class="col-md-12">
                                     @Html.DropDownListFor(model => model.CompanyLocationID, ViewBag.Locations as SelectList, "--Select Company and Location--", new { @class = "form-control", style = "max-width:100%;" })
                                     @Html.ValidationMessageFor(model => model.CompanyLocationID, "", new { @class = "text-danger" })
-                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-12">
+                   
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label col-md-12" })
-                                <div class="col-md-12">
                                     @Html.TextAreaFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" }, @rows = 6, @cols = 1000, style = "max-width:100%;" })
                                     @Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })
-                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+              
 
-                <div class="col-md-6">
-                    <div class="form-row">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h4>Line Items</h4>
-                            </div>
+                
+                        <div class="top_header"> 
+                                <h2>Line Items</h2>
+                            
                             <!--<div class="col-md-6 text-right">-->
                             @*<input type="button" value="Add Line Item" class="btn btn-primary  btn-sm" />*@
                             <!--</div>-->
-                            <div class="col-md-4"></div>
-                            <div class="col-md-4 text-right">
-                                <label>&nbsp;</label>
+                            
                                 <input type="button" value="Add Line Item" class="btn btn-primary btn-sm" onclick="AddLineItemRow()" />
-                            </div>
+                            
                         </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="SalesOrderTbl">
+                            <thead>
+                                <tr>
+                                    @*<th></th>*@
+                                    @*<th>
+                            Sales Detail ID
+                        </th>*@
+                                    <th>
+                                        Product
+                                    </th>
+                                    <th>
+                                        Qty
+                                    </th>
+                                    <th>
+                                        Spl. Instructions
+                                    </th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @*@foreach (var item in Model.LineItems)
+            {*@
+                                @{
+                                    Html.RenderAction("GetSalesLineItemPartial");
+                                }
+                            </tbody>
+                        </table>
                     </div>
-                    <br />
-                    <table class="table table-bordered" id="SalesOrderTbl">
-                        <thead>
-                            <tr>
-                                @*<th></th>*@
-                                @*<th>
-                        Sales Detail ID
-                    </th>*@
-                                <th>
-                                    Product
-                                </th>
-                                <th>
-                                    Qty
-                                </th>
-                                <th>
-                                    Spl. Instructions
-                                </th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @*@foreach (var item in Model.LineItems)
-        {*@
-                            @{
-                                Html.RenderAction("GetSalesLineItemPartial");
-                            }
-                        </tbody>
-                    </table>
-                </div>
             </div>
-        </div>
+        
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-dark" />
-            </div>
+                <input type="submit" value="Save" class="btn btn-primary" />
         </div>
-    </div>
+   
 }
 
 

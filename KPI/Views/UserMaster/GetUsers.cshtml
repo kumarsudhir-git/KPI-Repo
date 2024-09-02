@@ -5,18 +5,16 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<h2>@*GetUsers*@</h2>
+ 
 
-<div class="form-horizontal">
-
-    <div class="row">
-        <div class="col-md-12">
-            <p>
-                @Html.ActionLink("Create New", "AddUser", "", new { @class = "btn btn-primary" })
-            </p>
+    <div class="top_header">
+        <h2>Get Users</h2>
+        <div>
+            @Html.ActionLink("Create New", "AddUser", "", new { @class = "btn btn-primary" })
         </div>
     </div>
-
+    
+<div class="table-responsive">
     <table class="table help-page-table table-sm table-striped AddDataTable" cellspacing="0" style="border:1px solid #000">
         <thead>
             <tr>

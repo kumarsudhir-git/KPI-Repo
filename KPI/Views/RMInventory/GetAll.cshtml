@@ -41,14 +41,16 @@
         });
     });
 </script>
+<div class="top_header">
+    <h2>@ViewBag.Title</h2>
 
-<h2>@ViewBag.Title</h2>
+    @Html.ActionLink("Add New", "New", new { area = "" }, new { @class = "btn btn-primary" })
+</div>
 
-@Html.ActionLink("Add New", "New", new { area = "" }, new { @class = "btn btn-primary" })
-
-<table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
-</table>
-
+<div class="table-responsive">
+    <table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
+    </table>
+</div>
 @*<table class="table">
         <tr>
             <th>
