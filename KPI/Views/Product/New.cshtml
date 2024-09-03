@@ -9,161 +9,154 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
 }
 
-<div class="container">
-
+<div class="top_header">
     <h2>@ViewBag.Title</h2>
-    <div class="row">
-        <div class="col-md-6">
-            @Html.ActionLink("Back to List", "GetAll")
-        </div>
+    <div class="back_btn">
+        @Html.ActionLink("Back to List", "GetAll")
+    </div>
+</div>
 
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-4">
-                    <h4>Line Items</h4>
-                </div>
-                <div class="col-md-4"></div>
-                <div class="col-md-4">
-                    <label>@*&nbsp;*@</label>
-                    <input type="button" value="Add Line Item" class="btn btn-primary btn-sm" onclick="AddLineItemRow()" />
+
+@using (Html.BeginForm("Add", "Product"))
+{
+    @Html.AntiForgeryToken()
+
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ProductID)
+
+
+
+<div class="row">
+
+    <div class="col-md-3 col-sm-12">
+        @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label" })
+        <div class="form-group">
+            @Html.EditorFor(model => model.ProductCode, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductCode, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-12">
+        @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label" })
+        <div class="form-group">
+            @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-12">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+        <div class="form-group">
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="col-md-3 col-sm-12">
+        @Html.LabelFor(model => model.MouldID, htmlAttributes: new { @class = "control-label" })
+        <div class="form-group">
+            @Html.DropDownListFor(model => model.MouldID, ViewBag.Moulds as SelectList, "--Select Moulds--", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.MouldID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @*<div class="col-md-2">
+            @Html.LabelFor(model => model.RawMaterialID, htmlAttributes: new { @class = "control-label" })<br />
+            @Html.DropDownListFor(model => model.RawMaterialID, ViewBag.RawMaterials as SelectList, "--Select Raw Material--", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RawMaterialID, "", new { @class = "text-danger" })
+        </div>*@
+    <div class="col-md-3 col-sm-12">
+        @Html.LabelFor(model => model.MinQtyUOM, htmlAttributes: new { @class = "control-label" })
+        <div class="form-group">
+            @Html.EditorFor(model => model.MinQtyUOM, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MinQtyUOM, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @*<div class="col-md-2">
+            @Html.LabelFor(model => model.RMReqdForUOMQty, htmlAttributes: new { @class = "control-label" })<br />
+            @Html.EditorFor(model => model.RMReqdForUOMQty, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.RMReqdForUOMQty, "", new { @class = "text-danger" })
+        </div>*@
+    <div class="col-md-3 col-sm-12">
+        @Html.LabelFor(model => model.PkgQty, htmlAttributes: new { @class = "control-label" })
+        
+        <div class="form-group">
+            @Html.EditorFor(model => model.PkgQty, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PkgQty, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-12">
+        @Html.LabelFor(model => model.PkgsPerRack, htmlAttributes: new { @class = "control-label" })
+        <div class="form-group">
+            @Html.EditorFor(model => model.PkgsPerRack, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PkgsPerRack, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+        <div class="col-md-3 col-sm-12">
+            @Html.LabelFor(model => model.IsDiscontinued, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.IsDiscontinued)
+                    @Html.ValidationMessageFor(model => model.IsDiscontinued, "", new { @class = "text-danger" })
                 </div>
             </div>
+        </div>
+        <div class="col-md-12 form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
         </div>
 
     </div>
+ 
 
-    @using (Html.BeginForm("Add", "Product"))
-    {
-        @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.ProductID)
 
-            <div class="form-row">
-                <div class="row">
-                    <div class="col-md-6">
-
-                        <div class="row">
-
-                            <div class="col-md-4">
-                                @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.EditorFor(model => model.ProductCode, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.ProductCode, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="col-md-4">
-                                @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="col-md-4">
-                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                @Html.LabelFor(model => model.MouldID, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.DropDownListFor(model => model.MouldID, ViewBag.Moulds as SelectList, "--Select Moulds--", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.MouldID, "", new { @class = "text-danger" })
-                            </div>
-                            @*<div class="col-md-2">
-                                    @Html.LabelFor(model => model.RawMaterialID, htmlAttributes: new { @class = "control-label" })<br />
-                                    @Html.DropDownListFor(model => model.RawMaterialID, ViewBag.RawMaterials as SelectList, "--Select Raw Material--", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.RawMaterialID, "", new { @class = "text-danger" })
-                                </div>*@
-                            <div class="col-md-4">
-                                @Html.LabelFor(model => model.MinQtyUOM, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.EditorFor(model => model.MinQtyUOM, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.MinQtyUOM, "", new { @class = "text-danger" })
-                            </div>
-                            @*<div class="col-md-2">
-                                    @Html.LabelFor(model => model.RMReqdForUOMQty, htmlAttributes: new { @class = "control-label" })<br />
-                                    @Html.EditorFor(model => model.RMReqdForUOMQty, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.RMReqdForUOMQty, "", new { @class = "text-danger" })
-                                </div>*@
-                            <div class="col-md-4">
-                                @Html.LabelFor(model => model.PkgQty, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.EditorFor(model => model.PkgQty, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.PkgQty, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                @Html.LabelFor(model => model.PkgsPerRack, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.EditorFor(model => model.PkgsPerRack, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.PkgsPerRack, "", new { @class = "text-danger" })
-                            </div>
-
-                            <div class="col-md-4">
-                                @Html.LabelFor(model => model.IsDiscontinued, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    <div class="checkbox">
-                                        @Html.EditorFor(model => model.IsDiscontinued)
-                                        @Html.ValidationMessageFor(model => model.IsDiscontinued, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-md-offset-2 col-md-10">
-                                <label>&nbsp;</label>
-                                <input type="submit" value="Create" class="btn btn-dark" />
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-6">
-
-                        @*<div class="form-row">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <h4>Line Items</h4>
-                                    </div>
-                                    <div class="col-md-4"></div>
-                                    <div class="col-md-4 text-right">
-                                        <label>&nbsp;</label>
-                                        <input type="button" value="Add Line Item" class="btn btn-primary btn-sm" onclick="AddLineItemRow()" />
-                                    </div>
-                                </div>
-                            </div>*@
-                        <br />
-                        <div class="row">
-
-                            <div class="form-group">
-
-                                <table class="table" id="ProductTbl" style="border:1px solid #000">
-                                    <thead>
-                                        <tr>
-                                            <th>RAW MATERIAL</th>
-                                            <th>RM Grade Used</th>
-                                            @*<th>Unit</th>*@
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @{
-                                            Html.RenderAction("PartialProduct");
-                                        }
-                                    </tbody>
-                                </table>
-
-                            </div>
-                        </div>
-                    </div>
+    @*<div class="form-row">
+            <div class="row">
+                <div class="col-md-3 col-sm-12">
+                    <h4>Line Items</h4>
+                </div>
+                <div class="col-md-3 col-sm-12"></div>
+                <div class="col-md-3 col-sm-12 text-right">
+                    <label>&nbsp;</label>
+                    <input type="button" value="Add Line Item" class="btn btn-primary btn-sm" onclick="AddLineItemRow()" />
                 </div>
             </div>
-        </div>
-    }
+        </div>*@
 
-</div>
+
+
+
+    <div class="top_header">
+        <h2>Line Items</h2>
+        <div class="back_btn">
+            <input type="button" value="Add Line Item" class="btn btn-primary btn-sm" onclick="AddLineItemRow()" />
+        </div>
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table" id="ProductTbl">
+            <thead>
+                <tr>
+                    <th>RAW MATERIAL</th>
+                    <th>RM Grade Used</th>
+                    @*<th>Unit</th>*@
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    Html.RenderAction("PartialProduct");
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+}
+
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

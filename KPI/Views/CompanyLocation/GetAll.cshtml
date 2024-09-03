@@ -50,16 +50,18 @@
         });
     });
 </script>
+<div class="top_header">
+    <h2>@ViewBag.Comp.CompanyName</h2>
 
-<h2>@ViewBag.Comp.CompanyName</h2>
+    <h4>@ViewBag.Title</h4>
 
-<h4>@ViewBag.Title</h4>
+    @Html.ActionLink("Add New", "New", new { id = ViewBag.Comp.CompanyID, sCompanyName = ViewBag.Comp.CompanyName }, new { @class = "btn btn-primary" })
+</div>
 
-@Html.ActionLink("Add New", "New", new { id = ViewBag.Comp.CompanyID, sCompanyName = ViewBag.Comp.CompanyName }, new { @class = "btn btn-primary" })
-
-<table id="tblData" class="table table-striped " cellspacing="0" width="100%">
-</table>
-
+<div class="table-responsive">
+    <table id="tblData" class="table table-striped " cellspacing="0" width="100%">
+    </table>
+</div>
 @*<table class="table">
         <tr>
             <th></th>

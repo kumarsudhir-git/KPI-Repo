@@ -6,16 +6,22 @@
     <title>@KPILib.ApplicationConstants.APP_NAME - @ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" />
 
+    <link rel=" stylesheet" type="text/css" href="~/css/responsive.css" />
     <link href="~/Content/Custom.css" rel="stylesheet" />
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    
+
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
@@ -151,16 +157,17 @@
         </div>
     </nav>
 
-    <div class="container-fluid body-content">
-        <br />
-        @RenderBody()
-        <hr />
+    <div class="wrap_container">
+        <div class="container-fluid body-content">
+            <br />
+            @RenderBody()
+        </div>
         <footer>
+        <hr />
             <p>&copy; @DateTime.Now.Year - @KPILib.ApplicationConstants.APP_NAME</p>
             @*<p>Developed by - <a href="https://www.carrotconsultancy.com" target="_blank">Carrot Consultancy Services Pvt. Ltd.</a>*@
         </footer>
     </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

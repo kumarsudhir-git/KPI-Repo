@@ -38,9 +38,13 @@
     });
 </script>
 
-<h2>@ViewBag.Title</h2>
+<div class="top_header">
+    <h2>@ViewBag.Title</h2>
 
-@Html.ActionLink("Add New", "New", new { area = "" }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Add New", "New", new { area = "" }, new { @class = "btn btn-primary" })
+</div>
 
-<table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
-</table>
+<div class="table-responsive">
+    <table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
+    </table>
+</div>

@@ -49,8 +49,10 @@
             });
         });
     </script>*@
+<div class="top_header">
 
-<h2>@ViewBag.Title</h2>
+    <h2>@ViewBag.Title</h2>
+</div>
 <div class="btn-group">
     <div class="btn btn-info active" aria-current="page" style="cursor:default;">Open Production Programs</div>
     <a href="../Production/GetAllCompleted" class="btn btn-light">Closed Production Programs</a>
@@ -58,138 +60,138 @@
 <hr style="margin-top:0px;" />
 @*<table id="tblData" class="table table-sm table-striped" width="100%">
     </table>*@
-
-<table class="table table-sm table-striped table-hover" style="display:normal;">
-    <tr>
-        <th>Program ID / Date / Owner</th>
-        <th>SO No / Date / Sales Person</th>
-        <th>Company / Location</th>
-        <th>Product</th>
-        <th>Raw Material / Mould / Machine</th>
-        <th>RM Qty Reqd</th>
-        <th>Available RM Qty</th>
-        <th>To Produce</th>
-        <th>Can Produce Qty</th>
-        <th>Produced Qty</th>
-        <th>Action</th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<div class="table-responsive">
+    <table class="table table-sm table-striped table-hover" style="display:normal;">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductionProgramID)<br />
-                @Html.Raw(item.AddedOn.ToString("dd-MMM-yyyy"))<br />
-                @Html.DisplayFor(modelItem => item.ProductionUser)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SalesID)<br />
-                @Html.Raw(item.SalesDate.ToString("dd-MMM-yyyy"))<br />
-                @Html.DisplayFor(modelItem => item.SalesUser)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CompanyLocation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @{
-                    var cssMaterial = (item.RMAvailable ? "available" : "notavailable");
-                    var cssMould = (item.MouldAvailable ? "available" : "notavailable");
-                    var cssMachine = (item.MachineAvailable ? "available" : "notavailable");
-                }
-                <div>
+            <th>Program ID / Date / Owner</th>
+            <th>SO No / Date / Sales Person</th>
+            <th>Company / Location</th>
+            <th>Product</th>
+            <th>Raw Material / Mould / Machine</th>
+            <th>RM Qty Reqd</th>
+            <th>Available RM Qty</th>
+            <th>To Produce</th>
+            <th>Can Produce Qty</th>
+            <th>Produced Qty</th>
+            <th>Action</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductionProgramID)<br />
+                    @Html.Raw(item.AddedOn.ToString("dd-MMM-yyyy"))<br />
+                    @Html.DisplayFor(modelItem => item.ProductionUser)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalesID)<br />
+                    @Html.Raw(item.SalesDate.ToString("dd-MMM-yyyy"))<br />
+                    @Html.DisplayFor(modelItem => item.SalesUser)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyLocation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @{
+                        var cssMaterial = (item.RMAvailable ? "available" : "notavailable");
+                        var cssMould = (item.MouldAvailable ? "available" : "notavailable");
+                        var cssMachine = (item.MachineAvailable ? "available" : "notavailable");
+                    }
+                    <div>
+                        @*@if (item.RMAvailable && item.MouldAvailable && item.MachineAvailable && !item.ProgramInProgress)*@
+                        @if (!item.ProgramInProgress)
+                        {
+
+                            <div class="@cssMaterial" title="raw material">
+                                @foreach (var rmItem in item.MappedRawMaterials)
+                                {
+                                    <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName</span>
+                                }
+                            </div>
+
+                            <div class="@cssMould" title="mould"><span class="badge rounded-pill bg-info">@Html.DisplayFor(modelItem => item.MouldName)</span></div>
+                            <div class="@cssMachine" title="machine">
+                                @foreach (var itm in item.MachineNames.Split('|'))
+                                {
+                                    <span class="badge rounded-pill bg-dark">@itm.Trim()</span>
+                                }
+                            </div>
+                        }
+                        @if (item.ProgramInProgress)
+                        {
+                            <div title="raw material">
+                                @foreach (var rmItem in item.MappedRawMaterials)
+                                {
+                                    <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName</span>
+                                }
+                            </div>
+
+                            <div title="mould"><span class="badge rounded-pill bg-info">@Html.DisplayFor(modelItem => item.MouldName)</span></div>
+                            <div title="machine"><span class="badge rounded-pill bg-dark">@Html.DisplayFor(modelItem => item.MachineName)</span></div>
+                        }
+                    </div>
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.RMQty) Kgs*@
+
+                    <div class="@cssMaterial" title="raw material">
+                        @foreach (var rmItem in item.MappedRawMaterials)
+                        {
+                            <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName (@rmItem.RMQty) Kgs </span>
+                        }
+                    </div>
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.RMQty) Kgs*@
+
+                    <div class="@cssMaterial" title="raw material">
+                        @foreach (var rmItem in item.MappedRawMaterials)
+                        {
+                            <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName (@rmItem.RMAvailableQty) Kgs </span>
+                        }
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CanProduceQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductQtyCompleted)
+                </td>
+                <td>
                     @*@if (item.RMAvailable && item.MouldAvailable && item.MachineAvailable && !item.ProgramInProgress)*@
-                    @if (!item.ProgramInProgress)
+                    @if (item.RMAvailable && item.MouldAvailable && item.MachineAvailable && item.CanProduceQty > 0 && !item.ProgramInProgress)
                     {
-
-                        <div class="@cssMaterial" title="raw material">
-                            @foreach (var rmItem in item.MappedRawMaterials)
-                            {
-                                <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName</span>
-                            }
-                        </div>
-
-                        <div class="@cssMould" title="mould"><span class="badge rounded-pill bg-info">@Html.DisplayFor(modelItem => item.MouldName)</span></div>
-                        <div class="@cssMachine" title="machine">
-                            @foreach (var itm in item.MachineNames.Split('|'))
-                            {
-                                <span class="badge rounded-pill bg-dark">@itm.Trim()</span>
-                            }
+                        <div style="text-align:center; padding:5px;">
+                            <button class="btn btn-success btn-sm" @Html.Raw("onclick='loadItem(" + Json.Encode(item) + ");'")>START&nbsp;PROGRAM</button>
                         </div>
                     }
                     @if (item.ProgramInProgress)
                     {
-                        <div title="raw material">
-                            @foreach (var rmItem in item.MappedRawMaterials)
-                            {
-                                <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName</span>
-                            }
+                        <div style="text-align:center; padding:5px;">
+                            <a href='../Production/GetProductionPlan/@Html.Raw(item.ProductionProgramID)' target='_blank'>
+                                <span class="btn-outline-danger small">PROGRAM&nbsp;RUNNING</span>
+                            </a><br />
+                            <a href='../Production/GetRackingPlan/@Html.Raw(item.ProductionProgramID)' target='_blank'>
+                                <span class="btn-outline-warning small">RACKING&nbsp;PLAN</span>
+                            </a><br />
+                            <button class="btn btn-dark btn-sm" @Html.Raw("onclick='loadItem02(" + Json.Encode(item) + ");'")>UPDATE&nbsp;PROGRAM</button>
                         </div>
-
-                        <div title="mould"><span class="badge rounded-pill bg-info">@Html.DisplayFor(modelItem => item.MouldName)</span></div>
-                        <div title="machine"><span class="badge rounded-pill bg-dark">@Html.DisplayFor(modelItem => item.MachineName)</span></div>
                     }
-                </div>
-            </td>
-            <td>
-                @*@Html.DisplayFor(modelItem => item.RMQty) Kgs*@
-
-                <div class="@cssMaterial" title="raw material">
-                    @foreach (var rmItem in item.MappedRawMaterials)
-                    {
-                        <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName (@rmItem.RMQty) Kgs </span>
-                    }
-                </div>
-            </td>
-            <td>
-                @*@Html.DisplayFor(modelItem => item.RMQty) Kgs*@
-
-                <div class="@cssMaterial" title="raw material">
-                    @foreach (var rmItem in item.MappedRawMaterials)
-                    {
-                        <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName (@rmItem.RMAvailableQty) Kgs </span>
-                    }
-                </div>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductQty)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CanProduceQty)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductQtyCompleted)
-            </td>
-            <td>
-                @*@if (item.RMAvailable && item.MouldAvailable && item.MachineAvailable && !item.ProgramInProgress)*@
-                @if (item.RMAvailable && item.MouldAvailable && item.MachineAvailable && item.CanProduceQty > 0 && !item.ProgramInProgress)
-                {
-                    <div style="text-align:center; padding:5px;">
-                        <button class="btn btn-success btn-sm" @Html.Raw("onclick='loadItem(" + Json.Encode(item) + ");'")>START&nbsp;PROGRAM</button>
-                    </div>
-                }
-                @if (item.ProgramInProgress)
-                {
-                    <div style="text-align:center; padding:5px;">
-                        <a href='../Production/GetProductionPlan/@Html.Raw(item.ProductionProgramID)' target='_blank'>
-                            <span class="btn-outline-danger small">PROGRAM&nbsp;RUNNING</span>
-                        </a><br />
-                        <a href='../Production/GetRackingPlan/@Html.Raw(item.ProductionProgramID)' target='_blank'>
-                            <span class="btn-outline-warning small">RACKING&nbsp;PLAN</span>
-                        </a><br />
-                        <button class="btn btn-dark btn-sm" @Html.Raw("onclick='loadItem02(" + Json.Encode(item) + ");'")>UPDATE&nbsp;PROGRAM</button>
-                    </div>
-                }
-            </td>
-        </tr>
-    }
-</table>
-
+                </td>
+            </tr>
+        }
+    </table>
+</div>
 <div id='myModal' class='modal'>
-    <div class="modal-dialog">
-        <div class="modal-content" style="width:800px;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
             @*<div id='myModalContent'>*@
 
             <div>
@@ -206,12 +208,12 @@
                     <div class="modal-body">
                         <div class="row">
                             <input type="hidden" id="hidProductionProgramID" name="hidProductionProgramID" />
-                            <div class="col-md-3"><label>Program ID</label></div>
-                            <div class="col-md-3"><label>Program Date</label></div>
-                            <div class="col-md-6"><label>Program Owner</label></div>
-                            <div class="col-md-3"><span id="spnProgramID"></span></div>
-                            <div class="col-md-3"><span id="spnProgramDate"></span></div>
-                            <div class="col-md-6"><span id="spnProgramOwner"></span></div>
+                            <div class="col-md-3 col-sm-6"><label>Program ID</label></div>
+                            <div class="col-md-3  col-sm-6"><label>Program Date</label></div>
+                            <div class="col-md-6  col-sm-6"><label>Program Owner</label></div>
+                            <div class="col-md-3  col-sm-6"><span id="spnProgramID"></span></div>
+                            <div class="col-md-3  col-sm-6"><span id="spnProgramDate"></span></div>
+                            <div class="col-md-6  col-sm-6"><span id="spnProgramOwner"></span></div>
                         </div>
                         <div class="row">
                             &nbsp;
@@ -304,8 +306,8 @@
 </div>
 
 <div id='myModal02' class='modal'>
-    <div class="modal-dialog">
-        <div class="modal-content" style="width:800px;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" >
             @*<div id='myModalContent'>*@
 
             <div>
@@ -322,12 +324,12 @@
                     <div class="modal-body">
                         <div class="row">
                             <input type="hidden" id="hidProductionProgramID02" name="hidProductionProgramID02" />
-                            <div class="col-md-3"><label>Program ID</label></div>
-                            <div class="col-md-3"><label>Program Date</label></div>
-                            <div class="col-md-6"><label>Program Owner</label></div>
-                            <div class="col-md-3"><span id="spnProgramID02"></span></div>
-                            <div class="col-md-3"><span id="spnProgramDate02"></span></div>
-                            <div class="col-md-6"><span id="spnProgramOwner02"></span></div>
+                            <div class="col-md-3  col-sm-6"><label>Program ID</label></div>
+                            <div class="col-md-3  col-sm-6"><label>Program Date</label></div>
+                            <div class="col-md-6 col-sm-6"><label>Program Owner</label></div>
+                            <div class="col-md-3 col-sm-6"><span id="spnProgramID02"></span></div>
+                            <div class="col-md-3 col-sm-6"><span id="spnProgramDate02"></span></div>
+                            <div class="col-md-6 col-sm-6"><span id="spnProgramOwner02"></span></div>
                         </div>
                         <div class="row">
                             &nbsp;

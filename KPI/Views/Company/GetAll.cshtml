@@ -29,14 +29,15 @@
     });
 </script>
 
-<h2>Company</h2>
-<hr />
+<div class="top_header">
+    <h2>Company</h2>
 
-@Html.ActionLink("Add New", "New", new { id = ViewBag.TypeID }, new { @class = "btn btn-primary" })
-
-<table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
-</table>
-
+    @Html.ActionLink("Add New", "New", new { id = ViewBag.TypeID }, new { @class = "btn btn-primary" })
+</div>
+<div class="table-responsive">
+    <table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
+    </table>
+</div>
 
 @*<table class="table">
     <tr>
