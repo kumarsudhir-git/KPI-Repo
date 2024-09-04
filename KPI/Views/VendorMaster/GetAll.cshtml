@@ -31,9 +31,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.ContactNumber)
                 </th>
-                @*<th>
-                        @Html.DisplayNameFor(model => model.IsDiscontinued)
-                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.VendorType)
+                </th>
                 @*<th>
                         @Html.DisplayNameFor(model => model.AddedBy)
                     </th>*@
@@ -59,9 +59,19 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ContactNumber)
                     </td>
-                    @*<td>
-                            @Html.DisplayFor(modelItem => item.IsDiscontinued)
-                        </td>*@
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.VendorType))
+                        {
+                            if (item.VendorType == "VD001")
+                            {
+                                <span> Vendor </span>
+                            }
+                            else
+                            {
+                                <span> KPI Labour </span>
+                            }
+                        }
+                    </td>
                     @*<td>
                             @Html.DisplayFor(modelItem => item.AddedBy)
                         </td>*@

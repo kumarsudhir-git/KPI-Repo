@@ -14,6 +14,8 @@ namespace KPILib.Models
         public string Address { get; set; }
         [Required(ErrorMessage = "Required")]
         public string ContactNumber { get; set; }
+        [Required(ErrorMessage = "Required")]
+        public string VendorType { get; set; }
         public bool IsDiscontinued { get; set; }
         public int AddedBy { get; set; }
         public string AddedByName { get; set; }

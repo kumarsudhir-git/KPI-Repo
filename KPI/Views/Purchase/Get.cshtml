@@ -62,28 +62,55 @@
 
                     <div class="form-row">
                         <div class="col-md-12">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.CompanyLocation, htmlAttributes: new { @class = "control-label col-md-12" })
-                                <div class="col-md-12">
-                                    @*@Html.DisplayFor(model => model.CompanyLocation, new { htmlAttributes = new { @class = "form-control" } })*@
-                                    @Html.DropDownListFor(model => model.CompanyLocationID, ViewBag.Locations as SelectList, "--Select Company and Location--", new { @class = "form-control", style = "max-width:100%;", @disabled = "disabled" })
-                                    @*@Html.ValidationMessageFor(model => model.CompanyLocationID, "", new { @class = "text-danger" })*@
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    @Html.Label("Is Vendor", new { @class = "control-label" })
+                                    <div class="">
+                                        @Html.RadioButton("VendorType", "VD001", new { @onchange = "LoadVendorData(this)" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    @Html.Label("Is KPI Labour", htmlAttributes: new { @class = "control-label" })
+                                    <div class="">
+                                        @Html.RadioButton("VendorType", "VD002", new { @onchange = "LoadVendorData(this)" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyLocation, htmlAttributes: new { @class = "control-label col-md-12" })
+                                    <div class="">
+                                        @*@Html.DisplayFor(model => model.CompanyLocation, new { htmlAttributes = new { @class = "form-control" } })*@
+                                        @*@Html.DropDownListFor(model => model.CompanyLocationID, ViewBag.Locations as SelectList, "--Select Company and Location--", new { @class = "form-control", style = "max-width:100%;", @disabled = "disabled" })*@
+                                        @Html.DropDownListFor(model => model.CompanyLocationID, null, "--Select Company and Location--", new { @class = "form-control", style = "max-width:100%;", @disabled = "disabled" })
+                                        @Html.ValidationMessageFor(model => model.CompanyLocationID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label col-md-12" })
+                                    <div class="">
+                                        @*@Html.DisplayFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" } })*@
+                                        @Html.TextAreaFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" }, @rows = 6, @cols = 1000, style = "max-width:100%;", @disabled = "disabled" })
+                                        @*@Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })*@
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-row">
+                    @*<div class="form-row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label col-md-12" })
                                 <div class="col-md-12">
-                                    @*@Html.DisplayFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" } })*@
                                     @Html.TextAreaFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" }, @rows = 6, @cols = 1000, style = "max-width:100%;", @disabled = "disabled" })
-                                    @*@Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
 
                 <div class="col-md-6">
@@ -171,4 +198,42 @@
         var selector = "#PurchaseOrderTbl tbody";
         AddLineItemRowGeneric(strURL, "GET", selector);
     };
+
+    function LoadVendorData(obj) {
+
+        var $vendorData = $('#CompanyLocationID');    // Cache the state dropdown
+
+        // Clear the state dropdown
+        $vendorData.empty();
+        $vendorData.append('<option value="">--Select Company and Location--</option>'); // Add the default option
+
+        var vendorId = $(obj).val();
+
+        if (vendorId != null && vendorId != '' && vendorId != undefined) {
+
+            $.ajax({
+                url: '/Purchase/GetVendorWithLocationData',
+                type: 'POST',
+                data: { vendorType: vendorId },
+                dataType: 'json',
+                success: function (response) {
+                    // Loop through the response and populate the state dropdown
+                    $.each(response, function (index, elem) {
+                        $vendorData.append($('<option>', {
+                            value: elem.VendorId,
+                            text: elem.VendorName
+                        }));
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching states: " + error);
+                }
+            });
+        }
+        else {
+            return false;
+        }
+
+    }
+
 </script>

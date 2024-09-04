@@ -460,7 +460,12 @@ ALTER TABLE MouldMaster ADD LocationId INT NULL
 
 GO
 
+-------------------------------03-09-2024---------------------------------------------
+GO
 
+ALTER TABLE VendorMaster ADD VendorType NVARCHAR(10) NULL
+
+GO
 
 ------------------------------------------------------END-----------------------------
 

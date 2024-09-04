@@ -20,7 +20,7 @@
                     <div class="col-md-3">
                         @Html.LabelFor(model => model.VendorName, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="">
-                            @Html.EditorFor(model => model.VendorName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.VendorName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Vendor Name" } })
                             @Html.ValidationMessageFor(model => model.VendorName, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                     <div class="col-md-3">
                         @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="">
-                            @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Notes" } })
                             @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -36,14 +36,14 @@
                     <div class="col-md-3">
                         @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="">
-                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Address" } })
                             @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-3">
                         @Html.LabelFor(model => model.ContactNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="">
-                            @Html.TextBoxFor(model => model.ContactNumber, "", new { @class = "form-control" })
+                            @Html.TextBoxFor(model => model.ContactNumber, "", new { @class = "form-control AllowNumbersOnly", @placeholder = "Enter Contact Number" })
                             @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -52,16 +52,24 @@
 
             <div class="col-md-12">
                 <div class="row">
-                    @*<div class="col-md-3">
-                            @Html.LabelFor(model => model.IsDiscontinued, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.IsDiscontinued)
-                                    @Html.ValidationMessageFor(model => model.IsDiscontinued, "", new { @class = "text-danger" })
-                                </div>
+                    <div class="col-md-3">
+                        @Html.Label("Is Vendor", new { @class = "control-label col-md-2" })
+                        <div class="">
+                            <div class="checkbox">
+                                @Html.RadioButtonFor(model => model.VendorType, "VD001")
+                                @Html.ValidationMessageFor(model => model.VendorType, "", new { @class = "text-danger" })
                             </div>
-                        </div>*@
-
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("Is KPI Labour", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="">
+                            <div class="checkbox">
+                                @Html.RadioButtonFor(model => model.VendorType, "VD002")
+                                @Html.ValidationMessageFor(model => model.VendorType, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-3">
                         <label>&nbsp;</label>
                         <div class="col-md-offset-2 col-md-10">

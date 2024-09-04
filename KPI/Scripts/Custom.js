@@ -7,6 +7,20 @@
         "select": false,
         "orderBy": false
     });
+
+    $('.AllowNumbersOnly').on('keypress', function (e) {
+        debugger
+        // Check if the pressed key is a number
+        if (e.which < 48 || e.which > 57) {
+            e.preventDefault();
+        }
+        //var regex = new RegExp("^[a-zA-Z0-9]+$");
+        //var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+        //if (!regex.test(key)) {
+        //    event.preventDefault();
+        //    return false;
+        //}
+    });
 })
 
 function AddLineItemRowGeneric(url, methodType, selector, IsAppendData = true) {

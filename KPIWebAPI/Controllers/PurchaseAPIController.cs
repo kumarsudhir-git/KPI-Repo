@@ -13,14 +13,14 @@ using System.Web.Http;
 
 namespace KPIWebAPI.Controllers
 {
-    [CustomAuthFilter("M_PO")] 
+    [CustomAuthFilter("M_PO")]
     public class PurchaseAPIController : CCSPLBaseAPIController
     {
         // GET: PurchaseAPI
         public IHttpActionResult GetAll()
         {
             var returnValue = new PurchaseMastersResponse();
-            
+
             try
             {
                 var data = db.PurchaseMasters.OrderByDescending(x => x.PurchaseID).ToList();
@@ -137,13 +137,13 @@ namespace KPIWebAPI.Controllers
             {
                 #region get all Locations for ddl
                 //TODO: 101 = Vendors
-                var Locations = db.CompanyLocationMasters.Where(x => !x.CompanyMaster.IsDiscontinued && x.CompanyMaster.CompanyTypeID == 101).Where(x => !x.IsDiscontinued).OrderBy(x => x.CompanyMaster.CompanyName).OrderBy(x => x.LocationName).ToList();
-                List<KPILib.Models.KeyValuePair> compLocations = new List<KPILib.Models.KeyValuePair>();
-                foreach (var obj in Locations)
-                {
-                    var o = new KeyValuePair { Key = obj.CompanyLocationID, Value = obj.CompanyMaster.CompanyName + " [" + obj.LocationName + "]" };
-                    compLocations.Add(o);
-                }
+                //var Locations = db.CompanyLocationMasters.Where(x => !x.CompanyMaster.IsDiscontinued && x.CompanyMaster.CompanyTypeID == 101).Where(x => !x.IsDiscontinued).OrderBy(x => x.CompanyMaster.CompanyName).OrderBy(x => x.LocationName).ToList();
+                //List<KPILib.Models.KeyValuePair> compLocations = new List<KPILib.Models.KeyValuePair>();
+                //foreach (var obj in Locations)
+                //{
+                //    var o = new KeyValuePair { Key = obj.CompanyLocationID, Value = obj.CompanyMaster.CompanyName + " [" + obj.LocationName + "]" };
+                //    compLocations.Add(o);
+                //}
                 #endregion
 
                 #region get all RawMaterial for ddl
@@ -162,7 +162,7 @@ namespace KPIWebAPI.Controllers
                 if (data != null)
                 {
                     var o = mapper.Map<PurchaseMaster, KPILib.Models.PurchaseMaster>(data);
-                    o.Locations = compLocations;
+                    //o.Locations = compLocations;
                     o.Materials = materials;
                     o.Status = data.PurchaseStatusMaster.PurchaseStatus;
                     o.User = data.UserMaster.Username;
@@ -186,7 +186,7 @@ namespace KPIWebAPI.Controllers
                 }
                 else
                 {
-                    var o = new KPILib.Models.PurchaseMaster() { LineItems = new List<PurchaseDetails>(), Locations = compLocations, Materials = materials };
+                    var o = new KPILib.Models.PurchaseMaster() { LineItems = new List<PurchaseDetails>(), Materials = materials };
                     o.LineItems.Add(new PurchaseDetails());
 
                     if (o.LineItems.Count < 5)
@@ -233,7 +233,7 @@ namespace KPIWebAPI.Controllers
                 returnValue.data = data;
                 returnValue.data.PurchaseID = o.PurchaseID;
 
-                var po = db.PurchaseMasters.Where(x => x.PurchaseID == o.PurchaseID).Select(x=> new { x.PurchaseID, x.CompanyLocationMaster.ContactPerson, x.CompanyLocationMaster.Email, x.UserMaster.Username, UserEmail = x.UserMaster.Email}).FirstOrDefault();
+                var po = db.PurchaseMasters.Where(x => x.PurchaseID == o.PurchaseID).Select(x => new { x.PurchaseID, x.CompanyLocationMaster.ContactPerson, x.CompanyLocationMaster.Email, x.UserMaster.Username, UserEmail = x.UserMaster.Email }).FirstOrDefault();
 
                 Dictionary<string, string> key_vals = new Dictionary<string, string>();
                 key_vals.Add("%NAME%", po.ContactPerson);
@@ -263,8 +263,8 @@ namespace KPIWebAPI.Controllers
                 var o = db.PurchaseMasters.SingleOrDefault(x => x.PurchaseID == data.PurchaseID);
                 if (o != null)
                 {
-                    //o.CompanyLocationID = data.CompanyLocationID;
-                    //o.Instructions = data.Instructions;
+                    o.CompanyLocationID = data.CompanyLocationID;
+                    o.Instructions = data.Instructions;
                     o.PurchaseDate = data.PurchaseDate;
                     o.PurchaseStatusID = 10;    //Ack Pending
 

@@ -1,6 +1,7 @@
 ﻿using KPI.Classes;
 using KPI.Filters;
 using KPILib.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -48,10 +49,11 @@ namespace KPI.Controllers
 
         public ActionResult Get(int id)
         {
+            ViewData["CompanyLocationID"] = new SelectList(new List<SelectListItem>(), "CompanyLocationID", "CompanyLocationName");
             var response = KPIAPIManager.GetPurchase(id);
             if (response.Response.ResponseCode == 200)
             {
-                ViewBag.Locations = new SelectList(response.data.Locations, "Key", "Value");
+                //ViewBag.Locations = new SelectList(response.data.Locations, "Key", "Value");
                 ViewBag.Materials = new SelectList(response.data.Materials, "Key", "Value");
 
                 return View(response.data);
@@ -65,10 +67,11 @@ namespace KPI.Controllers
 
         public ActionResult New()
         {
+            ViewData["CompanyLocationID"] = new SelectList(new List<SelectListItem>(), "CompanyLocationID", "CompanyLocationName");
             var response = KPIAPIManager.GetPurchase(0);
             if (response.Response.ResponseCode == 200)
             {
-                ViewBag.Locations = new SelectList(response.data.Locations, "Key", "Value");
+                //ViewBag.Locations = new SelectList(response.data.Locations, "Key", "Value");
                 ViewBag.Materials = new SelectList(response.data.Materials, "Key", "Value");
                 return View(response.data);
             }
@@ -106,7 +109,8 @@ namespace KPI.Controllers
 
             if (ModelState.IsValid)
             {
-                purchase.UserID = 1001;     //TODO: replace with UserID from session
+                //purchase.UserID = 1001;     //TODO: replace with UserID from session
+                purchase.UserID = Convert.ToInt32(Session["UserID"]);     //TODO: replace with UserID from session
                 //purchase.LineItems.Add(new KPILib.Models.PurchaseDetails { RawMatarialID = 1002, Qty = 8 });
                 //purchase.LineItems.Add(new KPILib.Models.PurchaseDetails { RawMatarialID = 1003, Qty = 2 });
 
@@ -151,5 +155,21 @@ namespace KPI.Controllers
                 return View("Error");
             }
         }
+
+        [HttpPost]
+        public ActionResult GetVendorWithLocationData(string vendorType)
+        {
+            VendorMasterModelResponse vendorMasterModel = KPIAPIManager.GetAllVendorData();
+
+            if (vendorMasterModel != null && vendorMasterModel.Response.ResponseCode == 200)
+            {
+                vendorMasterModel.data.Where(z => z.VendorType == vendorType).ToList().ForEach(item =>
+                {
+                    item.VendorName += $" [{item.Address}]";
+                });
+            }
+            return Json(vendorMasterModel.data);
+        }
+
     }
 }
