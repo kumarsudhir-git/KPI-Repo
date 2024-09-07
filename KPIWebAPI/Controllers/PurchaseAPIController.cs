@@ -1,5 +1,6 @@
 ﻿using KPILib.Models;
 using KPIWebAPI.AuthFilters;
+using KPIWebAPI.Classes;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -27,7 +28,12 @@ namespace KPIWebAPI.Controllers
                 foreach (var obj in data)
                 {
                     var o = mapper.Map<PurchaseMaster, KPILib.Models.PurchaseMaster>(obj);
-                    o.CompanyLocation = obj.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.CompanyLocationMaster.LocationName + "]";
+                    //o.CompanyLocation = obj.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.CompanyLocationMaster.LocationName + "]";
+                    VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(o.CompanyLocationID);
+                    if (vendorMaster != null)
+                    {
+                        o.CompanyLocation = vendorMaster.VendorName + " [" + vendorMaster.Address + "]";
+                    }
                     o.Status = obj.PurchaseStatusMaster.PurchaseStatus;
                     o.User = obj.UserMaster.Username;
 
