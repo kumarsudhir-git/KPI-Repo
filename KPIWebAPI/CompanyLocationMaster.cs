@@ -17,7 +17,6 @@ namespace KPIWebAPI
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CompanyLocationMaster()
         {
-            this.PurchaseMasters = new HashSet<PurchaseMaster>();
             this.SalesMasters = new HashSet<SalesMaster>();
         }
     
@@ -43,8 +42,6 @@ namespace KPIWebAPI
         public Nullable<System.DateTime> LastModifiedOn { get; set; }
     
         public virtual CompanyMaster CompanyMaster { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PurchaseMaster> PurchaseMasters { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SalesMaster> SalesMasters { get; set; }
     }

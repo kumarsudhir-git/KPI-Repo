@@ -467,6 +467,13 @@ ALTER TABLE VendorMaster ADD VendorType NVARCHAR(10) NULL
 
 GO
 
+--------------------------------------17-09-2024-----------------------------------------
+
+ALTER TABLE PurchaseMaster
+DROP CONSTRAINT FK_PurchaseMaster_CompanyLocationMaster
+
+GO
+
 ------------------------------------------------------END-----------------------------
 
 

@@ -1111,18 +1111,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PurchaseMaster_CompanyLocationMaster">
-          <End Role="CompanyLocationMaster" Type="Self.CompanyLocationMaster" Multiplicity="1" />
-          <End Role="PurchaseMaster" Type="Self.PurchaseMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CompanyLocationMaster">
-              <PropertyRef Name="CompanyLocationID" />
-            </Principal>
-            <Dependent Role="PurchaseMaster">
-              <PropertyRef Name="CompanyLocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PurchaseMaster_PurchaseStatusMaster">
           <End Role="PurchaseStatusMaster" Type="Self.PurchaseStatusMaster" Multiplicity="1" />
           <End Role="PurchaseMaster" Type="Self.PurchaseMaster" Multiplicity="*" />
@@ -1656,10 +1644,6 @@
             <End Role="RawMaterialMaster" EntitySet="RawMaterialMaster" />
             <End Role="PurchaseDetails" EntitySet="PurchaseDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK_PurchaseMaster_CompanyLocationMaster" Association="Self.FK_PurchaseMaster_CompanyLocationMaster">
-            <End Role="CompanyLocationMaster" EntitySet="CompanyLocationMaster" />
-            <End Role="PurchaseMaster" EntitySet="PurchaseMaster" />
-          </AssociationSet>
           <AssociationSet Name="FK_PurchaseMaster_PurchaseStatusMaster" Association="Self.FK_PurchaseMaster_PurchaseStatusMaster">
             <End Role="PurchaseStatusMaster" EntitySet="PurchaseStatusMaster" />
             <End Role="PurchaseMaster" EntitySet="PurchaseMaster" />
@@ -1841,10 +1825,6 @@
           <AssociationSet Name="FK_CompanyLocationMaster_CompanyMaster" Association="KPIModel.FK_CompanyLocationMaster_CompanyMaster">
             <End Role="CompanyMaster" EntitySet="CompanyMasters" />
             <End Role="CompanyLocationMaster" EntitySet="CompanyLocationMasters" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PurchaseMaster_CompanyLocationMaster" Association="KPIModel.FK_PurchaseMaster_CompanyLocationMaster">
-            <End Role="CompanyLocationMaster" EntitySet="CompanyLocationMasters" />
-            <End Role="PurchaseMaster" EntitySet="PurchaseMasters" />
           </AssociationSet>
           <AssociationSet Name="FK_SalesMaster_CompanyLocationMaster" Association="KPIModel.FK_SalesMaster_CompanyLocationMaster">
             <End Role="CompanyLocationMaster" EntitySet="CompanyLocationMasters" />
@@ -2183,7 +2163,6 @@
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="CompanyMaster" Relationship="KPIModel.FK_CompanyLocationMaster_CompanyMaster" FromRole="CompanyLocationMaster" ToRole="CompanyMaster" />
-          <NavigationProperty Name="PurchaseMasters" Relationship="KPIModel.FK_PurchaseMaster_CompanyLocationMaster" FromRole="CompanyLocationMaster" ToRole="PurchaseMaster" />
           <NavigationProperty Name="SalesMasters" Relationship="KPIModel.FK_SalesMaster_CompanyLocationMaster" FromRole="CompanyLocationMaster" ToRole="SalesMaster" />
         </EntityType>
         <EntityType Name="CompanyMaster">
@@ -2621,7 +2600,6 @@
           <Property Name="Instructions" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="PurchaseStatusID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="CompanyLocationMaster" Relationship="KPIModel.FK_PurchaseMaster_CompanyLocationMaster" FromRole="PurchaseMaster" ToRole="CompanyLocationMaster" />
           <NavigationProperty Name="PurchaseDetails" Relationship="KPIModel.FK_PurchaseDetails_PurchaseMaster" FromRole="PurchaseMaster" ToRole="PurchaseDetail" />
           <NavigationProperty Name="PurchaseStatusMaster" Relationship="KPIModel.FK_PurchaseMaster_PurchaseStatusMaster" FromRole="PurchaseMaster" ToRole="PurchaseStatusMaster" />
           <NavigationProperty Name="UserMaster" Relationship="KPIModel.FK_PurchaseMaster_UserMaster" FromRole="PurchaseMaster" ToRole="UserMaster" />
@@ -2969,18 +2947,6 @@
             </Principal>
             <Dependent Role="CompanyLocationMaster">
               <PropertyRef Name="CompanyID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PurchaseMaster_CompanyLocationMaster">
-          <End Type="KPIModel.CompanyLocationMaster" Role="CompanyLocationMaster" Multiplicity="1" />
-          <End Type="KPIModel.PurchaseMaster" Role="PurchaseMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CompanyLocationMaster">
-              <PropertyRef Name="CompanyLocationID" />
-            </Principal>
-            <Dependent Role="PurchaseMaster">
-              <PropertyRef Name="CompanyLocationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

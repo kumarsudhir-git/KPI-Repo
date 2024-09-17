@@ -53,6 +53,8 @@ namespace KPI.Controllers
             var response = KPIAPIManager.GetPurchase(id);
             if (response.Response.ResponseCode == 200)
             {
+                VendorMasterModelResponse masterModelResponse = KPIAPIManager.GetAllVendorData();
+                ViewData["CompanyLocationID"] = new SelectList(masterModelResponse.data, "VendorId", "VendorName");
                 //ViewBag.Locations = new SelectList(response.data.Locations, "Key", "Value");
                 ViewBag.Materials = new SelectList(response.data.Materials, "Key", "Value");
 

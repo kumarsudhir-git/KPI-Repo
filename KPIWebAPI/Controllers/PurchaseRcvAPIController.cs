@@ -1,5 +1,6 @@
 ﻿using KPILib.Models;
 using KPIWebAPI.AuthFilters;
+using KPIWebAPI.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +27,12 @@ namespace KPIWebAPI.Controllers
                 var data = db.PurchaseRcvdMasters.OrderByDescending(x => x.PurchaseRcvdID).ToList();
                 foreach (var obj in data)
                 {
+                    VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(obj.PurchaseMaster.CompanyLocationID);
+
                     var o = mapper.Map<PurchaseRcvdMaster, KPILib.Models.PurchaseRcvMast>(obj);
+
                     o.PurchaseDate = obj.PurchaseMaster.PurchaseDate;
-                    o.CompanyLocation = obj.PurchaseMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.PurchaseMaster.CompanyLocationMaster.LocationName + "]";
+                    o.CompanyLocation = vendorMaster?.VendorName + " [" + vendorMaster?.Address + "]";
                     o.User = obj.PurchaseMaster.UserMaster.Username;
                     o.Status = obj.PurchaseMaster.PurchaseStatusMaster.PurchaseStatus;
                     o.ReceivedByUser = allUsers.SingleOrDefault(x => x.UserID == obj.RcvdByUserID).Username;
@@ -63,9 +67,12 @@ namespace KPIWebAPI.Controllers
                 var po = db.PurchaseMasters.SingleOrDefault(x => x.PurchaseID == id);
                 if (po != null)
                 {
+                    VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(po.CompanyLocationID);
+
                     returnValue.data = new PurchaseRcvMast
                     {
-                        CompanyLocation = po.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + po.CompanyLocationMaster.LocationName + "]",
+                        //CompanyLocation = po.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + po.CompanyLocationMaster.LocationName + "]",
+                        CompanyLocation = vendorMaster?.VendorName + " [" + vendorMaster?.Address + "]",
                         Instructions = po.Instructions,
                         PurchaseDate = po.PurchaseDate,
                         PurchaseID = po.PurchaseID,
@@ -473,9 +480,11 @@ namespace KPIWebAPI.Controllers
                 var rcvMast = db.PurchaseRcvdMasters.SingleOrDefault(x => x.PurchaseRcvdID == id);
                 if (rcvMast != null)
                 {
+                    VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(rcvMast.PurchaseMaster.CompanyLocationID);
+
                     returnValue.data = new PurchaseRcvPrint
                     {
-                        CompanyLocation = rcvMast.PurchaseMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + rcvMast.PurchaseMaster.CompanyLocationMaster.LocationName + "]",
+                        CompanyLocation = $"{vendorMaster?.VendorName} [{vendorMaster?.Address}]",
                         Instructions = rcvMast.PurchaseMaster.Instructions,
                         PurchaseDate = rcvMast.PurchaseMaster.PurchaseDate,
                         PurchaseID = rcvMast.PurchaseMaster.PurchaseID,
