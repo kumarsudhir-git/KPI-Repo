@@ -26,11 +26,23 @@ namespace KPILib.Models
 
         [Display(Name = "Company / Location")]
         public string CompanyLocation { get; set; }
+
+        [Required(ErrorMessage = "Required")]
+        [Display(Name = "Company / Location")]
+        public int CompanyLocationId { get; set; }
+
+        [Required(ErrorMessage = "Required")]
+        [Display(Name = "Location")]
+        public int LocationId { get; set; }
+        public string LocationName { get; set; }
         public string Instructions { get; set; }
 
         [Display(Name = "Booked By")]
         [Editable(allowEdit: false)]
         public string User { get; set; }
+
+        public bool QCReceived { get; set; }
+        public string QCStatus { get; set; }
 
         #endregion
 

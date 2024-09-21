@@ -467,6 +467,26 @@ ALTER TABLE VendorMaster ADD VendorType NVARCHAR(10) NULL
 
 GO
 
+--------------------------------------17-09-2024-----------------------------------------
+
+ALTER TABLE PurchaseMaster
+DROP CONSTRAINT FK_PurchaseMaster_CompanyLocationMaster
+
+GO
+
+---------------------------------------21-09-2024---------------------------------------
+
+GO
+ALTER TABLE PurchaseRcvdMaster ADD CompanyLocationId INT NULL
+
+ALTER TABLE PurchaseRcvdMaster ADD LocationId INT NULL
+
+ALTER TABLE PurchaseRcvdMaster ADD QCReceived BIT NOT NULL DEFAULT(0)
+
+ALTER TABLE PurchaseRcvdMaster ADD QCStatus NVARCHAR(250) NULL
+
+GO
+
 ------------------------------------------------------END-----------------------------
 
 

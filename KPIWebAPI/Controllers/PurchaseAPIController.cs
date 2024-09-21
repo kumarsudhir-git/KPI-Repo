@@ -1,5 +1,6 @@
 ﻿using KPILib.Models;
 using KPIWebAPI.AuthFilters;
+using KPIWebAPI.Classes;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -27,7 +28,12 @@ namespace KPIWebAPI.Controllers
                 foreach (var obj in data)
                 {
                     var o = mapper.Map<PurchaseMaster, KPILib.Models.PurchaseMaster>(obj);
-                    o.CompanyLocation = obj.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.CompanyLocationMaster.LocationName + "]";
+                    //o.CompanyLocation = obj.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.CompanyLocationMaster.LocationName + "]";
+                    VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(o.CompanyLocationID);
+                    if (vendorMaster != null)
+                    {
+                        o.CompanyLocation = vendorMaster.VendorName + " [" + vendorMaster.Address + "]";
+                    }
                     o.Status = obj.PurchaseStatusMaster.PurchaseStatus;
                     o.User = obj.UserMaster.Username;
 
@@ -161,12 +167,14 @@ namespace KPIWebAPI.Controllers
                 var data = db.PurchaseMasters.SingleOrDefault(x => x.PurchaseID == id);
                 if (data != null)
                 {
+                    VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(data.CompanyLocationID);
+
                     var o = mapper.Map<PurchaseMaster, KPILib.Models.PurchaseMaster>(data);
                     //o.Locations = compLocations;
                     o.Materials = materials;
                     o.Status = data.PurchaseStatusMaster.PurchaseStatus;
                     o.User = data.UserMaster.Username;
-                    o.CompanyLocation = data.CompanyLocationMaster.LocationName;
+                    o.CompanyLocation = vendorMaster?.Address;
 
                     foreach (var item in data.PurchaseDetails)
                     {
@@ -233,15 +241,19 @@ namespace KPIWebAPI.Controllers
                 returnValue.data = data;
                 returnValue.data.PurchaseID = o.PurchaseID;
 
-                var po = db.PurchaseMasters.Where(x => x.PurchaseID == o.PurchaseID).Select(x => new { x.PurchaseID, x.CompanyLocationMaster.ContactPerson, x.CompanyLocationMaster.Email, x.UserMaster.Username, UserEmail = x.UserMaster.Email }).FirstOrDefault();
+                //Need to discuss on this point to sendmail method
 
-                Dictionary<string, string> key_vals = new Dictionary<string, string>();
-                key_vals.Add("%NAME%", po.ContactPerson);
-                key_vals.Add("%PO_NO%", po.PurchaseID.ToString());
-                key_vals.Add("%USER%", po.Username);
-                key_vals.Add("%USER_EMAIL%", po.UserEmail);
+                //var po = db.PurchaseMasters.Where(x => x.PurchaseID == o.PurchaseID).Select(x => new { x.PurchaseID, x.UserMaster.Username, UserEmail = x.UserMaster.Email }).FirstOrDefault();
 
-                SendEmail(po.ContactPerson, po.Email, po.PurchaseID, key_vals);
+                //VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(o.CompanyLocationID);
+
+                //Dictionary<string, string> key_vals = new Dictionary<string, string>();
+                //key_vals.Add("%NAME%", vendorMaster.VendorName);
+                //key_vals.Add("%PO_NO%", po.PurchaseID.ToString());
+                //key_vals.Add("%USER%", po.Username);
+                //key_vals.Add("%USER_EMAIL%", po.UserEmail);
+
+                //SendEmail(vendorMaster.VendorName, po.Email, po.PurchaseID, key_vals);
 
                 returnValue.Response.IsSuccessful();
             }
@@ -285,15 +297,16 @@ namespace KPIWebAPI.Controllers
                     returnValue.data = data;
                     returnValue.data.PurchaseID = o.PurchaseID;
 
-                    var po = db.PurchaseMasters.Where(x => x.PurchaseID == o.PurchaseID).Select(x => new { x.PurchaseID, x.CompanyLocationMaster.ContactPerson, x.CompanyLocationMaster.Email, x.UserMaster.Username, UserEmail = x.UserMaster.Email }).FirstOrDefault();
+                    //Need to confirm for email as it require emailid field in VendorMaster table
+                    //var po = db.PurchaseMasters.Where(x => x.PurchaseID == o.PurchaseID).Select(x => new { x.PurchaseID, x.CompanyLocationMaster.ContactPerson, x.CompanyLocationMaster.Email, x.UserMaster.Username, UserEmail = x.UserMaster.Email }).FirstOrDefault();
 
-                    Dictionary<string, string> key_vals = new Dictionary<string, string>();
-                    key_vals.Add("%NAME%", po.ContactPerson);
-                    key_vals.Add("%PO_NO%", po.PurchaseID.ToString());
-                    key_vals.Add("%USER%", po.Username);
-                    key_vals.Add("%USER_EMAIL%", po.UserEmail);
+                    //Dictionary<string, string> key_vals = new Dictionary<string, string>();
+                    //key_vals.Add("%NAME%", po.ContactPerson);
+                    //key_vals.Add("%PO_NO%", po.PurchaseID.ToString());
+                    //key_vals.Add("%USER%", po.Username);
+                    //key_vals.Add("%USER_EMAIL%", po.UserEmail);
 
-                    SendEmail(po.ContactPerson, po.Email, po.PurchaseID, key_vals);
+                    //SendEmail(po.ContactPerson, po.Email, po.PurchaseID, key_vals);
 
                     returnValue.Response.IsSuccessful();
                 }

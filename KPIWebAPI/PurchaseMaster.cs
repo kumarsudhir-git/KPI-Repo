@@ -28,7 +28,6 @@ namespace KPIWebAPI
         public int PurchaseStatusID { get; set; }
         public int UserID { get; set; }
     
-        public virtual CompanyLocationMaster CompanyLocationMaster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseDetail> PurchaseDetails { get; set; }
         public virtual PurchaseStatusMaster PurchaseStatusMaster { get; set; }

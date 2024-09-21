@@ -1,6 +1,8 @@
 ﻿$(function () {
     $.noConflict();
 
+    showHideLoader();
+
     $('.AddDataTable').DataTable({
         "scrollCollapse": false,
         "paging": true,
@@ -55,6 +57,51 @@ function AddLineItemRowGeneric(url, methodType, selector, IsAppendData = true) {
     })
 }
 
+function LoadVendorDataGeneric(obj, dropdownId) {
+
+    var $vendorData = $('#' + dropdownId);    // Cache the state dropdown
+
+    // Clear the state dropdown
+    $vendorData.empty();
+    $vendorData.append('<option value="">--Select Company and Location--</option>'); // Add the default option
+
+    var vendorId = $(obj).val();
+
+    if (vendorId != null && vendorId != '' && vendorId != undefined) {
+
+        $.ajax({
+            url: '/Purchase/GetVendorWithLocationData',
+            type: 'POST',
+            data: { vendorType: vendorId },
+            dataType: 'json',
+            success: function (response) {
+                // Loop through the response and populate the state dropdown
+                $.each(response, function (index, elem) {
+                    $vendorData.append($('<option>', {
+                        value: elem.VendorId,
+                        text: elem.VendorName
+                    }));
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching states: " + error);
+            }
+        });
+    }
+    else {
+        return false;
+    }
+
+}
+
 function DeleteLineItemRow(obj) {
     $(obj).closest('tr').remove();
+}
+
+function showHideLoader() {
+    $(document).ajaxStart(function () {
+        $("#loader").show(); // Show the loader
+    }).ajaxStop(function () {
+        $("#loader").hide(); // Hide the loader
+    });
 }
