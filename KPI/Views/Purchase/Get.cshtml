@@ -1,13 +1,15 @@
-﻿@using KPI.Classes;
+﻿                     @using KPI.Classes;
 @model KPILib.Models.PurchaseMaster
 @{
     ViewBag.Title = "Purchase Order - Edit";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
-<div>
-    @Html.ActionLink("Back to List", "GetAll")
+<div class="top_header">
+    <h2>@ViewBag.Title</h2>
+    <div class="back_btn">
+        @Html.ActionLink("Back to List", "GetAll")
+    </div>
 </div>
 
 @using (Html.BeginForm("Edit", "Purchase"))
@@ -15,41 +17,41 @@
     @Html.AntiForgeryToken()
 
     <div class="row g-3">
-        <hr />
+       
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-row">
             <div class="row">
                 <div class="col-md-6">
-                    <table class="col-12">
-                        <tr>
-                            <td>
+                    <div class="row">
+
+                        <div class="col-md-3 col-sm-12">
+                            <div class="form-group">
                                 @Html.LabelFor(model => model.PurchaseID, htmlAttributes: new { @class = "control-label col-md-12" })
-                                <div>
-                                    @Html.DisplayFor(model => model.PurchaseID, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.HiddenFor(model => model.PurchaseID)
-                                    @*@Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
-                                </div>
-                            </td>
-                            <td>
+                                @Html.DisplayFor(model => model.PurchaseID, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.HiddenFor(model => model.PurchaseID)
+                                @*@Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <div class="form-group">
                                 @Html.LabelFor(model => model.PurchaseDate, htmlAttributes: new { @class = "control-label col-md-12" })
-                                <div>
-                                    @Html.DisplayFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control" } })
-                                    @*@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control datepicker", @disabled = "disabled" }, type = "date" })*@
-                                    @*@Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
+                                @Html.DisplayFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @*@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control datepicker", @disabled = "disabled" }, type = "date" })*@
+                                @*@Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-12">
+                            <div class="form-group">
                                 @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-12" })
-                                <div>
-                                    @Html.DisplayFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                                    @*@Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })*@
-                                    @*@Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })*@
-                                </div>
-                            </td>
-                            <td>
+                                @Html.DisplayFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+                                @*@Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })*@
+                                @*@Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <div class="form-group">
                                 @Html.LabelFor(model => model.User, htmlAttributes: new { @class = "control-label col-md-12" })
                                 <div>
                                     @Html.DisplayFor(model => model.User, new { htmlAttributes = new { @class = "form-control" } })
@@ -105,33 +107,30 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label col-md-12" })
-                                <div class="col-md-12">
-                                    @Html.TextAreaFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" }, @rows = 6, @cols = 1000, style = "max-width:100%;", @disabled = "disabled" })
-                                </div>
+                                @*@Html.DisplayFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @Html.TextAreaFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" }, @rows = 6, @cols = 1000, style = "max-width:100%;", @disabled = "disabled" })
+                                @*@Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
-                    </div>*@
+
+                    </div>
+
                 </div>
 
                 <div class="col-md-6">
-                    <div class="form-row">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h4>Line Items</h4>
-                            </div>
-                            <!--<div class="col-md-6 text-right">-->
-                            @*<input type="button" value="Add Line Item" class="btn btn-primary  btn-sm" />*@
-                            <!--</div>-->
-                            <div class="col-md-4"></div>
-                            <div class="col-md-4 text-right">
-                                <label>&nbsp;</label>
-                                <input type="button" value="Add Line Item" class="btn btn-primary btn-sm" onclick="AddLineItemRow()" />
-                            </div>
-                        </div>
+                    
+                    <div class="top_header">
+                        <h2>Line Items</h2>
+                            
+                    <!--<div class="col-md-6 text-right">-->
+                    @*<input type="button" value="Add Line Item" class="btn btn-primary  btn-sm" />*@
+                    <!--</div>--> 
+                    <div class=""> 
+                        <input type="button" value="Add Line Item" class="btn btn-primary btn-sm" onclick="AddLineItemRow()" />
                     </div>
-                    <br />
-                    <div class="row">
-                        <table class="table" id="PurchaseOrderTbl" style="border:1px solid #000">
+                </div> 
+                    <div class="table-responsive">
+                        <table class="table" id="PurchaseOrderTbl">
                             <thead>
                                 <tr>
                                     @*<th>
@@ -149,6 +148,7 @@
                                     <th>
                                         Instructions
                                     </th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -181,7 +181,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-dark" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </div>
     </div>

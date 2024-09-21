@@ -7,9 +7,11 @@
 
 <div class="top_header">
     <h2>@ViewBag.Title</h2>
-    @Html.ActionLink("Back to List", "GetAll")
+    <div class="back_btn">
+        @Html.ActionLink("Back to List", "GetAll")
+    </div>
 </div>
-
+  
 
 @using (Html.BeginForm("Add", "Purchase"))
 {
@@ -18,7 +20,8 @@
 
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-row">
+<div class="row">
+    <div class="col-md-6">
         <div class="row">
 
             <div class="col-md-3">
@@ -80,18 +83,27 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-8  col-sm-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label col-md-12" })
                     @Html.TextAreaFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" }, @rows = 6, @cols = 1000, style = "max-width:100%;" })
                     @Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </div>
         </div>
+
+    </div>
+    <div class="col-md-6">
 
         <div class="top_header">
 
             <h4>Line Items</h4>
+
 
             <div class="">
                 <input type="button" value="Add Line Item" class="btn btn-primary btn-sm" onclick="AddLineItemRow()" />
@@ -135,28 +147,24 @@
             </table>
         </div>
 
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
         </div>
+       
     </div>
-}
+    }
 
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
 
-@*<script>
-        $("#add").click(function () {
-            string row = "<tr><td width='70px'></td><td>@Html.DropDownListFor(model => model.RawMatarialID, ViewBag.Materials as SelectList, "--Select Raw Material--", new { @class = "form-control" }) @Html.ValidationMessageFor(model => model.RawMatarialID, "", new { @class = "text-danger" })</td><td>@Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control" } })@Html.ValidationMessageFor(model => model.Qty, "", new { @class = "text-danger" })</td></tr>";
-            $("#tbodyval").append(row);
-        });
-    </script>*@
+    @*<script>
+            $("#add").click(function () {
+                string row = "<tr><td width='70px'></td><td>@Html.DropDownListFor(model => model.RawMatarialID, ViewBag.Materials as SelectList, "--Select Raw Material--", new { @class = "form-control" }) @Html.ValidationMessageFor(model => model.RawMatarialID, "", new { @class = "text-danger" })</td><td>@Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control" } })@Html.ValidationMessageFor(model => model.Qty, "", new { @class = "text-danger" })</td></tr>";
+                $("#tbodyval").append(row);
+            });
+        </script>*@
 
-<script>
+    <script>
         $(document).ready(function () {
         });
 
@@ -273,4 +281,4 @@
 
     }
 
-</script>
+    </script>
