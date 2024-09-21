@@ -24,7 +24,7 @@
     <div class="col-md-6">
         <div class="row">
 
-            <div class="col-md-3">
+            <div class="col-md-3 col-sm-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.PurchaseID, htmlAttributes: new { @class = "control-label col-md-12" })
                     @Html.DisplayFor(model => model.PurchaseID, new { htmlAttributes = new { @class = "form-control" } })
@@ -32,7 +32,7 @@
                     @*@Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 col-sm-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.PurchaseDate, htmlAttributes: new { @class = "control-label col-md-12" })
                     @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control datepicker" }, type = "date" })
@@ -40,14 +40,14 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-3 col-sm-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-12" })
                     @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
                     @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 col-sm-12 col-sm-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.User, htmlAttributes: new { @class = "control-label col-md-12" })
                     @Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
@@ -58,7 +58,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-1">
+            <div class="col-md-3 col-sm-12">
                 <div class="form-group">
                     @Html.Label("Is Vendor", new { @class = "control-label" })
                     <div class="checkbox">
@@ -66,7 +66,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3 col-sm-12">
                 <div class="form-group">
                     @Html.Label("Is KPI Labour", htmlAttributes: new { @class = "control-label" })
                     <div class="checkbox">
@@ -75,7 +75,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.CompanyLocation, htmlAttributes: new { @class = "control-label col-md-12" })
                     @Html.DropDownListFor(model => model.CompanyLocationID, null, "--Select Company and Location--", new { @class = "form-control", style = "max-width:100%;" })
@@ -83,7 +83,7 @@
                 </div>
             </div>
 
-            <div class="col-md-8  col-sm-12">
+            <div class="col-md-12  col-sm-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label col-md-12" })
                     @Html.TextAreaFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" }, @rows = 6, @cols = 1000, style = "max-width:100%;" })

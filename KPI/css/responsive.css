@@ -72,6 +72,7 @@ table.dataTable.no-footer {
         width: 100%;
         left: 0;
         opacity: 0.5;
+        z-index: 9;
     }
 .login_panel {
     display:flex;
@@ -79,11 +80,16 @@ table.dataTable.no-footer {
     align-items:center;
     height:100vh;
 }
+.form-control{
+    font-size:14px;
+}
 .login_content {
     background: #fff;
     padding: 30px 50px;
     box-shadow: 0px 7px 22px -5px #a8a8a8;
-    margin-top:-30px
+    margin-top: -30px;
+    position: relative;
+    z-index: 99;
 }
 .dash_box{
     padding: 25px 15px;
