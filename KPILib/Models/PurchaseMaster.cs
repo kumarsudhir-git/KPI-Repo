@@ -15,10 +15,11 @@ namespace KPILib.Models
         [Display(Name = "PO Date")]
         public System.DateTime PurchaseDate { get; set; }
 
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Vendor / Location")]
         public int CompanyLocationID { get; set; }
-        
-        [Display(Name = "Vendor / Location")] 
+
+        [Display(Name = "Vendor / Location")]
         public string CompanyLocation { get; set; }
         public string Instructions { get; set; }
 
@@ -35,7 +36,7 @@ namespace KPILib.Models
         [Editable(allowEdit: false)]
         public string User { get; set; }
 
-        public List<KeyValuePair> Locations { get; set; }
+        //public List<KeyValuePair> Locations { get; set; }
 
         public List<PurchaseDetails> LineItems { get; set; }
         public List<KeyValuePair> Materials { get; set; }
@@ -46,7 +47,7 @@ namespace KPILib.Models
             UserID = 1001;
             PurchaseDate = DateTime.Today;
             LineItems = new List<PurchaseDetails>();
-            Locations = new List<KeyValuePair>();
+            //Locations = new List<KeyValuePair>();
             Materials = new List<KeyValuePair>();
         }
     }

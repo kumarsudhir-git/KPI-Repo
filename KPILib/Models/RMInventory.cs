@@ -107,14 +107,19 @@ namespace KPILib.Models
         [Required(ErrorMessage = "Required")]
         [Display(Name = "Code No")]
         public string CodeNo { get; set; }
+        [Required(ErrorMessage = "Required")]
         public string Colour { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Vendor")]
         public int? VendorId { get; set; }
         public string VendorName { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Qty In Stock")]
         public int? QtyInStock { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Min Order Level")]
         public int? MinOrderLevel { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Location")]
         public int? LocationId { get; set; }
         public string LocationName { get; set; }
@@ -147,13 +152,17 @@ namespace KPILib.Models
         public int PackageBagId { get; set; }
         [Required(ErrorMessage = "Required")]
         public int? Size { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Vendor")]
         public int? VendorId { get; set; }
         public string VendorName { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Qty In Stock")]
         public int? QtyInStock { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Min Order Level")]
         public int? MinOrderLevel { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Location")]
         public int? LocationId { get; set; }
         public string LocationName { get; set; }
@@ -185,19 +194,24 @@ namespace KPILib.Models
         public int FinishedGoodId { get; set; }
         [Required(ErrorMessage = "Required")]
         [Display(Name = "Product")]
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         public string ProductName { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Rack")]
-        public int? RackId { get; set; }
+        public int RackId { get; set; }
         public string RackNumber { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Package")]
-        public int? Package { get; set; }
+        public int Package { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Quantity")]
-        public int? Qty { get; set; }
+        public int Qty { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Min Order Level")]
-        public int? MinOrderLevel { get; set; }
+        public int MinOrderLevel { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Location")]
-        public int? LocationId { get; set; }
+        public int LocationId { get; set; }
         public string LocationName { get; set; }
         public bool IsActive { get; set; }
         public int AddedBy { get; set; }

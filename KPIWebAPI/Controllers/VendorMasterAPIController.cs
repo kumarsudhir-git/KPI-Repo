@@ -91,6 +91,7 @@ namespace KPIWebAPI.Controllers
                                 vendorMaster.Notes = vendorMasterModel.Notes;
                                 vendorMaster.ContactNumber = vendorMasterModel.ContactNumber;
                                 vendorMaster.Address = vendorMasterModel.Address;
+                                vendorMaster.VendorType = vendorMasterModel.VendorType;
                                 vendorMaster.LastModifiedBy = vendorMasterModel.LastModifiedBy;
                                 vendorMaster.LastModifiedOn = DateTime.Now;
                                 db.Entry(vendorMaster).State = EntityState.Modified;

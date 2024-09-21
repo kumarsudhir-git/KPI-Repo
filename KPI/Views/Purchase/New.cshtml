@@ -13,12 +13,12 @@
 </div>
   
 
-    @using (Html.BeginForm("Add", "Purchase"))
-    {
-        @Html.AntiForgeryToken()
-         
-           
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@using (Html.BeginForm("Add", "Purchase"))
+{
+    @Html.AntiForgeryToken()
+
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 <div class="row">
     <div class="col-md-6">
@@ -55,10 +55,30 @@
                 </div>
             </div>
 
-            <div class="col-md-4 col-sm-12">
+        </div>
+
+        <div class="row">
+            <div class="col-md-1">
+                <div class="form-group">
+                    @Html.Label("Is Vendor", new { @class = "control-label" })
+                    <div class="checkbox">
+                        @Html.RadioButton("VendorType", "VD001", new { @onchange = "LoadVendorData(this)" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    @Html.Label("Is KPI Labour", htmlAttributes: new { @class = "control-label" })
+                    <div class="checkbox">
+                        @Html.RadioButton("VendorType", "VD002", new { @onchange = "LoadVendorData(this)" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
                 <div class="form-group">
                     @Html.LabelFor(model => model.CompanyLocation, htmlAttributes: new { @class = "control-label col-md-12" })
-                    @Html.DropDownListFor(model => model.CompanyLocationID, ViewBag.Locations as SelectList, "--Select Company and Location--", new { @class = "form-control", style = "max-width:100%;" })
+                    @Html.DropDownListFor(model => model.CompanyLocationID, null, "--Select Company and Location--", new { @class = "form-control", style = "max-width:100%;" })
                     @Html.ValidationMessageFor(model => model.CompanyLocationID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -222,6 +242,43 @@
 
             //alert("Hi");
         }
+    }
+
+    function LoadVendorData(obj) {
+
+        var $vendorData = $('#CompanyLocationID');    // Cache the state dropdown
+
+        // Clear the state dropdown
+        $vendorData.empty();
+        $vendorData.append('<option value="">--Select Company and Location--</option>'); // Add the default option
+
+        var vendorId = $(obj).val();
+
+        if (vendorId != null && vendorId != '' && vendorId != undefined) {
+
+            $.ajax({
+                url: '/Purchase/GetVendorWithLocationData',
+                type: 'POST',
+                data: { vendorType: vendorId },
+                dataType: 'json',
+                success: function (response) {
+                    // Loop through the response and populate the state dropdown
+                    $.each(response, function (index, elem) {
+                        $vendorData.append($('<option>', {
+                            value: elem.VendorId,
+                            text: elem.VendorName
+                        }));
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching states: " + error);
+                }
+            });
+        }
+        else {
+            return false;
+        }
+
     }
 
     </script>
