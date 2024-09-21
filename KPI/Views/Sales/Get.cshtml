@@ -14,8 +14,8 @@
 @using (Html.BeginForm("Edit", "Sales"))
 {
     @Html.AntiForgeryToken()
-     
-   
+
+
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     <div class="row">
@@ -62,7 +62,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-12">Customer / Location</label>
                         @*@Html.DisplayFor(model => model.CompanyLocation, new { htmlAttributes = new { @class = "form-control" } })*@
-                        @Html.DropDownListFor(model => model.CompanyLocationID, ViewBag.Locations as SelectList, "--Select Company and Location--", new { @class = "form-control", style = "max-width:100%;", @disabled = "disabled" })
+                        @Html.DropDownListFor(model => model.CompanyLocationID, null, "--Select Company and Location--", new { @class = "form-control", style = "max-width:100%;", @disabled = "disabled" })
                         @*@Html.ValidationMessageFor(model => model.CompanyLocationID, "", new { @class = "text-danger" })*@
                     </div>
                 </div>
@@ -81,26 +81,26 @@
             </div>
         </div>
 
-            <div class="col-md-6">
-               
-                        <div class="top_header">
-                            <h2>Line Items</h2>
-                        
-                        <!--<div class="col-md-6 text-right">-->
-                        @*<input type="button" value="Add Line Item" class="btn btn-primary  btn-sm" />*@
-                        <!--</div>--> 
-                        <div class=""> 
-                            <input type="button" value="Add Line Item" class="btn btn-primary btn-sm" onclick="AddLineItemRow()" />
-                        </div>
-                    </div>
-                 
-                <div class="table-responsive">
+        <div class="col-md-6">
+
+            <div class="top_header">
+                <h2>Line Items</h2>
+
+                <!--<div class="col-md-6 text-right">-->
+                @*<input type="button" value="Add Line Item" class="btn btn-primary  btn-sm" />*@
+                <!--</div>-->
+                <div class="">
+                    <input type="button" value="Add Line Item" class="btn btn-primary btn-sm" onclick="AddLineItemRow()" />
+                </div>
+            </div>
+
+            <div class="table-responsive">
                 <table class="table table-bordered" id="SalesOrderTbl">
                     <thead>
                         <tr>
                             @*<th>
-                Sales Detail ID
-            </th>*@
+                                    Sales Detail ID
+                                </th>*@
                             <th>
                                 Raw Material
                             </th>
@@ -121,37 +121,37 @@
                             Html.RenderAction("GetSalesLineItemPartial", item);
 
                             <!--<tr>
-        <td width="70px">-->
+                            <td width="70px">-->
                             @*@Html.ImageActionLink("", "GetSalesDetail", "Sales", new { id = item.SalesDetailsID }, null, "~/images/edit.png")
-            @Html.ImageActionLink("", "GetSalesDetail", "Sales", null, null, "~/images/garbage.png")*@
+                                @Html.ImageActionLink("", "GetSalesDetail", "Sales", null, null, "~/images/garbage.png")*@
                             <!--</td>-->
                             @*<td>
-                @Html.DisplayFor(modelItem => item.SalesDetailsID)
-            </td>*@
+                                    @Html.DisplayFor(modelItem => item.SalesDetailsID)
+                                </td>*@
                             <!--<td>-->
                             @*                                @Html.DisplayFor(modelItem => item.RawMatarialName)*@
                             <!--</td>
-        <td>-->
+                            <td>-->
                             @*                              @Html.DisplayFor(modelItem => item.Qty)*@
                             <!--</td>
-        </tr>-->
+                            </tr>-->
                         }
                     </tbody>
                 </table>
             </div>
-        
-    </div>
-    </div>
-    <div class="form-group"> 
-            <input type="submit" value="Save" class="btn btn-primary" />
-         
-    </div>
- 
-    }
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+
+    </div>
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 <script>
     function AddLineItemRow() {
 

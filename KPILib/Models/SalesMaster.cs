@@ -44,15 +44,27 @@ namespace KPILib.Models
         [Editable(allowEdit: false)]
         public string User { get; set; }
 
+        public string Colour { get; set; }
+        public string GMS { get; set; }
+        public string GMSInfo { get; set; }
+        public string Package { get; set; }
+        public string Quantity { get; set; }
+        public bool SampleRequired { get; set; }
+        public string DeliveryAddress { get; set; }
+        public string Transporter { get; set; }
+        public DateTime? CommittedDate { get; set; }
+        public string Rate { get; set; }
+        public string PaymentStatus { get; set; }
         public List<KeyValuePair> Locations { get; set; }
-
         public List<SalesDetails> LineItems { get; set; }
         public List<KeyValuePair> Products { get; set; }
 
+        public List<int> RMIds { get; set; }
+
         public SalesMaster()
         {
-            SalesStatusID = 10;
-            UserID = 1001;
+            //SalesStatusID = 10;
+            //UserID = 1001;
             SalesDate = DateTime.Today;
             LineItems = new List<SalesDetails>();
             Locations = new List<KeyValuePair>();

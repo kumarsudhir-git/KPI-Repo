@@ -28,6 +28,17 @@ namespace KPIWebAPI
         public int UserID { get; set; }
         public string Notes { get; set; }
         public string PONo { get; set; }
+        public string Colour { get; set; }
+        public string GMS { get; set; }
+        public string GMSInfo { get; set; }
+        public string Package { get; set; }
+        public string Quantity { get; set; }
+        public bool SampleRequired { get; set; }
+        public string DeliveryAddress { get; set; }
+        public string Transporter { get; set; }
+        public Nullable<System.DateTime> CommittedDate { get; set; }
+        public string Rate { get; set; }
+        public string PaymentStatus { get; set; }
     
         public virtual CompanyLocationMaster CompanyLocationMaster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

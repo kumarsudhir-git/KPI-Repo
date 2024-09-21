@@ -74,7 +74,7 @@ namespace KPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                rcvd.RcvdByUserID = 1001;     //TODO: replace with UserID from session
+                rcvd.RcvdByUserID = Convert.ToInt32(Session["UserID"]);     //TODO: replace with UserID from session
                 //purchase.LineItems.Add(new KPILib.Models.PurchaseDetails { RawMatarialID = 1002, Qty = 8 });
                 //purchase.LineItems.Add(new KPILib.Models.PurchaseDetails { RawMatarialID = 1003, Qty = 2 });
 

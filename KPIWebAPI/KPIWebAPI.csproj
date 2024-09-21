@@ -399,6 +399,9 @@
     <Compile Include="SalesMaster.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="SalesRMMapping.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="SalesStatusMaster.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>

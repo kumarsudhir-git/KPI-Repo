@@ -1,6 +1,7 @@
 ﻿using KPI.Classes;
 using KPI.Filters;
 using KPILib.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -47,10 +48,30 @@ namespace KPI.Controllers
 
         public ActionResult Get(int id)
         {
+            ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+            ViewData["CompanyLocationID"] = new SelectList(new List<SelectListItem>(), "CompanyLocationID", "CompanyLocationName");
+            
             var response = KPIAPIManager.GetSales(id);
             if (response.Response.ResponseCode == 200)
             {
-                ViewBag.Locations = new SelectList(response.data.Locations, "Key", "Value");
+                VendorMasterModelResponse masterModelResponse = KPIAPIManager.GetAllVendorData();
+                if (masterModelResponse != null && masterModelResponse.Response.ResponseCode == 200)
+                {
+                    ViewData["CompanyLocationID"] = new SelectList(masterModelResponse.data, "VendorId", "VendorName");
+                }
+                LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
+
+                if (locationMasterResponse != null && locationMasterResponse.Response != null)
+                {
+                    if (locationMasterResponse.Response.ResponseCode == 200)
+                    {
+                        if (locationMasterResponse.data != null && locationMasterResponse.data.Count > 0)
+                        {
+                            ViewData["LocationId"] = new SelectList(locationMasterResponse.data, "LocationId", "LocationName");
+                        }
+                    }
+                }
+                //ViewBag.Locations = new SelectList(response.data.Locations, "Key", "Value");
                 return View(response.data);
             }
             else
@@ -62,10 +83,29 @@ namespace KPI.Controllers
 
         public ActionResult New()
         {
+            ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+            ViewData["CompanyLocationID"] = new SelectList(new List<SelectListItem>(), "CompanyLocationID", "CompanyLocationName");
             var response = KPIAPIManager.GetSales(0);
             if (response.Response.ResponseCode == 200)
             {
-                ViewBag.Locations = new SelectList(response.data.Locations, "Key", "Value");
+                VendorMasterModelResponse masterModelResponse = KPIAPIManager.GetAllVendorData();
+                if (masterModelResponse != null && masterModelResponse.Response.ResponseCode == 200)
+                {
+                    ViewData["CompanyLocationID"] = new SelectList(masterModelResponse.data, "VendorId", "VendorName");
+                }
+                LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
+
+                if (locationMasterResponse != null && locationMasterResponse.Response != null)
+                {
+                    if (locationMasterResponse.Response.ResponseCode == 200)
+                    {
+                        if (locationMasterResponse.data != null && locationMasterResponse.data.Count > 0)
+                        {
+                            ViewData["LocationId"] = new SelectList(locationMasterResponse.data, "LocationId", "LocationName");
+                        }
+                    }
+                }
+                //ViewBag.Locations = new SelectList(response.data.Locations, "Key", "Value");
                 return View(response.data);
             }
             else
@@ -115,7 +155,7 @@ namespace KPI.Controllers
 
             if (ModelState.IsValid)
             {
-                sale.UserID = 1001;     //TODO: replace with UserID from session
+                sale.UserID = Convert.ToInt32(Session["UserID"]);     //TODO: replace with UserID from session
                 //sale.LineItems.Add(new KPILib.Models.SalesDetails { ProductID = 1002, Qty = 8 });
                 //sale.LineItems.Add(new KPILib.Models.SalesDetails { ProductID = 1003, Qty = 2 });
 
@@ -143,6 +183,8 @@ namespace KPI.Controllers
         {
             if (ModelState.IsValid)
             {
+                sale.UserID = Convert.ToInt32(Session["UserID"]);
+
                 var response = KPIAPIManager.EditSales(sale);
                 if (response.Response.ResponseCode == 200)
                 {

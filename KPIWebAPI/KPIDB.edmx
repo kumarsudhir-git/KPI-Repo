@@ -616,6 +616,30 @@
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="Notes" Type="varchar(max)" />
           <Property Name="PONo" Type="varchar" MaxLength="50" />
+          <Property Name="Colour" Type="nvarchar" MaxLength="250" />
+          <Property Name="GMS" Type="nvarchar" MaxLength="250" />
+          <Property Name="GMSInfo" Type="nvarchar" MaxLength="250" />
+          <Property Name="Package" Type="nvarchar" MaxLength="250" />
+          <Property Name="Quantity" Type="nvarchar" MaxLength="250" />
+          <Property Name="SampleRequired" Type="bit" Nullable="false" />
+          <Property Name="DeliveryAddress" Type="nvarchar" MaxLength="250" />
+          <Property Name="Transporter" Type="nvarchar" MaxLength="250" />
+          <Property Name="CommittedDate" Type="datetime" />
+          <Property Name="Rate" Type="nvarchar" MaxLength="250" />
+          <Property Name="PaymentStatus" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="SalesRMMapping">
+          <Key>
+            <PropertyRef Name="SalesRMId" />
+          </Key>
+          <Property Name="SalesRMId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SalesId" Type="int" />
+          <Property Name="RMId" Type="int" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
         </EntityType>
         <EntityType Name="SalesStatusMaster">
           <Key>
@@ -1498,6 +1522,7 @@
           <EntitySet Name="SalesDispatchDetails" EntityType="Self.SalesDispatchDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SalesDispatchRacks" EntityType="Self.SalesDispatchRacks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SalesMaster" EntityType="Self.SalesMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SalesRMMapping" EntityType="Self.SalesRMMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SalesStatusMaster" EntityType="Self.SalesStatusMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TagColourMaster" EntityType="Self.TagColourMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
@@ -1820,6 +1845,7 @@
           <EntitySet Name="SalesDispatchDetails" EntityType="KPIModel.SalesDispatchDetail" />
           <EntitySet Name="SalesDispatchRacks" EntityType="KPIModel.SalesDispatchRack" />
           <EntitySet Name="SalesMasters" EntityType="KPIModel.SalesMaster" />
+          <EntitySet Name="SalesRMMappings" EntityType="KPIModel.SalesRMMapping" />
           <EntitySet Name="SalesStatusMasters" EntityType="KPIModel.SalesStatusMaster" />
           <EntitySet Name="TagColourMasters" EntityType="KPIModel.TagColourMaster" />
           <EntitySet Name="Units" EntityType="KPIModel.Unit" />
@@ -2863,10 +2889,34 @@
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="PONo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Colour" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="GMS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="GMSInfo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Package" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="SampleRequired" Type="Boolean" Nullable="false" />
+          <Property Name="DeliveryAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Transporter" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CommittedDate" Type="DateTime" Precision="3" />
+          <Property Name="Rate" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CompanyLocationMaster" Relationship="KPIModel.FK_SalesMaster_CompanyLocationMaster" FromRole="SalesMaster" ToRole="CompanyLocationMaster" />
           <NavigationProperty Name="SalesDetails" Relationship="KPIModel.FK_SalesDetails_SalesMaster" FromRole="SalesMaster" ToRole="SalesDetail" />
           <NavigationProperty Name="SalesStatusMaster" Relationship="KPIModel.FK_SalesMaster_SalesStatusMaster" FromRole="SalesMaster" ToRole="SalesStatusMaster" />
           <NavigationProperty Name="UserMaster" Relationship="KPIModel.FK_SalesMaster_UserMaster" FromRole="SalesMaster" ToRole="UserMaster" />
+        </EntityType>
+        <EntityType Name="SalesRMMapping">
+          <Key>
+            <PropertyRef Name="SalesRMId" />
+          </Key>
+          <Property Name="SalesRMId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SalesId" Type="Int32" />
+          <Property Name="RMId" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="SalesStatusMaster">
           <Key>
@@ -4443,6 +4493,17 @@
           <EntitySetMapping Name="SalesMasters">
             <EntityTypeMapping TypeName="KPIModel.SalesMaster">
               <MappingFragment StoreEntitySet="SalesMaster">
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="CommittedDate" ColumnName="CommittedDate" />
+                <ScalarProperty Name="Transporter" ColumnName="Transporter" />
+                <ScalarProperty Name="DeliveryAddress" ColumnName="DeliveryAddress" />
+                <ScalarProperty Name="SampleRequired" ColumnName="SampleRequired" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Package" ColumnName="Package" />
+                <ScalarProperty Name="GMSInfo" ColumnName="GMSInfo" />
+                <ScalarProperty Name="GMS" ColumnName="GMS" />
+                <ScalarProperty Name="Colour" ColumnName="Colour" />
                 <ScalarProperty Name="PONo" ColumnName="PONo" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -4451,6 +4512,20 @@
                 <ScalarProperty Name="CompanyLocationID" ColumnName="CompanyLocationID" />
                 <ScalarProperty Name="SalesDate" ColumnName="SalesDate" />
                 <ScalarProperty Name="SalesID" ColumnName="SalesID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SalesRMMappings">
+            <EntityTypeMapping TypeName="KPIModel.SalesRMMapping">
+              <MappingFragment StoreEntitySet="SalesRMMapping">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="RMId" ColumnName="RMId" />
+                <ScalarProperty Name="SalesId" ColumnName="SalesId" />
+                <ScalarProperty Name="SalesRMId" ColumnName="SalesRMId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

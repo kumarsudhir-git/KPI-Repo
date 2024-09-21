@@ -132,13 +132,13 @@ namespace KPIWebAPI.Controllers
                 #region get all Locations for ddl
 
                 //TODO: 103 = Customers
-                var Locations = db.CompanyLocationMasters.Where(x => !x.CompanyMaster.IsDiscontinued && x.CompanyMaster.CompanyTypeID == 103).Where(x => !x.IsDiscontinued).OrderBy(x => x.CompanyMaster.CompanyName).OrderBy(x => x.LocationName).ToList();
-                List<KPILib.Models.KeyValuePair> compLocations = new List<KPILib.Models.KeyValuePair>();
-                foreach (var obj in Locations)
-                {
-                    var o = new KeyValuePair { Key = obj.CompanyLocationID, Value = obj.CompanyMaster.CompanyName + " [" + obj.LocationName + "]" };
-                    compLocations.Add(o);
-                }
+                //var Locations = db.CompanyLocationMasters.Where(x => !x.CompanyMaster.IsDiscontinued && x.CompanyMaster.CompanyTypeID == 103).Where(x => !x.IsDiscontinued).OrderBy(x => x.CompanyMaster.CompanyName).OrderBy(x => x.LocationName).ToList();
+                //List<KPILib.Models.KeyValuePair> compLocations = new List<KPILib.Models.KeyValuePair>();
+                //foreach (var obj in Locations)
+                //{
+                //    var o = new KeyValuePair { Key = obj.CompanyLocationID, Value = obj.CompanyMaster.CompanyName + " [" + obj.LocationName + "]" };
+                //    compLocations.Add(o);
+                //}
 
                 #endregion   
 
@@ -158,7 +158,7 @@ namespace KPIWebAPI.Controllers
                 if (data != null)
                 {
                     var o = mapper.Map<SalesMaster, KPILib.Models.SalesMaster>(data);
-                    o.Locations = compLocations;
+                    //o.Locations = compLocations;
                     o.Products = products;
                     o.Status = data.SalesStatusMaster.SalesStatus;
                     o.User = data.UserMaster.Username;
@@ -183,7 +183,7 @@ namespace KPIWebAPI.Controllers
                 }
                 else
                 {
-                    var o = new KPILib.Models.SalesMaster() { LineItems = new List<SalesDetails>(), Locations = compLocations, Products = products };
+                    var o = new KPILib.Models.SalesMaster() { LineItems = new List<SalesDetails>(), Products = products };
                     o.LineItems.Add(new SalesDetails());
 
                     //if (o.LineItems.Count < 5)
@@ -222,6 +222,22 @@ namespace KPIWebAPI.Controllers
                 }
                 o.Instructions += "";
 
+                if (data.RMIds != null && data.RMIds.Count > 0)
+                {
+                    data.RMIds.ForEach(item =>
+                    {
+                        SalesRMMapping salesRMMapping = new SalesRMMapping()
+                        {
+                            SalesId = data.SalesID,
+                            RMId = item,
+                            CreatedBy = data.UserID,
+                            CreatedDate = DateTime.Now,
+                            IsActive = true
+                        };
+                        db.SalesRMMappings.Add(salesRMMapping);
+                    });
+                    db.SaveChanges();
+                }
                 //o.AddedOn = DateTime.Now;
                 //o.LastModifiedOn = DateTime.Now;
 
@@ -265,6 +281,20 @@ namespace KPIWebAPI.Controllers
                     //o.Instructions = data.Instructions;
                     o.SalesDate = data.SalesDate;
                     o.SalesStatusID = 10;    //Ack Pending
+                    o.Colour = data.Colour;
+                    o.CommittedDate = data.CommittedDate;
+                    o.CompanyLocationID = data.CompanyLocationID;
+                    o.DeliveryAddress = data.DeliveryAddress;
+                    o.GMS = data.GMS;
+                    o.GMSInfo = data.GMSInfo;
+                    o.Instructions = data.Instructions;
+                    o.Package = data.Package;
+                    o.PaymentStatus = data.Package;
+                    o.Quantity = data.Quantity;
+                    o.Rate = data.Rate;
+                    o.SampleRequired = data.SampleRequired;
+                    o.Transporter = data.Transporter;
+
 
                     //o.SalesDetails.Clear();
 
@@ -275,6 +305,40 @@ namespace KPIWebAPI.Controllers
                     foreach (var item in data.LineItems.Where(x => x.ProductID != 0))
                     {
                         o.SalesDetails.Add(new SalesDetail { ProductID = item.ProductID, Qty = item.Qty });
+                    }
+
+                    if (data.RMIds != null && data.RMIds.Count > 0)
+                    {
+                        List<SalesRMMapping> salesRMMappings = (from SRM in db.SalesRMMappings
+                                                                where SRM.SalesId == data.SalesID && SRM.IsActive
+                                                                select SRM
+                                                                ).ToList();
+
+                        if (salesRMMappings.Count > 0)
+                        {
+                            salesRMMappings.ForEach(item =>
+                            {
+                                item.IsActive = false;
+                                item.ModifiedBy = data.UserID;
+                                item.ModifiedOn = DateTime.Now;
+                                db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                            });
+                            db.SaveChanges();
+                        }
+
+                        data.RMIds.ForEach(item =>
+                        {
+                            SalesRMMapping salesRMMapping = new SalesRMMapping()
+                            {
+                                SalesId = data.SalesID,
+                                RMId = item,
+                                CreatedBy = data.UserID,
+                                CreatedDate = DateTime.Now,
+                                IsActive = true
+                            };
+                            db.SalesRMMappings.Add(salesRMMapping);
+                        });
+                        db.SaveChanges();
                     }
 
                     db.Entry(o).State = System.Data.Entity.EntityState.Modified;

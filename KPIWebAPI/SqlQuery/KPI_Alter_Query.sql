@@ -487,6 +487,49 @@ ALTER TABLE PurchaseRcvdMaster ADD QCStatus NVARCHAR(250) NULL
 
 GO
 
+------------------------------------21-09-2024--------------------------------
+
+ALTER TABLE SalesMaster ADD Colour NVARCHAR(250) NULL
+ALTER TABLE SalesMaster ADD GMS NVARCHAR(250) NULL
+ALTER TABLE SalesMaster ADD GMSInfo NVARCHAR(250) NULL
+ALTER TABLE SalesMaster ADD Package NVARCHAR(250) NULL
+ALTER TABLE SalesMaster ADD Quantity NVARCHAR(250) NULL
+ALTER TABLE SalesMaster ADD SampleRequired BIT NOT NULL DEFAULT(0)
+ALTER TABLE SalesMaster ADD DeliveryAddress NVARCHAR(250) NULL
+ALTER TABLE SalesMaster ADD Transporter NVARCHAR(250) NULL
+ALTER TABLE SalesMaster ADD CommittedDate DATETIME NULL
+ALTER TABLE SalesMaster ADD Rate NVARCHAR(250) NULL
+ALTER TABLE SalesMaster ADD PaymentStatus NVARCHAR(250) NULL
+
+GO
+
+CREATE TABLE SalesRMMapping
+(
+SalesRMId INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+SalesId INT NULL,
+RMId INT NULL,
+IsActive BIT NOT NULL DEFAULT(1),
+CreatedBy INT NULL,
+CreatedDate DATETIME NOT NULL DEFAULT(GETDATE()),
+ModifiedBy INT NULL,
+ModifiedOn DATETIME NULL
+)
+
+GO
+
+CREATE TABLE LookUpMaster (
+    LookUpID INT PRIMARY KEY IDENTITY(1,1),
+    LookUpType VARCHAR(50) NOT NULL,
+    LookUpValue VARCHAR(100) NOT NULL,
+    Description VARCHAR(255),
+    IsActive BIT NOT NULL DEFAULT 1,
+	CreatedBy INT NULL,
+    CreatedDate DATETIME NOT NULL DEFAULT GETDATE(),
+	ModifiedBy INT NULL,
+    ModifiedDate DATETIME NULL
+)
+
+GO
 ------------------------------------------------------END-----------------------------
 
 
