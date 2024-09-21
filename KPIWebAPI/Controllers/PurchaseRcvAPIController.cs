@@ -25,14 +25,26 @@ namespace KPIWebAPI.Controllers
                 var allUsers = db.UserMasters.ToList();
 
                 var data = db.PurchaseRcvdMasters.OrderByDescending(x => x.PurchaseRcvdID).ToList();
+                string locationName = "";
                 foreach (var obj in data)
                 {
-                    VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(obj.PurchaseMaster.CompanyLocationID);
+                    //VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(obj.PurchaseMaster.CompanyLocationID);
+                    VendorMaster vendorMaster = new VendorMaster();
+
+                    if (obj.CompanyLocationId > 0)
+                    {
+                        vendorMaster = CommonFunctions.GetVendorDetailsFromId((int)obj.CompanyLocationId);
+                    }
+                    if (obj.LocationId > 0)
+                    {
+                        locationName = CommonFunctions.getLocationNameFromId((int)obj.LocationId);
+                    }
 
                     var o = mapper.Map<PurchaseRcvdMaster, KPILib.Models.PurchaseRcvMast>(obj);
 
                     o.PurchaseDate = obj.PurchaseMaster.PurchaseDate;
                     o.CompanyLocation = vendorMaster?.VendorName + " [" + vendorMaster?.Address + "]";
+                    o.LocationName = locationName;
                     o.User = obj.PurchaseMaster.UserMaster.Username;
                     o.Status = obj.PurchaseMaster.PurchaseStatusMaster.PurchaseStatus;
                     o.ReceivedByUser = allUsers.SingleOrDefault(x => x.UserID == obj.RcvdByUserID).Username;
@@ -198,6 +210,10 @@ namespace KPIWebAPI.Controllers
                         o.Notes = data.Notes + "";
                         o.PurchaseID = data.PurchaseID;
                         o.RcvdByUserID = data.RcvdByUserID;
+                        o.CompanyLocationId = data.CompanyLocationId;
+                        o.LocationId = data.LocationId;
+                        o.QCReceived = data.QCReceived;
+                        o.QCStatus = data.QCStatus;
                         o.RcvdDate = DateTime.Now;
                         o.PurchaseRcvdDetails = new List<PurchaseRcvdDetail>();
 

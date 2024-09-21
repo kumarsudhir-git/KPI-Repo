@@ -53,3 +53,23 @@ deactiveBtn:hover {
     background-color: #008CBA !important;
     color: white !important;
 }
+
+/* Loader wrapper to cover the entire page */
+#loader {
+    position: fixed; /* Make the loader fixed on the screen */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full-width */
+    height: 100%; /* Full-height */
+    background-color: rgba(255, 255, 255, 0.7); /* White background with transparency */
+    z-index: 9999; /* Ensure loader is on top of other content */
+    display: flex; /* Flexbox to center the loader */
+    justify-content: center;
+    align-items: center;
+}
+
+    /* Loader image or spinner style */
+    #loader img {
+        width: 100px; /* Customize the size of the spinner */
+        height: 100px;
+    }
