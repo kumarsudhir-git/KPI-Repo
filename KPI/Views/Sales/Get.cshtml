@@ -73,7 +73,16 @@
                         @*@Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })*@
                     </div>
                 </div>
-
+                @if (Model.IsSalesRateAccess)
+                {
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label col-md-12" })
+                            @Html.TextBoxFor(model => model.Rate, "", new { @class = "form-control", @placeholder = "Enter Rate" })
+                            @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
             </div>
         </div>
 

@@ -538,7 +538,7 @@ VALUES('VendorType','VD001','VendorType',1,1001,GETDATE()),
 GO
 
 INSERT INTO LookupMaster (LookUpType,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
-VALUES('SMRateAccess','VD001','101,102',1,1001,GETDATE())
+VALUES('SMRateAccess','101,102','Role Based Access for Sales Rate',1,1001,GETDATE())
 
 ------------------------------------------------------END-----------------------------
 
