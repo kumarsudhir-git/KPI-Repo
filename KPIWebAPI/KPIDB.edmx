@@ -72,6 +72,20 @@
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedOn" Type="datetime" />
         </EntityType>
+        <EntityType Name="LookUpMaster">
+          <Key>
+            <PropertyRef Name="LookUpID" />
+          </Key>
+          <Property Name="LookUpID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LookUpType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LookUpValue" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="MachineHistory">
           <Key>
             <PropertyRef Name="MachineHistoryID" />
@@ -1479,6 +1493,7 @@
           <EntitySet Name="CompanyTypeMaster" EntityType="Self.CompanyTypeMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DynamicURLs" EntityType="Self.DynamicURLs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocationMaster" EntityType="Self.LocationMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LookUpMaster" EntityType="Self.LookUpMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MachineHistory" EntityType="Self.MachineHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MachineMaster" EntityType="Self.MachineMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MachineMouldMapping" EntityType="Self.MachineMouldMapping" Schema="dbo" store:Type="Tables" />
@@ -1802,6 +1817,7 @@
           <EntitySet Name="CompanyTypeMasters" EntityType="KPIModel.CompanyTypeMaster" />
           <EntitySet Name="DynamicURLs" EntityType="KPIModel.DynamicURL" />
           <EntitySet Name="LocationMasters" EntityType="KPIModel.LocationMaster" />
+          <EntitySet Name="LookUpMasters" EntityType="KPIModel.LookUpMaster" />
           <EntitySet Name="MachineHistories" EntityType="KPIModel.MachineHistory" />
           <EntitySet Name="MachineMasters" EntityType="KPIModel.MachineMaster" />
           <EntitySet Name="MachineMouldMappings" EntityType="KPIModel.MachineMouldMapping" />
@@ -2239,6 +2255,20 @@
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="LookUpMaster">
+          <Key>
+            <PropertyRef Name="LookUpID" />
+          </Key>
+          <Property Name="LookUpID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LookUpType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LookUpValue" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="MachineHistory">
           <Key>
@@ -3913,6 +3943,21 @@
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LookUpMasters">
+            <EntityTypeMapping TypeName="KPIModel.LookUpMaster">
+              <MappingFragment StoreEntitySet="LookUpMaster">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LookUpValue" ColumnName="LookUpValue" />
+                <ScalarProperty Name="LookUpType" ColumnName="LookUpType" />
+                <ScalarProperty Name="LookUpID" ColumnName="LookUpID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

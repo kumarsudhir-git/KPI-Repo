@@ -292,9 +292,9 @@ namespace KPI.Classes
             return result;
         }
 
-        public static SalesMasterResponse GetSales(int id)
+        public static SalesMasterResponse GetSales(int id, int RoleId)
         {
-            var result = CommonFunctions.client.GetAsync("SalesAPI/Get/" + id.ToString()).Result.Content.ReadAsAsync<SalesMasterResponse>().Result;
+            var result = CommonFunctions.client.GetAsync("SalesAPI/Get/" + id.ToString() + "&UserRoleId=" + RoleId).Result.Content.ReadAsAsync<SalesMasterResponse>().Result;
             return result;
         }
 

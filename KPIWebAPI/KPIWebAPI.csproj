@@ -269,6 +269,9 @@
     <Compile Include="LocationMaster.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="LookUpMaster.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="MachineHistory.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>

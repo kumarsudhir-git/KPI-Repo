@@ -45,6 +45,7 @@ namespace KPI.Controllers
                 KPI.Classes.CommonFunctions.WriteToLog("ok");
 
                 Session["UserID"] = result.userMasterObj.UserID;
+                Session["RoleID"] = result.userMasterObj.RoleID;
                 Session["Username"] = result.userMasterObj.Username;
                 Session["JWTToken"] = result.Response.ResponseMsg;
 

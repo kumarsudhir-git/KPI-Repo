@@ -9,6 +9,7 @@ namespace KPIWebAPI.Classes
     public static class CommonFunctions
     {
         public const string BASE_URL = "http://localhost:12345/External/ShowPO/";
+        private const string SMRateAccessLoopUp = "SMRateAccess";
 
         public static string DefaultDateFormat(this DateTime dt)
         {
@@ -232,6 +233,30 @@ namespace KPIWebAPI.Classes
                                                  select lm).FirstOrDefault();
                 return locationMaster;
             }
+        }
+
+        public static bool IsSalesRateAccess(int RoleId)
+        {
+            bool IsSalesRateAccessResult = false;
+
+            using (KPIEntities db = new KPIEntities())
+            {
+                LookUpMaster lookUpMasterObj = (from LM in db.LookUpMasters
+                                                where LM.LookUpType == SMRateAccessLoopUp
+                                                && LM.IsActive
+                                                select LM).FirstOrDefault();
+
+                if (lookUpMasterObj != null && !string.IsNullOrEmpty(lookUpMasterObj.LookUpValue))
+                {
+                    List<int> accessRoleIds = lookUpMasterObj.LookUpValue.Split(',').Select(int.Parse).ToList();
+                    if (accessRoleIds.Contains(RoleId))
+                    {
+                        IsSalesRateAccessResult = true;
+                    }
+                }
+            }
+
+            return IsSalesRateAccessResult;
         }
 
     }

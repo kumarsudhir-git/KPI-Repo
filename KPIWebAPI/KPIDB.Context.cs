@@ -32,6 +32,7 @@ namespace KPIWebAPI
         public virtual DbSet<CompanyTypeMaster> CompanyTypeMasters { get; set; }
         public virtual DbSet<DynamicURL> DynamicURLs { get; set; }
         public virtual DbSet<LocationMaster> LocationMasters { get; set; }
+        public virtual DbSet<LookUpMaster> LookUpMasters { get; set; }
         public virtual DbSet<MachineHistory> MachineHistories { get; set; }
         public virtual DbSet<MachineMaster> MachineMasters { get; set; }
         public virtual DbSet<MachineMouldMapping> MachineMouldMappings { get; set; }

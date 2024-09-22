@@ -41,9 +41,10 @@ namespace KPIWebAPI.Controllers
                         responseObj.Response.ResponseCode = 200;
 
                         responseObj.userMasterObj.UserID = userMasterNewObj.UserID;
+                        responseObj.userMasterObj.RoleID = userMasterNewObj.RoleID;
                         responseObj.userMasterObj.Username = userMasterNewObj.Username;
                         responseObj.userMasterObj.Email = userMasterNewObj.Email;
-                        responseObj.userMasterObj.Mobile = userMasterNewObj.Mobile;                        
+                        responseObj.userMasterObj.Mobile = userMasterNewObj.Mobile;
                         var token = JwtManager.GenerateToken(userMasterNewObj);
                         responseObj.Response.ResponseMsg = token;
 

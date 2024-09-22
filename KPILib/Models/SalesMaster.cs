@@ -53,6 +53,7 @@ namespace KPILib.Models
         public string DeliveryAddress { get; set; }
         public string Transporter { get; set; }
         public DateTime? CommittedDate { get; set; }
+        public bool IsSalesRateAccess { get; set; }
         public string Rate { get; set; }
         public string PaymentStatus { get; set; }
         public List<KeyValuePair> Locations { get; set; }

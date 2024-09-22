@@ -530,6 +530,16 @@ CREATE TABLE LookUpMaster (
 )
 
 GO
+
+INSERT INTO LookupMaster (LookUpType,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
+VALUES('VendorType','VD001','VendorType',1,1001,GETDATE()),
+('VendorType','VD002','VendorType',1,1001,GETDATE())
+
+GO
+
+INSERT INTO LookupMaster (LookUpType,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
+VALUES('SMRateAccess','VD001','101,102',1,1001,GETDATE())
+
 ------------------------------------------------------END-----------------------------
 
 

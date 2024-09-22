@@ -1,5 +1,6 @@
 ﻿using KPILib.Models;
 using KPIWebAPI.AuthFilters;
+using KPIWebAPI.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -123,7 +124,7 @@ namespace KPIWebAPI.Controllers
         }
 
         // GET api/values/5
-        public IHttpActionResult Get(int id)
+        public IHttpActionResult Get(int id, int UserRoleId)
         {
             var returnValue = new SalesMasterResponse();
 
@@ -196,7 +197,7 @@ namespace KPIWebAPI.Controllers
 
                     returnValue.data = o;
                 }
-
+                returnValue.data.IsSalesRateAccess = CommonFunctions.IsSalesRateAccess(UserRoleId);
                 returnValue.Response.IsSuccessful();
             }
             catch (Exception ex)

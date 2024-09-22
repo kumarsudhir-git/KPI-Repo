@@ -50,8 +50,8 @@ namespace KPI.Controllers
         {
             ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
             ViewData["CompanyLocationID"] = new SelectList(new List<SelectListItem>(), "CompanyLocationID", "CompanyLocationName");
-            
-            var response = KPIAPIManager.GetSales(id);
+
+            var response = KPIAPIManager.GetSales(id, Convert.ToInt32(Session["RoleID"]));
             if (response.Response.ResponseCode == 200)
             {
                 VendorMasterModelResponse masterModelResponse = KPIAPIManager.GetAllVendorData();
@@ -85,7 +85,7 @@ namespace KPI.Controllers
         {
             ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
             ViewData["CompanyLocationID"] = new SelectList(new List<SelectListItem>(), "CompanyLocationID", "CompanyLocationName");
-            var response = KPIAPIManager.GetSales(0);
+            var response = KPIAPIManager.GetSales(0, Convert.ToInt32(Session["RoleID"]));
             if (response.Response.ResponseCode == 200)
             {
                 VendorMasterModelResponse masterModelResponse = KPIAPIManager.GetAllVendorData();
