@@ -520,6 +520,7 @@ GO
 CREATE TABLE LookUpMaster (
     LookUpID INT PRIMARY KEY IDENTITY(1,1),
     LookUpType VARCHAR(50) NOT NULL,
+	LookUpName VARCHAR(100) NOT NULL,
     LookUpValue VARCHAR(100) NOT NULL,
     Description VARCHAR(255),
     IsActive BIT NOT NULL DEFAULT 1,
@@ -531,14 +532,20 @@ CREATE TABLE LookUpMaster (
 
 GO
 
-INSERT INTO LookupMaster (LookUpType,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
-VALUES('VendorType','VD001','VendorType',1,1001,GETDATE()),
-('VendorType','VD002','VendorType',1,1001,GETDATE())
+INSERT INTO LookupMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
+VALUES('VendorType','Vendor','VD001','VendorType',1,1001,GETDATE()),
+('VendorType','KPI-Labour','VD002','VendorType',1,1001,GETDATE())
 
 GO
 
-INSERT INTO LookupMaster (LookUpType,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
-VALUES('SMRateAccess','101,102','Role Based Access for Sales Rate',1,1001,GETDATE())
+INSERT INTO LookupMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
+VALUES('SMRateAccess','SMRateAccess','101,102','Role Based Access for Sales Rate',1,1001,GETDATE())
+
+
+INSERT INTO LookupMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
+VALUES('GMSType','Standard','GSM001','GMSType',1,1001,GETDATE()),
+('GMSType','Heavy','GSM002',1,1001,GETDATE()),
+('GMSType','Light','GSM003',1,1001,GETDATE())
 
 ------------------------------------------------------END-----------------------------
 
