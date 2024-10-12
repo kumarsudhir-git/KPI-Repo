@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KPILib;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,6 @@ namespace KPIWebAPI.Classes
     public static class CommonFunctions
     {
         public const string BASE_URL = "http://localhost:12345/External/ShowPO/";
-        private const string SMRateAccessLoopUp = "SMRateAccess";
 
         public static string DefaultDateFormat(this DateTime dt)
         {
@@ -242,7 +242,7 @@ namespace KPIWebAPI.Classes
             using (KPIEntities db = new KPIEntities())
             {
                 LookUpMaster lookUpMasterObj = (from LM in db.LookUpMasters
-                                                where LM.LookUpType == SMRateAccessLoopUp
+                                                where LM.LookUpType == ApplicationConstants.SMRateAccessLookUp
                                                 && LM.IsActive
                                                 select LM).FirstOrDefault();
 
@@ -257,6 +257,41 @@ namespace KPIWebAPI.Classes
             }
 
             return IsSalesRateAccessResult;
+        }
+
+        public static List<LookUpMaster> GetLookUpMasterDataFromLookupName(string LookUpTypeName)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<LookUpMaster> lookUpMasterObj = (from LM in db.LookUpMasters
+                                                      where LM.LookUpType == LookUpTypeName
+                                                      && LM.IsActive
+                                                      select LM).ToList();
+                return lookUpMasterObj;
+            }
+        }
+        public static List<int> GetRMIdsFromSalesId(int SalesId)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<int> RMIds = (from SRM in db.SalesRMMappings
+                                   where SRM.SalesId == SalesId
+                                   && SRM.RMId != null
+                                   && SRM.IsActive
+                                   select (int)SRM.RMId).ToList();
+                return RMIds;
+            }
+        }
+
+        public static List<RackMaster> GetRackMasterData()
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<RackMaster> rackMasters = (from RM in db.RackMasters
+                                                where !RM.IsDiscontinued
+                                                select RM).ToList();
+                return rackMasters;
+            }
         }
 
     }

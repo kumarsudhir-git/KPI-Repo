@@ -32,7 +32,7 @@ namespace KPIWebAPI.Controllers
                         UserID = obj.SalesMaster.UserID,
                         User = obj.SalesMaster.UserMaster.Username,
                         CompanyLocationID = obj.SalesMaster.CompanyLocationID,
-                        CompanyLocation = obj.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.SalesMaster.CompanyLocationMaster.LocationName + "]",
+                        //CompanyLocation = obj.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.SalesMaster.CompanyLocationMaster.LocationName + "]",
                         Instructions = obj.SalesMaster.Instructions,
                         SalesStatusID = obj.SalesStatusID,
                         Status = obj.SalesMaster.SalesStatusMaster.SalesStatus,

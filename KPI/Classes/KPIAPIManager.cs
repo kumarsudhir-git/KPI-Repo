@@ -321,6 +321,18 @@ namespace KPI.Classes
             var result = CommonFunctions.client.PostAsJsonAsync("SalesAPI/Edit", obj).Result.Content.ReadAsAsync<SalesMasterResponse>().Result;
             return result;
         }
+
+        public static LookUpMasterResponse GetLookUpData(string LookUpTypeName)
+        {
+            var result = CommonFunctions.client.GetAsync("SalesAPI/GetLookUpDataFromTypeName?LookUpTypeName=" + LookUpTypeName).Result.Content.ReadAsAsync<LookUpMasterResponse>().Result;
+            return result;
+        }
+        public static RackMastersResponse GetRackMastersData()
+        {
+            var result = CommonFunctions.client.GetAsync("SalesAPI/GetLookUpDataFromTypeName").Result.Content.ReadAsAsync<RackMastersResponse>().Result;
+            return result;
+        }
+
         #endregion
 
         #region API calls for Dispatch

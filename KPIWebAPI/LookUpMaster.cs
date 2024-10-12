@@ -16,6 +16,7 @@ namespace KPIWebAPI
     {
         public int LookUpID { get; set; }
         public string LookUpType { get; set; }
+        public string LookUpName { get; set; }
         public string LookUpValue { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }

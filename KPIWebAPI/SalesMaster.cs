@@ -40,7 +40,6 @@ namespace KPIWebAPI
         public string Rate { get; set; }
         public string PaymentStatus { get; set; }
     
-        public virtual CompanyLocationMaster CompanyLocationMaster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SalesDetail> SalesDetails { get; set; }
         public virtual SalesStatusMaster SalesStatusMaster { get; set; }

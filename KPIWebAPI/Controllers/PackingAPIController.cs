@@ -1,5 +1,6 @@
 ﻿using KPILib.Models;
 using KPIWebAPI.AuthFilters;
+using KPIWebAPI.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace KPIWebAPI.Controllers
                         UserID = obj.SalesMaster.UserID,
                         User = obj.SalesMaster.UserMaster.Username,
                         CompanyLocationID = obj.SalesMaster.CompanyLocationID,
-                        CompanyLocation = obj.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.SalesMaster.CompanyLocationMaster.LocationName + "]",
+                        //CompanyLocation = obj.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.SalesMaster.CompanyLocationMaster.LocationName + "]",
                         Instructions = obj.SalesMaster.Instructions,
                         SalesStatusID = obj.SalesStatusID,
                         Status = obj.SalesMaster.SalesStatusMaster.SalesStatus,
@@ -83,25 +84,30 @@ namespace KPIWebAPI.Controllers
             {
                 var data = db.SalesDetails.SingleOrDefault(x => x.SalesDetailsID == id);      //(x => x.SalesID == salesID && x.ProductID == prodID);
 
+                VendorMaster vendorMstr = CommonFunctions.GetVendorDetailsFromId(data.SalesMaster.CompanyLocationID);
+
                 returnValue.data = new PackingDispatchMaster()
                 {
                     SalesID = data.SalesID,
-                    SalesDate = data.SalesMaster.SalesDate,
+                    SalesDate = data.SalesMaster.SalesDate,                    
 
-                    CompanyID = data.SalesMaster.CompanyLocationMaster.CompanyID,
-                    CompanyName = data.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + data.SalesMaster.CompanyLocationMaster.LocationName + "]",
+                    //CompanyID = data.SalesMaster.CompanyLocationMaster.CompanyID,
+                    CompanyID = data.SalesMaster.CompanyLocationID,
+                    //CompanyName = data.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + data.SalesMaster.CompanyLocationMaster.LocationName + "]",
+                    CompanyName = vendorMstr.VendorName + " [" + vendorMstr.Address + "]",
 
                     CompanyLocationID = data.SalesMaster.CompanyLocationID,
-                    CompanyLocation = data.SalesMaster.CompanyLocationMaster.Address + " " +
-                                      data.SalesMaster.CompanyLocationMaster.City + " " +
-                                      data.SalesMaster.CompanyLocationMaster.State + " " +
-                                      data.SalesMaster.CompanyLocationMaster.PostalCode + " " +
-                                      data.SalesMaster.CompanyLocationMaster.Country,
+                    CompanyLocation = vendorMstr.Address,
+                                      //vendorMstr.City + " " +
+                                      //vendorMstr.State + " " +
+                                      //vendorMstr.PostalCode + " " +
+                                      //vendorMstr.Country,
 
-                    ContactPerson = data.SalesMaster.CompanyLocationMaster.ContactPerson,
-                    Phone = data.SalesMaster.CompanyLocationMaster.Phone,
-                    Mobile = data.SalesMaster.CompanyLocationMaster.Mobile,
-                    Email = data.SalesMaster.CompanyLocationMaster.Email,
+                    //ContactPerson = data.SalesMaster.CompanyLocationMaster.ContactPerson,
+                    //Phone = data.SalesMaster.CompanyLocationMaster.Phone,
+                    //Phone = data.SalesMaster.CompanyLocationMaster.Phone,
+                    Mobile = vendorMstr.ContactNumber,
+                    //Email = data.SalesMaster.CompanyLocationMaster.Email,
 
                     Instructions = data.SalesMaster.Instructions,
                     SalesStatusID = data.SalesMaster.SalesStatusID,

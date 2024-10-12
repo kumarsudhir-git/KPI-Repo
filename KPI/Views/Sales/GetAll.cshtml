@@ -18,7 +18,19 @@
                 {
                     data: null, title: "SO No.",
                     render: function (data, type, row) {
-                        return "<a href='Get/" + data.SalesID + "'>" + data.SalesID + "</a>";
+                        return "<a href='New/" + data.SalesID + "'>" + data.SalesID + "</a>";
+                        //return "<a href='Get/" + data.SalesID + "'>" + data.SalesID + "</a>";
+                    }
+                },
+                {
+                    data: "CommittedDate", title: "Committed Date", "sType": "date",
+                    render: function (d) {
+                        if (d != null) {
+                            return new Date(Number(d.toString().substring(6, 19))).toShortDateFormat();
+                        }
+                        else {
+                            return "NA";
+                        }
                     }
                 },
                 {
@@ -28,6 +40,19 @@
                     }
                 },
                 { data: "CompanyLocation", title: "Customer / Location" },
+                { data: "Colour", title: "Colour" },
+                { data: "GMS", title: "GMS" },
+                { data: "GMSInfo", title: "GMS Info" },
+                { data: "Package", title: "Package" },
+                { data: "Quantity", title: "Quantity" },
+                {
+                    data: "SampleRequired", title: "SampleRequired", render: function (d) {
+                        var IsSampleReq = "No"
+                        if (d == true) {
+                            IsSampleReq = "Yes"
+                        }
+                        return IsSampleReq;
+                    } },
                 { data: "User", title: "User" },
                 { data: "Status", title: "Status" },
                 { data: "Instructions", title: "Instructions" }

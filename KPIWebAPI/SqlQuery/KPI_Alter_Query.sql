@@ -541,11 +541,29 @@ GO
 INSERT INTO LookupMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
 VALUES('SMRateAccess','SMRateAccess','101,102','Role Based Access for Sales Rate',1,1001,GETDATE())
 
+GO
 
 INSERT INTO LookupMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
 VALUES('GMSType','Standard','GSM001','GMSType',1,1001,GETDATE()),
-('GMSType','Heavy','GSM002',1,1001,GETDATE()),
-('GMSType','Light','GSM003',1,1001,GETDATE())
+('GMSType','Heavy','GSM002','GMSType',1,1001,GETDATE()),
+('GMSType','Light','GSM003','GMSType',1,1001,GETDATE())
+
+--------------------------------11-10-2014----------------------------------------------------
+
+GO
+
+INSERT INTO LookupMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
+VALUES('Color','White','CLR001','ColorType',1,1001,GETDATE()),
+('Color','Black','CLR002','ColorType',1,1001,GETDATE()),
+('Color','Blue','CLR003','ColorType',1,1001,GETDATE()),
+('Color','Saffron','CLR004','ColorType',1,1001,GETDATE()),
+('Color','Red','CLR005','ColorType',1,1001,GETDATE()),
+('Color','Green','CLR006','ColorType',1,1001,GETDATE()),
+('Color','Yellow','CLR007','ColorType',1,1001,GETDATE())
+
+GO
+ALTER TABLE SalesMaster
+DROP CONSTRAINT FK_SalesMaster_CompanyLocationMaster
 
 ------------------------------------------------------END-----------------------------
 

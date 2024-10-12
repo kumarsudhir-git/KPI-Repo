@@ -15,31 +15,75 @@
 @using (Html.BeginForm("Add", "Sales"))
 {
     @Html.AntiForgeryToken()
-
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.SalesID)
 
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-3 col-sm-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Colour, htmlAttributes: new { @class = "control-label col-md-12" })
-                    @Html.TextBoxFor(model => model.Colour, "", new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.Colour, null, "--Select--", new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Colour, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-md-3 col-sm-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Package, htmlAttributes: new { @class = "control-label col-md-12" })
-                    @Html.TextBoxFor(model => model.Package, "", new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Package, "", new { @class = "form-control", @placeholder = "Enter Package" })
                     @Html.ValidationMessageFor(model => model.Package, "", new { @class = "text-danger" })
                 </div>
-            </div><div class="col-md-3 col-sm-12">
+            </div>
+            <div class="col-md-3 col-sm-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-12" })
-                    @Html.TextBoxFor(model => model.Quantity, "", new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Quantity, "", new { @class = "form-control", @placeholder = "Enter Quantity" })
                     @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                 </div>
-            </div><div class="col-md-3 col-sm-12">
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.RMIds, htmlAttributes: new { @class = "control-label col-md-12" })
+                    @*@Html.DropDownListFor(model => model.RMIds, new MultiSelectList(ViewData["RMIds"] as IEnumerable<SelectListItem>, "Value", "Text"), new { @class = "form-control multiselectDropDown", @multiple = "multiple", @data_live_search = "true" })*@
+                    @Html.DropDownListFor(model => model.RMIds, new MultiSelectList(ViewData["RMIdSelectList"] as IEnumerable<SelectListItem>, "Value", "Text", "Selected"), new { @class = "form-control multiselectDropDown", @multiple = "multiple", @data_live_search = "true" })
+                    @*@Html.DropDownListFor(model => model.RMIds, (List<SelectListItem>)ViewData["RMIdSelectList"], new { @class = "form-control multiselectDropDown", @multiple = "multiple", @data_live_search = "true" })*@
+                    @Html.ValidationMessageFor(model => model.RMIds, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.GMS, htmlAttributes: new { @class = "control-label col-md-12" })
+                    @Html.DropDownListFor(model => model.GMS, null, "--Select--", new { @class = "form-control", @onchange = "HideShowGMSInfoTextBox(this)" })
+                    @Html.ValidationMessageFor(model => model.GMS, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-12" id="GMSInfoTxtBoxDiv">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.GMSInfo, htmlAttributes: new { @class = "control-label col-md-12" })
+                    @Html.TextBoxFor(model => model.GMSInfo, "", new { @class = "form-control", @placeholder = "Enter GMS Info" })
+                    @Html.ValidationMessageFor(model => model.GMSInfo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DeliveryAddress, htmlAttributes: new { @class = "control-label col-md-12" })
+                    @Html.TextBoxFor(model => model.DeliveryAddress, "", new { @class = "form-control", @placeholder = "Enter Delivery Address" })
+                    @Html.ValidationMessageFor(model => model.DeliveryAddress, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Transporter, htmlAttributes: new { @class = "control-label col-md-12" })
+                    @Html.TextBoxFor(model => model.Transporter, "", new { @class = "form-control", @placeholder = "Enter Transporter" })
+                    @Html.ValidationMessageFor(model => model.Transporter, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-1 col-sm-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.SampleRequired, htmlAttributes: new { @class = "control-label col-md-12" })
                     @Html.CheckBoxFor(model => model.SampleRequired)
@@ -55,10 +99,14 @@
 
                 <div class="col-md-3 col-sm-12">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.SalesID, htmlAttributes: new { @class = "control-label col-md-12" })
-                        @Html.DisplayFor(model => model.SalesID, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.HiddenFor(model => model.SalesID)
+                        @*@Html.LabelFor(model => model.SalesID, htmlAttributes: new { @class = "control-label col-md-12" })
+                            @Html.DisplayFor(model => model.SalesID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(model => model.SalesID)*@
                         @*@Html.ValidationMessageFor(model => model.SalesDate, "", new { @class = "text-danger" })*@
+
+                        @Html.LabelFor(model => model.CommittedDate)
+                        @Html.TextBoxFor(model => model.CommittedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control datepicker", @placeholder = "Select Date", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.CommittedDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-12">
@@ -84,22 +132,12 @@
                     </div>
                 </div>
 
-
-
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label class="control-label col-md-12">Customer / Location</label>
                         @*@Html.DropDownListFor(model => model.CompanyLocationID, ViewBag.Locations as SelectList, "--Select Company and Location--", new { @class = "form-control", style = "max-width:100%;" })*@
                         @Html.DropDownListFor(model => model.CompanyLocationID, null, "--Select Company and Location--", new { @class = "form-control", style = "max-width:100%;" })
                         @Html.ValidationMessageFor(model => model.CompanyLocationID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="col-md-4 col-sm-12">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label col-md-12" })
-                        @Html.TextAreaFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" }, @rows = 6, @cols = 1000, style = "max-width:100%;" })
-                        @Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 @if (Model.IsSalesRateAccess)
@@ -112,6 +150,14 @@
                         </div>
                     </div>
                 }
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label col-md-12" })
+                        @*@Html.TextAreaFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" }, @rows = 6, @cols = 1000, style = "max-width:100%;" })*@
+                        @Html.TextAreaFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -148,10 +194,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @*@foreach (var item in Model.LineItems)
-                            {*@
-                        @{
-                            Html.RenderAction("GetSalesLineItemPartial");
+                        @foreach (var item in Model.LineItems)
+                        {
+                            Html.RenderAction("GetSalesLineItemPartial", item);
                         }
                     </tbody>
                 </table>
@@ -161,7 +206,7 @@
 
 
     <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-primary" />
+        <input type="submit" value="Save" class="btn btn-primary" onclick="return ValidateForm(this)" />
     </div>
 
 }
@@ -181,6 +226,36 @@
     </script>*@
 
 <script>
+
+    $(function () {
+
+        var GMSId = '@Model.GMS';
+        if (GMSId != null && GMSId != "" && GMSId != undefined) {
+            if (GMSId == "GSM002" || GMSId == "GSM003") {
+                $('#GMSInfoTxtBoxDiv').show();
+            }
+            else {
+                $('#GMSInfoTxtBoxDiv').hide();
+            }
+        }
+        else {
+            $('#GMSInfoTxtBoxDiv').hide();
+        }
+    })
+
+    function ValidateForm(obj) {
+        var RMIdsVal = $('#RMIds').val();
+
+        var valueToRemove = "0";
+        if (RMIdsVal.indexOf(valueToRemove) != -1) {
+            RMIdsVal = RMIdsVal.filter(function (value) {
+                return value !== valueToRemove;
+            });
+            $('#RMIds').val(RMIdsVal);
+            return true;
+        }
+    }
+
     function AddLineItemRow() {
 
         var strURL = "/Sales/GetSalesLineItemPartial";

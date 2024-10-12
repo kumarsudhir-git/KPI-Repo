@@ -161,6 +161,9 @@ namespace KPIWebAPI.Controllers
             
             cfg.CreateMap<usp_GetRMInventoryFinishedGood_Result, KPILib.Models.RMInventoryFinishedGoodModel>();
             cfg.CreateMap<KPILib.Models.RMInventoryFinishedGoodModel, usp_GetRMInventoryFinishedGood_Result>();
+
+            cfg.CreateMap<LookUpMaster, KPILib.Models.LookUpMasterModel>();
+            cfg.CreateMap<KPILib.Models.LookUpMasterModel, LookUpMaster>();
         });
 
         public static IMapper mapper = config.CreateMapper();

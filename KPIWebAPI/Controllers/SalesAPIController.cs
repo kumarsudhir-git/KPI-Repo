@@ -22,7 +22,9 @@ namespace KPIWebAPI.Controllers
                 foreach (var obj in data)
                 {
                     var o = mapper.Map<SalesMaster, KPILib.Models.SalesMaster>(obj);
-                    o.CompanyLocation = obj.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.CompanyLocationMaster.LocationName + "]";
+                    //o.CompanyLocation = obj.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.CompanyLocationMaster.LocationName + "]";
+                    VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(obj.CompanyLocationID);
+                    o.CompanyLocation = vendorMaster.VendorName + " [" + vendorMaster.Address + "]";
                     o.Status = obj.SalesStatusMaster.SalesStatus;
                     o.User = obj.UserMaster.Username;
 
@@ -163,15 +165,16 @@ namespace KPIWebAPI.Controllers
                     o.Products = products;
                     o.Status = data.SalesStatusMaster.SalesStatus;
                     o.User = data.UserMaster.Username;
-                    o.CompanyLocation = data.CompanyLocationMaster.LocationName;
+                    //o.CompanyLocation = data.CompanyLocationMaster.LocationName;
 
-                    foreach (var item in data.SalesDetails)
+                    foreach (var item in data.SalesDetails.Where(x => x.IsActive))
                     {
                         var lineItem = mapper.Map<SalesDetail, KPILib.Models.SalesDetails>(item);
                         lineItem.ProductName = item.ProductMaster.ProductName;
                         o.LineItems.Add(lineItem);
                     }
 
+                    o.RMIds = CommonFunctions.GetRMIdsFromSalesId(o.SalesID);
                     //if (o.LineItems.Count < 5)
                     //{
                     //    for (int i = o.LineItems.Count + 1; i <= 5; i++)
@@ -223,22 +226,6 @@ namespace KPIWebAPI.Controllers
                 }
                 o.Instructions += "";
 
-                if (data.RMIds != null && data.RMIds.Count > 0)
-                {
-                    data.RMIds.ForEach(item =>
-                    {
-                        SalesRMMapping salesRMMapping = new SalesRMMapping()
-                        {
-                            SalesId = data.SalesID,
-                            RMId = item,
-                            CreatedBy = data.UserID,
-                            CreatedDate = DateTime.Now,
-                            IsActive = true
-                        };
-                        db.SalesRMMappings.Add(salesRMMapping);
-                    });
-                    db.SaveChanges();
-                }
                 //o.AddedOn = DateTime.Now;
                 //o.LastModifiedOn = DateTime.Now;
 
@@ -248,6 +235,22 @@ namespace KPIWebAPI.Controllers
                 returnValue.data = data;
                 returnValue.data.SalesID = o.SalesID;
 
+                if (data.RMIds != null && data.RMIds.Count > 0)
+                {
+                    data.RMIds.Where(z => z != 0).ToList().ForEach(item =>
+                    {
+                        SalesRMMapping salesRMMapping = new SalesRMMapping()
+                        {
+                            SalesId = o.SalesID,
+                            RMId = item,
+                            CreatedBy = data.UserID,
+                            CreatedDate = DateTime.Now,
+                            IsActive = true
+                        };
+                        db.SalesRMMappings.Add(salesRMMapping);
+                    });
+                    db.SaveChanges();
+                }
                 //var po = db.SalesMasters.Where(x => x.SalesID == o.SalesID).Select(x => new { x.SalesID, x.CompanyLocationMaster.ContactPerson, x.CompanyLocationMaster.Email, x.UserMaster.Username, UserEmail = x.UserMaster.Email }).FirstOrDefault();
 
                 //Dictionary<string, string> key_vals = new Dictionary<string, string>();
@@ -290,22 +293,23 @@ namespace KPIWebAPI.Controllers
                     o.GMSInfo = data.GMSInfo;
                     o.Instructions = data.Instructions;
                     o.Package = data.Package;
-                    o.PaymentStatus = data.Package;
+                    o.PaymentStatus = data.PaymentStatus;
                     o.Quantity = data.Quantity;
                     o.Rate = data.Rate;
                     o.SampleRequired = data.SampleRequired;
                     o.Transporter = data.Transporter;
 
-
                     //o.SalesDetails.Clear();
 
                     foreach (var item in o.SalesDetails.ToList())
+                    {
                         //o.SalesDetails.Remove(item);
+                        item.IsActive = false;
                         db.Entry(item).State = System.Data.Entity.EntityState.Deleted;
-
+                    }
                     foreach (var item in data.LineItems.Where(x => x.ProductID != 0))
                     {
-                        o.SalesDetails.Add(new SalesDetail { ProductID = item.ProductID, Qty = item.Qty });
+                        o.SalesDetails.Add(new SalesDetail { ProductID = item.ProductID, Qty = item.Qty, Instructions = item.Instructions });
                     }
 
                     if (data.RMIds != null && data.RMIds.Count > 0)
@@ -445,6 +449,51 @@ namespace KPIWebAPI.Controllers
 
             return Json(returnValue);
         }
+
+        [HttpGet]
+        public IHttpActionResult GetLookUpDataFromTypeName(string LookUpTypeName)
+        {
+            LookUpMasterResponse lookUpMasterResponse = new LookUpMasterResponse();
+
+            try
+            {
+                List<LookUpMaster> lookUps = CommonFunctions.GetLookUpMasterDataFromLookupName(LookUpTypeName);
+
+                lookUpMasterResponse.lookupMasterList = mapper.Map<List<LookUpMasterModel>>(lookUps);
+
+                lookUpMasterResponse.Response.IsSuccessful();
+
+            }
+            catch (Exception ex)
+            {
+                lookUpMasterResponse.Response.ResponseCode = 500;
+                lookUpMasterResponse.Response.ResponseMsg = ex.Message;
+            }
+            return Json(lookUpMasterResponse);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetLookUpDataFromTypeName()
+        {
+            RackMastersResponse rackMasterResponse = new RackMastersResponse();
+
+            try
+            {
+                List<RackMaster> lookUps = CommonFunctions.GetRackMasterData();
+
+                rackMasterResponse.data = mapper.Map<List<KPILib.Models.RackMaster>>(lookUps);
+
+                rackMasterResponse.Response.IsSuccessful();
+
+            }
+            catch (Exception ex)
+            {
+                rackMasterResponse.Response.ResponseCode = 500;
+                rackMasterResponse.Response.ResponseMsg = ex.Message;
+            }
+            return Json(rackMasterResponse);
+        }
+
 
     }
 }

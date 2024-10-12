@@ -17,12 +17,41 @@
 
 
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.GMS, htmlAttributes: new { @class = "control-label col-md-12" })
+                    @Html.DropDownListFor(model => model.GMS, null, "--Select--", new { @class = "form-control", @onchange = "HideShowGMSInfoTextBox(this)" })
+                    @Html.ValidationMessageFor(model => model.GMS, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.GMSInfo, htmlAttributes: new { @class = "control-label col-md-12" })
+                    @Html.TextBoxFor(model => model.GMSInfo, "", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.GMSInfo, "", new { @class = "text-danger" })
+                </div>
+            </div><div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DeliveryAddress, htmlAttributes: new { @class = "control-label col-md-12" })
+                    @Html.TextBoxFor(model => model.DeliveryAddress, "", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.DeliveryAddress, "", new { @class = "text-danger" })
+                </div>
+            </div><div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Transporter, htmlAttributes: new { @class = "control-label col-md-12" })
+                    @Html.TextBoxFor(model => model.Transporter, "", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Transporter, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-6">
 
             <div class="row">
-
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         @Html.LabelFor(model => model.SalesID, htmlAttributes: new { @class = "control-label col-md-12" })

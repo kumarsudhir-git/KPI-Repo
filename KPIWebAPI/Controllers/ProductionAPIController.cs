@@ -36,7 +36,7 @@ namespace KPIWebAPI.Controllers
                     o.SalesUserID = obj.SalesDetail.SalesMaster.UserID;
                     o.SalesUser = obj.SalesDetail.SalesMaster.UserMaster.Username;
                     o.CompanyLocationID = obj.SalesDetail.SalesMaster.CompanyLocationID;
-                    o.CompanyLocation = obj.SalesDetail.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.SalesDetail.SalesMaster.CompanyLocationMaster.LocationName + "]";
+                    //o.CompanyLocation = obj.SalesDetail.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.SalesDetail.SalesMaster.CompanyLocationMaster.LocationName + "]";
 
                     o.ProductName = obj.ProductMaster.ProductName;
 
@@ -161,7 +161,7 @@ namespace KPIWebAPI.Controllers
                 productionProgrameObj.SalesUserID = productionObj.SalesDetail.SalesMaster.UserID;
                 productionProgrameObj.SalesUser = productionObj.SalesDetail.SalesMaster.UserMaster.Username;
                 productionProgrameObj.CompanyLocationID = productionObj.SalesDetail.SalesMaster.CompanyLocationID;
-                productionProgrameObj.CompanyLocation = productionObj.SalesDetail.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + productionObj.SalesDetail.SalesMaster.CompanyLocationMaster.LocationName + "]";
+                //productionProgrameObj.CompanyLocation = productionObj.SalesDetail.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + productionObj.SalesDetail.SalesMaster.CompanyLocationMaster.LocationName + "]";
                 productionProgrameObj.ProductName = productionObj.ProductMaster.ProductName;
                 productionProgrameObj.MouldName = productionObj.MouldMaster.MouldName;
                 productionProgrameObj.InProductionQty = productionObj.InProductionQty;
@@ -545,7 +545,7 @@ namespace KPIWebAPI.Controllers
                 o.SalesUserID = data.SalesDetail.SalesMaster.UserID;
                 o.SalesUser = data.SalesDetail.SalesMaster.UserMaster.Username;
                 o.CompanyLocationID = data.SalesDetail.SalesMaster.CompanyLocationID;
-                o.CompanyLocation = data.SalesDetail.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + data.SalesDetail.SalesMaster.CompanyLocationMaster.LocationName + "]";
+                //o.CompanyLocation = data.SalesDetail.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + data.SalesDetail.SalesMaster.CompanyLocationMaster.LocationName + "]";
 
                 o.ProductName = data.ProductMaster.ProductName;
 
@@ -771,7 +771,7 @@ namespace KPIWebAPI.Controllers
                 o.SalesUserID = data.SalesDetail.SalesMaster.UserID;
                 o.SalesUser = data.SalesDetail.SalesMaster.UserMaster.Username;
                 o.CompanyLocationID = data.SalesDetail.SalesMaster.CompanyLocationID;
-                o.CompanyLocation = data.SalesDetail.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + data.SalesDetail.SalesMaster.CompanyLocationMaster.LocationName + "]";
+                //o.CompanyLocation = data.SalesDetail.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + data.SalesDetail.SalesMaster.CompanyLocationMaster.LocationName + "]";
 
                 o.ProductName = data.ProductMaster.ProductName;
 

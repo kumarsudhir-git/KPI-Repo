@@ -78,6 +78,7 @@
           </Key>
           <Property Name="LookUpID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LookUpType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LookUpName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="LookUpValue" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="255" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -594,6 +595,7 @@
           <Property Name="QtyDispatched" Type="int" Nullable="false" />
           <Property Name="QtyBal" Type="int" Nullable="false" />
           <Property Name="SalesStatusID" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="SalesDispatchDetails">
           <Key>
@@ -730,6 +732,18 @@
             </Principal>
             <Dependent Role="ProductionProgramBatch">
               <PropertyRef Name="ProductionProgramID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Productio__Sales__0D0FEE32">
+          <End Role="SalesDetails" Type="Self.SalesDetails" Multiplicity="0..1" />
+          <End Role="ProductionProgram" Type="Self.ProductionProgram" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SalesDetails">
+              <PropertyRef Name="SalesDetailsID" />
+            </Principal>
+            <Dependent Role="ProductionProgram">
+              <PropertyRef Name="SalesDetailsID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -994,18 +1008,6 @@
             </Principal>
             <Dependent Role="ProductionProgram">
               <PropertyRef Name="ProductID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProductionProgram_SalesDetails">
-          <End Role="SalesDetails" Type="Self.SalesDetails" Multiplicity="0..1" />
-          <End Role="ProductionProgram" Type="Self.ProductionProgram" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SalesDetails">
-              <PropertyRef Name="SalesDetailsID" />
-            </Principal>
-            <Dependent Role="ProductionProgram">
-              <PropertyRef Name="SalesDetailsID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1429,18 +1431,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SalesMaster_CompanyLocationMaster">
-          <End Role="CompanyLocationMaster" Type="Self.CompanyLocationMaster" Multiplicity="1" />
-          <End Role="SalesMaster" Type="Self.SalesMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CompanyLocationMaster">
-              <PropertyRef Name="CompanyLocationID" />
-            </Principal>
-            <Dependent Role="SalesMaster">
-              <PropertyRef Name="CompanyLocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SalesMaster_SalesStatusMaster">
           <End Role="SalesStatusMaster" Type="Self.SalesStatusMaster" Multiplicity="1" />
           <End Role="SalesMaster" Type="Self.SalesMaster" Multiplicity="*" />
@@ -1548,6 +1538,10 @@
             <End Role="ProductionProgram" EntitySet="ProductionProgram" />
             <End Role="ProductionProgramBatch" EntitySet="ProductionProgramBatch" />
           </AssociationSet>
+          <AssociationSet Name="FK__Productio__Sales__0D0FEE32" Association="Self.FK__Productio__Sales__0D0FEE32">
+            <End Role="SalesDetails" EntitySet="SalesDetails" />
+            <End Role="ProductionProgram" EntitySet="ProductionProgram" />
+          </AssociationSet>
           <AssociationSet Name="FK_CompanyLocationMaster_CompanyMaster" Association="Self.FK_CompanyLocationMaster_CompanyMaster">
             <End Role="CompanyMaster" EntitySet="CompanyMaster" />
             <End Role="CompanyLocationMaster" EntitySet="CompanyLocationMaster" />
@@ -1634,10 +1628,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_ProductionProgram_ProductMaster" Association="Self.FK_ProductionProgram_ProductMaster">
             <End Role="ProductMaster" EntitySet="ProductMaster" />
-            <End Role="ProductionProgram" EntitySet="ProductionProgram" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProductionProgram_SalesDetails" Association="Self.FK_ProductionProgram_SalesDetails">
-            <End Role="SalesDetails" EntitySet="SalesDetails" />
             <End Role="ProductionProgram" EntitySet="ProductionProgram" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductionProgram_UserMaster" Association="Self.FK_ProductionProgram_UserMaster">
@@ -1780,10 +1770,6 @@
             <End Role="SalesDispatchDetails" EntitySet="SalesDispatchDetails" />
             <End Role="SalesDispatchRacks" EntitySet="SalesDispatchRacks" />
           </AssociationSet>
-          <AssociationSet Name="FK_SalesMaster_CompanyLocationMaster" Association="Self.FK_SalesMaster_CompanyLocationMaster">
-            <End Role="CompanyLocationMaster" EntitySet="CompanyLocationMaster" />
-            <End Role="SalesMaster" EntitySet="SalesMaster" />
-          </AssociationSet>
           <AssociationSet Name="FK_SalesMaster_SalesStatusMaster" Association="Self.FK_SalesMaster_SalesStatusMaster">
             <End Role="SalesStatusMaster" EntitySet="SalesStatusMaster" />
             <End Role="SalesMaster" EntitySet="SalesMaster" />
@@ -1871,10 +1857,6 @@
           <AssociationSet Name="FK_CompanyLocationMaster_CompanyMaster" Association="KPIModel.FK_CompanyLocationMaster_CompanyMaster">
             <End Role="CompanyMaster" EntitySet="CompanyMasters" />
             <End Role="CompanyLocationMaster" EntitySet="CompanyLocationMasters" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SalesMaster_CompanyLocationMaster" Association="KPIModel.FK_SalesMaster_CompanyLocationMaster">
-            <End Role="CompanyLocationMaster" EntitySet="CompanyLocationMasters" />
-            <End Role="SalesMaster" EntitySet="SalesMasters" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanyMaster_CompanyTypeMaster" Association="KPIModel.FK_CompanyMaster_CompanyTypeMaster">
             <End Role="CompanyTypeMaster" EntitySet="CompanyTypeMasters" />
@@ -1972,16 +1954,16 @@
             <End Role="ProductionProgram" EntitySet="ProductionPrograms" />
             <End Role="ProductionProgramBatch" EntitySet="ProductionProgramBatches" />
           </AssociationSet>
+          <AssociationSet Name="FK__Productio__Sales__0D0FEE32" Association="KPIModel.FK__Productio__Sales__0D0FEE32">
+            <End Role="SalesDetail" EntitySet="SalesDetails" />
+            <End Role="ProductionProgram" EntitySet="ProductionPrograms" />
+          </AssociationSet>
           <AssociationSet Name="FK_ProductionProgam_ID" Association="KPIModel.FK_ProductionProgam_ID">
             <End Role="ProductionProgram" EntitySet="ProductionPrograms" />
             <End Role="ProductionProgramRMMapping" EntitySet="ProductionProgramRMMappings" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductionProgram_ProductMaster" Association="KPIModel.FK_ProductionProgram_ProductMaster">
             <End Role="ProductMaster" EntitySet="ProductMasters" />
-            <End Role="ProductionProgram" EntitySet="ProductionPrograms" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProductionProgram_SalesDetails" Association="KPIModel.FK_ProductionProgram_SalesDetails">
-            <End Role="SalesDetail" EntitySet="SalesDetails" />
             <End Role="ProductionProgram" EntitySet="ProductionPrograms" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductionProgram_UserMaster" Association="KPIModel.FK_ProductionProgram_UserMaster">
@@ -2209,7 +2191,6 @@
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="CompanyMaster" Relationship="KPIModel.FK_CompanyLocationMaster_CompanyMaster" FromRole="CompanyLocationMaster" ToRole="CompanyMaster" />
-          <NavigationProperty Name="SalesMasters" Relationship="KPIModel.FK_SalesMaster_CompanyLocationMaster" FromRole="CompanyLocationMaster" ToRole="SalesMaster" />
         </EntityType>
         <EntityType Name="CompanyMaster">
           <Key>
@@ -2262,6 +2243,7 @@
           </Key>
           <Property Name="LookUpID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LookUpType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LookUpName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="LookUpValue" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
@@ -2543,9 +2525,9 @@
           <NavigationProperty Name="MouldMaster" Relationship="KPIModel.FK_ProductionProgram_MouldMaster" FromRole="ProductionProgram" ToRole="MouldMaster" />
           <NavigationProperty Name="ProdReadyStoreds" Relationship="KPIModel.FK_ProdReadyStored_ProductionProgram" FromRole="ProductionProgram" ToRole="ProdReadyStored" />
           <NavigationProperty Name="ProductionProgramBatches" Relationship="KPIModel.FK__Productio__Produ__6BE40491" FromRole="ProductionProgram" ToRole="ProductionProgramBatch" />
+          <NavigationProperty Name="SalesDetail" Relationship="KPIModel.FK__Productio__Sales__0D0FEE32" FromRole="ProductionProgram" ToRole="SalesDetail" />
           <NavigationProperty Name="ProductionProgramRMMappings" Relationship="KPIModel.FK_ProductionProgam_ID" FromRole="ProductionProgram" ToRole="ProductionProgramRMMapping" />
           <NavigationProperty Name="ProductMaster" Relationship="KPIModel.FK_ProductionProgram_ProductMaster" FromRole="ProductionProgram" ToRole="ProductMaster" />
-          <NavigationProperty Name="SalesDetail" Relationship="KPIModel.FK_ProductionProgram_SalesDetails" FromRole="ProductionProgram" ToRole="SalesDetail" />
           <NavigationProperty Name="UserMaster" Relationship="KPIModel.FK_ProductionProgram_UserMaster" FromRole="ProductionProgram" ToRole="UserMaster" />
           <NavigationProperty Name="ProductionRawMaterials" Relationship="KPIModel.FK_ProductionRawMaterial_ProductionProgram" FromRole="ProductionProgram" ToRole="ProductionRawMaterial" />
         </EntityType>
@@ -2872,7 +2854,8 @@
           <Property Name="QtyDispatched" Type="Int32" Nullable="false" />
           <Property Name="QtyBal" Type="Int32" Nullable="false" />
           <Property Name="SalesStatusID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ProductionPrograms" Relationship="KPIModel.FK_ProductionProgram_SalesDetails" FromRole="SalesDetail" ToRole="ProductionProgram" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProductionPrograms" Relationship="KPIModel.FK__Productio__Sales__0D0FEE32" FromRole="SalesDetail" ToRole="ProductionProgram" />
           <NavigationProperty Name="ProductMaster" Relationship="KPIModel.FK_SalesDetails_ProductMaster" FromRole="SalesDetail" ToRole="ProductMaster" />
           <NavigationProperty Name="SalesMaster" Relationship="KPIModel.FK_SalesDetails_SalesMaster" FromRole="SalesDetail" ToRole="SalesMaster" />
           <NavigationProperty Name="SalesDispatchDetails" Relationship="KPIModel.FK_SalesDispatchDetails_SalesDetails" FromRole="SalesDetail" ToRole="SalesDispatchDetail" />
@@ -2930,7 +2913,6 @@
           <Property Name="CommittedDate" Type="DateTime" Precision="3" />
           <Property Name="Rate" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="PaymentStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CompanyLocationMaster" Relationship="KPIModel.FK_SalesMaster_CompanyLocationMaster" FromRole="SalesMaster" ToRole="CompanyLocationMaster" />
           <NavigationProperty Name="SalesDetails" Relationship="KPIModel.FK_SalesDetails_SalesMaster" FromRole="SalesMaster" ToRole="SalesDetail" />
           <NavigationProperty Name="SalesStatusMaster" Relationship="KPIModel.FK_SalesMaster_SalesStatusMaster" FromRole="SalesMaster" ToRole="SalesStatusMaster" />
           <NavigationProperty Name="UserMaster" Relationship="KPIModel.FK_SalesMaster_UserMaster" FromRole="SalesMaster" ToRole="UserMaster" />
@@ -3035,18 +3017,6 @@
             </Principal>
             <Dependent Role="CompanyLocationMaster">
               <PropertyRef Name="CompanyID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SalesMaster_CompanyLocationMaster">
-          <End Type="KPIModel.CompanyLocationMaster" Role="CompanyLocationMaster" Multiplicity="1" />
-          <End Type="KPIModel.SalesMaster" Role="SalesMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CompanyLocationMaster">
-              <PropertyRef Name="CompanyLocationID" />
-            </Principal>
-            <Dependent Role="SalesMaster">
-              <PropertyRef Name="CompanyLocationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3338,6 +3308,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Productio__Sales__0D0FEE32">
+          <End Type="KPIModel.SalesDetail" Role="SalesDetail" Multiplicity="0..1" />
+          <End Type="KPIModel.ProductionProgram" Role="ProductionProgram" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SalesDetail">
+              <PropertyRef Name="SalesDetailsID" />
+            </Principal>
+            <Dependent Role="ProductionProgram">
+              <PropertyRef Name="SalesDetailsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ProductionProgam_ID">
           <End Type="KPIModel.ProductionProgram" Role="ProductionProgram" Multiplicity="1" />
           <End Type="KPIModel.ProductionProgramRMMapping" Role="ProductionProgramRMMapping" Multiplicity="*" />
@@ -3359,18 +3341,6 @@
             </Principal>
             <Dependent Role="ProductionProgram">
               <PropertyRef Name="ProductID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProductionProgram_SalesDetails">
-          <End Type="KPIModel.SalesDetail" Role="SalesDetail" Multiplicity="0..1" />
-          <End Type="KPIModel.ProductionProgram" Role="ProductionProgram" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SalesDetail">
-              <PropertyRef Name="SalesDetailsID" />
-            </Principal>
-            <Dependent Role="ProductionProgram">
-              <PropertyRef Name="SalesDetailsID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3956,6 +3926,7 @@
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="LookUpValue" ColumnName="LookUpValue" />
+                <ScalarProperty Name="LookUpName" ColumnName="LookUpName" />
                 <ScalarProperty Name="LookUpType" ColumnName="LookUpType" />
                 <ScalarProperty Name="LookUpID" ColumnName="LookUpID" />
               </MappingFragment>
@@ -4494,6 +4465,7 @@
           <EntitySetMapping Name="SalesDetails">
             <EntityTypeMapping TypeName="KPIModel.SalesDetail">
               <MappingFragment StoreEntitySet="SalesDetails">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="SalesStatusID" ColumnName="SalesStatusID" />
                 <ScalarProperty Name="QtyBal" ColumnName="QtyBal" />
                 <ScalarProperty Name="QtyDispatched" ColumnName="QtyDispatched" />

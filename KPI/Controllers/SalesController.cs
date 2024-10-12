@@ -1,5 +1,6 @@
 ﻿using KPI.Classes;
 using KPI.Filters;
+using KPILib;
 using KPILib.Models;
 using System;
 using System.Collections.Generic;
@@ -48,12 +49,39 @@ namespace KPI.Controllers
 
         public ActionResult Get(int id)
         {
+            ViewData["Colour"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
+            ViewData["GMS"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
+            ViewData["RMIds"] = new SelectList(new List<SelectListItem>(), "RMId", "RMIdName");
             ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
             ViewData["CompanyLocationID"] = new SelectList(new List<SelectListItem>(), "CompanyLocationID", "CompanyLocationName");
 
             var response = KPIAPIManager.GetSales(id, Convert.ToInt32(Session["RoleID"]));
             if (response.Response.ResponseCode == 200)
             {
+                LookUpMasterResponse colorLookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.ColorLookUp);
+                if (colorLookUpMaster != null && colorLookUpMaster.Response.ResponseCode == 200)
+                {
+                    ViewData["Colour"] = new SelectList(colorLookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
+                }
+                LookUpMasterResponse GSMLookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.GMSTypeLookUp);
+                if (GSMLookUpMaster != null && GSMLookUpMaster.Response.ResponseCode == 200)
+                {
+                    ViewData["GMS"] = new SelectList(GSMLookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
+                }
+                RackMastersResponse rackMasterRspns = KPIAPIManager.GetRackMastersData();
+                if (rackMasterRspns != null && rackMasterRspns.Response.ResponseCode == 200)
+                {
+                    List<SelectListItem> selectLists = new List<SelectListItem>();
+                    // Add "Select All" option
+                    selectLists.Insert(0, new SelectListItem { Value = "all", Text = "Select All" });
+
+                    rackMasterRspns.data.ForEach(item =>
+                    {
+                        selectLists.Add(new SelectListItem { Value = item.RackID.ToString(), Text = item.RackNo });
+                    });
+                    ViewData["RMIds"] = selectLists;
+                    //ViewData["RMIds"] = new SelectList(rackMasterRspns.data, "RackID", "RackNo");
+                }
                 VendorMasterModelResponse masterModelResponse = KPIAPIManager.GetAllVendorData();
                 if (masterModelResponse != null && masterModelResponse.Response.ResponseCode == 200)
                 {
@@ -81,13 +109,44 @@ namespace KPI.Controllers
             }
         }
 
-        public ActionResult New()
+        public ActionResult New(int id = 0)
         {
+            ViewData["Colour"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
+            ViewData["GMS"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
+            //ViewData["RMIds"] = new SelectList(new List<SelectListItem>(), "RMId", "RMIdName");
             ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
             ViewData["CompanyLocationID"] = new SelectList(new List<SelectListItem>(), "CompanyLocationID", "CompanyLocationName");
-            var response = KPIAPIManager.GetSales(0, Convert.ToInt32(Session["RoleID"]));
+            var response = KPIAPIManager.GetSales(id, Convert.ToInt32(Session["RoleID"]));
             if (response.Response.ResponseCode == 200)
             {
+                LookUpMasterResponse lookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.ColorLookUp);
+                if (lookUpMaster != null && lookUpMaster.Response.ResponseCode == 200)
+                {
+                    ViewData["Colour"] = new SelectList(lookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
+                }
+                LookUpMasterResponse GSMLookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.GMSTypeLookUp);
+                if (GSMLookUpMaster != null && GSMLookUpMaster.Response.ResponseCode == 200)
+                {
+                    ViewData["GMS"] = new SelectList(GSMLookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
+                }
+                RackMastersResponse rackMasterRspns = KPIAPIManager.GetRackMastersData();
+                if (rackMasterRspns != null && rackMasterRspns.Response.ResponseCode == 200)
+                {
+                    List<SelectListItem> selectLists = new List<SelectListItem>();
+                    // Add "Select All" option
+                    selectLists.Insert(0, new SelectListItem { Value = "0", Text = "Select All" });
+
+                    rackMasterRspns.data.ForEach(item =>
+                    {
+                        selectLists.Add(new SelectListItem
+                        {
+                            Value = item.RackID.ToString(),
+                            Text = item.RackNo,
+                            Selected = response.data.RMIds != null && response.data.RMIds.Contains(item.RackID)
+                        });
+                    });
+                    ViewData["RMIdSelectList"] = selectLists;//new SelectList(rackMasterRspns.data, "RackID", "RackNo");
+                }
                 VendorMasterModelResponse masterModelResponse = KPIAPIManager.GetAllVendorData();
                 if (masterModelResponse != null && masterModelResponse.Response.ResponseCode == 200)
                 {
@@ -142,7 +201,8 @@ namespace KPI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add([Bind(Include = "SalesID,SalesDate,CompanyLocationID,Instructions,LineItems")] KPILib.Models.SalesMaster sale)      //FormCollection frm)       //
+        //public ActionResult Add([Bind(Include = "SalesID,SalesDate,CompanyLocationID,Instructions,LineItems")] KPILib.Models.SalesMaster sale)      //FormCollection frm)       //
+        public ActionResult Add(KPILib.Models.SalesMaster sale)      //FormCollection frm)       //
         {
             //int i = 0;
             //foreach(var c in frm.AllKeys)
@@ -159,7 +219,16 @@ namespace KPI.Controllers
                 //sale.LineItems.Add(new KPILib.Models.SalesDetails { ProductID = 1002, Qty = 8 });
                 //sale.LineItems.Add(new KPILib.Models.SalesDetails { ProductID = 1003, Qty = 2 });
 
-                var response = KPIAPIManager.AddSales(sale);
+                SalesMasterResponse response = new SalesMasterResponse();
+
+                if (sale.SalesID == 0)
+                {
+                    response = KPIAPIManager.AddSales(sale);
+                }
+                else
+                {
+                    response = KPIAPIManager.EditSales(sale);
+                }
                 if (response.Response.ResponseCode == 200)
                 {
                     return RedirectToAction("GetAll");

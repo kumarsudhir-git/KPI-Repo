@@ -24,11 +24,12 @@ namespace KPILib.Models
         [Display(Name = "PO Date")]
         public System.DateTime SalesDate { get; set; }
 
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Customer / Location")]
         public int CompanyLocationID { get; set; }
-
         [Display(Name = "Customer / Location")]
         public string CompanyLocation { get; set; }
+        [Required(ErrorMessage = "Required")]
         public string Instructions { get; set; }
 
         [Display(Name = "Status")]
@@ -43,15 +44,19 @@ namespace KPILib.Models
         [Display(Name = "User")]
         [Editable(allowEdit: false)]
         public string User { get; set; }
-
+        [Required(ErrorMessage = "Required")]
         public string Colour { get; set; }
+        [Required(ErrorMessage = "Required")]
         public string GMS { get; set; }
         public string GMSInfo { get; set; }
+        [Required(ErrorMessage = "Required")]
         public string Package { get; set; }
+        [Required(ErrorMessage = "Required")]
         public string Quantity { get; set; }
         public bool SampleRequired { get; set; }
         public string DeliveryAddress { get; set; }
         public string Transporter { get; set; }
+        [Required(ErrorMessage = "Required")]
         public DateTime? CommittedDate { get; set; }
         public bool IsSalesRateAccess { get; set; }
         public string Rate { get; set; }
@@ -59,7 +64,6 @@ namespace KPILib.Models
         public List<KeyValuePair> Locations { get; set; }
         public List<SalesDetails> LineItems { get; set; }
         public List<KeyValuePair> Products { get; set; }
-
         public List<int> RMIds { get; set; }
 
         public SalesMaster()

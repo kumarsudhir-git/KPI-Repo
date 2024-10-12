@@ -41,10 +41,10 @@ namespace KPIWebAPI
         public virtual ICollection<ProdReadyStored> ProdReadyStoreds { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductionProgramBatch> ProductionProgramBatches { get; set; }
+        public virtual SalesDetail SalesDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductionProgramRMMapping> ProductionProgramRMMappings { get; set; }
         public virtual ProductMaster ProductMaster { get; set; }
-        public virtual SalesDetail SalesDetail { get; set; }
         public virtual UserMaster UserMaster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductionRawMaterial> ProductionRawMaterials { get; set; }

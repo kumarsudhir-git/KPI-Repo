@@ -73,3 +73,7 @@ deactiveBtn:hover {
         width: 100px; /* Customize the size of the spinner */
         height: 100px;
     }
+
+.hidden {
+    display: none;
+}
