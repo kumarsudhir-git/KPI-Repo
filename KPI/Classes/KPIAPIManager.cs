@@ -329,7 +329,7 @@ namespace KPI.Classes
         }
         public static RackMastersResponse GetRackMastersData()
         {
-            var result = CommonFunctions.client.GetAsync("SalesAPI/GetLookUpDataFromTypeName").Result.Content.ReadAsAsync<RackMastersResponse>().Result;
+            var result = CommonFunctions.client.GetAsync("SalesAPI/GetRackMasterData").Result.Content.ReadAsAsync<RackMastersResponse>().Result;
             return result;
         }
 
