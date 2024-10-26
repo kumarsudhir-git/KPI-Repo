@@ -222,6 +222,7 @@
     <Compile Include="CompanyTypeMaster.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CCSPLBaseAPIController.cs" />
     <Compile Include="Controllers\CompanyAPIController.cs" />
     <Compile Include="Controllers\CompanyLocationAPIController.cs" />
@@ -617,6 +618,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="ViewModels\" />
+    <Folder Include="Views\Admin\" />
     <Folder Include="Views\CompanyAPI\" />
     <Folder Include="Views\CompanyLocationAPI\" />
     <Folder Include="Views\ExternalAPI\" />
