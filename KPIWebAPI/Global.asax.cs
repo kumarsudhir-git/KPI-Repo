@@ -17,7 +17,7 @@ namespace KPIWebAPI
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //BundleConfig.RegisterBundles(BundleTable.Bundles);
             CacheManager.CreatCacheInstance(Convert.ToInt32(ConfigurationManager.AppSettings["jwtTokenExpiryTime"]));
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
