@@ -574,6 +574,7 @@
     <Content Include="Views\RMInventory\SavePackageBags.cshtml" />
     <Content Include="Views\RMInventory\GetAllFinishedGood.cshtml" />
     <Content Include="Views\RMInventory\SaveFinishedGood.cshtml" />
+    <Content Include="Views\Machine\AddMachine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

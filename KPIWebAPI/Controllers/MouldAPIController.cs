@@ -41,8 +41,8 @@ namespace KPIWebAPI.Controllers
 
                     foreach (var machine in obj.MachineMouldMappings.ToList())
                     {
-                        o.AllMachines += "," + mapper.Map<MachineMaster, KPILib.Models.Machine>(machine.MachineMaster).MachineName;
-                        o.Machines.Add(mapper.Map<MachineMaster, KPILib.Models.Machine>(machine.MachineMaster));
+                        o.AllMachines += "," + mapper.Map<MachineMaster, KPILib.Models.MachineMasterModel>(machine.MachineMaster).MachineName;
+                        o.Machines.Add(mapper.Map<MachineMaster, KPILib.Models.MachineMasterModel>(machine.MachineMaster));
                     }
                     if (o.AllMachines != null)
                         if (o.AllMachines.Length > 0)

@@ -97,6 +97,7 @@
           <Property Name="Description" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="NextReminderOn" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <EntityType Name="MachineMaster">
           <Key>
@@ -2262,6 +2263,7 @@
           <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="NextReminderOn" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="MachineMaster" Relationship="KPIModel.FK_MachineHistory_MachineMaster" FromRole="MachineHistory" ToRole="MachineMaster" />
           <NavigationProperty Name="MachineStatusMaster" Relationship="KPIModel.FK_MachineHistory_MachineStatusMaster" FromRole="MachineHistory" ToRole="MachineStatusMaster" />
         </EntityType>
@@ -3935,6 +3937,7 @@
           <EntitySetMapping Name="MachineHistories">
             <EntityTypeMapping TypeName="KPIModel.MachineHistory">
               <MappingFragment StoreEntitySet="MachineHistory">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="NextReminderOn" ColumnName="NextReminderOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="Description" ColumnName="Description" />

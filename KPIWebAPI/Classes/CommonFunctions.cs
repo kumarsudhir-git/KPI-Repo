@@ -293,6 +293,68 @@ namespace KPIWebAPI.Classes
                 return rackMasters;
             }
         }
+        public static MachineMaster GetMachineMasterData(int MachineId = 0)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                MachineMaster rackMasterData = (from MS in db.MachineMasters
+                                                where MS.MachineID == MachineId
+                                                && !MS.IsDiscontinued
+                                                select MS).FirstOrDefault();
+                return rackMasterData;
+            }
+        }
+        public static List<MachineHistory> GetMachineHistoriesData(int MachineId = 0)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<MachineHistory> machineHistories = (from MH in db.MachineHistories
+                                                         where MH.MachineID == MachineId
+                                                         select MH).ToList();
+                return machineHistories;
+            }
+        }
+        public static MachineTypeMaster GetMachineTypeMasterData(int MachineTypeId)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                MachineTypeMaster machineTypeMasterObj = (from MTM in db.MachineTypeMasters
+                                                          where MTM.MachineTypeID == MachineTypeId
+                                                          && !MTM.IsDiscontinued
+                                                          select MTM).FirstOrDefault();
+                return machineTypeMasterObj;
+            }
+        }
+        public static List<MachineTypeMaster> GetMachineTypeMasterList()
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<MachineTypeMaster> machineTypeMaster = (from MTM in db.MachineTypeMasters
+                                                             where !MTM.IsDiscontinued
+                                                             select MTM).ToList();
+                return machineTypeMaster;
+            }
+        }
+        public static MachineHistory GetMachineStatusData(int MachineId)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                MachineHistory machineHistoryMasterObj = (from MSM in db.MachineHistories
+                                                          where MSM.MachineID == MachineId
+                                                          && MSM.IsDeleted == false
+                                                          select MSM).FirstOrDefault();
+                return machineHistoryMasterObj;
+            }
+        }
+        public static List<MachineStatusMaster> GetMachineStatusMasterList()
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<MachineStatusMaster> machineStatusMaster = (from MSM in db.MachineStatusMasters
+                                                                 select MSM).ToList();
+                return machineStatusMaster;
+            }
+        }
 
     }
 }

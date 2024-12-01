@@ -469,6 +469,31 @@ namespace KPI.Classes
             var result = CommonFunctions.client.GetAsync("MachineAPI/GetAll").Result.Content.ReadAsAsync<MachineMastersResponse>().Result;
             return result;
         }
+        public static MachineMasterResponse GetMachineData(int MachineId = 0)
+        {
+            var result = CommonFunctions.client.GetAsync("MachineAPI/AddMachine?MachineId=" + MachineId).Result.Content.ReadAsAsync<MachineMasterResponse>().Result;
+            return result;
+        }
+        public static MachineMasterResponse AddUpdateMachineData(MachineMasterModel machine)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("MachineAPI/AddMachine", machine).Result.Content.ReadAsAsync<MachineMasterResponse>().Result;
+            return result;
+        }
+        public static MachineMasterResponse DeleteMachineData(MachineMasterModel machine)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("MachineAPI/DeleteMachine", machine).Result.Content.ReadAsAsync<MachineMasterResponse>().Result;
+            return result;
+        }
+        public static MachineTypeMasterResponse GetMachineTypeMasterList()
+        {
+            var result = CommonFunctions.client.GetAsync("MachineAPI/GetMachineTypeMasterList").Result.Content.ReadAsAsync<MachineTypeMasterResponse>().Result;
+            return result;
+        }
+        public static MachineStatusMasterResponse GetMachineStatusMasterList()
+        {
+            var result = CommonFunctions.client.GetAsync("MachineAPI/GetMachineStatusMasterList").Result.Content.ReadAsAsync<MachineStatusMasterResponse>().Result;
+            return result;
+        }
 
         #endregion    
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<KPILib.Models.Machine>
+﻿@model IEnumerable<KPILib.Models.MachineMasterModel>
 
 @{
     ViewBag.Title = "Machines";
@@ -16,10 +16,12 @@
                 {
                     data: null, title: "Machine Name",
                     render: function (data, type, row) {
-                        return "<a href='Get/" + data.MachineID + "'>" + data.MachineName + "</a>";
+                        return "<a href='AddMachine?MachineId=" + data.MachineID + "'>" + data.MachineName + "</a>";
                     }
                 },
-                { data: "MachineStatus", title: "Machine Status" }
+                { data: "MachineTypeName", title: "MachineTypeName" },
+                { data: "MachineStatus", title: "Machine Status" },
+                { data: "Description", title: "Description" }
             ]
         });
     });
@@ -28,7 +30,7 @@
 <div class="top_header">
     <h2>@ViewBag.Title</h2>
 
-    @Html.ActionLink("Add New", "New", new { area = "" }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Add New", "AddMachine", new { area = "" }, new { @class = "btn btn-primary" })
 </div>
 
 <div class="table-responsive">

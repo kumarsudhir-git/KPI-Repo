@@ -30,7 +30,7 @@ namespace KPILib.Models
         public int MouldStatusID { get; set; }
         public string MouldStatus { get; set; }
 
-        public List<Machine> Machines { get; set; }
+        public List<MachineMasterModel> Machines { get; set; }
         public string AllMachines { get; set; }
 
         public List<Product> Products { get; set; }
@@ -48,7 +48,7 @@ namespace KPILib.Models
         public string CorePins { get; set; }
         public Mould()
         {
-            Machines = new List<Machine>();
+            Machines = new List<MachineMasterModel>();
             Products = new List<Product>();
         }
     }

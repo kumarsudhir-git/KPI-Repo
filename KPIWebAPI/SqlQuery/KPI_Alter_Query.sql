@@ -565,6 +565,10 @@ GO
 ALTER TABLE SalesMaster
 DROP CONSTRAINT FK_SalesMaster_CompanyLocationMaster
 
+-------------------------------------01-12-2024---------------------------------------------------
+
+ALTER TABLE MachineHistory ADD IsDeleted BIT DEFAULT(0)
+
 ------------------------------------------------------END-----------------------------
 
 

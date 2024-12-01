@@ -106,8 +106,8 @@ namespace KPIWebAPI.Controllers
             cfg.CreateMap<MouldMaster, KPILib.Models.Mould>();
             cfg.CreateMap<KPILib.Models.Mould, MouldMaster>();
 
-            cfg.CreateMap<MachineMaster, KPILib.Models.Machine>();
-            cfg.CreateMap<KPILib.Models.Machine, MachineMaster>();
+            cfg.CreateMap<MachineMaster, KPILib.Models.MachineMasterModel>();
+            cfg.CreateMap<KPILib.Models.MachineMasterModel, MachineMaster>();
 
             cfg.CreateMap<RoleMaster, KPILib.Models.RoleMaster>();
             cfg.CreateMap<KPILib.Models.RoleMaster, RoleMaster>();
@@ -162,8 +162,14 @@ namespace KPIWebAPI.Controllers
             cfg.CreateMap<usp_GetRMInventoryFinishedGood_Result, KPILib.Models.RMInventoryFinishedGoodModel>();
             cfg.CreateMap<KPILib.Models.RMInventoryFinishedGoodModel, usp_GetRMInventoryFinishedGood_Result>();
 
-            cfg.CreateMap<LookUpMaster, KPILib.Models.LookUpMasterModel>();
-            cfg.CreateMap<KPILib.Models.LookUpMasterModel, LookUpMaster>();
+            cfg.CreateMap<MachineTypeMaster, KPILib.Models.MachineTypeMasterModel>();
+            cfg.CreateMap<KPILib.Models.MachineTypeMasterModel, MachineTypeMaster>();
+            
+            cfg.CreateMap<usp_GetRMInventoryFinishedGood_Result, KPILib.Models.RMInventoryFinishedGoodModel>();
+            cfg.CreateMap<KPILib.Models.RMInventoryFinishedGoodModel, usp_GetRMInventoryFinishedGood_Result>();
+
+            cfg.CreateMap<MachineStatusMaster, KPILib.Models.MachineStatusMasterModel>();
+            cfg.CreateMap<KPILib.Models.MachineStatusMasterModel, MachineStatusMaster>();
         });
 
         public static IMapper mapper = config.CreateMapper();

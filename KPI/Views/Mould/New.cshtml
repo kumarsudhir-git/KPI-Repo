@@ -6,114 +6,114 @@
 }
 
 @*<h2>New</h2>*@
- 
 
-    @using (Html.BeginForm("Add", "Mould"))
-    {
-        @Html.AntiForgeryToken()
 
-        <div class="row" id="HiddenMouldId">
-            <span class="RoleId">@Html.HiddenFor(Model => Model.MouldID)</span>
+@using (Html.BeginForm("Add", "Mould"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row" id="HiddenMouldId">
+        <span class="RoleId">@Html.HiddenFor(Model => Model.MouldID)</span>
+    </div>
+    <div class="top_header">
+        <h4>Mould</h4>
+        <div class="back_btn">
+            @*<input type="button" value="Back" class="btn btn-danger" onclick="window.location.href='/Mould/GetAll'" />*@
+            @Html.ActionLink("Back to List", "GetAll")
         </div>
-        <div class="top_header">
-            <h4>Mould</h4>
-            <div class="back_btn">
-                @*<input type="button" value="Back" class="btn btn-danger" onclick="window.location.href='/Mould/GetAll'" />*@
-                @Html.ActionLink("Back to List", "GetAll")
+    </div>
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.MouldName, htmlAttributes: new { @class = "control-label" })
+            <div class="">
+                @Html.EditorFor(model => model.MouldName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Mould Name" } })
+                @Html.ValidationMessageFor(model => model.MouldName, "", new { @class = "text-danger" })
             </div>
         </div>
-       
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-         
-            <div class="row">
-                <div class="col-md-3">
-                    @Html.LabelFor(model => model.MouldName, htmlAttributes: new { @class = "control-label" })
-                    <div class="">
-                        @Html.EditorFor(model => model.MouldName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Mould Name" } })
-                        @Html.ValidationMessageFor(model => model.MouldName, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
-                    <div class="">
-                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Description" } })
-                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    @Html.LabelFor(model => model.MouldTypeID, htmlAttributes: new { @class = "control-label" })
-                    <div class="">
-                        @Html.DropDownListFor(model => model.MouldTypeID, null, "--Select--", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.MouldTypeID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label" })
-                    <div class="">
-                        @Html.DropDownListFor(model => model.LocationId, null, "--Select--", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-       
-                <div class="col-md-3">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.TotalCavities, htmlAttributes: new { @class = "control-label" })
-                        <div class="">
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.TotalCavities, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Total Cavities" } })
-                                @Html.ValidationMessageFor(model => model.TotalCavities, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.RunningCavities, htmlAttributes: new { @class = "control-label" })
-                        <div class="">
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.RunningCavities, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Running Cavities" } })
-                                @Html.ValidationMessageFor(model => model.RunningCavities, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.CorePins, htmlAttributes: new { @class = "control-label" })
-                        <div class="">
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.CorePins, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Core Pins" } })
-                                @Html.ValidationMessageFor(model => model.CorePins, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.IsDiscontinued, htmlAttributes: new { @class = "control-label" })
-                        <div class="">
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.IsDiscontinued)
-                                @Html.ValidationMessageFor(model => model.IsDiscontinued, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+            <div class="">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Description" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.MouldTypeID, htmlAttributes: new { @class = "control-label" })
+            <div class="">
+                @Html.DropDownListFor(model => model.MouldTypeID, null, "--Select--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MouldTypeID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label" })
+            <div class="">
+                @Html.DropDownListFor(model => model.LocationId, null, "--Select--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.LabelFor(model => model.TotalCavities, htmlAttributes: new { @class = "control-label" })
+                <div class="">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.TotalCavities, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Total Cavities" } })
+                        @Html.ValidationMessageFor(model => model.TotalCavities, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
-         
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.LabelFor(model => model.RunningCavities, htmlAttributes: new { @class = "control-label" })
+                <div class="">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.RunningCavities, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Running Cavities" } })
+                        @Html.ValidationMessageFor(model => model.RunningCavities, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.LabelFor(model => model.CorePins, htmlAttributes: new { @class = "control-label" })
+                <div class="">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.CorePins, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Core Pins" } })
+                        @Html.ValidationMessageFor(model => model.CorePins, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsDiscontinued, htmlAttributes: new { @class = "control-label" })
+                <div class="">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsDiscontinued)
+                        @Html.ValidationMessageFor(model => model.IsDiscontinued, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <div class="row"> 
+
+    <div class="row">
         <div class="col-md-12">
-                <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" />
-                       
-                </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+
             </div>
         </div>
+    </div>
 
-    }
+}
 
- 
+
 
 @*<div class="col-md-12">
         <div class="row">

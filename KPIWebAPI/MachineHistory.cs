@@ -20,6 +20,7 @@ namespace KPIWebAPI
         public string Description { get; set; }
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> NextReminderOn { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
     
         public virtual MachineMaster MachineMaster { get; set; }
         public virtual MachineStatusMaster MachineStatusMaster { get; set; }
