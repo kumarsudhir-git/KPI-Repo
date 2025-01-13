@@ -569,6 +569,19 @@ DROP CONSTRAINT FK_SalesMaster_CompanyLocationMaster
 
 ALTER TABLE MachineHistory ADD IsDeleted BIT DEFAULT(0)
 
+----------------------------------------------------------IF-REQUIRED---------------------------
+
+INSERT INTO MachineTypeMaster (MachineType,Description,IsDiscontinued,AddedOn,LastModifiedOn)
+VALUES ('INJECTION BLOWING MACHINE','INJECTION BLOWING MACHINE',0,GETDATE(),NULL),
+('EXTRUSION BLOWING MACHINE','EXTRUSION BLOWING MACHINE',0,GETDATE(),NULL),
+('INJECTION MOULDING MACHINE','INJECTION MOULDING MACHINE',0,GETDATE(),NULL)
+
+INSERT INTO MachineStatusMaster (MachineStatus,AddedOn,LastModifiedOn)
+VALUES('NotInUse', GETDATE(), NULL),  
+('InUse', GETDATE(), NULL),  
+('InMaintainance', GETDATE(), NULL),  
+('Discontinued', GETDATE(), NULL)
+
 ------------------------------------------------------END-----------------------------
 
 
