@@ -154,14 +154,14 @@ namespace KPIWebAPI.Controllers
             try
             {
                 #region get all Pallets for ddl
-                var Pallets = db.PalletMasters.Where(x => !x.IsDiscontinued).OrderBy(x => x.PalletNo).ToList();
-                List<KPILib.Models.PalletMaster> pallets = new List<KPILib.Models.PalletMaster>();
-                foreach (var obj in Pallets)
-                {
-                    var o = mapper.Map<PalletMaster, KPILib.Models.PalletMaster>(obj);
+                //var Pallets = db.PalletMasters.Where(x => !x.IsDiscontinued).OrderBy(x => x.PalletNo).ToList();
+                //List<KPILib.Models.PalletMaster> pallets = new List<KPILib.Models.PalletMaster>();
+                //foreach (var obj in Pallets)
+                //{
+                //    var o = mapper.Map<PalletMaster, KPILib.Models.PalletMaster>(obj);
 
-                    pallets.Add(o);
-                }
+                //    pallets.Add(o);
+                //}
                 #endregion
 
                 #region get all RawMaterials for ddl
@@ -191,7 +191,7 @@ namespace KPIWebAPI.Controllers
                 {
                     var o = mapper.Map<RawMaterialInventoryMaster, RMInventory>(data);
                     o.PalletNo = data.PalletMaster.PalletNo;
-                    o.Pallets = pallets;
+                    //o.Pallets = pallets;
                     o.RawMaterialName = data.RawMaterialMaster.RawMaterialName;
                     o.RawMaterials = rms;
                     o.TagColours = tags;
@@ -200,7 +200,7 @@ namespace KPIWebAPI.Controllers
                 }
                 else
                 {
-                    var o = new RMInventory() { Pallets = pallets, RawMaterials = rms, TagColours = tags };
+                    var o = new RMInventory() { Pallets = new List<KPILib.Models.PalletMaster>(), RawMaterials = rms, TagColours = tags };
                     returnValue.data = o;
                 }
 
@@ -224,7 +224,7 @@ namespace KPIWebAPI.Controllers
                 var o = mapper.Map<RMInventory, RawMaterialInventoryMaster>(data);
                 o.AddedOn = DateTime.Now;
                 //o.LastModifiedOn = DateTime.Now;
-
+                //o.PalletID = 1002;// Hard coding this value as this field is not required as of now
                 db.RawMaterialInventoryMasters.Add(o);
                 db.SaveChanges();
 
@@ -252,6 +252,7 @@ namespace KPIWebAPI.Controllers
                 if (o != null)
                 {
                     o.PalletID = data.PalletID;
+                    //o.PalletID = 1002;// Hard coding this value as this field is not required as of now
                     o.RawMaterialID = data.RawMaterialID;
                     o.Qty = data.Qty;
                     o.MinOrderlevel = data.MinOrderlevel;
@@ -482,6 +483,7 @@ namespace KPIWebAPI.Controllers
                         rMInventoryPackageObj.MinOrderLevel = rMInventoryPackageBags.MinOrderLevel;
                         rMInventoryPackageObj.QtyInStock = rMInventoryPackageBags.QtyInStock;
                         rMInventoryPackageObj.Size = rMInventoryPackageBags.Size;
+                        rMInventoryPackageObj.ColorId = rMInventoryPackageBags.ColorId;
                         rMInventoryPackageObj.VendorId = rMInventoryPackageBags.VendorId;
                         rMInventoryPackageObj.ModifiedBy = rMInventoryPackageBags.ModifiedBy;
                         rMInventoryPackageObj.ModifiedOn = DateTime.Now;
@@ -542,6 +544,27 @@ namespace KPIWebAPI.Controllers
                                                      select PB).FirstOrDefault();
 
             return packageBagModel;
+        }
+
+        public IHttpActionResult GetTagColourMasterList()
+        {
+            TagColorMasterModelResponse tagColourMasterModelResponse = new TagColorMasterModelResponse();
+
+            try
+            {
+                List<TagColourMaster> tagColourMasters = CommonFunctions.GetTagColourMasterList();
+
+                tagColourMasterModelResponse.data = mapper.Map<List<KPILib.Models.TagColorMasterModel>>(tagColourMasters);
+
+                tagColourMasterModelResponse.Response.IsSuccessful();
+
+            }
+            catch (Exception ex)
+            {
+                tagColourMasterModelResponse.Response.ResponseCode = 500;
+                tagColourMasterModelResponse.Response.ResponseMsg = ex.Message;
+            }
+            return Json(tagColourMasterModelResponse);
         }
 
         #endregion

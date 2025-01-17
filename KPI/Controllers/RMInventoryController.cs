@@ -60,7 +60,7 @@ namespace KPI.Controllers
             var response = KPIAPIManager.GetRMInventory(id);
             if (response.Response.ResponseCode == 200)
             {
-                ViewBag.Pallets = new SelectList(response.data.Pallets, "PalletID", "PalletNo");
+                //ViewBag.Pallets = new SelectList(response.data.Pallets, "PalletID", "PalletNo");
                 ViewBag.RMs = new SelectList(response.data.RawMaterials, "RawMaterialID", "RawMaterialName");
 
                 LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
@@ -83,14 +83,14 @@ namespace KPI.Controllers
                 return View("Error");
             }
         }
-        public ActionResult New()
+        public ActionResult New(int id = 0)
         {
             ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
 
-            var response = KPIAPIManager.GetRMInventory(0);
+            var response = KPIAPIManager.GetRMInventory(id);
             if (response.Response.ResponseCode == 200)
             {
-                ViewBag.Pallets = new SelectList(response.data.Pallets, "PalletID", "PalletNo");
+                //ViewBag.Pallets = new SelectList(response.data.Pallets, "PalletID", "PalletNo");
                 ViewBag.RMs = new SelectList(response.data.RawMaterials, "RawMaterialID", "RawMaterialName");
                 ViewBag.Tags = new SelectList(response.data.TagColours, "TagColourID", "TagColour");
 
@@ -122,6 +122,7 @@ namespace KPI.Controllers
         {
             if (ModelState.IsValid)
             {
+                obj.PalletID = 1002;// Hard coding this value as this field is not required as of now
                 obj.AddedBy = Convert.ToInt32(Session["UserID"]);
                 var response = KPIAPIManager.AddRMInventory(obj);
                 if (response.Response.ResponseCode == 200)
@@ -147,6 +148,7 @@ namespace KPI.Controllers
         {
             if (ModelState.IsValid)
             {
+                obj.PalletID = 1002;// Hard coding this value as this field is not required as of now
                 obj.ModifiedBy = Convert.ToInt32(Session["UserID"]);
                 var response = KPIAPIManager.EditRMInventory(obj);
                 if (response.Response.ResponseCode == 200)
@@ -292,6 +294,7 @@ namespace KPI.Controllers
         {
             ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
             ViewData["VendorId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+            ViewData["ColorId"] = new SelectList(new List<SelectListItem>(), "TagColourID", "TagColour");
 
             LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
 
@@ -315,6 +318,19 @@ namespace KPI.Controllers
                     if (vendorMasterModel.data != null && vendorMasterModel.data.Count > 0)
                     {
                         ViewData["VendorId"] = new SelectList(vendorMasterModel.data, "VendorId", "VendorName");
+                    }
+                }
+            }
+            
+            TagColorMasterModelResponse tagColourMasterModel = KPIAPIManager.GetTagColorMasterData();
+
+            if (tagColourMasterModel != null && tagColourMasterModel.Response != null)
+            {
+                if (tagColourMasterModel.Response.ResponseCode == 200)
+                {
+                    if (tagColourMasterModel.data != null && tagColourMasterModel.data.Count > 0)
+                    {
+                        ViewData["ColorId"] = new SelectList(tagColourMasterModel.data, "TagColourID", "TagColour");
                     }
                 }
             }

@@ -170,6 +170,9 @@ namespace KPIWebAPI.Controllers
 
             cfg.CreateMap<MachineStatusMaster, KPILib.Models.MachineStatusMasterModel>();
             cfg.CreateMap<KPILib.Models.MachineStatusMasterModel, MachineStatusMaster>();
+            
+            cfg.CreateMap<TagColourMaster, KPILib.Models.TagColorMasterModel>();
+            cfg.CreateMap<KPILib.Models.TagColorMasterModel, TagColourMaster>();
         });
 
         public static IMapper mapper = config.CreateMapper();

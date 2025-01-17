@@ -15,7 +15,7 @@ namespace KPIWebAPI
     public partial class RMInventoryPackageBag
     {
         public int PackageBagId { get; set; }
-        public Nullable<int> Size { get; set; }
+        public string Size { get; set; }
         public Nullable<int> VendorId { get; set; }
         public Nullable<int> QtyInStock { get; set; }
         public Nullable<int> MinOrderLevel { get; set; }
@@ -25,5 +25,6 @@ namespace KPIWebAPI
         public System.DateTime AddedOn { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
+        public Nullable<int> ColorId { get; set; }
     }
 }

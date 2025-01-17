@@ -582,6 +582,69 @@ VALUES('NotInUse', GETDATE(), NULL),
 ('InMaintainance', GETDATE(), NULL),  
 ('Discontinued', GETDATE(), NULL)
 
-------------------------------------------------------END-----------------------------
+------------------------------------------------------END------------------------------------------------------------
+
+--------------------------------------13-01-2025----------------------------------------------------------------------
+
+INSERT INTO MouldTypeMaster (MouldType,Description,IsDiscontinued,AddedOn,LastModifiedOn)
+VALUES ('Injection Mould','Injection Mould',0,GETDATE(),NULL),
+('Blow Mould','Blow Mould',0,GETDATE(),NULL)
+
+INSERT INTO UOMMaster (UnitsName,IsDiscontinued,AddedOn,LastModifiedOn)
+VALUES ('Nos',0,GETDATE(),NULL),
+('Gms',1,GETDATE(),NULL),
+('Kgs',0,GETDATE(),NULL)
+
+
+INSERT INTO TagColourMaster (TagColour,IsDiscontinued)
+VALUES('RED',0),
+('GREEN',0),
+('BLUE',0),
+('YELLOW',0)
+
+-----------------------------------------------------17-01-2025-------------------------------------------------------------
+
+GO
+ALTER TABLE RMInventoryPackageBags
+ALTER COLUMN Size NVARCHAR(MAX);
+
+GO
+ALTER TABLE RMInventoryPackageBags ADD ColorId INT NULL
+
+GO
+ALTER PROCEDURE usp_GetRMInventoryPackageBags  
+  
+AS  
+BEGIN  
+  
+Select PB.PackageBagId,  
+PB.Size,  
+VM.VendorName,  
+PB.QtyInStock,  
+PB.MinOrderLevel,  
+PB.LocationId,  
+LM.LocationName,
+TCM.TagColour as 'ColorName',
+PB.AddedOn,  
+UM.Username AS 'AddedByName',  
+PB.ModifiedOn,  
+usrMstr.Username AS 'ModifiedByName'  
+from RMInventoryPackageBags PB  
+LEFT JOIN UserMaster UM  
+ON PB.AddedBy = UM.UserID  
+LEFT JOIN UserMaster usrMstr  
+ON PB.ModifiedBy = usrMstr.UserID  
+LEFT JOIN LocationMaster LM  
+ON PB.LocationId = LM.LocationId  
+LEFT JOIN VendorMaster VM  
+ON PB.VendorId = VM.VendorId 
+LEFT JOIN TagColourMaster TCM
+ON PB.ColorId = TCM.TagColourID
+WHERE PB.IsActive = 1  
+ORDER BY CASE WHEN PB.ModifiedOn != null THEN PB.ModifiedOn ELSE PB.AddedOn END DESC  
+  
+END
+
+------------------------------------------------------END----------------------------------------------------------------
 
 

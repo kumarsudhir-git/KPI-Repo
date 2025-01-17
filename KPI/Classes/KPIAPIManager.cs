@@ -665,6 +665,13 @@ namespace KPI.Classes
             return result;
         }
 
+        public static TagColorMasterModelResponse GetTagColorMasterData()
+        {
+            string url = $"RMInventoryAPI/GetTagColourMasterList";
+            TagColorMasterModelResponse result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<TagColorMasterModelResponse>().Result;
+            return result;
+        }
+
         #endregion
 
         #region API Call for Vendor Master

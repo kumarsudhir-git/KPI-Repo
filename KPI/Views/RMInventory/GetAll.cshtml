@@ -21,16 +21,21 @@
                 //        return "<a href='Get/" + data.RMInventoryID + "'>" + data.PalletNo + "</a>";
                 //    }
                 //},
-                { data: "PalletNo", title: "Pallet No" },
+                //{ data: "PalletNo", title: "Pallet No" },
                 //{ data: "RawMaterial", title: "Raw Material Name" },
-                { data: null, title: "Raw Material Name", render: function (data) { return '<span style="background-color:' + data["TagColour"] + '">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;' + data["RawMaterialName"] } },
+                {
+                    data: null, title: "Raw Material Name", render: function (data) {
+                        return "<span style='background-color:'" + data["TagColour"] + '">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;' + data["RawMaterialName"];
+                        //return "<a href='New/" + data.RMInventoryID + "'>" + '<span style="background-color:' + data["TagColour"] + '">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;' + data["RawMaterialName"] + "</a>";
+                    }
+                },
                 { data: "Qty", title: "Qty (Kgs)", "sType": "int", "width": "100", "className": "text-right" },
                 { data: "QtyBags", title: "Qty (Bags)", "sType": "int", "width": "100", "className": "text-right" },
                 { data: "QtyOpened", title: "Open Bags", "sType": "int", "width": "100", "className": "text-right" },
                 { data: "MinOrderlevel", title: "Min Order Level"},
-                { data: "LocationName", title: "Location"},
-                { data: "AddedByName", title: "AddedBy"},
-                { data: "ModifiedByName", title: "ModifiedBy"},
+                { data: "LocationName", title: "Location"}
+                //{ data: "AddedByName", title: "AddedBy"},
+                //{ data: "ModifiedByName", title: "ModifiedBy"},
                 //{
                 //    data: null, title: "Kgs (Bags)",
                 //    render: function (data, type, row) {

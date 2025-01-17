@@ -355,6 +355,16 @@ namespace KPIWebAPI.Classes
                 return machineStatusMaster;
             }
         }
+        public static List<TagColourMaster> GetTagColourMasterList()
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<TagColourMaster> tagColorMaster = (from TCM in db.TagColourMasters
+                                                        where !TCM.IsDiscontinued
+                                                        select TCM).ToList();
+                return tagColorMaster;
+            }
+        }
 
     }
 }

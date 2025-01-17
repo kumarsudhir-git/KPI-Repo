@@ -151,7 +151,7 @@ namespace KPILib.Models
         [Key]
         public int PackageBagId { get; set; }
         [Required(ErrorMessage = "Required")]
-        public int? Size { get; set; }
+        public string Size { get; set; }
         [Required(ErrorMessage = "Required")]
         [Display(Name = "Vendor")]
         public int? VendorId { get; set; }
@@ -166,6 +166,9 @@ namespace KPILib.Models
         [Display(Name = "Location")]
         public int? LocationId { get; set; }
         public string LocationName { get; set; }
+        [Display(Name = "Color")]
+        public int? ColorId { get; set; }
+        public string ColorName { get; set; }
         public bool IsActive { get; set; }
         public int AddedBy { get; set; }
         public string AddedByName { get; set; }
@@ -220,6 +223,25 @@ namespace KPILib.Models
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
         public string ModifiedByName { get; set; }
+    }
+
+    public class TagColorMasterModel
+    {
+        public int TagColourID { get; set; }
+        public string TagColour { get; set; }
+        public bool IsDiscontinued { get; set; }
+    }
+
+    public class TagColorMasterModelResponse
+    {
+        public List<TagColorMasterModel> data { get; set; }
+        public ResponseObj Response { get; set; }
+
+        public TagColorMasterModelResponse()
+        {
+            this.data = new List<TagColorMasterModel>();
+            this.Response = new ResponseObj();
+        }
     }
 
 }
