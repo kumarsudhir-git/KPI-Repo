@@ -111,7 +111,7 @@ namespace KPI.Controllers
 
         public ActionResult New(int id = 0)
         {
-            ViewData["Colour"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
+            //ViewData["Colour"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
             ViewData["GMS"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
             //ViewData["RMIds"] = new SelectList(new List<SelectListItem>(), "RMId", "RMIdName");
             ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
@@ -119,11 +119,11 @@ namespace KPI.Controllers
             var response = KPIAPIManager.GetSales(id, Convert.ToInt32(Session["RoleID"]));
             if (response.Response.ResponseCode == 200)
             {
-                LookUpMasterResponse lookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.ColorLookUp);
-                if (lookUpMaster != null && lookUpMaster.Response.ResponseCode == 200)
-                {
-                    ViewData["Colour"] = new SelectList(lookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
-                }
+                //LookUpMasterResponse lookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.ColorLookUp);
+                //if (lookUpMaster != null && lookUpMaster.Response.ResponseCode == 200)
+                //{
+                //    ViewData["Colour"] = new SelectList(lookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
+                //}
                 LookUpMasterResponse GSMLookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.GMSTypeLookUp);
                 if (GSMLookUpMaster != null && GSMLookUpMaster.Response.ResponseCode == 200)
                 {

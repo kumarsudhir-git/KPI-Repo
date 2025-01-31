@@ -259,7 +259,7 @@ namespace KPIWebAPI.Classes
             return IsSalesRateAccessResult;
         }
 
-        public static List<LookUpMaster> GetLookUpMasterDataFromLookupName(string LookUpTypeName)
+        public static List<LookUpMaster> GetLookUpMasterDataFromLookupType(string LookUpTypeName)
         {
             using (KPIEntities db = new KPIEntities())
             {
@@ -267,6 +267,17 @@ namespace KPIWebAPI.Classes
                                                       where LM.LookUpType == LookUpTypeName
                                                       && LM.IsActive
                                                       select LM).ToList();
+                return lookUpMasterObj;
+            }
+        }
+        public static LookUpMaster GetLookUpMasterDataFromLookupCode(string LookupCode)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                LookUpMaster lookUpMasterObj = (from LM in db.LookUpMasters
+                                                where LM.LookUpValue == LookupCode
+                                                && LM.IsActive
+                                                select LM).FirstOrDefault();
                 return lookUpMasterObj;
             }
         }

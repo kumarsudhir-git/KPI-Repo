@@ -3751,7 +3751,6 @@
           <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
           <Property Type="Int32" Name="LocationId" Nullable="true" />
           <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
-          <Property Type="String" Name="ColorName" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
           <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
           <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
@@ -4618,7 +4617,6 @@
                 <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="ColorName" ColumnName="ColorName" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />

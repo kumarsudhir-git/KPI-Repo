@@ -294,7 +294,7 @@ namespace KPI.Controllers
         {
             ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
             ViewData["VendorId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
-            ViewData["ColorId"] = new SelectList(new List<SelectListItem>(), "TagColourID", "TagColour");
+            //ViewData["ColorId"] = new SelectList(new List<SelectListItem>(), "TagColourID", "TagColour");
 
             LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
 
@@ -322,18 +322,18 @@ namespace KPI.Controllers
                 }
             }
             
-            TagColorMasterModelResponse tagColourMasterModel = KPIAPIManager.GetTagColorMasterData();
+            //TagColorMasterModelResponse tagColourMasterModel = KPIAPIManager.GetTagColorMasterData();
 
-            if (tagColourMasterModel != null && tagColourMasterModel.Response != null)
-            {
-                if (tagColourMasterModel.Response.ResponseCode == 200)
-                {
-                    if (tagColourMasterModel.data != null && tagColourMasterModel.data.Count > 0)
-                    {
-                        ViewData["ColorId"] = new SelectList(tagColourMasterModel.data, "TagColourID", "TagColour");
-                    }
-                }
-            }
+            //if (tagColourMasterModel != null && tagColourMasterModel.Response != null)
+            //{
+            //    if (tagColourMasterModel.Response.ResponseCode == 200)
+            //    {
+            //        if (tagColourMasterModel.data != null && tagColourMasterModel.data.Count > 0)
+            //        {
+            //            ViewData["ColorId"] = new SelectList(tagColourMasterModel.data, "TagColourID", "TagColour");
+            //        }
+            //    }
+            //}
 
             RMInventoryPackageBagsModelResponse response = new RMInventoryPackageBagsModelResponse();
 

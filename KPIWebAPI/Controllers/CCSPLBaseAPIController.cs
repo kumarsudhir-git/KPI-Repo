@@ -173,6 +173,9 @@ namespace KPIWebAPI.Controllers
             
             cfg.CreateMap<TagColourMaster, KPILib.Models.TagColorMasterModel>();
             cfg.CreateMap<KPILib.Models.TagColorMasterModel, TagColourMaster>();
+            
+            cfg.CreateMap<LookUpMaster, KPILib.Models.LookUpMasterModel>();
+            cfg.CreateMap<KPILib.Models.LookUpMasterModel, LookUpMaster>();
         });
 
         public static IMapper mapper = config.CreateMapper();

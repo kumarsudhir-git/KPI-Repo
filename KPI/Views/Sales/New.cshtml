@@ -1,4 +1,4 @@
-﻿@using KPI.Classes;
+﻿ @using KPI.Classes;
 @model KPILib.Models.SalesMaster
 @{
     ViewBag.Title = "Sales Order - New";
@@ -23,15 +23,9 @@
             <div class="col-md-3 col-sm-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Colour, htmlAttributes: new { @class = "control-label col-md-12" })
-                    @Html.DropDownListFor(model => model.Colour, null, "--Select--", new { @class = "form-control" })
+                    @*@Html.DropDownListFor(model => model.Colour, null, "--Select--", new { @class = "form-control" })*@
+                    @Html.TextBoxFor(model => model.Colour, "", new { @class = "form-control", @placeholder = "Enter Color" })
                     @Html.ValidationMessageFor(model => model.Colour, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-12">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Package, htmlAttributes: new { @class = "control-label col-md-12" })
-                    @Html.TextBoxFor(model => model.Package, "", new { @class = "form-control", @placeholder = "Enter Package" })
-                    @Html.ValidationMessageFor(model => model.Package, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-md-3 col-sm-12">
@@ -39,6 +33,13 @@
                     @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-12" })
                     @Html.TextBoxFor(model => model.Quantity, "", new { @class = "form-control", @placeholder = "Enter Quantity" })
                     @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Package, htmlAttributes: new { @class = "control-label col-md-12" })
+                    @Html.TextBoxFor(model => model.Package, "", new { @class = "form-control", @placeholder = "Enter Package" })
+                    @Html.ValidationMessageFor(model => model.Package, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-md-3 col-sm-12">

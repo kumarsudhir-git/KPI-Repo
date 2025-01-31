@@ -26,6 +26,10 @@ namespace KPIWebAPI.Controllers
                     //o.CompanyLocation = obj.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.CompanyLocationMaster.LocationName + "]";
                     VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(obj.CompanyLocationID);
                     o.CompanyLocation = vendorMaster.VendorName + " [" + vendorMaster.Address + "]";
+                    if (!string.IsNullOrEmpty(obj.GMS))
+                    {
+                        o.GMS = CommonFunctions.GetLookUpMasterDataFromLookupCode(obj.GMS)?.LookUpName;
+                    }
                     o.Status = obj.SalesStatusMaster.SalesStatus;
                     o.User = obj.UserMaster.Username;
 
@@ -223,7 +227,7 @@ namespace KPIWebAPI.Controllers
                 o.SalesStatusID = (int)enumSalesStatus.Procure_Material;
                 foreach (var item in data.LineItems.Where(x => x.ProductID != 0))
                 {
-                    o.SalesDetails.Add(new SalesDetail { ProductID = item.ProductID, Qty = item.Qty, QtyBal = item.Qty });
+                    o.SalesDetails.Add(new SalesDetail { ProductID = item.ProductID, Qty = item.Qty, QtyBal = item.Qty, IsActive = true });
                 }
                 o.Instructions += "";
 
@@ -310,7 +314,7 @@ namespace KPIWebAPI.Controllers
                     }
                     foreach (var item in data.LineItems.Where(x => x.ProductID != 0))
                     {
-                        o.SalesDetails.Add(new SalesDetail { ProductID = item.ProductID, Qty = item.Qty, Instructions = item.Instructions });
+                        o.SalesDetails.Add(new SalesDetail { ProductID = item.ProductID, Qty = item.Qty, Instructions = item.Instructions, IsActive = true });
                     }
 
                     if (data.RMIds != null && data.RMIds.Count > 0)
@@ -458,7 +462,7 @@ namespace KPIWebAPI.Controllers
 
             try
             {
-                List<LookUpMaster> lookUps = CommonFunctions.GetLookUpMasterDataFromLookupName(LookUpTypeName);
+                List<LookUpMaster> lookUps = CommonFunctions.GetLookUpMasterDataFromLookupType(LookUpTypeName);
 
                 lookUpMasterResponse.lookupMasterList = mapper.Map<List<LookUpMasterModel>>(lookUps);
 

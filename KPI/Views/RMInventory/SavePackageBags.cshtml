@@ -21,7 +21,7 @@
                 <div class="col-md-3">
                     @Html.LabelFor(model => model.Size, htmlAttributes: new { @class = "control-label" })
                     <div class="">
-                        @Html.EditorFor(model => model.Size, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Size, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Size" } })
                         @Html.ValidationMessageFor(model => model.Size, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                 <div class="col-md-3">
                     @Html.LabelFor(model => model.QtyInStock, htmlAttributes: new { @class = "control-label" })
                     <div class="">
-                        @Html.EditorFor(model => model.QtyInStock, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.QtyInStock, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Quantity in stock" } })
                         @Html.ValidationMessageFor(model => model.QtyInStock, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                 <div class="col-md-3">
                     @Html.LabelFor(model => model.MinOrderLevel, htmlAttributes: new { @class = "control-label" })
                     <div class="">
-                        @Html.EditorFor(model => model.MinOrderLevel, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.MinOrderLevel, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Min Order Level" } })
                         @Html.ValidationMessageFor(model => model.MinOrderLevel, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -54,13 +54,13 @@
 
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-3">
+                @*<div class="col-md-3">
                     @Html.LabelFor(model => model.ColorId, htmlAttributes: new { @class = "control-label" })
                     <div class="">
                         @Html.DropDownListFor(model => model.ColorId, null, "--Select--", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ColorId, "", new { @class = "text-danger" })
                     </div>
-                </div>
+                </div>*@
                 <div class="col-md-3">
                     @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label" })
                     <div class="">

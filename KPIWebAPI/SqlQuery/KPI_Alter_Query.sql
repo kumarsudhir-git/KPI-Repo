@@ -645,6 +645,47 @@ ORDER BY CASE WHEN PB.ModifiedOn != null THEN PB.ModifiedOn ELSE PB.AddedOn END 
   
 END
 
+----------------------------------------------------------------------01-02-2025---------------------------------------
+GO
+
+ALTER PROCEDURE usp_GetRMInventoryPackageBags    
+    
+AS    
+BEGIN    
+    
+Select PB.PackageBagId,    
+PB.Size,    
+VM.VendorName,    
+PB.QtyInStock,    
+PB.MinOrderLevel,    
+PB.LocationId,    
+LM.LocationName,  
+--TCM.TagColour as 'ColorName',  
+PB.AddedOn,    
+UM.Username AS 'AddedByName',    
+PB.ModifiedOn,    
+usrMstr.Username AS 'ModifiedByName'    
+from RMInventoryPackageBags PB    
+LEFT JOIN UserMaster UM    
+ON PB.AddedBy = UM.UserID    
+LEFT JOIN UserMaster usrMstr    
+ON PB.ModifiedBy = usrMstr.UserID    
+LEFT JOIN LocationMaster LM    
+ON PB.LocationId = LM.LocationId    
+LEFT JOIN VendorMaster VM    
+ON PB.VendorId = VM.VendorId   
+--LEFT JOIN TagColourMaster TCM  
+--ON PB.ColorId = TCM.TagColourID  
+WHERE PB.IsActive = 1    
+ORDER BY CASE WHEN PB.ModifiedOn != null THEN PB.ModifiedOn ELSE PB.AddedOn END DESC    
+    
+END
+
+GO
+
+insert into LookUpMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
+values('GMSType','Custom','GSM004','Custom GMSType',1,1001,GETDATE())
+
 ------------------------------------------------------END----------------------------------------------------------------
 
 
