@@ -32,7 +32,7 @@ namespace KPI.Controllers
             if (response.Response.ResponseCode == 200)
             {
                 ViewBag.UOMs = new SelectList(response.data.UOMs, "UOMID", "UnitsName");
-                ViewBag.ProductCategories = new SelectList(response.data.ProductCategories, "ProductCategoryID", "ProductCategoryName");
+                //ViewBag.ProductCategories = new SelectList(response.data.ProductCategories, "ProductCategoryID", "ProductCategoryName");
                 ViewBag.Moulds = new SelectList(response.data.Moulds, "MouldID", "MouldName");
                 //ViewBag.RawMaterials = new SelectList(response.data.RawMaterials, "RawMaterialID", "RawMaterialName");
                 return View(response.data);
@@ -50,7 +50,7 @@ namespace KPI.Controllers
             if (response.Response.ResponseCode == 200)
             {
                 ViewBag.UOMs = new SelectList(response.data.UOMs, "UOMID", "UnitsName");
-                ViewBag.ProductCategories = new SelectList(response.data.ProductCategories, "ProductCategoryID", "ProductCategoryName");
+                //ViewBag.ProductCategories = new SelectList(response.data.ProductCategories, "ProductCategoryID", "ProductCategoryName");
                 //ViewBag.RawMaterials = new SelectList(response.data.RawMaterials, "RawMaterialID", "RawMaterialName");
                 ViewBag.Moulds = new SelectList(response.data.Moulds, "MouldID", "MouldName");
                 return View(response.data);

@@ -18,17 +18,20 @@ namespace KPILib.Models
         public string ProductName { get; set; }
 
         [Display(Name = "Product Code")]
+        [MaxLength(50)]
         public string ProductCode { get; set; }
+
+        [MaxLength(200)]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Product Category")]
         public int ProductCategoryID { get; set; }          //prodcat name, prodcats list
 
-        [Display(Name = "Product Category")]
-        public string ProductCategory { get; set; }
+        //[Display(Name = "Product Category")]
+        //public string ProductCategory { get; set; }
 
-        public List<ProductCategory> ProductCategories { get; set; }
+        //public List<ProductCategory> ProductCategories { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Unit of Measurement")]
@@ -38,8 +41,14 @@ namespace KPILib.Models
         public List<UOM> UOMs { get; set; }
 
         [Display(Name = "Min. Order Qty")]
+        [Range(0, 999999999)]
         public int MinQtyUOM { get; set; }
+
+        [Range(0, 999999999)]
         public int ConversionUOMID { get; set; }
+        
+        [Range(0, 999999999)]
+
         public decimal ConversionQty { get; set; }
 
         [Display(Name = "Raw Material")]
@@ -58,12 +67,15 @@ namespace KPILib.Models
         public List<Mould> Moulds { get; set; }
 
         [Display(Name = "RM Reqd for Min Qty (Kgs)")]
+        [Range(0, 999999999)]
         public decimal RMReqdForUOMQty { get; set; }
         
         [Display(Name = "Packaging Qty")]
+        [Range(0, 999999999)]
         public int PkgQty { get; set; }
 
         [Display(Name = "Packs Per Rack")]
+        [Range(0, 999999999)]
         public int PkgsPerRack { get; set; }
 
         [Display(Name = "Discontinued?")]

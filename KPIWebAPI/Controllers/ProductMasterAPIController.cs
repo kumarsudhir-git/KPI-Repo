@@ -26,7 +26,7 @@ namespace KPIWebAPI.Controllers
                 {
                     var o = mapper.Map<ProductMaster, KPILib.Models.Product>(obj);
                     o.UOM = obj.UOMMaster.UnitsName;
-                    o.ProductCategory = obj.ProductCategoryMaster.ProductCategory;
+                    //o.ProductCategory = obj.ProductCategoryMaster.ProductCategory;
                     o.Mould = obj.MouldMaster.MouldName;
                     //o.RawMaterial = obj.RawMaterialMaster.RawMaterialName;
                     o.InStock = (int)obj.ProdReadyStoreds.Sum(x => x.Qty);
@@ -116,8 +116,8 @@ namespace KPIWebAPI.Controllers
                     o.UOM = data.UOMMaster.UnitsName;
                     o.UOMs = uoms;
 
-                    o.ProductCategory = data.ProductCategoryMaster.ProductCategory;
-                    o.ProductCategories = prodcats;
+                    //o.ProductCategory = data.ProductCategoryMaster.ProductCategory;
+                    //o.ProductCategories = prodcats;
 
                     o.Mould = data.MouldMaster.MouldName;
                     o.Moulds = moulds;
@@ -131,7 +131,7 @@ namespace KPIWebAPI.Controllers
                 }
                 else
                 {
-                    var o = new KPILib.Models.Product() { UOMs = uoms, ProductCategories = prodcats, Moulds = moulds, RawMaterials = rawmats, productRawMaterialMappings = prdctRawmats };
+                    var o = new KPILib.Models.Product() { UOMs = uoms,  Moulds = moulds, RawMaterials = rawmats, productRawMaterialMappings = prdctRawmats };
                     returnValue.data = o;
                 }
                 returnValue.Response.IsSuccessful();
