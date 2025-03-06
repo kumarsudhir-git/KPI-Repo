@@ -104,9 +104,9 @@
                     }
                 }
             });
-            posting.fail(function () {
+            posting.fail(function (data) {
                 alert('Login failed !!! Contact Administrator');
-                alert(data.Response.ResponseMsg);
+                //alert(data.Response.ResponseMsg);
                 $('.pageloader').css('visibility', 'hidden');
                 $('.pageloader').hide();
                 return false;
