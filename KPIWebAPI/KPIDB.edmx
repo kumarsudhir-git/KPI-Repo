@@ -725,7 +725,7 @@
           <Property Name="LastModifiedOn" Type="datetime" />
           <Property Name="VendorType" Type="nvarchar" MaxLength="10" />
         </EntityType>
-        <Association Name="FK__Productio__Produ__6BE40491">
+        <Association Name="FK__Productio__Produ__18B6AB08">
           <End Role="ProductionProgram" Type="Self.ProductionProgram" Multiplicity="0..1" />
           <End Role="ProductionProgramBatch" Type="Self.ProductionProgramBatch" Multiplicity="*" />
           <ReferentialConstraint>
@@ -737,7 +737,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Productio__Sales__0D0FEE32">
+        <Association Name="FK__Productio__Sales__13F1F5EB">
           <End Role="SalesDetails" Type="Self.SalesDetails" Multiplicity="0..1" />
           <End Role="ProductionProgram" Type="Self.ProductionProgram" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1082,18 +1082,6 @@
             </Principal>
             <Dependent Role="ProductMaster">
               <PropertyRef Name="MouldID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProductMaster_ProductCategoryMaster">
-          <End Role="ProductCategoryMaster" Type="Self.ProductCategoryMaster" Multiplicity="1" />
-          <End Role="ProductMaster" Type="Self.ProductMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProductCategoryMaster">
-              <PropertyRef Name="ProductCategoryID" />
-            </Principal>
-            <Dependent Role="ProductMaster">
-              <PropertyRef Name="ProductCategoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1536,11 +1524,11 @@
           <EntitySet Name="UOMMaster" EntityType="Self.UOMMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VendorMaster" EntityType="Self.VendorMaster" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Productio__Produ__6BE40491" Association="Self.FK__Productio__Produ__6BE40491">
+          <AssociationSet Name="FK__Productio__Produ__18B6AB08" Association="Self.FK__Productio__Produ__18B6AB08">
             <End Role="ProductionProgram" EntitySet="ProductionProgram" />
             <End Role="ProductionProgramBatch" EntitySet="ProductionProgramBatch" />
           </AssociationSet>
-          <AssociationSet Name="FK__Productio__Sales__0D0FEE32" Association="Self.FK__Productio__Sales__0D0FEE32">
+          <AssociationSet Name="FK__Productio__Sales__13F1F5EB" Association="Self.FK__Productio__Sales__13F1F5EB">
             <End Role="SalesDetails" EntitySet="SalesDetails" />
             <End Role="ProductionProgram" EntitySet="ProductionProgram" />
           </AssociationSet>
@@ -1654,10 +1642,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_ProductMaster_MouldMaster" Association="Self.FK_ProductMaster_MouldMaster">
             <End Role="MouldMaster" EntitySet="MouldMaster" />
-            <End Role="ProductMaster" EntitySet="ProductMaster" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProductMaster_ProductCategoryMaster" Association="Self.FK_ProductMaster_ProductCategoryMaster">
-            <End Role="ProductCategoryMaster" EntitySet="ProductCategoryMaster" />
             <End Role="ProductMaster" EntitySet="ProductMaster" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductMaster_UOMMaster" Association="Self.FK_ProductMaster_UOMMaster">
@@ -1799,6 +1783,7 @@
           <FunctionImport Name="usp_GetLocationMasterAllData" ReturnType="Collection(KPIModel.usp_GetLocationMasterAllData_Result)" />
           <FunctionImport Name="usp_GetRMInventoryFinishedGood" ReturnType="Collection(KPIModel.usp_GetRMInventoryFinishedGood_Result)" />
           <FunctionImport Name="usp_GetRMInventoryMasterBatch" ReturnType="Collection(KPIModel.usp_GetRMInventoryMasterBatch_Result)" />
+          <FunctionImport Name="usp_GetRMInventoryPackageBags" ReturnType="Collection(KPIModel.usp_GetRMInventoryPackageBags_Result)" />
           <EntitySet Name="CompanyLocationMasters" EntityType="KPIModel.CompanyLocationMaster" />
           <EntitySet Name="CompanyMasters" EntityType="KPIModel.CompanyMaster" />
           <EntitySet Name="CompanyTypeMasters" EntityType="KPIModel.CompanyTypeMaster" />
@@ -1931,10 +1916,6 @@
             <End Role="ProductCategoryMaster" EntitySet="ProductCategoryMasters" />
             <End Role="ProductGroupMaster" EntitySet="ProductGroupMasters" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProductMaster_ProductCategoryMaster" Association="KPIModel.FK_ProductMaster_ProductCategoryMaster">
-            <End Role="ProductCategoryMaster" EntitySet="ProductCategoryMasters" />
-            <End Role="ProductMaster" EntitySet="ProductMasters" />
-          </AssociationSet>
           <AssociationSet Name="FK_ProductGroupDetails_ProductGroupMaster" Association="KPIModel.FK_ProductGroupDetails_ProductGroupMaster">
             <End Role="ProductGroupMaster" EntitySet="ProductGroupMasters" />
             <End Role="ProductGroupDetail" EntitySet="ProductGroupDetails" />
@@ -1951,11 +1932,11 @@
             <End Role="RackMaster" EntitySet="RackMasters" />
             <End Role="ProductInventoryMaster" EntitySet="ProductInventoryMasters" />
           </AssociationSet>
-          <AssociationSet Name="FK__Productio__Produ__6BE40491" Association="KPIModel.FK__Productio__Produ__6BE40491">
+          <AssociationSet Name="FK__Productio__Produ__18B6AB08" Association="KPIModel.FK__Productio__Produ__18B6AB08">
             <End Role="ProductionProgram" EntitySet="ProductionPrograms" />
             <End Role="ProductionProgramBatch" EntitySet="ProductionProgramBatches" />
           </AssociationSet>
-          <AssociationSet Name="FK__Productio__Sales__0D0FEE32" Association="KPIModel.FK__Productio__Sales__0D0FEE32">
+          <AssociationSet Name="FK__Productio__Sales__13F1F5EB" Association="KPIModel.FK__Productio__Sales__13F1F5EB">
             <End Role="SalesDetail" EntitySet="SalesDetails" />
             <End Role="ProductionProgram" EntitySet="ProductionPrograms" />
           </AssociationSet>
@@ -2103,7 +2084,6 @@
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="SalesMaster" EntitySet="SalesMasters" />
           </AssociationSet>
-          <FunctionImport Name="usp_GetRMInventoryPackageBags" ReturnType="Collection(KPIModel.usp_GetRMInventoryPackageBags_Result)" />
           </EntityContainer>
         <ComplexType Name="sp_GetRMInventory_Result">
           <Property Type="Int32" Name="PalletID" Nullable="false" />
@@ -2148,6 +2128,19 @@
           <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
           <Property Type="Int32" Name="VendorId" Nullable="true" />
           <Property Type="String" Name="VendorName" Nullable="true" />
+          <Property Type="Int32" Name="LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
+          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
+          <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ModifiedByName" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="usp_GetRMInventoryPackageBags_Result">
+          <Property Type="Int32" Name="PackageBagId" Nullable="false" />
+          <Property Type="String" Name="Size" Nullable="true" />
+          <Property Type="String" Name="VendorName" Nullable="true" />
+          <Property Type="Int32" Name="QtyInStock" Nullable="true" />
+          <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
           <Property Type="Int32" Name="LocationId" Nullable="true" />
           <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
           <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
@@ -2452,7 +2445,6 @@
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="ProductGroupMasters" Relationship="KPIModel.FK_ProductGroupMaster_ProductCategoryMaster" FromRole="ProductCategoryMaster" ToRole="ProductGroupMaster" />
-          <NavigationProperty Name="ProductMasters" Relationship="KPIModel.FK_ProductMaster_ProductCategoryMaster" FromRole="ProductCategoryMaster" ToRole="ProductMaster" />
         </EntityType>
         <EntityType Name="ProductGroupDetail">
           <Key>
@@ -2514,8 +2506,8 @@
           <NavigationProperty Name="MachineMaster" Relationship="KPIModel.FK_ProductionProgram_MachineMaster" FromRole="ProductionProgram" ToRole="MachineMaster" />
           <NavigationProperty Name="MouldMaster" Relationship="KPIModel.FK_ProductionProgram_MouldMaster" FromRole="ProductionProgram" ToRole="MouldMaster" />
           <NavigationProperty Name="ProdReadyStoreds" Relationship="KPIModel.FK_ProdReadyStored_ProductionProgram" FromRole="ProductionProgram" ToRole="ProdReadyStored" />
-          <NavigationProperty Name="ProductionProgramBatches" Relationship="KPIModel.FK__Productio__Produ__6BE40491" FromRole="ProductionProgram" ToRole="ProductionProgramBatch" />
-          <NavigationProperty Name="SalesDetail" Relationship="KPIModel.FK__Productio__Sales__0D0FEE32" FromRole="ProductionProgram" ToRole="SalesDetail" />
+          <NavigationProperty Name="ProductionProgramBatches" Relationship="KPIModel.FK__Productio__Produ__18B6AB08" FromRole="ProductionProgram" ToRole="ProductionProgramBatch" />
+          <NavigationProperty Name="SalesDetail" Relationship="KPIModel.FK__Productio__Sales__13F1F5EB" FromRole="ProductionProgram" ToRole="SalesDetail" />
           <NavigationProperty Name="ProductionProgramRMMappings" Relationship="KPIModel.FK_ProductionProgam_ID" FromRole="ProductionProgram" ToRole="ProductionProgramRMMapping" />
           <NavigationProperty Name="ProductMaster" Relationship="KPIModel.FK_ProductionProgram_ProductMaster" FromRole="ProductionProgram" ToRole="ProductMaster" />
           <NavigationProperty Name="UserMaster" Relationship="KPIModel.FK_ProductionProgram_UserMaster" FromRole="ProductionProgram" ToRole="UserMaster" />
@@ -2531,7 +2523,7 @@
           <Property Name="ProductQtyCompleted" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ProductionProgram" Relationship="KPIModel.FK__Productio__Produ__6BE40491" FromRole="ProductionProgramBatch" ToRole="ProductionProgram" />
+          <NavigationProperty Name="ProductionProgram" Relationship="KPIModel.FK__Productio__Produ__18B6AB08" FromRole="ProductionProgramBatch" ToRole="ProductionProgram" />
         </EntityType>
         <EntityType Name="ProductionProgramRMMapping">
           <Key>
@@ -2581,7 +2573,6 @@
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="MouldMaster" Relationship="KPIModel.FK_ProductMaster_MouldMaster" FromRole="ProductMaster" ToRole="MouldMaster" />
           <NavigationProperty Name="ProdReadyStoreds" Relationship="KPIModel.FK_ProdReadyStored_ProductMaster" FromRole="ProductMaster" ToRole="ProdReadyStored" />
-          <NavigationProperty Name="ProductCategoryMaster" Relationship="KPIModel.FK_ProductMaster_ProductCategoryMaster" FromRole="ProductMaster" ToRole="ProductCategoryMaster" />
           <NavigationProperty Name="ProductGroupDetails" Relationship="KPIModel.FK_ProductGroupDetails_ProductMaster" FromRole="ProductMaster" ToRole="ProductGroupDetail" />
           <NavigationProperty Name="ProductInventoryMasters" Relationship="KPIModel.FK_ProductInventoryMaster_ProductMaster" FromRole="ProductMaster" ToRole="ProductInventoryMaster" />
           <NavigationProperty Name="ProductionPrograms" Relationship="KPIModel.FK_ProductionProgram_ProductMaster" FromRole="ProductMaster" ToRole="ProductionProgram" />
@@ -2846,7 +2837,7 @@
           <Property Name="QtyBal" Type="Int32" Nullable="false" />
           <Property Name="SalesStatusID" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ProductionPrograms" Relationship="KPIModel.FK__Productio__Sales__0D0FEE32" FromRole="SalesDetail" ToRole="ProductionProgram" />
+          <NavigationProperty Name="ProductionPrograms" Relationship="KPIModel.FK__Productio__Sales__13F1F5EB" FromRole="SalesDetail" ToRole="ProductionProgram" />
           <NavigationProperty Name="ProductMaster" Relationship="KPIModel.FK_SalesDetails_ProductMaster" FromRole="SalesDetail" ToRole="ProductMaster" />
           <NavigationProperty Name="SalesMaster" Relationship="KPIModel.FK_SalesDetails_SalesMaster" FromRole="SalesDetail" ToRole="SalesMaster" />
           <NavigationProperty Name="SalesDispatchDetails" Relationship="KPIModel.FK_SalesDispatchDetails_SalesDetails" FromRole="SalesDetail" ToRole="SalesDispatchDetail" />
@@ -3227,18 +3218,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProductMaster_ProductCategoryMaster">
-          <End Type="KPIModel.ProductCategoryMaster" Role="ProductCategoryMaster" Multiplicity="1" />
-          <End Type="KPIModel.ProductMaster" Role="ProductMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProductCategoryMaster">
-              <PropertyRef Name="ProductCategoryID" />
-            </Principal>
-            <Dependent Role="ProductMaster">
-              <PropertyRef Name="ProductCategoryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ProductGroupDetails_ProductGroupMaster">
           <End Type="KPIModel.ProductGroupMaster" Role="ProductGroupMaster" Multiplicity="1" />
           <End Type="KPIModel.ProductGroupDetail" Role="ProductGroupDetail" Multiplicity="*" />
@@ -3287,7 +3266,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Productio__Produ__6BE40491">
+        <Association Name="FK__Productio__Produ__18B6AB08">
           <End Type="KPIModel.ProductionProgram" Role="ProductionProgram" Multiplicity="0..1" />
           <End Type="KPIModel.ProductionProgramBatch" Role="ProductionProgramBatch" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3299,7 +3278,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Productio__Sales__0D0FEE32">
+        <Association Name="FK__Productio__Sales__13F1F5EB">
           <End Type="KPIModel.SalesDetail" Role="SalesDetail" Multiplicity="0..1" />
           <End Type="KPIModel.ProductionProgram" Role="ProductionProgram" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3743,19 +3722,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="usp_GetRMInventoryPackageBags_Result">
-          <Property Type="Int32" Name="PackageBagId" Nullable="false" />
-          <Property Type="String" Name="Size" Nullable="true" />
-          <Property Type="String" Name="VendorName" Nullable="true" />
-          <Property Type="Int32" Name="QtyInStock" Nullable="true" />
-          <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
-          <Property Type="Int32" Name="LocationId" Nullable="true" />
-          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
-          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
-          <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
-          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
-          <Property Type="String" Name="ModifiedByName" Nullable="true" MaxLength="20" />
-        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3822,6 +3788,23 @@
                 <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
                 <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_GetRMInventoryPackageBags" FunctionName="KPIModel.Store.usp_GetRMInventoryPackageBags">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KPIModel.usp_GetRMInventoryPackageBags_Result">
+                <ScalarProperty Name="PackageBagId" ColumnName="PackageBagId" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
+                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
@@ -4607,23 +4590,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="usp_GetRMInventoryPackageBags" FunctionName="KPIModel.Store.usp_GetRMInventoryPackageBags">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="KPIModel.usp_GetRMInventoryPackageBags_Result">
-                <ScalarProperty Name="PackageBagId" ColumnName="PackageBagId" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
-                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
-                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
-                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

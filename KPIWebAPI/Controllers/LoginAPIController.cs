@@ -85,6 +85,7 @@ namespace KPIWebAPI.Controllers
             {
                 responseObj.Response.ResponseCode = 999;
                 responseObj.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(responseObj);
         }

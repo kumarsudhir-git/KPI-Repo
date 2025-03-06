@@ -1,5 +1,6 @@
 ﻿using KPILib.Models;
 using KPIWebAPI.AuthFilters;
+using KPIWebAPI.Classes;
 using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace KPIWebAPI.Controllers
             catch (Exception ex)
             {
                 //TODO error handling
+                CommonLogger.Error(ex, ex.Message);
                 returnValue.Response.ResponseMsg = ex.Message;
             }
 
@@ -131,7 +133,7 @@ namespace KPIWebAPI.Controllers
                 }
                 else
                 {
-                    var o = new KPILib.Models.Product() { UOMs = uoms,  Moulds = moulds, RawMaterials = rawmats, productRawMaterialMappings = prdctRawmats };
+                    var o = new KPILib.Models.Product() { UOMs = uoms, Moulds = moulds, RawMaterials = rawmats, productRawMaterialMappings = prdctRawmats };
                     returnValue.data = o;
                 }
                 returnValue.Response.IsSuccessful();

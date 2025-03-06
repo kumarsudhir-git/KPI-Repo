@@ -693,5 +693,10 @@ values('GMSType','Custom','GSM004','Custom GMSType',1,1001,GETDATE())
 alter table ProductMaster
 drop constraint FK_ProductMaster_ProductCategoryMaster 
 
+----------------------------------------------------------------06-03-2025-------------------------------------------
+
+INSERT INTO PurchaseStatusMaster (PurchaseStatusID,PurchaseStatus,AddedOn)
+VALUES (10,'Open',GETDATE())
+
 ------------------------------------------------------END----------------------------------------------------------------
 
