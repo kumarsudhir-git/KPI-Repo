@@ -87,6 +87,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -114,6 +115,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -141,6 +143,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -210,6 +213,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -237,6 +241,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -271,6 +276,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -294,6 +300,7 @@ namespace KPIWebAPI.Controllers
             {
                 rMInventoryMasterBatch.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 rMInventoryMasterBatch.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(rMInventoryMasterBatch);
         }
@@ -315,6 +322,7 @@ namespace KPIWebAPI.Controllers
             {
                 rMInventoryMasterBatch.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 rMInventoryMasterBatch.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(rMInventoryMasterBatch);
         }
@@ -359,6 +367,7 @@ namespace KPIWebAPI.Controllers
             {
                 rMInventoryMasterBatch.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 rMInventoryMasterBatch.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(rMInventoryMasterBatch);
         }
@@ -393,6 +402,7 @@ namespace KPIWebAPI.Controllers
             {
                 rMInventoryMasterBatch.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 rMInventoryMasterBatch.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(rMInventoryMasterBatch);
         }
@@ -426,6 +436,7 @@ namespace KPIWebAPI.Controllers
             {
                 rMInventoryPackageBags.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 rMInventoryPackageBags.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(rMInventoryPackageBags);
         }
@@ -453,6 +464,7 @@ namespace KPIWebAPI.Controllers
             {
                 rMInventoryPackageBags.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 rMInventoryPackageBags.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(rMInventoryPackageBags);
         }
@@ -499,6 +511,7 @@ namespace KPIWebAPI.Controllers
             {
                 rMInventoryPackageBagsResponse.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 rMInventoryPackageBagsResponse.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(rMInventoryPackageBagsResponse);
         }
@@ -533,6 +546,7 @@ namespace KPIWebAPI.Controllers
             {
                 rMInventoryPackageBagsResponse.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 rMInventoryPackageBagsResponse.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(rMInventoryPackageBagsResponse);
         }
@@ -563,6 +577,7 @@ namespace KPIWebAPI.Controllers
             {
                 tagColourMasterModelResponse.Response.ResponseCode = 500;
                 tagColourMasterModelResponse.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(tagColourMasterModelResponse);
         }
@@ -587,6 +602,7 @@ namespace KPIWebAPI.Controllers
             {
                 rMInventoryFinishedGood.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 rMInventoryFinishedGood.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(rMInventoryFinishedGood);
         }
@@ -614,6 +630,7 @@ namespace KPIWebAPI.Controllers
             {
                 rMInventoryFinishedGood.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 rMInventoryFinishedGood.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(rMInventoryFinishedGood);
         }
@@ -659,6 +676,7 @@ namespace KPIWebAPI.Controllers
             {
                 rMInventoryFinishedGoodResponse.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 rMInventoryFinishedGoodResponse.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(rMInventoryFinishedGoodResponse);
         }
@@ -693,6 +711,7 @@ namespace KPIWebAPI.Controllers
             {
                 rMInventoryFinishedGoodResponse.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 rMInventoryFinishedGoodResponse.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(rMInventoryFinishedGoodResponse);
         }

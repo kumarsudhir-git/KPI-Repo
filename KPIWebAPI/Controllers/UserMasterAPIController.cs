@@ -35,6 +35,7 @@ namespace KPIWebAPI.Controllers
             {
                 userMasterResponse.Response.ResponseCode = 500;
                 userMasterResponse.Response.ResponseMsg = $"Internal server Error :- {ex.Message}";
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(userMasterResponse);
         }
@@ -59,6 +60,7 @@ namespace KPIWebAPI.Controllers
             {
                 userMasterResponse.Response.ResponseCode = 500;
                 userMasterResponse.Response.ResponseMsg = $"Internal server Error :- {ex.Message}";
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(userMasterResponse);
         }
@@ -88,6 +90,7 @@ namespace KPIWebAPI.Controllers
             {
                 userMasterResponse.Response.ResponseCode = 500;
                 userMasterResponse.Response.ResponseMsg = $"Internal server Error :- {ex.Message}";
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(userMasterResponse);
         }
@@ -134,6 +137,7 @@ namespace KPIWebAPI.Controllers
                         transaction.Rollback();
                         userMasterResponse.Response.ResponseCode = 500;
                         userMasterResponse.Response.ResponseMsg = $"Internal server Error :- {ex.Message}";
+                        CommonLogger.Error(ex, ex.Message);
                     }
                 }
             }
@@ -170,6 +174,7 @@ namespace KPIWebAPI.Controllers
                         transaction.Rollback();
                         userMasterResponse.Response.ResponseCode = 500;
                         userMasterResponse.Response.ResponseMsg = $"Internal server Error :- {ex.Message}";
+                        CommonLogger.Error(ex, ex.Message);
                     }
                 }
             }
@@ -206,6 +211,7 @@ namespace KPIWebAPI.Controllers
                         transaction.Rollback();
                         userMasterResponse.Response.ResponseCode = 500;
                         userMasterResponse.Response.ResponseMsg = $"Internal server Error :- {ex.Message}";
+                        CommonLogger.Error(ex, ex.Message);
                     }
                 }
             }
@@ -241,6 +247,7 @@ namespace KPIWebAPI.Controllers
             {
                 roleMasterResponse.Response.ResponseCode = 500;
                 roleMasterResponse.Response.ResponseMsg = $"Internal server Error :- {ex.Message}";
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(roleMasterResponse);
@@ -292,6 +299,7 @@ namespace KPIWebAPI.Controllers
                         transaction.Rollback();
                         roleMasterResponse.Response.ResponseCode = 500;
                         roleMasterResponse.Response.ResponseMsg = $"Internal server Error :- {ex.Message}";
+                        CommonLogger.Error(ex, ex.Message);
                     }
                 }
             }
@@ -325,6 +333,7 @@ namespace KPIWebAPI.Controllers
                         transaction.Rollback();
                         roleMasterResponse.Response.ResponseCode = 500;
                         roleMasterResponse.Response.ResponseMsg = $"Internal server Error :- {ex.Message}";
+                        CommonLogger.Error(ex, ex.Message);
                     }
                 }
             }
@@ -374,6 +383,7 @@ namespace KPIWebAPI.Controllers
             {
                 roleRightsResponse.ResponseObj.ResponseCode = 500;
                 roleRightsResponse.ResponseObj.ResponseMsg = $"Internal Server Error {ex.Message}";
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(roleRightsResponse);
         }
@@ -396,6 +406,7 @@ namespace KPIWebAPI.Controllers
             {
                 roleRightsResponse.ResponseObj.ResponseCode = 500;
                 roleRightsResponse.ResponseObj.ResponseMsg = $"Internal Server Error {ex.Message}";
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(roleRightsResponse);
         }
@@ -418,6 +429,7 @@ namespace KPIWebAPI.Controllers
             {
                 menuMasterResponse.ResponseObj.ResponseCode = 500;
                 menuMasterResponse.ResponseObj.ResponseMsg = $"Internal Server Error {ex.Message}";
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(menuMasterResponse);
         }
@@ -482,6 +494,7 @@ namespace KPIWebAPI.Controllers
                             transaction.Rollback();
                             roleRightsResponse.ResponseObj.ResponseCode = 500;
                             roleRightsResponse.ResponseObj.ResponseMsg = $"Internal server Error :- {ex.Message}";
+                            CommonLogger.Error(ex, ex.Message);
                         }
                     }
                 }

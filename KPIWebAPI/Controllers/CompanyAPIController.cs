@@ -1,4 +1,5 @@
 ﻿using KPILib.Models;
+using KPIWebAPI.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace KPIWebAPI.Controllers
             catch (Exception ex)
             {
                 //TODO error handling
+                CommonLogger.Error(ex, ex.Message);
                 returnValue.Response.ResponseMsg = ex.Message;
             }
 
@@ -61,6 +63,7 @@ namespace KPIWebAPI.Controllers
             catch (Exception ex)
             {
                 //TODO error handling
+                CommonLogger.Error(ex, ex.Message);
                 returnValue.Response.ResponseMsg = ex.Message;
             }
 
@@ -89,6 +92,7 @@ namespace KPIWebAPI.Controllers
             catch (Exception ex)
             {
                 //TODO error handling
+                CommonLogger.Error(ex, ex.Message);
                 returnValue.Response.ResponseMsg = ex.Message;
             }
 
@@ -121,6 +125,7 @@ namespace KPIWebAPI.Controllers
             catch (Exception ex)
             {
                 //TODO error handling
+                CommonLogger.Error(ex, ex.Message);
                 returnValue.Response.ResponseMsg = ex.Message;
             }
 
@@ -150,6 +155,7 @@ namespace KPIWebAPI.Controllers
             catch (Exception ex)
             {
                 //TODO error handling
+                CommonLogger.Error(ex, ex.Message);
                 returnValue.Response.ResponseMsg = ex.Message;
             }
 
@@ -179,6 +185,7 @@ namespace KPIWebAPI.Controllers
             catch (Exception ex)
             {
                 //TODO error handling
+                CommonLogger.Error(ex, ex.Message);
                 returnValue.Response.ResponseMsg = ex.Message;
             }
 

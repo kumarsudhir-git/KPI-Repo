@@ -141,6 +141,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -307,6 +308,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(returnValue);
         }
@@ -522,6 +524,7 @@ namespace KPIWebAPI.Controllers
 
                         //TODO error handling
                         returnValue.ResponseMsg = ex.Message;
+                        CommonLogger.Error(ex, ex.Message);
                     }
                 }
             }
@@ -571,6 +574,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -748,6 +752,7 @@ namespace KPIWebAPI.Controllers
 
                         //TODO error handling
                         returnValue.ResponseMsg = ex.Message;
+                        CommonLogger.Error(ex, ex.Message);
                     }
                 }
             }
@@ -805,6 +810,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);

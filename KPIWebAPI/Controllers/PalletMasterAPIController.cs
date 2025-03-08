@@ -1,5 +1,6 @@
 ﻿using KPILib.Models;
 using KPIWebAPI.AuthFilters;
+using KPIWebAPI.Classes;
 using System;
 using System.Linq;
 using System.Web.Http;
@@ -83,6 +84,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -137,6 +139,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -162,6 +165,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -189,6 +193,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -220,6 +225,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -249,6 +255,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -278,6 +285,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);

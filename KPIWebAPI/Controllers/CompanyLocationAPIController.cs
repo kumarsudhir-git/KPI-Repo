@@ -1,4 +1,5 @@
 ﻿using KPILib.Models;
+using KPIWebAPI.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -71,6 +73,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -99,6 +102,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -143,6 +147,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);

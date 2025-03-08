@@ -37,6 +37,7 @@ namespace KPIWebAPI.Controllers
             {
                 returnValue.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(returnValue);
         }
@@ -61,6 +62,7 @@ namespace KPIWebAPI.Controllers
             {
                 vendorMasterModelResponse.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
                 vendorMasterModelResponse.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(vendorMasterModelResponse);
         }
@@ -109,6 +111,7 @@ namespace KPIWebAPI.Controllers
 
                         //TODO error handling
                         vendorMasterModelResponse.Response.ResponseMsg = ex.Message;
+                        CommonLogger.Error(ex, ex.Message);
                     }
                 }
             }
@@ -145,6 +148,7 @@ namespace KPIWebAPI.Controllers
 
                         //TODO error handling
                         vendorMasterModelResponse.Response.ResponseMsg = ex.Message;
+                        CommonLogger.Error(ex, ex.Message);
                     }
                 }
             }

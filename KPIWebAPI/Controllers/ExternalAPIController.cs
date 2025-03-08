@@ -1,4 +1,5 @@
 ﻿using KPILib.Models;
+using KPIWebAPI.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,7 @@ namespace KPIWebAPI.Controllers
             catch (Exception ex)
             {
                 returnValue.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);

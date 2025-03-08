@@ -114,6 +114,7 @@ namespace KPIWebAPI.Controllers
                 {
                     userMasterResponse.Response.ResponseCode = 500;
                     userMasterResponse.Response.ResponseMsg = $"Internal server Error :- {ex.Message}";
+                    CommonLogger.Error(ex, ex.Message);
                 }
             }
             return Json(userMasterResponse);

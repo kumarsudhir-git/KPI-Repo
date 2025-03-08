@@ -42,6 +42,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -125,6 +126,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -212,6 +214,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -272,6 +275,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -377,6 +381,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -418,6 +423,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -450,6 +456,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -473,6 +480,7 @@ namespace KPIWebAPI.Controllers
             {
                 lookUpMasterResponse.Response.ResponseCode = 500;
                 lookUpMasterResponse.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(lookUpMasterResponse);
         }
@@ -495,6 +503,7 @@ namespace KPIWebAPI.Controllers
             {
                 rackMasterResponse.Response.ResponseCode = 500;
                 rackMasterResponse.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(rackMasterResponse);
         }

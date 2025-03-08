@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KPIWebAPI.Classes;
+using System;
 using System.Web.Http;
 
 namespace KPIWebAPI.Controllers
@@ -25,6 +26,7 @@ namespace KPIWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                CommonLogger.Error(ex, ex.Message);
                 return Json(new { success = false, message = ex.Message });
             }
         }

@@ -38,6 +38,7 @@ namespace KPIWebAPI.Controllers
             {
                 //TODO error handling
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
 
             return Json(returnValue);
@@ -78,6 +79,7 @@ namespace KPIWebAPI.Controllers
             {
                 returnValue.Response.ResponseCode = 500;
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(returnValue);
         }
@@ -125,6 +127,7 @@ namespace KPIWebAPI.Controllers
                 {
                     returnValue.Response.ResponseCode = 500;
                     returnValue.Response.ResponseMsg = ex.Message;
+                    CommonLogger.Error(ex, ex.Message);
                     scope.Rollback();
                 }
             }
@@ -186,6 +189,7 @@ namespace KPIWebAPI.Controllers
             {
                 returnValue.Response.ResponseCode = 500;
                 returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(returnValue);
         }
@@ -208,6 +212,7 @@ namespace KPIWebAPI.Controllers
             {
                 machineTypeMasterResponse.Response.ResponseCode = 500;
                 machineTypeMasterResponse.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(machineTypeMasterResponse);
         }
@@ -230,6 +235,7 @@ namespace KPIWebAPI.Controllers
             {
                 machineTypeMasterResponse.Response.ResponseCode = 500;
                 machineTypeMasterResponse.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
             }
             return Json(machineTypeMasterResponse);
         }
