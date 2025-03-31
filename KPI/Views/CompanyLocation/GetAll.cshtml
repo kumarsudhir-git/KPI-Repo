@@ -54,8 +54,10 @@
     <h2>@ViewBag.Comp.CompanyName</h2>
 
     <h4>@ViewBag.Title</h4>
-
-    @Html.ActionLink("Add New", "New", new { id = ViewBag.Comp.CompanyID, sCompanyName = ViewBag.Comp.CompanyName }, new { @class = "btn btn-primary" })
+    <div class="col-md-offset-9 col-md-3">
+        @Html.ActionLink("Add New", "New", new { id = ViewBag.Comp.CompanyID, sCompanyName = ViewBag.Comp.CompanyName }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Back to Company List", "GetAll", "Company", new { }, new { @class = "btn btn-danger" })
+    </div>
 </div>
 
 <div class="table-responsive">

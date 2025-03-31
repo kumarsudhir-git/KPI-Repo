@@ -15,18 +15,6 @@ namespace KPILib.Models
         [DataType(DataType.Text)]
         [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
-
-        //[Required(ErrorMessage = "{0} is required")]
-        //[StringLength(150, MinimumLength = 3, ErrorMessage = "{0} should be minimum 3 characters and a maximum of 150 characters")]
-        [DataType(DataType.Text)]
-        [Display(Name = "Company Address")]
-        public string CompanyAddress { get; set; }
-        [Required]
-        [DataType(DataType.PhoneNumber)]
-        [Display(Name = "Phone Number")]
-        [RegularExpression(@"^\+?[1-9]\d{1,14}$", ErrorMessage = "Invalid phone number format.")]
-        public string CompanyPhone { get; set; }
-        public string CompanyGST { get; set; }
         public string Notes { get; set; }
 
         [Display(Name = "Discontinued?")]

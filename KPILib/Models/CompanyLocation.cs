@@ -18,25 +18,37 @@ namespace KPILib.Models
         [DataType(DataType.Text)]
         [Display(Name = "Location")]
         public string LocationName { get; set; }
+        [Required(ErrorMessage = "{0} is required")]
         public string Address { get; set; }
+        [Required(ErrorMessage = "{0} is required")]
         public string City { get; set; }
+        [Required(ErrorMessage = "{0} is required")]
         public string State { get; set; }
+        [Required(ErrorMessage = "{0} is required")]
         public string Country { get; set; }
+        [Required(ErrorMessage = "{0} is required")]
         public string PostalCode { get; set; }
-
+        [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Contact Person")]
         public string ContactPerson { get; set; }
+        [Required(ErrorMessage = "{0} is required")]
         public string Phone { get; set; }
+        [Required(ErrorMessage = "{0} is required")]
         public string Mobile { get; set; }
+        [Required(ErrorMessage = "{0} is required")]
         [EmailAddress]
         public string Email { get; set; }
-
+        [Required(ErrorMessage = "{0} is required")]
         [Url]
         public string Website { get; set; }
+        [Required(ErrorMessage = "{0} is required")]
         public string PAN { get; set; }
+        [Required(ErrorMessage = "{0} is required")]
         public string GSTN { get; set; }
+        [Required(ErrorMessage = "{0} is required")]
         public string Notes { get; set; }
-        public string CompanyTypeIDs { get; set; }
+        //[Required(ErrorMessage = "{0} is required")]
+        //public string CompanyTypeIDs { get; set; }
         public bool IsDiscontinued { get; set; }
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }

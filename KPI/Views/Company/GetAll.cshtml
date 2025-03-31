@@ -21,9 +21,19 @@
                         return "<a href='/Company/Get/" + data.CompanyID + "'>" + data.CompanyName + "</a> &nbsp; [<a href='/CompanyLocation/GetAll/" + data.CompanyID + "'>" + data.LocationCount + "</a>]";
                     }
                 },
-                { data: "CompanyAddress", title: "Address" },
-                { data: "CompanyPhone", title: "Address" },
-                { data: "CompanyGST", title: "GST No" }
+                { data: "Notes", title: "Notes" },
+                {
+                    data: null, title: "IsDiscontinued",
+                    render: function (data, type, row) {
+                        if (data.IsDiscontinued) {
+                            return "Yes"
+                        }
+                        else {
+                            return "No"
+                        }
+                    }
+                }
+                //{ data: "CompanyGST", title: "GST No" }
             ]
         });
     });

@@ -86,7 +86,7 @@ namespace KPIWebAPI.Controllers
             try
             {
                 var o = mapper.Map<KPILib.Models.CompanyLocation, CompanyLocationMaster>(data);
-                o.CompanyTypeIDs = "";
+                o.CompanyTypeIDs = "-";
                 o.AddedOn = DateTime.Now;
                 o.LastModifiedOn = DateTime.Now;
 

@@ -1085,6 +1085,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProductMaster_ProductCategoryMaster">
+          <End Role="ProductCategoryMaster" Type="Self.ProductCategoryMaster" Multiplicity="1" />
+          <End Role="ProductMaster" Type="Self.ProductMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategoryMaster">
+              <PropertyRef Name="ProductCategoryID" />
+            </Principal>
+            <Dependent Role="ProductMaster">
+              <PropertyRef Name="ProductCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ProductMaster_UOMMaster">
           <End Role="UOMMaster" Type="Self.UOMMaster" Multiplicity="1" />
           <End Role="ProductMaster" Type="Self.ProductMaster" Multiplicity="*" />
@@ -1644,6 +1656,10 @@
             <End Role="MouldMaster" EntitySet="MouldMaster" />
             <End Role="ProductMaster" EntitySet="ProductMaster" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProductMaster_ProductCategoryMaster" Association="Self.FK_ProductMaster_ProductCategoryMaster">
+            <End Role="ProductCategoryMaster" EntitySet="ProductCategoryMaster" />
+            <End Role="ProductMaster" EntitySet="ProductMaster" />
+          </AssociationSet>
           <AssociationSet Name="FK_ProductMaster_UOMMaster" Association="Self.FK_ProductMaster_UOMMaster">
             <End Role="UOMMaster" EntitySet="UOMMaster" />
             <End Role="ProductMaster" EntitySet="ProductMaster" />
@@ -1915,6 +1931,10 @@
           <AssociationSet Name="FK_ProductGroupMaster_ProductCategoryMaster" Association="KPIModel.FK_ProductGroupMaster_ProductCategoryMaster">
             <End Role="ProductCategoryMaster" EntitySet="ProductCategoryMasters" />
             <End Role="ProductGroupMaster" EntitySet="ProductGroupMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductMaster_ProductCategoryMaster" Association="KPIModel.FK_ProductMaster_ProductCategoryMaster">
+            <End Role="ProductCategoryMaster" EntitySet="ProductCategoryMasters" />
+            <End Role="ProductMaster" EntitySet="ProductMasters" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductGroupDetails_ProductGroupMaster" Association="KPIModel.FK_ProductGroupDetails_ProductGroupMaster">
             <End Role="ProductGroupMaster" EntitySet="ProductGroupMasters" />
@@ -2445,6 +2465,7 @@
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="ProductGroupMasters" Relationship="KPIModel.FK_ProductGroupMaster_ProductCategoryMaster" FromRole="ProductCategoryMaster" ToRole="ProductGroupMaster" />
+          <NavigationProperty Name="ProductMasters" Relationship="KPIModel.FK_ProductMaster_ProductCategoryMaster" FromRole="ProductCategoryMaster" ToRole="ProductMaster" />
         </EntityType>
         <EntityType Name="ProductGroupDetail">
           <Key>
@@ -2573,6 +2594,7 @@
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="MouldMaster" Relationship="KPIModel.FK_ProductMaster_MouldMaster" FromRole="ProductMaster" ToRole="MouldMaster" />
           <NavigationProperty Name="ProdReadyStoreds" Relationship="KPIModel.FK_ProdReadyStored_ProductMaster" FromRole="ProductMaster" ToRole="ProdReadyStored" />
+          <NavigationProperty Name="ProductCategoryMaster" Relationship="KPIModel.FK_ProductMaster_ProductCategoryMaster" FromRole="ProductMaster" ToRole="ProductCategoryMaster" />
           <NavigationProperty Name="ProductGroupDetails" Relationship="KPIModel.FK_ProductGroupDetails_ProductMaster" FromRole="ProductMaster" ToRole="ProductGroupDetail" />
           <NavigationProperty Name="ProductInventoryMasters" Relationship="KPIModel.FK_ProductInventoryMaster_ProductMaster" FromRole="ProductMaster" ToRole="ProductInventoryMaster" />
           <NavigationProperty Name="ProductionPrograms" Relationship="KPIModel.FK_ProductionProgram_ProductMaster" FromRole="ProductMaster" ToRole="ProductionProgram" />
@@ -3214,6 +3236,18 @@
               <PropertyRef Name="ProductCategoryID" />
             </Principal>
             <Dependent Role="ProductGroupMaster">
+              <PropertyRef Name="ProductCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductMaster_ProductCategoryMaster">
+          <End Type="KPIModel.ProductCategoryMaster" Role="ProductCategoryMaster" Multiplicity="1" />
+          <End Type="KPIModel.ProductMaster" Role="ProductMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategoryMaster">
+              <PropertyRef Name="ProductCategoryID" />
+            </Principal>
+            <Dependent Role="ProductMaster">
               <PropertyRef Name="ProductCategoryID" />
             </Dependent>
           </ReferentialConstraint>
