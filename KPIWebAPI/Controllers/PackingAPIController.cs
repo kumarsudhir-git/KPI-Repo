@@ -197,7 +197,7 @@ namespace KPIWebAPI.Controllers
                     SalesDetailsID = data.SalesDetailsID,
                     ProductID = data.ProductID,
                     DispatchQty = data.QtyToDispatch,
-                    UserID = 1001,                  //TODO: Current User
+                    //UserID = 1001,                  //TODO: Current User
                     DispatchDate = DateTime.Now,    //TODO: UTC Tiime
                     DispatchNotes = ""
                 };

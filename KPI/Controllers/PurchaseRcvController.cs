@@ -70,7 +70,8 @@ namespace KPI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add([Bind(Include = "PurchaseID,Notes,LineItems")] KPILib.Models.PurchaseRcvMast rcvd)
+        //public ActionResult Add([Bind(Include = "PurchaseID,Notes,CompanyLocationId,LocationId,QCReceived,QCStatus,LineItems")] KPILib.Models.PurchaseRcvMast rcvd)
+        public ActionResult Add(PurchaseRcvMast rcvd)
         {
             if (ModelState.IsValid)
             {

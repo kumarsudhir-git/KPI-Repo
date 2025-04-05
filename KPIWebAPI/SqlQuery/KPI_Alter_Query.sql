@@ -698,5 +698,16 @@ drop constraint FK_ProductMaster_ProductCategoryMaster
 INSERT INTO PurchaseStatusMaster (PurchaseStatusID,PurchaseStatus,AddedOn)
 VALUES (10,'Open',GETDATE())
 
+----------------------------------------------------------------05-04-2025-----------------------------------------------------------
+
+INSERT INTO PurchaseStatusMaster (PurchaseStatusID,PurchaseStatus,AddedOn,LastModifiedOn)
+VALUES(10,'Ack Pending',GETDATE(),NULL),
+(20,'Partial Received',GETDATE(),NULL),
+(30,'Full Received',GETDATE(),NULL),
+(40,'In Stock', GETDATE(),null),
+(50,'To Be Produced', GETDATE(),null),
+(60,'In Production', GETDATE(),null),
+(70,'Mould Not Available', GETDATE(),null)
+
 ------------------------------------------------------END----------------------------------------------------------------
 

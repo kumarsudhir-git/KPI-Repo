@@ -90,8 +90,8 @@ namespace KPIWebAPI.Controllers
                         PurchaseDate = po.PurchaseDate,
                         PurchaseID = po.PurchaseID,
                         Status = po.PurchaseStatusMaster.PurchaseStatus,
-                        RcvdByUserID = 1001,
-                        ReceivedByUser = allUsers.SingleOrDefault(x => x.UserID == 1001).Username,
+                        RcvdByUserID = po.UserID,//1001,
+                        ReceivedByUser = allUsers.SingleOrDefault(x => x.UserID == po.UserID)?.Username,
                         User = po.UserMaster.Username,
                         LineItems = new List<PurchaseRcvDet>()
                     };
@@ -508,8 +508,8 @@ namespace KPIWebAPI.Controllers
                         PurchaseDate = rcvMast.PurchaseMaster.PurchaseDate,
                         PurchaseID = rcvMast.PurchaseMaster.PurchaseID,
                         Status = rcvMast.PurchaseMaster.PurchaseStatusMaster.PurchaseStatus,
-                        RcvdByUserID = 1001,
-                        ReceivedByUser = allUsers.SingleOrDefault(x => x.UserID == 1001).Username,
+                        RcvdByUserID = rcvMast.RcvdByUserID,
+                        ReceivedByUser = allUsers.SingleOrDefault(x => x.UserID == rcvMast.RcvdByUserID)?.Username,
                         PurchaseRcvdID = rcvMast.PurchaseRcvdID,
                         RcvdDate = rcvMast.RcvdDate,
                         User = rcvMast.UserMaster.Username,

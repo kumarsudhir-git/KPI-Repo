@@ -44,7 +44,7 @@ namespace KPILib.Models
         public PurchaseMaster()
         {
             PurchaseStatusID = 10;
-            UserID = 1001;
+            //UserID = 1001;
             PurchaseDate = DateTime.Today;
             LineItems = new List<PurchaseDetails>();
             //Locations = new List<KeyValuePair>();

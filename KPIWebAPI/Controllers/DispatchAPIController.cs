@@ -134,7 +134,7 @@ namespace KPIWebAPI.Controllers
                         MouldID = item.ProductMaster.MouldID,
                         //MachineID = machineID,
                         ProductQtyCompleted = 0,
-                        UserID = 1001, //// ### admin
+                        //UserID = 1001, //// ### admin
                         AddedOn = DateTime.Now,
                         LastModifiedOn = DateTime.Now
                     };
