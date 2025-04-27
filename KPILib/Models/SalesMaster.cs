@@ -32,28 +32,28 @@ namespace KPILib.Models
         [Required(ErrorMessage = "Required")]
         public string Instructions { get; set; }
 
-        [Display(Name = "Status")]
-        [Editable(allowEdit: false)]
-        public int SalesStatusID { get; set; }
+        //[Display(Name = "Status")]
+        //[Editable(allowEdit: false)]
+        //public int SalesStatusID { get; set; }
 
-        [Editable(allowEdit: false)]
-        public string Status { get; set; }
+        //[Editable(allowEdit: false)]
+        //public string Status { get; set; }
 
         public int UserID { get; set; }
 
         [Display(Name = "User")]
         [Editable(allowEdit: false)]
         public string User { get; set; }
-        [Required(ErrorMessage = "Required")]
-        public string Colour { get; set; }
-        [Required(ErrorMessage = "Required")]
-        public string GMS { get; set; }
-        public string GMSInfo { get; set; }
-        [Required(ErrorMessage = "Required")]
-        public string Package { get; set; }
-        [Required(ErrorMessage = "Required")]
-        public string Quantity { get; set; }
-        public bool SampleRequired { get; set; }
+        //[Required(ErrorMessage = "Required")]
+        //public string Colour { get; set; }
+        //[Required(ErrorMessage = "Required")]
+        //public string GMS { get; set; }
+        //public string GMSInfo { get; set; }
+        //[Required(ErrorMessage = "Required")]
+        //public string Package { get; set; }
+        //[Required(ErrorMessage = "Required")]
+        //public string Quantity { get; set; }
+        //public bool SampleRequired { get; set; }
         public string DeliveryAddress { get; set; }
         public string Transporter { get; set; }
         [Required(ErrorMessage = "Required")]

@@ -35,6 +35,11 @@ namespace KPIWebAPI
         public int QtyBal { get; set; }
         public int SalesStatusID { get; set; }
         public bool IsActive { get; set; }
+        public string Color { get; set; }
+        public string Gms { get; set; }
+        public string Package { get; set; }
+        public string Rate { get; set; }
+        public bool SampleReq { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductionProgram> ProductionPrograms { get; set; }

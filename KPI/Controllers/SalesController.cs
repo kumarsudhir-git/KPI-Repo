@@ -112,9 +112,9 @@ namespace KPI.Controllers
         public ActionResult New(int id = 0)
         {
             //ViewData["Colour"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
-            ViewData["GMS"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
             //ViewData["RMIds"] = new SelectList(new List<SelectListItem>(), "RMId", "RMIdName");
-            ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+            //ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+
             ViewData["CompanyLocationID"] = new SelectList(new List<SelectListItem>(), "CompanyLocationID", "CompanyLocationName");
             var response = KPIAPIManager.GetSales(id, Convert.ToInt32(Session["RoleID"]));
             if (response.Response.ResponseCode == 200)
@@ -124,46 +124,41 @@ namespace KPI.Controllers
                 //{
                 //    ViewData["Colour"] = new SelectList(lookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
                 //}
-                LookUpMasterResponse GSMLookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.GMSTypeLookUp);
-                if (GSMLookUpMaster != null && GSMLookUpMaster.Response.ResponseCode == 200)
-                {
-                    ViewData["GMS"] = new SelectList(GSMLookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
-                }
-                RackMastersResponse rackMasterRspns = KPIAPIManager.GetRackMastersData();
-                if (rackMasterRspns != null && rackMasterRspns.Response.ResponseCode == 200)
-                {
-                    List<SelectListItem> selectLists = new List<SelectListItem>();
-                    // Add "Select All" option
-                    selectLists.Insert(0, new SelectListItem { Value = "0", Text = "Select All" });
+                //RackMastersResponse rackMasterRspns = KPIAPIManager.GetRackMastersData();
+                //if (rackMasterRspns != null && rackMasterRspns.Response.ResponseCode == 200)
+                //{
+                //    List<SelectListItem> selectLists = new List<SelectListItem>();
+                //    // Add "Select All" option
+                //    selectLists.Insert(0, new SelectListItem { Value = "0", Text = "Select All" });
 
-                    rackMasterRspns.data.ForEach(item =>
-                    {
-                        selectLists.Add(new SelectListItem
-                        {
-                            Value = item.RackID.ToString(),
-                            Text = item.RackNo,
-                            Selected = response.data.RMIds != null && response.data.RMIds.Contains(item.RackID)
-                        });
-                    });
-                    ViewData["RMIdSelectList"] = selectLists;//new SelectList(rackMasterRspns.data, "RackID", "RackNo");
-                }
+                //    rackMasterRspns.data.ForEach(item =>
+                //    {
+                //        selectLists.Add(new SelectListItem
+                //        {
+                //            Value = item.RackID.ToString(),
+                //            Text = item.RackNo,
+                //            Selected = response.data.RMIds != null && response.data.RMIds.Contains(item.RackID)
+                //        });
+                //    });
+                //    ViewData["RMIdSelectList"] = selectLists;//new SelectList(rackMasterRspns.data, "RackID", "RackNo");
+                //}
                 VendorMasterModelResponse masterModelResponse = KPIAPIManager.GetAllVendorData();
                 if (masterModelResponse != null && masterModelResponse.Response.ResponseCode == 200)
                 {
                     ViewData["CompanyLocationID"] = new SelectList(masterModelResponse.data, "VendorId", "VendorName");
                 }
-                LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
+                //LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
 
-                if (locationMasterResponse != null && locationMasterResponse.Response != null)
-                {
-                    if (locationMasterResponse.Response.ResponseCode == 200)
-                    {
-                        if (locationMasterResponse.data != null && locationMasterResponse.data.Count > 0)
-                        {
-                            ViewData["LocationId"] = new SelectList(locationMasterResponse.data, "LocationId", "LocationName");
-                        }
-                    }
-                }
+                //if (locationMasterResponse != null && locationMasterResponse.Response != null)
+                //{
+                //    if (locationMasterResponse.Response.ResponseCode == 200)
+                //    {
+                //        if (locationMasterResponse.data != null && locationMasterResponse.data.Count > 0)
+                //        {
+                //            ViewData["LocationId"] = new SelectList(locationMasterResponse.data, "LocationId", "LocationName");
+                //        }
+                //    }
+                //}
                 //ViewBag.Locations = new SelectList(response.data.Locations, "Key", "Value");
                 return View(response.data);
             }
@@ -178,6 +173,7 @@ namespace KPI.Controllers
         public ActionResult GetSalesLineItemPartial(SalesDetails salesDetails)
         {
             ViewBag.Products = new SelectList(new List<SelectListItem>(), "ProductID", "ProductName");
+            ViewData["GMS"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
 
             ProductMasterResponse productResponse = KPIAPIManager.GetProductsDetails();
             if (productResponse != null && productResponse.Response != null && productResponse.Response.ResponseCode == 200)
@@ -187,7 +183,11 @@ namespace KPI.Controllers
                     ViewBag.Products = new SelectList(productResponse.productMastersListData, "ProductID", "ProductName");
                 }
             }
-
+            LookUpMasterResponse GSMLookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.GMSTypeLookUp);
+            if (GSMLookUpMaster != null && GSMLookUpMaster.Response.ResponseCode == 200)
+            {
+                ViewData["GMS"] = new SelectList(GSMLookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
+            }
             //SalesMasterResponse companyResponse = KPIAPIManager.GetCompanyLocationDetails(103);
             //if (companyResponse != null && companyResponse.Response != null && companyResponse.Response.ResponseCode == 200)
             //{

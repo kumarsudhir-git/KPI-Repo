@@ -30,62 +30,63 @@
         
         
         
-        <EntityTypeShape EntityType="KPIModel.CompanyLocationMaster" Width="1.5" PointX="0.86461658071010206" PointY="10.659145062164937" />
-        <EntityTypeShape EntityType="KPIModel.CompanyMaster" Width="1.5" PointX="3.9039249252080568" PointY="22.685591678454351" />
-        <EntityTypeShape EntityType="KPIModel.CompanyTypeMaster" Width="1.5" PointX="11.138117065251858" PointY="26.421850514794631" />
-        <EntityTypeShape EntityType="KPIModel.DynamicURL" Width="1.5" PointX="10.557479721753616" PointY="5.2628127361008961" />
-        <EntityTypeShape EntityType="KPIModel.LocationMaster" Width="1.5" PointX="5.0871566501851921" PointY="15.980958007267191" />
-        <EntityTypeShape EntityType="KPIModel.LookUpMaster" Width="1.5" PointX="11.165802999942471" PointY="29.956256165148808" />
-        <EntityTypeShape EntityType="KPIModel.MachineHistory" Width="1.5" PointX="6.6751455006539562" PointY="21.373827780305326" />
-        <EntityTypeShape EntityType="KPIModel.MachineMaster" Width="1.5" PointX="1.394571355262106" PointY="2.3012458990799476" />
-        <EntityTypeShape EntityType="KPIModel.MachineMouldMapping" Width="1.5" PointX="4.5995101801117464" PointY="2.8631511641960365" />
-        <EntityTypeShape EntityType="KPIModel.MachineStatusMaster" Width="1.5" PointX="8.4669857008694613" PointY="8.9457184863024" />
-        <EntityTypeShape EntityType="KPIModel.MachineTypeMaster" Width="1.5" PointX="0.54940127606941447" PointY="14.792765549753218" />
-        <EntityTypeShape EntityType="KPIModel.MailMaster" Width="1.5" PointX="2.5338745650527414" PointY="15.238543457928367" />
-        <EntityTypeShape EntityType="KPIModel.MenuMaster" Width="1.5" PointX="1.7706112422843516" PointY="27.025966790982508" />
-        <EntityTypeShape EntityType="KPIModel.MouldHistory" Width="1.5" PointX="8.3950191216520125" PointY="27.349426624993527" />
-        <EntityTypeShape EntityType="KPIModel.MouldInventoryMaster" Width="1.5" PointX="5.71111437385488" PointY="22.293174932847347" />
-        <EntityTypeShape EntityType="KPIModel.MouldMaster" Width="1.5" PointX="3.4195424129346117" PointY="29.427205054754022" />
-        <EntityTypeShape EntityType="KPIModel.MouldStatusMaster" Width="1.5" PointX="2.371051899330249" PointY="10.363786076364939" />
-        <EntityTypeShape EntityType="KPIModel.MouldTypeMaster" Width="1.5" PointX="7.132964582710045" PointY="12.644849365877382" />
-        <EntityTypeShape EntityType="KPIModel.OrderStatusMaster" Width="1.5" PointX="1.201837605425081" PointY="31.784362912077626" />
-        <EntityTypeShape EntityType="KPIModel.PalletMaster" Width="1.5" PointX="10.5574772127706" PointY="16.11298178886668" />
-        <EntityTypeShape EntityType="KPIModel.ProdReadyStored" Width="1.5" PointX="0.22084755274506637" PointY="13.17880605774876" />
-        <EntityTypeShape EntityType="KPIModel.ProductCategoryMaster" Width="1.5" PointX="7.7964013217931623" PointY="5.2775034183997214" />
-        <EntityTypeShape EntityType="KPIModel.ProductGroupDetail" Width="1.5" PointX="0.18638851502276421" PointY="12.647575727034162" />
-        <EntityTypeShape EntityType="KPIModel.ProductGroupMaster" Width="1.5" PointX="0.42114841771365541" PointY="19.698993155592582" />
-        <EntityTypeShape EntityType="KPIModel.ProductInventoryMaster" Width="1.5" PointX="6.7806860277339291" PointY="28.864417342871622" />
-        <EntityTypeShape EntityType="KPIModel.ProductionProgram" Width="1.5" PointX="11.35868539445041" PointY="1.1643299316821294" />
-        <EntityTypeShape EntityType="KPIModel.ProductionProgramBatch" Width="1.5" PointX="11.714179398358883" PointY="15.257104523134" />
-        <EntityTypeShape EntityType="KPIModel.ProductionProgramRMMapping" Width="1.5" PointX="5.0737002254806924" PointY="19.512878665473721" />
-        <EntityTypeShape EntityType="KPIModel.ProductionRawMaterial" Width="1.5" PointX="1.4633048332591099" PointY="27.171923009293117" />
-        <EntityTypeShape EntityType="KPIModel.ProductMaster" Width="1.5" PointX="6.7364856371360293" PointY="2.6756787163557849" />
-        <EntityTypeShape EntityType="KPIModel.ProductRawMaterialMapping" Width="1.5" PointX="1.5131748213959741" PointY="0.80385263301611531" />
-        <EntityTypeShape EntityType="KPIModel.PurchaseDetail" Width="1.5" PointX="8.2624404021829552" PointY="23.272576134313166" />
-        <EntityTypeShape EntityType="KPIModel.PurchaseMaster" Width="1.5" PointX="2.5733168397905848" PointY="0.34826961175923682" />
-        <EntityTypeShape EntityType="KPIModel.PurchaseRcvdDetail" Width="1.5" PointX="8.862544162600555" PointY="7.4366019253789455" />
-        <EntityTypeShape EntityType="KPIModel.PurchaseRcvdMaster" Width="1.5" PointX="0.88222083490445313" PointY="23.074007581488232" />
-        <EntityTypeShape EntityType="KPIModel.PurchaseRcvdStored" Width="1.5" PointX="11.661129606729899" PointY="12.480997568220365" />
-        <EntityTypeShape EntityType="KPIModel.PurchaseStatusMaster" Width="1.5" PointX="2.5162044738029152" PointY="6.4656467467852154" />
-        <EntityTypeShape EntityType="KPIModel.RackMaster" Width="1.5" PointX="3.133796879618334" PointY="20.286264011769678" />
-        <EntityTypeShape EntityType="KPIModel.RawMaterialInventoryMaster" Width="1.5" PointX="9.7508857593642944" PointY="1.4794954217409229" />
-        <EntityTypeShape EntityType="KPIModel.RawMaterialMaster" Width="1.5" PointX="5.528065281700373" PointY="24.074054252390773" />
-        <EntityTypeShape EntityType="KPIModel.RMInventoryFinishedGood" Width="1.5" PointX="9.7135891289047844" PointY="2.6877245021461156" />
-        <EntityTypeShape EntityType="KPIModel.RMInventoryMasterBatch" Width="1.5" PointX="3.4753489566386442" PointY="18.365220987408058" />
-        <EntityTypeShape EntityType="KPIModel.RMInventoryPackageBag" Width="1.5" PointX="9.0012552053673449" PointY="7.9544498361435023" />
-        <EntityTypeShape EntityType="KPIModel.RoleMaster" Width="1.5" PointX="11.321022497173875" PointY="23.065700541746665" />
-        <EntityTypeShape EntityType="KPIModel.RoleRight" Width="1.5" PointX="10.812719553156159" PointY="31.508360221753065" />
-        <EntityTypeShape EntityType="KPIModel.SalesDetail" Width="1.5" PointX="3.2785136789449085" PointY="8.0329772718404318" />
-        <EntityTypeShape EntityType="KPIModel.SalesDispatchDetail" Width="1.5" PointX="5.1826504548930794" PointY="25.477593851032477" />
-        <EntityTypeShape EntityType="KPIModel.SalesDispatchRack" Width="1.5" PointX="4.5291933494290308" PointY="31.785074174304061" />
-        <EntityTypeShape EntityType="KPIModel.SalesMaster" Width="1.5" PointX="8.67961186947283" PointY="29.5178273904686" />
-        <EntityTypeShape EntityType="KPIModel.SalesRMMapping" Width="1.5" PointX="11.40574694210931" PointY="0.14876642830146775" />
-        <EntityTypeShape EntityType="KPIModel.SalesStatusMaster" Width="1.5" PointX="7.8802967350372555" PointY="25.68646052185747" />
-        <EntityTypeShape EntityType="KPIModel.TagColourMaster" Width="1.5" PointX="6.5049015984427658" PointY="27.007821825802242" />
-        <EntityTypeShape EntityType="KPIModel.Unit" Width="1.5" PointX="11.16302689684696" PointY="17.808830150314062" />
-        <EntityTypeShape EntityType="KPIModel.UOMMaster" Width="1.5" PointX="9.9204192505778828" PointY="24.772164982171805" />
-        <EntityTypeShape EntityType="KPIModel.UserMaster" Width="1.5" PointX="2.5876173165569161" PointY="25.243603256178837" />
-        <EntityTypeShape EntityType="KPIModel.VendorMaster" Width="1.5" PointX="9.5664437401883511" PointY="2.4226508002833698" />
+        
+        <EntityTypeShape EntityType="KPIModel.CompanyLocationMaster" Width="1.5" PointX="5.3118593587129652" PointY="5.295013907037216" />
+        <EntityTypeShape EntityType="KPIModel.CompanyMaster" Width="1.5" PointX="6.0838604187983361" PointY="13.455204359002041" />
+        <EntityTypeShape EntityType="KPIModel.CompanyTypeMaster" Width="1.5" PointX="5.6824184365954338" PointY="30.838589831645876" />
+        <EntityTypeShape EntityType="KPIModel.DynamicURL" Width="1.5" PointX="11.699245925852678" PointY="17.100761630153638" />
+        <EntityTypeShape EntityType="KPIModel.LocationMaster" Width="1.5" PointX="7.7181692923038128" PointY="6.6123047501837391" />
+        <EntityTypeShape EntityType="KPIModel.LookUpMaster" Width="1.5" PointX="9.0830496945805148" PointY="1.7212070830730755" />
+        <EntityTypeShape EntityType="KPIModel.MachineHistory" Width="1.5" PointX="3.7731438333974889" PointY="11.886652802995711" />
+        <EntityTypeShape EntityType="KPIModel.MachineMaster" Width="1.5" PointX="3.5289260426205238" PointY="31.360115095675045" />
+        <EntityTypeShape EntityType="KPIModel.MachineMouldMapping" Width="1.5" PointX="7.704230734940726" PointY="27.860901905158954" />
+        <EntityTypeShape EntityType="KPIModel.MachineStatusMaster" Width="1.5" PointX="4.3851170951431229" PointY="13.309796309708522" />
+        <EntityTypeShape EntityType="KPIModel.MachineTypeMaster" Width="1.5" PointX="3.0971852909294819" PointY="0.11039289837255743" />
+        <EntityTypeShape EntityType="KPIModel.MailMaster" Width="1.5" PointX="9.3183807904452" PointY="21.029252285617055" />
+        <EntityTypeShape EntityType="KPIModel.MenuMaster" Width="1.5" PointX="6.20991443014234" PointY="16.8501071263338" />
+        <EntityTypeShape EntityType="KPIModel.MouldHistory" Width="1.5" PointX="6.3451572369528737" PointY="8.6003792773002665" />
+        <EntityTypeShape EntityType="KPIModel.MouldInventoryMaster" Width="1.5" PointX="4.4857719226208381" PointY="14.396019361166292" />
+        <EntityTypeShape EntityType="KPIModel.MouldMaster" Width="1.5" PointX="10.726508443582109" PointY="12.787862068409035" />
+        <EntityTypeShape EntityType="KPIModel.MouldStatusMaster" Width="1.5" PointX="9.1362356083170688" PointY="28.9671099022809" />
+        <EntityTypeShape EntityType="KPIModel.MouldTypeMaster" Width="1.5" PointX="5.8918436569589394" PointY="24.215181063960856" />
+        <EntityTypeShape EntityType="KPIModel.OrderStatusMaster" Width="1.5" PointX="11.502271944425194" PointY="21.647044579334111" />
+        <EntityTypeShape EntityType="KPIModel.PalletMaster" Width="1.5" PointX="10.912336986005464" PointY="24.819594782227462" />
+        <EntityTypeShape EntityType="KPIModel.ProdReadyStored" Width="1.5" PointX="9.3514387315844374" PointY="20.779162118574213" />
+        <EntityTypeShape EntityType="KPIModel.ProductCategoryMaster" Width="1.5" PointX="9.9342108117110151" PointY="16.929628737703723" />
+        <EntityTypeShape EntityType="KPIModel.ProductGroupDetail" Width="1.5" PointX="9.5310219682431878" PointY="1.4810303009492487" />
+        <EntityTypeShape EntityType="KPIModel.ProductGroupMaster" Width="1.5" PointX="11.474806369969066" PointY="29.504249869614956" />
+        <EntityTypeShape EntityType="KPIModel.ProductInventoryMaster" Width="1.5" PointX="8.71152798864596" PointY="8.3887655327044275" />
+        <EntityTypeShape EntityType="KPIModel.ProductionProgram" Width="1.5" PointX="8.1731497366787629" PointY="22.153530667607455" />
+        <EntityTypeShape EntityType="KPIModel.ProductionProgramBatch" Width="1.5" PointX="5.6013184160000264" PointY="1.1437963699660247" />
+        <EntityTypeShape EntityType="KPIModel.ProductionProgramRMMapping" Width="1.5" PointX="10.650548312184656" PointY="14.054565391528683" />
+        <EntityTypeShape EntityType="KPIModel.ProductionRawMaterial" Width="1.5" PointX="4.6672494246937566" PointY="27.194375497845176" />
+        <EntityTypeShape EntityType="KPIModel.ProductMaster" Width="1.5" PointX="10.835787204483424" PointY="30.303008704587356" />
+        <EntityTypeShape EntityType="KPIModel.ProductRawMaterialMapping" Width="1.5" PointX="5.21931394991433" PointY="22.597609858306875" />
+        <EntityTypeShape EntityType="KPIModel.PurchaseDetail" Width="1.5" PointX="1.9270136886867757" PointY="6.1857654183105408" />
+        <EntityTypeShape EntityType="KPIModel.PurchaseMaster" Width="1.5" PointX="3.7531058377367934" PointY="11.433603783805671" />
+        <EntityTypeShape EntityType="KPIModel.PurchaseRcvdDetail" Width="1.5" PointX="3.5092170478353362" PointY="13.094606986779072" />
+        <EntityTypeShape EntityType="KPIModel.PurchaseRcvdMaster" Width="1.5" PointX="10.565651144164452" PointY="17.195288383027208" />
+        <EntityTypeShape EntityType="KPIModel.PurchaseRcvdStored" Width="1.5" PointX="0.25777121645294654" PointY="30.897570713841155" />
+        <EntityTypeShape EntityType="KPIModel.PurchaseStatusMaster" Width="1.5" PointX="11.535501228429144" PointY="18.874050804820868" />
+        <EntityTypeShape EntityType="KPIModel.RackMaster" Width="1.5" PointX="7.63973488455626" PointY="19.479998657237736" />
+        <EntityTypeShape EntityType="KPIModel.RawMaterialInventoryMaster" Width="1.5" PointX="2.1071865251786943" PointY="7.9193867034834744" />
+        <EntityTypeShape EntityType="KPIModel.RawMaterialMaster" Width="1.5" PointX="10.354947638863209" PointY="15.07874151276366" />
+        <EntityTypeShape EntityType="KPIModel.RMInventoryFinishedGood" Width="1.5" PointX="6.84398380240611" PointY="19.41616942892604" />
+        <EntityTypeShape EntityType="KPIModel.RMInventoryMasterBatch" Width="1.5" PointX="6.51361424034164" PointY="3.5732929276178091" />
+        <EntityTypeShape EntityType="KPIModel.RMInventoryPackageBag" Width="1.5" PointX="9.2253575237585963" PointY="6.4504918486115015" />
+        <EntityTypeShape EntityType="KPIModel.RoleMaster" Width="1.5" PointX="11.194129859653362" PointY="23.219498585546155" />
+        <EntityTypeShape EntityType="KPIModel.RoleRight" Width="1.5" PointX="0.21211790117068119" PointY="1.6570176936951548" />
+        <EntityTypeShape EntityType="KPIModel.SalesDetail" Width="1.5" PointX="4.4134434742915651" PointY="3.4783496872886781" />
+        <EntityTypeShape EntityType="KPIModel.SalesDispatchDetail" Width="1.5" PointX="9.2818545127668663" PointY="30.796556591427212" />
+        <EntityTypeShape EntityType="KPIModel.SalesDispatchRack" Width="1.5" PointX="4.0880340934209682" PointY="2.3395600925849567" />
+        <EntityTypeShape EntityType="KPIModel.SalesMaster" Width="1.5" PointX="5.8651721057785542" PointY="20.305463412918833" />
+        <EntityTypeShape EntityType="KPIModel.SalesRMMapping" Width="1.5" PointX="2.5955049389021028" PointY="13.982454798176166" />
+        <EntityTypeShape EntityType="KPIModel.SalesStatusMaster" Width="1.5" PointX="9.0461693150206326" PointY="17.50487666647177" />
+        <EntityTypeShape EntityType="KPIModel.TagColourMaster" Width="1.5" PointX="0.49844255694115658" PointY="6.0354529200286855" />
+        <EntityTypeShape EntityType="KPIModel.Unit" Width="1.5" PointX="2.8880158583112134" PointY="22.897495250635544" />
+        <EntityTypeShape EntityType="KPIModel.UOMMaster" Width="1.5" PointX="8.77207277192365" PointY="28.062798304512537" />
+        <EntityTypeShape EntityType="KPIModel.UserMaster" Width="1.5" PointX="4.789188754181" PointY="8.9214635085880118" />
+        <EntityTypeShape EntityType="KPIModel.VendorMaster" Width="1.5" PointX="3.163275496644562" PointY="4.5266117623665423" />
         <AssociationConnector Association="KPIModel.FK_CompanyLocationMaster_CompanyMaster" />
         <AssociationConnector Association="KPIModel.FK_CompanyMaster_CompanyTypeMaster" />
         <AssociationConnector Association="KPIModel.FK_MachineHistory_MachineMaster" />
@@ -148,6 +149,123 @@
         <AssociationConnector Association="KPIModel.FK_SalesDispatchRacks_SalesDispatchDetails" />
         <AssociationConnector Association="KPIModel.FK_SalesMaster_SalesStatusMaster" />
         <AssociationConnector Association="KPIModel.FK_SalesMaster_UserMaster" />
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         

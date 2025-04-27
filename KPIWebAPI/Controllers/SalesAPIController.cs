@@ -26,11 +26,11 @@ namespace KPIWebAPI.Controllers
                     //o.CompanyLocation = obj.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.CompanyLocationMaster.LocationName + "]";
                     VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(obj.CompanyLocationID);
                     o.CompanyLocation = vendorMaster.VendorName + " [" + vendorMaster.Address + "]";
-                    if (!string.IsNullOrEmpty(obj.GMS))
-                    {
-                        o.GMS = CommonFunctions.GetLookUpMasterDataFromLookupCode(obj.GMS)?.LookUpName;
-                    }
-                    o.Status = obj.SalesStatusMaster.SalesStatus;
+                    //if (!string.IsNullOrEmpty(obj.GMS))
+                    //{
+                    //    o.GMS = CommonFunctions.GetLookUpMasterDataFromLookupCode(obj.GMS)?.LookUpName;
+                    //}
+                    //o.Status = obj.SalesStatusMaster.SalesStatus;
                     o.User = obj.UserMaster.Username;
 
                     returnValue.data.Add(o);
@@ -170,7 +170,7 @@ namespace KPIWebAPI.Controllers
                     var o = mapper.Map<SalesMaster, KPILib.Models.SalesMaster>(data);
                     //o.Locations = compLocations;
                     o.Products = products;
-                    o.Status = data.SalesStatusMaster.SalesStatus;
+                    //o.Status = data.SalesStatusMaster.SalesStatus;
                     o.User = data.UserMaster.Username;
                     //o.CompanyLocation = data.CompanyLocationMaster.LocationName;
 
@@ -294,18 +294,18 @@ namespace KPIWebAPI.Controllers
                     //o.Instructions = data.Instructions;
                     o.SalesDate = data.SalesDate;
                     o.SalesStatusID = 10;    //Ack Pending
-                    o.Colour = data.Colour;
+                    //o.Colour = data.Colour;
                     o.CommittedDate = data.CommittedDate;
                     o.CompanyLocationID = data.CompanyLocationID;
                     o.DeliveryAddress = data.DeliveryAddress;
-                    o.GMS = data.GMS;
-                    o.GMSInfo = data.GMSInfo;
+                    //o.GMS = data.GMS;
+                    //o.GMSInfo = data.GMSInfo;
                     o.Instructions = data.Instructions;
-                    o.Package = data.Package;
+                    //o.Package = data.Package;
                     o.PaymentStatus = data.PaymentStatus;
-                    o.Quantity = data.Quantity;
+                    //o.Quantity = data.Quantity;
                     o.Rate = data.Rate;
-                    o.SampleRequired = data.SampleRequired;
+                    //o.SampleRequired = data.SampleRequired;
                     o.Transporter = data.Transporter;
 
                     //o.SalesDetails.Clear();
@@ -318,7 +318,19 @@ namespace KPIWebAPI.Controllers
                     }
                     foreach (var item in data.LineItems.Where(x => x.ProductID != 0))
                     {
-                        o.SalesDetails.Add(new SalesDetail { ProductID = item.ProductID, Qty = item.Qty, Instructions = item.Instructions, IsActive = true });
+                        o.SalesDetails.Add(new SalesDetail
+                        {
+                            ProductID = item.ProductID,
+                            Color = item.Color,
+                            Gms = item.Gms,
+                            Qty = item.Qty,
+                            Package = item.Package,
+                            Rate = item.Rate,
+                            SampleReq = item.SampleReq,
+                            Instructions = item.Instructions,
+                            SalesStatusID = item.SalesStatusID,
+                            IsActive = true
+                        });
                     }
 
                     if (data.RMIds != null && data.RMIds.Count > 0)

@@ -709,5 +709,13 @@ VALUES(10,'Ack Pending',GETDATE(),NULL),
 (60,'In Production', GETDATE(),null),
 (70,'Mould Not Available', GETDATE(),null)
 
+----------------------------------------------------------------20-04-2025-----------------------------------------------------------
+
+ALTER TABLE SalesDetails ADD Color NVARCHAR(250) NULL
+ALTER TABLE SalesDetails ADD Gms NVARCHAR(250) NULL
+ALTER TABLE SalesDetails ADD Package NVARCHAR(250) NULL
+ALTER TABLE SalesDetails ADD Rate NVARCHAR(250) NULL
+ALTER TABLE SalesDetails ADD SampleReq BIT NOT NULL DEFAULT(0)
+
 ------------------------------------------------------END----------------------------------------------------------------
 

@@ -598,6 +598,11 @@
           <Property Name="QtyBal" Type="int" Nullable="false" />
           <Property Name="SalesStatusID" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Color" Type="nvarchar" MaxLength="250" />
+          <Property Name="Gms" Type="nvarchar" MaxLength="250" />
+          <Property Name="Package" Type="nvarchar" MaxLength="250" />
+          <Property Name="Rate" Type="nvarchar" MaxLength="250" />
+          <Property Name="SampleReq" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="SalesDispatchDetails">
           <Key>
@@ -2859,6 +2864,11 @@
           <Property Name="QtyBal" Type="Int32" Nullable="false" />
           <Property Name="SalesStatusID" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Color" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Gms" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Package" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Rate" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="SampleReq" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ProductionPrograms" Relationship="KPIModel.FK__Productio__Sales__13F1F5EB" FromRole="SalesDetail" ToRole="ProductionProgram" />
           <NavigationProperty Name="ProductMaster" Relationship="KPIModel.FK_SalesDetails_ProductMaster" FromRole="SalesDetail" ToRole="ProductMaster" />
           <NavigationProperty Name="SalesMaster" Relationship="KPIModel.FK_SalesDetails_SalesMaster" FromRole="SalesDetail" ToRole="SalesMaster" />
@@ -4471,6 +4481,11 @@
           <EntitySetMapping Name="SalesDetails">
             <EntityTypeMapping TypeName="KPIModel.SalesDetail">
               <MappingFragment StoreEntitySet="SalesDetails">
+                <ScalarProperty Name="SampleReq" ColumnName="SampleReq" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Package" ColumnName="Package" />
+                <ScalarProperty Name="Gms" ColumnName="Gms" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="SalesStatusID" ColumnName="SalesStatusID" />
                 <ScalarProperty Name="QtyBal" ColumnName="QtyBal" />
