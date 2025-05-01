@@ -378,5 +378,14 @@ namespace KPIWebAPI.Classes
             }
         }
 
+        public static List<SalesStatusMaster> GetSalesStatusMasterList()
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<SalesStatusMaster> salesStatusMaster = (from SSM in db.SalesStatusMasters
+                                                                 select SSM).ToList();
+                return salesStatusMaster;
+            }
+        }
     }
 }

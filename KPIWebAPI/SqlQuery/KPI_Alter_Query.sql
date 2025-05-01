@@ -717,5 +717,19 @@ ALTER TABLE SalesDetails ADD Package NVARCHAR(250) NULL
 ALTER TABLE SalesDetails ADD Rate NVARCHAR(250) NULL
 ALTER TABLE SalesDetails ADD SampleReq BIT NOT NULL DEFAULT(0)
 
+-----------------------------------------------------------------27-04-2025--------------------------------------------------------------
+
+INSERT INTO SalesStatusMaster (SalesStatusID, SalesStatus, AddedOn)
+VALUES (1,'Confirmed',GETDATE()),
+(10,'Procure Material', GETDATE()),
+(20,'Awaiting Production', GETDATE()),
+(30,'In Production', GETDATE()),
+(40,'Completed', GETDATE()),
+(50,'Ready For Despatch', GETDATE()), 
+(60,'Despatched', GETDATE()),
+(70,'On Hold', GETDATE()),
+(80,'Partially Delivered', GETDATE()),
+(999,'Cancelled', GETDATE())
+
 ------------------------------------------------------END----------------------------------------------------------------
 

@@ -303,6 +303,11 @@ namespace KPI.Classes
             ProductMasterResponse result = CommonFunctions.client.GetAsync("SalesAPI/GetProductsDetails").Result.Content.ReadAsAsync<ProductMasterResponse>().Result;
             return result;
         }
+        public static SalesSatusMastersResponse GetSalesStatusMasterDetails()
+        {
+            SalesSatusMastersResponse result = CommonFunctions.client.GetAsync("SalesAPI/GetSalesStatusMasterData").Result.Content.ReadAsAsync<SalesSatusMastersResponse>().Result;
+            return result;
+        }
 
         public static SalesMasterResponse GetCompanyLocationDetails(int id)
         {

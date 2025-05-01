@@ -100,5 +100,24 @@ namespace KPILib.Models
             this.Response = new ResponseObj();
         }
     }
+    public class SalesSatusMastersResponse
+    {
+        public List<SalesStatusMaster> data { get; set; }
+        public ResponseObj Response { get; set; }
+
+        public SalesSatusMastersResponse()
+        {
+            this.data = new List<SalesStatusMaster>();
+            this.Response = new ResponseObj();
+        }
+    }
+
+    public class SalesStatusMaster
+    {
+        public int SalesStatusID { get; set; }
+        public string SalesStatus { get; set; }
+        public DateTime AddedOn { get; set; }
+        public DateTime? LastModifiedOn { get; set; }
+    }
 
 }

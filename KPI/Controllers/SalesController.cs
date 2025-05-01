@@ -174,6 +174,7 @@ namespace KPI.Controllers
         {
             ViewBag.Products = new SelectList(new List<SelectListItem>(), "ProductID", "ProductName");
             ViewData["GMS"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
+            ViewData["SalesStatusID"] = new SelectList(new List<SelectListItem>(), "SalesStatusID", "SalesStatus");
 
             ProductMasterResponse productResponse = KPIAPIManager.GetProductsDetails();
             if (productResponse != null && productResponse.Response != null && productResponse.Response.ResponseCode == 200)
@@ -196,9 +197,17 @@ namespace KPI.Controllers
             //        ViewBag.Locations = companyResponse.Response.ResponseData;
             //    }
             //}
+            SalesSatusMastersResponse salesSatusMasters = KPIAPIManager.GetSalesStatusMasterDetails();
+            if (salesSatusMasters != null && salesSatusMasters.Response != null && salesSatusMasters.Response.ResponseCode == 200)
+            {
+                if (salesSatusMasters.data != null)
+                {
+                    ViewData["SalesStatusID"] = new SelectList(salesSatusMasters.data, "SalesStatusID", "SalesStatus");
+                }
+            }
             return PartialView("_SalesLineItems", salesDetails);
         }
-
+           
         [HttpPost]
         [ValidateAntiForgeryToken]
         //public ActionResult Add([Bind(Include = "SalesID,SalesDate,CompanyLocationID,Instructions,LineItems")] KPILib.Models.SalesMaster sale)      //FormCollection frm)       //

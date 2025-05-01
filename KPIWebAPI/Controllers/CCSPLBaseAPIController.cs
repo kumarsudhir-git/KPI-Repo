@@ -176,6 +176,9 @@ namespace KPIWebAPI.Controllers
             
             cfg.CreateMap<LookUpMaster, KPILib.Models.LookUpMasterModel>();
             cfg.CreateMap<KPILib.Models.LookUpMasterModel, LookUpMaster>();
+            
+            cfg.CreateMap<SalesStatusMaster, KPILib.Models.SalesStatusMaster>();
+            cfg.CreateMap<KPILib.Models.SalesStatusMaster, SalesStatusMaster>();
         });
 
         public static IMapper mapper = config.CreateMapper();

@@ -520,6 +520,28 @@ namespace KPIWebAPI.Controllers
             return Json(rackMasterResponse);
         }
 
+        [HttpGet]
+        public IHttpActionResult GetSalesStatusMasterData()
+        {
+            SalesSatusMastersResponse rackMasterResponse = new SalesSatusMastersResponse();
+
+            try
+            {
+                List<SalesStatusMaster> salesStatusMasters = CommonFunctions.GetSalesStatusMasterList();
+
+                rackMasterResponse.data = mapper.Map<List<KPILib.Models.SalesStatusMaster>>(salesStatusMasters);
+
+                rackMasterResponse.Response.IsSuccessful();
+
+            }
+            catch (Exception ex)
+            {
+                rackMasterResponse.Response.ResponseCode = 500;
+                rackMasterResponse.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
+            }
+            return Json(rackMasterResponse);
+        }
 
     }
 }
