@@ -24,8 +24,11 @@ namespace KPIWebAPI.Controllers
                 {
                     var o = mapper.Map<SalesMaster, KPILib.Models.SalesMaster>(obj);
                     //o.CompanyLocation = obj.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + obj.CompanyLocationMaster.LocationName + "]";
-                    VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(obj.CompanyLocationID);
-                    o.CompanyLocation = vendorMaster.VendorName + " [" + vendorMaster.Address + "]";
+                    Company companyMaster = CommonFunctions.GetCompanyLocationById(obj.CompanyLocationID);
+                    if (companyMaster != null)
+                    {
+                        o.CompanyLocation = companyMaster.CompanyName + " [" + companyMaster.LocationName + "]";
+                    }
                     //if (!string.IsNullOrEmpty(obj.GMS))
                     //{
                     //    o.GMS = CommonFunctions.GetLookUpMasterDataFromLookupCode(obj.GMS)?.LookUpName;
@@ -181,7 +184,7 @@ namespace KPIWebAPI.Controllers
                         o.LineItems.Add(lineItem);
                     }
 
-                    o.RMIds = CommonFunctions.GetRMIdsFromSalesId(o.SalesID);
+                    //o.RMIds = CommonFunctions.GetRMIdsFromSalesId(o.SalesID);
                     //if (o.LineItems.Count < 5)
                     //{
                     //    for (int i = o.LineItems.Count + 1; i <= 5; i++)
@@ -230,7 +233,20 @@ namespace KPIWebAPI.Controllers
                 o.SalesStatusID = (int)enumSalesStatus.Procure_Material;
                 foreach (var item in data.LineItems.Where(x => x.ProductID != 0))
                 {
-                    o.SalesDetails.Add(new SalesDetail { ProductID = item.ProductID, Qty = item.Qty, QtyBal = item.Qty, IsActive = true });
+                    o.SalesDetails.Add(new SalesDetail
+                    {
+                        ProductID = item.ProductID,
+                        Qty = item.Qty,
+                        QtyBal = item.Qty,
+                        Instructions = item.Instructions,
+                        Color = item.Color,
+                        Gms = item.Gms,
+                        Package = item.Package,
+                        Rate = item.Rate,
+                        SampleReq = item.SampleReq,
+                        SalesStatusID = item.SalesStatusID,
+                        IsActive = true
+                    });
                 }
                 o.Instructions += "";
 
@@ -324,6 +340,7 @@ namespace KPIWebAPI.Controllers
                             Color = item.Color,
                             Gms = item.Gms,
                             Qty = item.Qty,
+                            QtyBal = item.Qty,
                             Package = item.Package,
                             Rate = item.Rate,
                             SampleReq = item.SampleReq,

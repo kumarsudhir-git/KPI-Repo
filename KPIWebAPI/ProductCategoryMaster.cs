@@ -18,7 +18,6 @@ namespace KPIWebAPI
         public ProductCategoryMaster()
         {
             this.ProductGroupMasters = new HashSet<ProductGroupMaster>();
-            this.ProductMasters = new HashSet<ProductMaster>();
         }
     
         public int ProductCategoryID { get; set; }
@@ -29,7 +28,5 @@ namespace KPIWebAPI
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductGroupMaster> ProductGroupMasters { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProductMaster> ProductMasters { get; set; }
     }
 }

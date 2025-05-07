@@ -160,6 +160,13 @@ namespace KPI.Classes
             var result = CommonFunctions.client.PostAsJsonAsync("CompanyAPI/Edit", obj).Result.Content.ReadAsAsync<CompanyResponse>().Result;
             return result;
         }
+
+        public static CompaniesResponse GetAllCompanyList()
+        {
+            var result = CommonFunctions.client.GetAsync("CompanyAPI/GetCompanyMasterList").Result.Content.ReadAsAsync<CompaniesResponse>().Result;
+            return result;
+        }
+
         #endregion
 
         #region API calls for CompanyLocations
@@ -347,9 +354,9 @@ namespace KPI.Classes
             return result;
         }
 
-        public static ResponseObj SetNewDispatchBlockValues(int iSalesDetailsID, int iBlockedQty, int iToDispatchQty, int iToProduceQty)
+        public static ResponseObj SetNewDispatchBlockValues(int iSalesDetailsID, int iBlockedQty, int iToDispatchQty, int iToProduceQty, int userID)
         {
-            var parameters = new Dictionary<string, int> { { "iSalesDetailsID", iSalesDetailsID }, { "iBlockedQty", iBlockedQty }, { "iToDispatchQty", iToDispatchQty }, { "iToProduceQty", iToProduceQty } };
+            var parameters = new Dictionary<string, int> { { "iSalesDetailsID", iSalesDetailsID }, { "iBlockedQty", iBlockedQty }, { "iToDispatchQty", iToDispatchQty }, { "iToProduceQty", iToProduceQty }, { "UserID", userID } };
             var result = CommonFunctions.client.PostAsJsonAsync("DispatchAPI/SetNewDispatchBlockValues", parameters).Result.Content.ReadAsAsync<ResponseObj>().Result;
             return result;
         }

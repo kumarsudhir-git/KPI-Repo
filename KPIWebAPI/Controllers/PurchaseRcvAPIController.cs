@@ -272,7 +272,7 @@ namespace KPIWebAPI.Controllers
                                     var availableTagColours = tagColours.ToList();
 
                                     //### from the available tag colours, remove the tag colours already in the pallet
-                                    foreach (var tagcolor in emptyPallet.TagColours)
+                                    foreach (var tagcolor in emptyPallet?.TagColours)
                                     {
                                         availableTagColours.Remove(availableTagColours.Find(x => x.TagColourID == tagcolor.TagColourID));
                                     }

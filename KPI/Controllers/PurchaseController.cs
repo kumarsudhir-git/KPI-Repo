@@ -165,7 +165,8 @@ namespace KPI.Controllers
 
             if (vendorMasterModel != null && vendorMasterModel.Response.ResponseCode == 200)
             {
-                vendorMasterModel.data.Where(z => z.VendorType == vendorType).ToList().ForEach(item =>
+                vendorMasterModel.data = vendorMasterModel.data.Where(z => z.VendorType == vendorType).ToList();
+                vendorMasterModel.data.ForEach(item =>
                 {
                     item.VendorName += $" [{item.Address}]";
                 });

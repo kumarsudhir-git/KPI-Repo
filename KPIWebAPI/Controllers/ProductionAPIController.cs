@@ -44,7 +44,7 @@ namespace KPIWebAPI.Controllers
 
                     o.MouldName = obj.MouldMaster.MouldName;
 
-                    //o.MachineName = obj.MachineMaster.MachineName;
+                    o.MachineName = obj.MachineMaster.MachineName;
                     o.BalanceQty = obj.ProductQty - obj.ProductQtyCompleted;
 
                     var machines = db.MachineMouldMappings.Where(x => x.MouldID == obj.MouldID).ToList();
@@ -53,7 +53,7 @@ namespace KPIWebAPI.Controllers
                         if (!machine.IsDiscontinued && !machine.MachineMaster.IsDiscontinued)
                         {
                             var machineHistory = machine.MachineMaster.MachineHistories.LastOrDefault();
-                            var bAvailability = (machineHistory != null ? machineHistory.MachineStatusID == 101 : false);
+                            var bAvailability = (machineHistory != null ? machineHistory.MachineStatusID == (int)enumMachineStatus.NotInUse : false);
                             if (bAvailability)
                                 o.Machines.Add(new MachineAvailability { MachineID = machine.MachineID, MachineName = machine.MachineMaster.MachineName, MachineAvailable = bAvailability });
                         }
@@ -113,8 +113,8 @@ namespace KPIWebAPI.Controllers
 
                     o.RMQty = obj.ProductionProgramRMMappings.Sum(a => a.RMQty);
 
-                    o.MouldAvailable = (obj.MouldMaster.MouldHistories.LastOrDefault().MouldStatusID == 101);           // ### NotInUse
-                    //o.MachineAvailable = (obj.MachineMaster.MachineHistories.LastOrDefault().MachineStatusID == 101);   // ### NotInUse
+                    o.MouldAvailable = (obj.MouldMaster.MouldHistories.LastOrDefault().MouldStatusID == (int)enumMouldStatus.NotInUse);           // ### NotInUse
+                    o.MachineAvailable = (obj.MachineMaster.MachineHistories.LastOrDefault().MachineStatusID == (int)enumMachineStatus.NotInUse);   // ### NotInUse
 
                     if (o.Machines.Count() > 0)
                     {
@@ -174,7 +174,7 @@ namespace KPIWebAPI.Controllers
                     if (!machine.IsDiscontinued && !machine.MachineMaster.IsDiscontinued)
                     {
                         var machineHistory = machine.MachineMaster.MachineHistories.LastOrDefault();
-                        var bAvailability = (machineHistory != null ? machineHistory.MachineStatusID == 101 : false);
+                        var bAvailability = (machineHistory != null ? machineHistory.MachineStatusID == (int)enumMachineStatus.NotInUse : false);
                         if (bAvailability)
                             productionProgrameObj.Machines.Add(new MachineAvailability { MachineID = machine.MachineID, MachineName = machine.MachineMaster.MachineName, MachineAvailable = bAvailability });
                     }
@@ -222,7 +222,7 @@ namespace KPIWebAPI.Controllers
                     }
                 });
                 productionProgrameObj.RMQty = productionObj.ProductionProgramRMMappings.Sum(a => a.RMQty);
-                productionProgrameObj.MouldAvailable = (productionObj.MouldMaster.MouldHistories.LastOrDefault().MouldStatusID == 101);           // ### NotInUse
+                productionProgrameObj.MouldAvailable = (productionObj.MouldMaster.MouldHistories.LastOrDefault().MouldStatusID == (int)enumMouldStatus.NotInUse);           // ### NotInUse
                 if (productionProgrameObj.Machines.Count() > 0)
                 {
                     productionProgrameObj.MachineAvailable = (productionProgrameObj.Machines.Count() > 0);   // ### NotInUse

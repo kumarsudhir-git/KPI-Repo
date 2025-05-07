@@ -1,4 +1,5 @@
 ﻿using KPILib;
+using KPILib.Models;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -383,9 +384,56 @@ namespace KPIWebAPI.Classes
             using (KPIEntities db = new KPIEntities())
             {
                 List<SalesStatusMaster> salesStatusMaster = (from SSM in db.SalesStatusMasters
-                                                                 select SSM).ToList();
+                                                             select SSM).ToList();
                 return salesStatusMaster;
             }
         }
+        public static List<CompanyMaster> GetCompanyMasterList()
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<CompanyMaster> companyMaster = (from CM in db.CompanyMasters
+                                                     where CM.CompanyTypeID == 103 //Harcoded value for CompanyTypeId
+                                                     && CM.IsDiscontinued == false
+                                                     select CM).ToList();
+                return companyMaster;
+            }
+        }
+        public static CompanyMaster GetCompanyMasterById(int CompanyId)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                CompanyMaster companyMasterObj = (from CM in db.CompanyMasters
+                                                  where CM.CompanyID == CompanyId
+                                                  && CM.IsDiscontinued == false
+                                                  select CM).FirstOrDefault();
+                return companyMasterObj;
+            }
+        }
+        public static Company GetCompanyLocationById(int CompanyId)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                Company companyLcsnMasterObj =
+                    (from CM in db.CompanyMasters
+                     join CLM in db.CompanyLocationMasters
+                         on CM.CompanyID equals CLM.CompanyID into CLMGroup
+                     from CLM in CLMGroup.DefaultIfEmpty()
+                     where CM.CompanyID == CompanyId
+                           && CM.IsDiscontinued == false
+                     select new Company
+                     {
+                         CompanyID = CM.CompanyID,
+                         CompanyName = CM.CompanyName,
+                         LocationName = CLM != null ? CLM.LocationName : null,
+                         Notes = CM.Notes,
+                         AddedOn = CM.AddedOn,
+                         LastModifiedOn = CM.LastModifiedOn
+                     })
+                    .FirstOrDefault();
+                return companyLcsnMasterObj;
+            }
+        }
+
     }
 }

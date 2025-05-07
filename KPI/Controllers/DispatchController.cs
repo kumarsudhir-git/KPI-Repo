@@ -49,7 +49,9 @@ namespace KPI.Controllers
             Int32.TryParse(frm["txtToDispatch"].ToString(), out iToDispatchQty);
             Int32.TryParse(frm["txtToProduce"].ToString(), out iToProduceQty);
 
-            var response = KPIAPIManager.SetNewDispatchBlockValues(iSalesDetailsID, iBlockedQty, iToDispatchQty, iToProduceQty);
+            int userId = Session["UserID"] != null ? Convert.ToInt32(Session["UserID"]) : 0;
+
+            var response = KPIAPIManager.SetNewDispatchBlockValues(iSalesDetailsID, iBlockedQty, iToDispatchQty, iToProduceQty, userId);
             if (response.ResponseCode == 200)
             {
                 return RedirectToAction("GetAll", "Dispatch");

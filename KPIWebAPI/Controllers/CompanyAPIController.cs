@@ -51,7 +51,7 @@ namespace KPIWebAPI.Controllers
 
             try
             {
-                var data = db.CompanyMasters.Where(x => x.CompanyID == id && x.IsDiscontinued == false).FirstOrDefault();
+                var data = CommonFunctions.GetCompanyMasterById(id);//db.CompanyMasters.Where(x => x.CompanyID == id && x.IsDiscontinued == false).FirstOrDefault();
                 if (data != null)
                 {
                     var o = mapper.Map<CompanyMaster, KPILib.Models.Company>(data);
@@ -132,7 +132,6 @@ namespace KPIWebAPI.Controllers
             return Json(returnValue);
         }
 
-
         public IHttpActionResult Delete(KPILib.Models.Company data)
         {
             var returnValue = new CompanyResponse();
@@ -162,7 +161,6 @@ namespace KPIWebAPI.Controllers
             return Json(returnValue);
         }
 
-
         public IHttpActionResult Delete(int id)
         {
             var returnValue = new CompanyResponse();
@@ -189,6 +187,27 @@ namespace KPIWebAPI.Controllers
                 returnValue.Response.ResponseMsg = ex.Message;
             }
 
+            return Json(returnValue);
+        }
+
+        public IHttpActionResult GetCompanyMasterList()
+        {
+            CompaniesResponse returnValue = new CompaniesResponse();
+            try
+            {
+                List<CompanyMaster> companyMasterListData = CommonFunctions.GetCompanyMasterList();
+
+                returnValue.data = mapper.Map<List<Company>>(companyMasterListData);
+
+                returnValue.Response.IsSuccessful();
+
+            }
+            catch (Exception ex)
+            {
+                returnValue.Response.ResponseCode = 500;
+                returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
+            }
             return Json(returnValue);
         }
 

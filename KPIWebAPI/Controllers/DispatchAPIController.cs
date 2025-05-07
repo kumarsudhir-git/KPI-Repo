@@ -79,13 +79,14 @@ namespace KPIWebAPI.Controllers
 
         public IHttpActionResult SetNewDispatchBlockValues(Dictionary<string, int> parameters) //(int iSalesDetailsID, int iBlockedQty, int iToDispatchQty)
         {
-            int iSalesDetailsID, iBlockedQty, iToDispatchQty, iToProduceQty;
-            iSalesDetailsID = iBlockedQty = iToDispatchQty = iToProduceQty = 0;
+            int iSalesDetailsID, iBlockedQty, iToDispatchQty, iToProduceQty, userId;
+            iSalesDetailsID = iBlockedQty = iToDispatchQty = iToProduceQty = userId = 0;
 
             Int32.TryParse(parameters["iSalesDetailsID"].ToString(), out iSalesDetailsID);
             Int32.TryParse(parameters["iBlockedQty"].ToString(), out iBlockedQty);
             Int32.TryParse(parameters["iToDispatchQty"].ToString(), out iToDispatchQty);
             Int32.TryParse(parameters["iToProduceQty"].ToString(), out iToProduceQty);
+            Int32.TryParse(parameters["UserID"].ToString(), out userId);
 
             var returnValue = new ResponseObj();
 
@@ -103,11 +104,11 @@ namespace KPIWebAPI.Controllers
 
                 if (iToProduceQty > 0)
                 {
-                    //var machines = new List<int>();
-                    //foreach (var machine in item.ProductMaster.MouldMaster.MachineMouldMappings.Where(x => !x.IsDiscontinued))
-                    //    machines.Add(machine.MachineID);
+                    var machines = new List<int>();
+                    foreach (var machine in item.ProductMaster.MouldMaster.MachineMouldMappings.Where(x => !x.IsDiscontinued))
+                        machines.Add(machine.MachineID);
 
-                    //var machineID = db.MachineHistories.Where(x => machines.Contains(x.MachineID) && x.MachineStatusID == 101).FirstOrDefault().MachineID;
+                    var machineID = db.MachineHistories.Where(x => machines.Contains(x.MachineID) && x.MachineStatusID == (int)enumMachineStatus.NotInUse).FirstOrDefault().MachineID;
 
                     //var rmInventory = db.RawMaterialInventoryMasters.Where(x => x.RawMaterialID == item.ProductMaster.RawMaterialID && x.Qty > 0);
 
@@ -132,9 +133,9 @@ namespace KPIWebAPI.Controllers
                         //RMQty = (int)Math.Round(item.ProductMaster.RMReqdForUOMQty * (iToProduceQty / item.ProductMaster.MinQtyUOM), 0),
                         //RMInventoryID = rmInv.RMInventoryID,
                         MouldID = item.ProductMaster.MouldID,
-                        //MachineID = machineID,
+                        MachineID = machineID,
                         ProductQtyCompleted = 0,
-                        //UserID = 1001, //// ### admin
+                        UserID = userId, //// ### admin
                         AddedOn = DateTime.Now,
                         LastModifiedOn = DateTime.Now
                     };

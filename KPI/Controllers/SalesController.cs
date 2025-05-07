@@ -115,7 +115,7 @@ namespace KPI.Controllers
             //ViewData["RMIds"] = new SelectList(new List<SelectListItem>(), "RMId", "RMIdName");
             //ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
 
-            ViewData["CompanyLocationID"] = new SelectList(new List<SelectListItem>(), "CompanyLocationID", "CompanyLocationName");
+            ViewData["CompanyLocationID"] = new SelectList(new List<SelectListItem>(), "CompanyID", "CompanyName");
             var response = KPIAPIManager.GetSales(id, Convert.ToInt32(Session["RoleID"]));
             if (response.Response.ResponseCode == 200)
             {
@@ -142,10 +142,10 @@ namespace KPI.Controllers
                 //    });
                 //    ViewData["RMIdSelectList"] = selectLists;//new SelectList(rackMasterRspns.data, "RackID", "RackNo");
                 //}
-                VendorMasterModelResponse masterModelResponse = KPIAPIManager.GetAllVendorData();
+                CompaniesResponse masterModelResponse = KPIAPIManager.GetAllCompanyList();
                 if (masterModelResponse != null && masterModelResponse.Response.ResponseCode == 200)
                 {
-                    ViewData["CompanyLocationID"] = new SelectList(masterModelResponse.data, "VendorId", "VendorName");
+                    ViewData["CompanyLocationID"] = new SelectList(masterModelResponse.data, "CompanyID", "CompanyName");
                 }
                 //LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
 
@@ -207,7 +207,7 @@ namespace KPI.Controllers
             }
             return PartialView("_SalesLineItems", salesDetails);
         }
-           
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         //public ActionResult Add([Bind(Include = "SalesID,SalesDate,CompanyLocationID,Instructions,LineItems")] KPILib.Models.SalesMaster sale)      //FormCollection frm)       //

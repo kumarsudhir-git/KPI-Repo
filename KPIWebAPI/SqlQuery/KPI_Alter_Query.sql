@@ -731,5 +731,34 @@ VALUES (1,'Confirmed',GETDATE()),
 (80,'Partially Delivered', GETDATE()),
 (999,'Cancelled', GETDATE())
 
+----------------------------------------------------06-05-2025--------------------------------------------------------------------------------
+
+Update MenuMaster set Link = 'GetAll/Dispatch' where MenuID = 20
+
+GO
+
+SET IDENTITY_INSERT MouldStatusMaster ON;
+
+INSERT INTO MouldStatusMaster (MouldStatusID, MouldStatus, AddedOn, LastModifiedOn)
+VALUES
+(101, 'NotInUse', GETDATE(), GETDATE()),
+(102, 'InUse', GETDATE(), GETDATE()),
+(103, 'InMaintainance', GETDATE(), GETDATE()),
+(104, 'Loaned', GETDATE(), GETDATE()),
+(105, 'Discontinued', GETDATE(), GETDATE());
+
+SET IDENTITY_INSERT MouldStatusMaster OFF;
+
+GO
+INSERT INTO MouldHistory (MouldID,MouldStatusID,Description,AddedOn,NextReminderOn)
+Select MouldID,101,'First Entry',GETDATE(), NULL from MouldMaster
+
+GO
+--TRUNCATE TABLE MachineHistory
+
+GO
+INSERT INTO MachineHistory (MachineID,MachineStatusID,Description,AddedOn,NextReminderOn,IsDeleted)
+Select MachineID,101,'First Entry',GETDATE(), NULL,0 from MachineMaster
+
 ------------------------------------------------------END----------------------------------------------------------------
 

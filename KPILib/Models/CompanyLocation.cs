@@ -38,14 +38,14 @@ namespace KPILib.Models
         [Required(ErrorMessage = "{0} is required")]
         [EmailAddress]
         public string Email { get; set; }
-        [Required(ErrorMessage = "{0} is required")]
+        //[Required(ErrorMessage = "{0} is required")]
         [Url]
         public string Website { get; set; }
-        [Required(ErrorMessage = "{0} is required")]
+        //[Required(ErrorMessage = "{0} is required")]
         public string PAN { get; set; }
-        [Required(ErrorMessage = "{0} is required")]
+        //[Required(ErrorMessage = "{0} is required")]
         public string GSTN { get; set; }
-        [Required(ErrorMessage = "{0} is required")]
+        //[Required(ErrorMessage = "{0} is required")]
         public string Notes { get; set; }
         //[Required(ErrorMessage = "{0} is required")]
         //public string CompanyTypeIDs { get; set; }
