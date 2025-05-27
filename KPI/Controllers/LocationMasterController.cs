@@ -49,11 +49,11 @@ namespace KPI.Controllers
             {
                 if (locationMasterObj.LocationId == 0)
                 {
-                    locationMasterObj.AddedBy = Convert.ToInt32(Session["UserID"]);
+                    locationMasterObj.AddedBy = GetUserSessionID();
                 }
                 else
                 {
-                    locationMasterObj.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+                    locationMasterObj.ModifiedBy = GetUserSessionID();
                 }
                 var response = KPIAPIManager.SaveLocation(locationMasterObj);
                 if (response.Response.ResponseCode == 200)

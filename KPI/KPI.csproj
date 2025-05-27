@@ -575,6 +575,8 @@
     <Content Include="Views\RMInventory\GetAllFinishedGood.cshtml" />
     <Content Include="Views\RMInventory\SaveFinishedGood.cshtml" />
     <Content Include="Views\Machine\AddMachine.cshtml" />
+    <Content Include="Views\Machine\GetAllMachineMouldMappedData.cshtml" />
+    <Content Include="Views\Machine\MapMachineMould.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

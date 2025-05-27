@@ -5,17 +5,15 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
- 
-
-    <div class="top_header">
-        <h2>Get Users</h2>
-        <div>
-            @Html.ActionLink("Create New", "AddUser", "", new { @class = "btn btn-primary" })
-        </div>
+<div class="top_header">
+    <h2>Get Users</h2>
+    <div>
+        @Html.ActionLink("Create New", "AddUser", "", new { @class = "btn btn-primary" })
     </div>
-    
+</div>
+
 <div class="table-responsive">
-    <table class="table help-page-table table-sm table-striped AddDataTable" cellspacing="0"  >
+    <table class="table help-page-table table-sm table-striped AddDataTable" cellspacing="0">
         <thead>
             <tr>
                 <th>

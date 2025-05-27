@@ -760,5 +760,36 @@ GO
 INSERT INTO MachineHistory (MachineID,MachineStatusID,Description,AddedOn,NextReminderOn,IsDeleted)
 Select MachineID,101,'First Entry',GETDATE(), NULL,0 from MachineMaster
 
+--------------------------------------------------26-05-2025---------------
+GO
+
+ALTER TABLE MachineMouldMapping ADD AddedBy INT NULL
+ALTER TABLE MachineMouldMapping ADD ModifiedBy INT NULL
+
+GO
+
+CREATE PROC usp_GetMachineMouldMapData
+@orderBy NVARCHAR(20) = 'Machine'
+
+AS
+BEGIN
+
+Select MMM.MachineMouldMappingID, MMM.MachineId, MM.MachineName, MMM.MouldId, MldMstr.MouldName,
+ISNULL(UM.Username,'') AS 'AddedBy', MMM.AddedOn --,ISNULL(UsrMstr.Username,'') AS 'ModifiedBy', MMM.LastModifiedOn
+from MachineMouldMapping MMM
+--group by MMM.MachineID
+JOIN MachineMaster MM
+ON MMM.MachineID = MM.MachineID
+JOIN MouldMaster MldMstr
+ON MMM.MouldID = MldMstr.MouldID
+JOIN UserMaster UM
+ON MMM.AddedBy = UM.UserID
+--LEFT JOIN UserMaster UsrMstr
+--ON MMM.ModifiedBy = UsrMstr.UserID
+where MMM.IsDiscontinued = 0
+Order BY CASE WHEN @orderBy = 'Machine' THEN MM.MachineName ELSE MldMstr.MouldName END asc
+
+END
+
 ------------------------------------------------------END----------------------------------------------------------------
 

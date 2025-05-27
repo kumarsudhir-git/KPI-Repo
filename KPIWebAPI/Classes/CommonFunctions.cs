@@ -435,5 +435,69 @@ namespace KPIWebAPI.Classes
             }
         }
 
+        public static List<usp_GetMachineMouldMapData_Result> GetMachineMouldMappingsData(string MapType = "Machine")
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<usp_GetMachineMouldMapData_Result> machineMouldMappings = db.usp_GetMachineMouldMapData(MapType).ToList();
+                return machineMouldMappings;
+            }
+        }
+        public static List<MachineMouldMapping> GetMachineMouldMappedData(int MachineId = 0)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<MachineMouldMapping> machineMouldMappings = (from MM in db.MachineMouldMappings
+                                                                  where MM.MachineID == MachineId
+                                                                  && !MM.IsDiscontinued
+                                                                  select MM).ToList();
+                return machineMouldMappings;
+            }
+        }
+
+        public static MachineMouldMapping GetMachineMouldMappingData(int MachineMouldMappingId = 0)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                MachineMouldMapping machineMouldMapping = (from MM in db.MachineMouldMappings
+                                                           where MM.MachineMouldMappingID == MachineMouldMappingId
+                                                           && !MM.IsDiscontinued
+                                                           select MM).FirstOrDefault();
+                return machineMouldMapping;
+            }
+        }
+
+        public static List<MachineMaster> GetMachineMasters(int MachineId = 0)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<MachineMaster> machineMasters = (from MM in db.MachineMasters
+                                                      where !MM.IsDiscontinued
+                                                      select MM).ToList();
+                if (MachineId != 0)
+                {
+                    machineMasters = (from MM in machineMasters
+                                      where MM.MachineID == MachineId
+                                      select MM).ToList();
+                }
+                return machineMasters;
+            }
+        }
+        public static List<MouldMaster> GetMouldMasters(int MouldId = 0)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<MouldMaster> machineMasters = (from MM in db.MouldMasters
+                                                    where !MM.IsDiscontinued
+                                                    select MM).ToList();
+                if (MouldId != 0)
+                {
+                    machineMasters = (from MM in machineMasters
+                                      where MM.MouldID == MouldId
+                                      select MM).ToList();
+                }
+                return machineMasters;
+            }
+        }
     }
 }

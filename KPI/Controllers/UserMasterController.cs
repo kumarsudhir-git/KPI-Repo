@@ -78,7 +78,7 @@ namespace KPI.Controllers
         [HttpPost]
         public ActionResult AddUser(UserMaster userMaster)
         {
-            int SessionUserId = Convert.ToInt32(Session["UserID"]);
+            int SessionUserId = GetUserSessionID();
             UserMasterResponse userMasterResponse = KPIAPIManager.AddUpdateUserResponse(userMaster, SessionUserId);
             if (userMasterResponse != null && userMasterResponse.Response != null)
             {
@@ -125,7 +125,7 @@ namespace KPI.Controllers
                 }
             }
 
-            int SessionUserId = Convert.ToInt32(Session["UserID"]);
+            int SessionUserId = GetUserSessionID();
             userMasterResponse = new UserMasterResponse();
             if (SessionUserId == 0)
             {
@@ -219,11 +219,11 @@ namespace KPI.Controllers
             {
                 if (roleMaster.RoleID == 0)
                 {
-                    roleMaster.AddedBy = Convert.ToInt32(Session["UserID"]);
+                    roleMaster.AddedBy = GetUserSessionID();
                 }
                 else
                 {
-                    roleMaster.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+                    roleMaster.ModifiedBy = GetUserSessionID();
                 }
 
                 roleMasterResponse = KPIAPIManager.AddUpdateRoleResponse(roleMaster);
@@ -264,7 +264,7 @@ namespace KPI.Controllers
 
             roleMasterResponse = new RoleMasterResponse();
 
-            int SessionUserId = Convert.ToInt32(Session["UserID"]);
+            int SessionUserId = GetUserSessionID();
 
             if (SessionUserId == 0)
             {
@@ -356,7 +356,7 @@ namespace KPI.Controllers
         {
             if (roleRights != null && roleRights.Count() > 0)
             {
-                int UserID = Convert.ToInt32(Session["UserID"]);
+                int UserID = GetUserSessionID();
 
                 roleRights.ForEach(z =>
                 {

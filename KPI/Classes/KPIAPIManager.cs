@@ -506,6 +506,47 @@ namespace KPI.Classes
             var result = CommonFunctions.client.GetAsync("MachineAPI/GetMachineStatusMasterList").Result.Content.ReadAsAsync<MachineStatusMasterResponse>().Result;
             return result;
         }
+        public static MachineMouldMappingResponse GetAllMachineMouldMappedData()
+        {
+            var result = CommonFunctions.client.GetAsync("MachineAPI/GetAllMachineMouldMappedData").Result.Content.ReadAsAsync<MachineMouldMappingResponse>().Result;
+            return result;
+        }
+
+        public static MachineMouldMappingResponse GetMachineMouldMappedData(int MachineId = 0)
+        {
+            if (MachineId == 0)
+            {
+                return new MachineMouldMappingResponse()
+                {
+                    Response = new ResponseObj()
+                    {
+                        ResponseCode = 200
+                    }
+                };
+            }
+            var result = CommonFunctions.client.GetAsync("MachineAPI/GetMachineMouldMappedData?MachineId=" + MachineId).Result.Content.ReadAsAsync<MachineMouldMappingResponse>().Result;
+            return result;
+        }
+        public static MachineMouldMappingResponse MapMachineMould(List<KPILib.Models.MachineMouldMapping> machineMouldMapping)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("MachineAPI/MapMachineMould", machineMouldMapping).Result.Content.ReadAsAsync<MachineMouldMappingResponse>().Result;
+            return result;
+        }
+        public static MachineMouldMappingResponse DeleteMachineMouldMapping(int MachineMouldMappingId = 0, int UserId = 0)
+        {
+            var result = CommonFunctions.client.PostAsync("MachineAPI/DeleteMachineMouldMapping?MachineMouldMappingId=" + MachineMouldMappingId + "&UserId=" + UserId, null).Result.Content.ReadAsAsync<MachineMouldMappingResponse>().Result;
+            return result;
+        }
+        public static MachineMastersResponse GetMachineMasterData(int MachineId = 0)
+        {
+            var result = CommonFunctions.client.GetAsync("MachineAPI/GetMachineMasterData?MachineId=" + MachineId).Result.Content.ReadAsAsync<MachineMastersResponse>().Result;
+            return result;
+        }
+        public static MouldMastersResponse GetMouldMasterListData(int MouldId = 0)
+        {
+            var result = CommonFunctions.client.GetAsync("MouldAPI/GetMouldMasterListData?MouldId=" + MouldId).Result.Content.ReadAsAsync<MouldMastersResponse>().Result;
+            return result;
+        }
 
         #endregion    
 

@@ -99,4 +99,39 @@ namespace KPILib.Models
         public DateTime? LastModifiedOn { get; set; }
     }
 
+    public class MachineMouldMappingResponse
+    {
+        public List<MachineMouldMappingModel> data { get; set; }
+        public List<MachineMouldMapping> machineToMouldMap { get; set; }
+        public ResponseObj Response { get; set; }
+        public MachineMouldMappingResponse()
+        {
+            this.data = new List<MachineMouldMappingModel>();
+            this.machineToMouldMap = new List<MachineMouldMapping>();
+            this.Response = new ResponseObj();
+        }
+    }
+
+    public class MachineMouldMapping
+    {
+        public int MachineID { get; set; }
+        public List<int> MouldID { get; set; }
+        public int AddedBy { get; set; }
+        public DateTime AddedOn { get; set; }
+    }
+
+    public class MachineMouldMappingModel
+    {
+        public int MachineMouldMappingID { get; set; }
+        public int MachineId { get; set; }
+        public string MachineName { get; set; }
+        public int MouldId { get; set; }
+        public string MouldName { get; set; }
+        public bool IsDiscontinued { get; set; }
+        public int UserId { get; set; }
+        public string AddedBy { get; set; }
+        public DateTime AddedOn { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? LastModifiedOn { get; set; }
+    }
 }

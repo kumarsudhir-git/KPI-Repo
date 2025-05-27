@@ -224,7 +224,7 @@ namespace KPI.Controllers
 
             if (ModelState.IsValid)
             {
-                sale.UserID = Convert.ToInt32(Session["UserID"]);     //TODO: replace with UserID from session
+                sale.UserID = GetUserSessionID();     //TODO: replace with UserID from session
                 //sale.LineItems.Add(new KPILib.Models.SalesDetails { ProductID = 1002, Qty = 8 });
                 //sale.LineItems.Add(new KPILib.Models.SalesDetails { ProductID = 1003, Qty = 2 });
 
@@ -261,7 +261,7 @@ namespace KPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                sale.UserID = Convert.ToInt32(Session["UserID"]);
+                sale.UserID = GetUserSessionID();
 
                 var response = KPIAPIManager.EditSales(sale);
                 if (response.Response.ResponseCode == 200)

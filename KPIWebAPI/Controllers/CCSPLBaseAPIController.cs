@@ -179,6 +179,15 @@ namespace KPIWebAPI.Controllers
             
             cfg.CreateMap<SalesStatusMaster, KPILib.Models.SalesStatusMaster>();
             cfg.CreateMap<KPILib.Models.SalesStatusMaster, SalesStatusMaster>();
+            
+            cfg.CreateMap<usp_GetMachineMouldMapData_Result, KPILib.Models.MachineMouldMappingModel>();
+            cfg.CreateMap<KPILib.Models.MachineMouldMappingModel, usp_GetMachineMouldMapData_Result>();
+            
+            cfg.CreateMap<MachineMouldMapping, KPILib.Models.MachineMouldMappingModel>();
+            cfg.CreateMap<KPILib.Models.MachineMouldMappingModel, MachineMouldMapping>();
+            
+            cfg.CreateMap<MachineMouldMapping, KPILib.Models.MachineMouldMapping>();
+            cfg.CreateMap<KPILib.Models.MachineMouldMapping, MachineMouldMapping>();
         });
 
         public static IMapper mapper = config.CreateMapper();

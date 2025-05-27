@@ -123,7 +123,7 @@ namespace KPI.Controllers
             if (ModelState.IsValid)
             {
                 obj.PalletID = 1002;// Hard coding this value as this field is not required as of now
-                obj.AddedBy = Convert.ToInt32(Session["UserID"]);
+                obj.AddedBy = GetUserSessionID();
                 var response = KPIAPIManager.AddRMInventory(obj);
                 if (response.Response.ResponseCode == 200)
                 {
@@ -149,7 +149,7 @@ namespace KPI.Controllers
             if (ModelState.IsValid)
             {
                 obj.PalletID = 1002;// Hard coding this value as this field is not required as of now
-                obj.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+                obj.ModifiedBy = GetUserSessionID();
                 var response = KPIAPIManager.EditRMInventory(obj);
                 if (response.Response.ResponseCode == 200)
                 {
@@ -230,11 +230,11 @@ namespace KPI.Controllers
         {
             if (rMInventoryMasterBatchModel.MasterBatchId == 0)
             {
-                rMInventoryMasterBatchModel.AddedBy = Convert.ToInt32(Session["UserID"]);
+                rMInventoryMasterBatchModel.AddedBy = GetUserSessionID();
             }
             else
             {
-                rMInventoryMasterBatchModel.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+                rMInventoryMasterBatchModel.ModifiedBy = GetUserSessionID();
             }
             var response = KPIAPIManager.SaveMasterBatch(rMInventoryMasterBatchModel);
             if (response.Response.ResponseCode == 200)
@@ -265,7 +265,7 @@ namespace KPI.Controllers
                 }
             }
 
-            rMInventoryMasterBatchModel.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            rMInventoryMasterBatchModel.ModifiedBy = GetUserSessionID();
             response = KPIAPIManager.DeleteMasterBatch(rMInventoryMasterBatchModel);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
@@ -349,11 +349,11 @@ namespace KPI.Controllers
         {
             if (rMInventoryPackageBags.PackageBagId == 0)
             {
-                rMInventoryPackageBags.AddedBy = Convert.ToInt32(Session["UserID"]);
+                rMInventoryPackageBags.AddedBy = GetUserSessionID();
             }
             else
             {
-                rMInventoryPackageBags.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+                rMInventoryPackageBags.ModifiedBy = GetUserSessionID();
             }
             var response = KPIAPIManager.SavePackageBags(rMInventoryPackageBags);
             if (response.Response.ResponseCode == 200)
@@ -384,7 +384,7 @@ namespace KPI.Controllers
                 }
             }
 
-            rMInventoryPackageBags.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            rMInventoryPackageBags.ModifiedBy = GetUserSessionID();
             response = KPIAPIManager.DeletePackageBags(rMInventoryPackageBags);
             return Json(response);
         }
@@ -468,11 +468,11 @@ namespace KPI.Controllers
         {
             if (rMInventoryFinished.FinishedGoodId == 0)
             {
-                rMInventoryFinished.AddedBy = Convert.ToInt32(Session["UserID"]);
+                rMInventoryFinished.AddedBy = GetUserSessionID();
             }
             else
             {
-                rMInventoryFinished.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+                rMInventoryFinished.ModifiedBy = GetUserSessionID();
             }
             var response = KPIAPIManager.SaveFinishedGood(rMInventoryFinished);
             if (response.Response.ResponseCode == 200)
@@ -503,7 +503,7 @@ namespace KPI.Controllers
                 }
             }
 
-            rMInventoryFinished.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            rMInventoryFinished.ModifiedBy = GetUserSessionID();
             response = KPIAPIManager.DeleteFinishedGood(rMInventoryFinished);
             return Json(response, JsonRequestBehavior.AllowGet);
         }

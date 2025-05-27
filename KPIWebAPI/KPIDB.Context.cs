@@ -127,5 +127,14 @@ namespace KPIWebAPI
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryPackageBags_Result>("usp_GetRMInventoryPackageBags");
         }
+    
+        public virtual ObjectResult<usp_GetMachineMouldMapData_Result> usp_GetMachineMouldMapData(string orderBy)
+        {
+            var orderByParameter = orderBy != null ?
+                new ObjectParameter("orderBy", orderBy) :
+                new ObjectParameter("orderBy", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetMachineMouldMapData_Result>("usp_GetMachineMouldMapData", orderByParameter);
+        }
     }
 }

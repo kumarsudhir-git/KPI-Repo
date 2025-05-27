@@ -48,7 +48,7 @@ namespace KPI.Controllers
         [HttpPost]
         public ActionResult AddNew(VendorMasterModel vendorMaster)
         {
-            int SessionUserId = Convert.ToInt32(Session["UserID"]);
+            int SessionUserId = GetUserSessionID();
             if (vendorMaster.VendorId == 0)
             {
                 vendorMaster.AddedBy = SessionUserId;
@@ -86,7 +86,7 @@ namespace KPI.Controllers
                 }
             }
 
-            int SessionUserId = Convert.ToInt32(Session["UserID"]);
+            int SessionUserId = GetUserSessionID();
             vendorMasterRspnsModelObj = new VendorMasterModelResponse();
             if (SessionUserId == 0)
             {

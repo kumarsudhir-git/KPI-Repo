@@ -121,6 +121,8 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="AddedBy" Type="int" />
+          <Property Name="ModifiedBy" Type="int" />
         </EntityType>
         <EntityType Name="MachineStatusMaster">
           <Key>
@@ -1469,6 +1471,9 @@
         <Function Name="sp_GetEmptyRacks" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_GetRMInventory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="usp_GetLocationMasterAllData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="usp_GetMachineMouldMapData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="orderBy" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="usp_GetRMInventoryFinishedGood" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="usp_GetRMInventoryMasterBatch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="usp_GetRMInventoryPackageBags" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -2089,6 +2094,9 @@
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="SalesMaster" EntitySet="SalesMasters" />
           </AssociationSet>
+          <FunctionImport Name="usp_GetMachineMouldMapData" ReturnType="Collection(KPIModel.usp_GetMachineMouldMapData_Result)">
+            <Parameter Name="orderBy" Mode="In" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="sp_GetRMInventory_Result">
           <Property Type="Int32" Name="PalletID" Nullable="false" />
@@ -2279,6 +2287,8 @@
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="AddedBy" Type="Int32" />
+          <Property Name="ModifiedBy" Type="Int32" />
           <NavigationProperty Name="MachineMaster" Relationship="KPIModel.FK_MachineMouldMapping_MachineMaster" FromRole="MachineMouldMapping" ToRole="MachineMaster" />
           <NavigationProperty Name="MouldMaster" Relationship="KPIModel.FK_MachineMouldMapping_MouldMaster" FromRole="MachineMouldMapping" ToRole="MouldMaster" />
         </EntityType>
@@ -3732,6 +3742,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="usp_GetMachineMouldMapData_Result">
+          <Property Type="Int32" Name="MachineMouldMappingID" Nullable="false" />
+          <Property Type="Int32" Name="MachineId" Nullable="false" />
+          <Property Type="String" Name="MachineName" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="MouldId" Nullable="true" />
+          <Property Type="String" Name="MouldName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="AddedBy" Nullable="false" MaxLength="20" />
+          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3941,6 +3960,8 @@
           <EntitySetMapping Name="MachineMouldMappings">
             <EntityTypeMapping TypeName="KPIModel.MachineMouldMapping">
               <MappingFragment StoreEntitySet="MachineMouldMapping">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />
@@ -4605,6 +4626,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="usp_GetMachineMouldMapData" FunctionName="KPIModel.Store.usp_GetMachineMouldMapData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KPIModel.usp_GetMachineMouldMapData_Result">
+                <ScalarProperty Name="MachineMouldMappingID" ColumnName="MachineMouldMappingID" />
+                <ScalarProperty Name="MachineId" ColumnName="MachineId" />
+                <ScalarProperty Name="MachineName" ColumnName="MachineName" />
+                <ScalarProperty Name="MouldId" ColumnName="MouldId" />
+                <ScalarProperty Name="MouldName" ColumnName="MouldName" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

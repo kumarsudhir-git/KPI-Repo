@@ -409,6 +409,9 @@
     <Compile Include="usp_GetLocationMasterAllData_Result.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="usp_GetMachineMouldMapData_Result.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="usp_GetRMInventoryFinishedGood_Result.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>

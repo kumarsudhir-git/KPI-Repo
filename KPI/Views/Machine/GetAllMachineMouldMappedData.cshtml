@@ -1,0 +1,133 @@
+﻿@model IEnumerable<KPILib.Models.MachineMouldMappingModel>
+
+@{
+    ViewBag.Title = "Map Machine to Mould";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<div class="form-horizontal">
+    <div class="top_header">
+        <h2>@ViewBag.Title</h2>
+        <div>
+            @Html.ActionLink("Create New", "MapMachineMould", "", new { @class = "btn btn-primary" })
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table help-page-table table-sm table-striped AddDataTable" cellspacing="0">
+            <thead>
+                <tr>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.MachineMouldMappingID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.MachineId)
+                        </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.MachineName)
+                    </th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.MouldId)
+                        </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.MouldName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AddedBy)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AddedOn)
+                    </th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.ModifiedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastModifiedOn)
+                        </th>*@
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.MachineMouldMappingID)
+                            </td>*@
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.MachineId)
+                            </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MachineName)
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.MouldId)
+                            </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MouldName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AddedBy)
+                        </td>
+                        <td>
+                            @if (item.AddedOn != null && item.AddedOn != DateTime.MinValue)
+                            {
+                                <span>@item.AddedOn.ToShortDateString()</span>
+                            }
+                            @*@Html.DisplayFor(modelItem => item.AddedOn)*@
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.ModifiedBy)
+                            </td>
+                            <td>
+                                @if (item.LastModifiedOn != null && item.LastModifiedOn.HasValue && item.LastModifiedOn.Value != DateTime.MinValue)
+                                {
+                                    <span>@item.LastModifiedOn.Value.ToShortDateString()</span>
+                                }
+                            </td>*@
+                        <td>
+                            <a href="/Machine/MapMachineMould?MachineId=@item.MachineId" title="Edit" class="" id="UpdateMachineMouldMap"><i style="font-size:24px;" class="fa">&#xf044;</i></a> |
+                            <a href="/Machine/DeleteMapMachineMould?MachineMouldMappingId=@item.MachineMouldMappingID" title="Delete" class="" id="DeleteMachineMouldMap"><i style="font-size:24px;" class="fa fa-trash text-danger"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    $(document).on('click', '#DeleteMachineMouldMap', function (e) {
+        e.preventDefault();
+
+        // Get the delete URL with query parameter
+        const url = $(this).attr('href');
+
+        // Optional: Confirm before deletion
+        if (!confirm("Are you sure you want to delete this mapping?")) {
+            return;
+        }
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            success: function (response) {
+                if (response != null && response.Response.ResponseCode == 200) {
+                    alert("Mapping deleted successfully.");
+                    // Remove the row from the table
+                    //$(e.target).closest('tr').remove();
+                    window.location.reload();
+
+                } else {
+                    alert("Failed to delete mapping: " + (response.Message || "Unknown error."));
+                }
+            },
+            error: function (xhr) {
+                alert("An error occurred while deleting: " + xhr.statusText);
+            }
+        });
+    });
+
+</script>

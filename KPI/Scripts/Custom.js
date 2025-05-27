@@ -7,7 +7,7 @@
     InitializeDatePicker();
     InitializeDataTable();
     InitializeNumericsOnly();
-    
+    InitializeSelect2();
 })
 function AddLineItemRowGeneric(url, methodType, selector, IsAppendData = true) {
 
@@ -184,5 +184,14 @@ function InitializeNumericsOnly() {
         //    event.preventDefault();
         //    return false;
         //}
+    });
+}
+function InitializeSelect2() {
+    $('.select2').select2({
+        placeholder: function () {
+            return $(this).data('placeholder');
+        },
+        allowClear: true,
+        width: 'resolve'
     });
 }

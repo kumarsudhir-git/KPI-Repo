@@ -15,7 +15,7 @@ namespace KPI.Controllers
         {
             ResponseObj Response = new ResponseObj();
 
-            int SessionUserId = Convert.ToInt32(Session["UserID"]);
+            int SessionUserId = GetUserSessionID();
 
             if (SessionUserId == 0)
             {
@@ -28,6 +28,11 @@ namespace KPI.Controllers
                 Response.IsSuccessful();
             }
             return Response;
+        }
+
+        public int GetUserSessionID() 
+        { 
+            return Convert.ToInt32(Session["UserID"]); 
         }
     }
 }

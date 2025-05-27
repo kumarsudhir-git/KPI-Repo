@@ -10,20 +10,15 @@
 namespace KPIWebAPI
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class MachineMouldMapping
+    public partial class usp_GetMachineMouldMapData_Result
     {
         public int MachineMouldMappingID { get; set; }
-        public int MachineID { get; set; }
-        public Nullable<int> MouldID { get; set; }
-        public bool IsDiscontinued { get; set; }
+        public int MachineId { get; set; }
+        public string MachineName { get; set; }
+        public Nullable<int> MouldId { get; set; }
+        public string MouldName { get; set; }
+        public string AddedBy { get; set; }
         public System.DateTime AddedOn { get; set; }
-        public Nullable<System.DateTime> LastModifiedOn { get; set; }
-        public Nullable<int> AddedBy { get; set; }
-        public Nullable<int> ModifiedBy { get; set; }
-    
-        public virtual MachineMaster MachineMaster { get; set; }
-        public virtual MouldMaster MouldMaster { get; set; }
     }
 }

@@ -223,5 +223,31 @@ namespace KPIWebAPI.Controllers
             return mouldMaster;
         }
 
+        [HttpGet]
+        public IHttpActionResult GetMouldMasterListData(int MouldId = 0)
+        {
+            MouldMastersResponse returnValue = new MouldMastersResponse();
+            try
+            {
+                List<MouldMaster> machineMaster = CommonFunctions.GetMouldMasters(MouldId);
+                if (machineMaster != null)
+                {
+                    returnValue.data = mapper.Map<List<Mould>>(machineMaster);
+                    returnValue.Response.IsSuccessful();
+                }
+                else
+                {
+                    returnValue.Response.ResponseCode = 404;
+                    returnValue.Response.ResponseMsg = "Machine not found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                returnValue.Response.ResponseCode = 500;
+                returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
+            }
+            return Json(returnValue);
+        }
     }
 }
