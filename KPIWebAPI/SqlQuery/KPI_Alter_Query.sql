@@ -796,8 +796,8 @@ END
 INSERT INTO MenuMaster
 (MenuCode,MenuName,MenuParentID,Link)
 VALUES
-('M_Machines','Machine Mould Map',1,'GetAllMachineMouldMappedData/Machines'),
-('M_Moulds','Mould Machine Map',1,'GetAllMouldMachineMappedData/Moulds')
+('M_Machines','Machine Mould Map',1,'GetAllMachineMouldMappedData/Machine'),
+('M_Moulds','Mould Machine Map',1,'GetAllMouldMachineMappedData/Mould')
 
 ------------------------------------------------------END----------------------------------------------------------------
 
