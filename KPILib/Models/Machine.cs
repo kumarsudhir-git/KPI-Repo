@@ -116,7 +116,7 @@ namespace KPILib.Models
     {
         public int MachineID { get; set; }
         public List<int> MouldID { get; set; }
-        public int AddedBy { get; set; }
+        public int UserID { get; set; }
         public DateTime AddedOn { get; set; }
     }
 

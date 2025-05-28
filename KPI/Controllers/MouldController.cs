@@ -97,5 +97,67 @@ namespace KPI.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult GetAllMouldMachineMappedData()
+        {
+            MachineMouldMappingResponse response = KPIAPIManager.GetAllMachineMouldMappedData("Mould");
+            if (response.Response.ResponseCode == 200)
+            {
+                return View(response.data);
+            }
+            else
+            {
+                ViewBag.Error = response.Response.ResponseMsg;
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult MapMouldMachine(int MouldId = 0)
+        {
+            ViewData["MachineID"] = new SelectList(new List<SelectListItem>(), "MachineID", "MachineName");
+            ViewData["MouldID"] = new SelectList(new List<SelectListItem>(), "MouldID", "MouldName");
+            MouldMastersResponse response = KPIAPIManager.GetMouldMachineMappedData(MouldId);
+            if (response.Response.ResponseCode == 200)
+            {
+                MachineMastersResponse machineResponse = KPIAPIManager.GetMachineMasterData();
+                if (machineResponse.Response.ResponseCode == 200)
+                {
+                    ViewData["MachineID"] = new SelectList(machineResponse.data, "MachineID", "MachineName");
+                }
+                MouldMastersResponse mouldResponse = KPIAPIManager.GetMouldMasterListData();
+                if (mouldResponse.Response.ResponseCode == 200)
+                {
+                    ViewData["MouldID"] = new SelectList(mouldResponse.data, "MouldID", "MouldName");
+                }
+                return View(response.mouldMachineMapData);
+            }
+            else
+            {
+                ViewBag.Error = response.Response.ResponseMsg;
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult MapMouldMachine(List<MouldMachineMapping> mouldMachineMapping)
+        {
+            int UserID = GetUserSessionID();
+            mouldMachineMapping.ForEach(z =>
+            {
+                z.UserID = UserID;
+            });
+            MouldMastersResponse response = KPIAPIManager.MapMouldMachine(mouldMachineMapping);
+            if (response.Response.ResponseCode == 200)
+            {
+                return RedirectToAction("GetAllMouldMachineMappedData");
+            }
+            else
+            {
+                ViewBag.Error = response.Response.ResponseMsg;
+                return View("Error");
+            }
+        }
+
     }
 }

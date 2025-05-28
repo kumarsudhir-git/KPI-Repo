@@ -791,5 +791,13 @@ Order BY CASE WHEN @orderBy = 'Machine' THEN MM.MachineName ELSE MldMstr.MouldNa
 
 END
 
+-----------------------------------------------28-05-2025----------------------------------------------------------------
+
+INSERT INTO MenuMaster
+(MenuCode,MenuName,MenuParentID,Link)
+VALUES
+('M_Machines','Machine Mould Map',1,'GetAllMachineMouldMappedData/Machines'),
+('M_Moulds','Mould Machine Map',1,'GetAllMouldMachineMappedData/Moulds')
+
 ------------------------------------------------------END----------------------------------------------------------------
 

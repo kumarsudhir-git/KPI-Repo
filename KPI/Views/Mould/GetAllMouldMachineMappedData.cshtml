@@ -1,34 +1,26 @@
 ﻿@model IEnumerable<KPILib.Models.MachineMouldMappingModel>
 
 @{
-    ViewBag.Title = "Machine-Mould Mapped Data";
+    ViewBag.Title = "Mould-Machine Mapped Data";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
+
 <div class="form-horizontal">
     <div class="top_header">
         <h2>@ViewBag.Title</h2>
         <div>
-            @Html.ActionLink("Create New", "MapMachineMould", "", new { @class = "btn btn-primary" })
+            @Html.ActionLink("Create New", "MapMouldMachine", "", new { @class = "btn btn-primary" })
         </div>
     </div>
     <div class="table-responsive">
         <table class="table help-page-table table-sm table-striped AddDataTable" cellspacing="0">
             <thead>
                 <tr>
-                    @*<th>
-                            @Html.DisplayNameFor(model => model.MachineMouldMappingID)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.MachineId)
-                        </th>*@
-                    <th>
-                        @Html.DisplayNameFor(model => model.MachineName)
-                    </th>
-                    @*<th>
-                            @Html.DisplayNameFor(model => model.MouldId)
-                        </th>*@
                     <th>
                         @Html.DisplayNameFor(model => model.MouldName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MachineName)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.AddedBy)
@@ -36,12 +28,6 @@
                     <th>
                         @Html.DisplayNameFor(model => model.AddedOn)
                     </th>
-                    @*<th>
-                            @Html.DisplayNameFor(model => model.ModifiedBy)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.LastModifiedOn)
-                        </th>*@
                     <th>Action</th>
                 </tr>
             </thead>
@@ -49,20 +35,11 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.MachineMouldMappingID)
-                            </td>*@
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.MachineId)
-                            </td>*@
-                        <td>
-                            @Html.DisplayFor(modelItem => item.MachineName)
-                        </td>
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.MouldId)
-                            </td>*@
                         <td>
                             @Html.DisplayFor(modelItem => item.MouldName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MachineName)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.AddedBy)
@@ -72,19 +49,9 @@
                             {
                                 <span>@item.AddedOn.ToShortDateString()</span>
                             }
-                            @*@Html.DisplayFor(modelItem => item.AddedOn)*@
                         </td>
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.ModifiedBy)
-                            </td>
-                            <td>
-                                @if (item.LastModifiedOn != null && item.LastModifiedOn.HasValue && item.LastModifiedOn.Value != DateTime.MinValue)
-                                {
-                                    <span>@item.LastModifiedOn.Value.ToShortDateString()</span>
-                                }
-                            </td>*@
                         <td>
-                            <a href="/Machine/MapMachineMould?MachineId=@item.MachineId" title="Edit" class="" id="UpdateMachineMouldMap"><i style="font-size:24px;" class="fa">&#xf044;</i></a> |
+                            <a href="/Mould/MapMouldMachine?MouldId=@item.MouldId" title="Edit" class="" id="UpdateMachineMouldMap"><i style="font-size:24px;" class="fa">&#xf044;</i></a> |
                             <a href="/Machine/DeleteMapMachineMould?MachineMouldMappingId=@item.MachineMouldMappingID" title="Delete" class="" id="DeleteMachineMouldMap"><i style="font-size:24px;" class="fa fa-trash text-danger"></i></a>
                         </td>
                     </tr>
@@ -93,7 +60,6 @@
         </table>
     </div>
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

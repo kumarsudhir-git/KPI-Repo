@@ -135,7 +135,7 @@ namespace KPI.Controllers
             int UserID = GetUserSessionID();
             machineMouldMapping.ForEach(z =>
             {
-                z.AddedBy = UserID;
+                z.UserID = UserID;
             });
             MachineMouldMappingResponse response = KPIAPIManager.MapMachineMould(machineMouldMapping);
             if (response.Response.ResponseCode == 200)

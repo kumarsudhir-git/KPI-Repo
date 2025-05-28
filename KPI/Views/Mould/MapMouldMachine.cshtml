@@ -1,19 +1,8 @@
-﻿@*@model KPILib.Models.MachineMouldMapping*@
-@model List<KPILib.Models.MachineMouldMapping>
+﻿@model List<KPILib.Models.MouldMachineMapping>
 
 @{
-    ViewBag.Title = "Map Machine - Moulds";
+    ViewBag.Title = "Map Mould - Machine";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-
-    @*<style>
-        .toast-strong-danger {
-            background-color: #dc3545 !important;
-            color: #fff !important;
-            opacity: 1 !important;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-    </style>*@
 
     var machineSelectList = ViewData["MachineID"] as SelectList;
     var mouldSelectList = ViewData["MouldID"] as SelectList;
@@ -21,20 +10,13 @@
 
 <div class="form-horizontal">
 
-    @*<div id="validationSummary" class="alert alert-danger" style="display:none;"></div>*@
-
     <div class="top_header">
         <h2>@ViewBag.Title</h2>
         <div class="back_btn">
-            @Html.ActionLink("Back to List", "GetAllMachineMouldMappedData", new { id = ViewBag.TypeID })
+            @Html.ActionLink("Back to List", "GetAllMouldMachineMappedData", new { id = ViewBag.TypeID })
         </div>
     </div>
 
-    @*<div class="col-md-12">
-            <div class="col-md-offset-9 col-md-3">
-                <button type="button" id="addRow" class="btn btn-primary">Add Row</button>
-            </div>
-        </div>*@
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-primary" id="addRow">
             <i class="fa fa-plus"></i> Add
@@ -50,8 +32,8 @@
             <table id="mappingTable" class="table help-page-table table-sm table-striped" cellspacing="0" style="border:1px solid #000">
                 <thead>
                     <tr>
-                        <th>Machine</th>
-                        <th>Mould(s)</th>
+                        <th>Mould</th>
+                        <th>Machine(s)</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -60,18 +42,17 @@
                     {
                         for (int i = 0; i < Model.Count(); i++)
                         {
-                            var machineSelectListForRow = new SelectList(machineSelectList, "Value", "Text", Model[i].MachineID);
+                            var mouldSelectListForRow = new SelectList(mouldSelectList, "Value", "Text", Model[i].MouldID);
                             <tr>
                                 <td>
-                                    @Html.DropDownListFor(modelItem => Model[i].MachineID, machineSelectListForRow, "--Select--", new { @class = "form-control machine-select select2" })
+                                    @Html.DropDownListFor(modelItem => Model[i].MouldID, mouldSelectListForRow, "--Select--", new { @class = "form-control mould-select select2" })
                                 </td>
                                 <td>
-                                    @*@Html.DropDownListFor(modelItem => Model[i].MouldID, mouldSelectList, "--Select Mould(s)--", new { @class = "form-control mold-select select2", multiple = "multiple" })*@
-                                    <select name="[@i].MouldID" class="form-control mold-select select2" multiple="multiple" data-placeholder="--Select Mould(s)--" style="width:100%;">
-                                        @foreach (var mold in mouldSelectList)
+                                    <select name="[@i].MachineID" class="form-control machine-select select2" multiple="multiple" data-placeholder="--Select Machine(s)--" style="width:100%;">
+                                        @foreach (var machineIds in machineSelectList)
                                         {
-                                            var selected = Model[i].MouldID.Contains(int.Parse(mold.Value)) ? "selected" : "";
-                                            <option value="@mold.Value" @selected>@mold.Text</option>
+                                            var selected = Model[i].MachineID.Contains(int.Parse(machineIds.Value)) ? "selected" : "";
+                                            <option value="@machineIds.Value" @selected>@machineIds.Text</option>
                                         }
                                     </select>
                                 </td>
@@ -132,24 +113,25 @@
     }
 
     // Data from server
+    var mouldOptions = @Html.Raw(Json.Encode(
+    ((SelectList)ViewData["MouldID"]).Select(x => new { x.Value, x.Text })
+    ));
+
     var machineOptions = @Html.Raw(Json.Encode(
         ((SelectList)ViewData["MachineID"]).Select(x => new { x.Value, x.Text })
     ));
-    var moldOptions = @Html.Raw(Json.Encode(
-        ((SelectList)ViewData["MouldID"]).Select(x => new { x.Value, x.Text })
-    ));
 
-    function getSelectedMachineIds() {
-        return $('.machine-select').map(function () {
+    function getSelectedMouldIds() {
+        return $('.mould-select').map(function () {
             return $(this).val();
         }).get().filter(v => v);
     }
 
-    function generateMachineSelect(index) {
-        let html = `<select class="form-control machine-select select2" name="[${index}].MachineID" style="width: 100%;">`;
+    function generateMouldSelect(index) {
+        let html = `<select class="form-control mould-select select2" name="[${index}].MouldID" style="width: 100%;">`;
         html += '<option value="">--Select--</option>';
-        let selected = getSelectedMachineIds();
-        machineOptions.forEach(opt => {
+        let selected = getSelectedMouldIds();
+        mouldOptions.forEach(opt => {
             if (!selected.includes(opt.Value)) {
                 html += `<option value="${opt.Value}">${opt.Text}</option>`;
             }
@@ -158,9 +140,9 @@
         return html;
     }
 
-    function generateMoldMultiSelect(index) {
-        let html = `<select multiple class="form-control mold-select select2" name="[${index}].MouldID" style="width: 100%;" data-placeholder="--Select Mould(s)--">`;
-        moldOptions.forEach(opt => {
+    function generateMachineMultiSelect(index) {
+        let html = `<select multiple class="form-control machine-select select2" name="[${index}].MachineID" style="width: 100%;" data-placeholder="--Select Machine(s)--">`;
+        machineOptions.forEach(opt => {
             html += `<option value="${opt.Value}">${opt.Text}</option>`;
         });
         html += '</select>';
@@ -170,8 +152,8 @@
     $('#addRow').click(function () {
         let index = $('#mappingTable tbody tr').length;
         let rowHtml = `<tr>
-            <td>${generateMachineSelect(index)}</td>
-            <td>${generateMoldMultiSelect(index)}</td>
+            <td>${generateMouldSelect(index)}</td>
+            <td>${generateMachineMultiSelect(index)}</td>
             <td><a href="#" class="deleteRow"><i class="fa fa-trash text-danger" style="font-size: 24px;"></i></a></td>
         </tr>`;
         $('#mappingTable tbody').append(rowHtml);
@@ -185,38 +167,18 @@
         e.preventDefault();
         $(this).closest('tr').remove();
         // Rebuild machine dropdowns after deletion
-        refreshMachineDropdowns();
+        refreshMouldDropdowns();
         updateDeleteIconsVisibility();
     });
 
-    // Prevent duplicate Machine selection
-    //$(document).on('change', '.machine-select', function () {
-    //    let selectedMachines = getSelectedMachineIds();
-    //    $('.machine-select').each(function () {
-    //        let $dropdown = $(this);
-    //        let currentVal = $dropdown.val();
-    //        let index = $dropdown.attr('name').match(/\[(\d+)\]/)[1];
-
-    //        $dropdown.empty().append('<option value="">--Select--</option>');
-    //        machineOptions.forEach(opt => {
-    //            if (!selectedMachines.includes(opt.Value) || opt.Value === currentVal) {
-    //                let selected = (opt.Value === currentVal) ? 'selected' : '';
-    //                $dropdown.append(`<option value="${opt.Value}" ${selected}>${opt.Text}</option>`);
-    //            }
-    //        });
-
-    //        $dropdown.trigger('change.select2');
-    //    });
-    //});
-
-    $(document).on('change', '.machine-select', function () {
-        refreshMachineDropdowns();
+    $(document).on('change', '.mould-select', function () {
+        refreshMouldDropdowns();
     });
 
-    function refreshMachineDropdowns() {
-        let selectedMachines = getSelectedMachineIds();
+    function refreshMouldDropdowns() {
+        let selectedMoulds = getSelectedMouldIds();
 
-        $('.machine-select').each(function () {
+        $('.mould-select').each(function () {
             let $dropdown = $(this);
             let currentVal = $dropdown.val(); // get current value before refreshing
             let indexMatch = $dropdown.attr('name').match(/\[(\d+)\]/);
@@ -225,9 +187,9 @@
             let index = indexMatch[1];
 
             $dropdown.empty().append('<option value="">--Select--</option>');
-            machineOptions.forEach(opt => {
+            mouldOptions.forEach(opt => {
                 // allow selected machine or unselected machines
-                if (!selectedMachines.includes(opt.Value) || opt.Value === currentVal) {
+                if (!selectedMoulds.includes(opt.Value) || opt.Value === currentVal) {
                     let selected = opt.Value === currentVal ? 'selected' : '';
                     $dropdown.append(`<option value="${opt.Value}" ${selected}>${opt.Text}</option>`);
                 }
@@ -266,21 +228,21 @@
         let errorMsg = "";
 
         $('#mappingTable tbody tr').each(function (index, row) {
+            const mouldSelect = $(row).find('.mould-select');
             const machineSelect = $(row).find('.machine-select');
-            const moldSelect = $(row).find('.mold-select');
 
-            const machineId = machineSelect.val();
-            const selectedMoulds = moldSelect.val();
+            const mouldId = mouldSelect.val();
+            const selectedMachines = machineSelect.val();
 
-            if (!machineId || machineId === "0") {
+            if (!mouldId || mouldId === "0") {
                 isValid = false;
-                errorMsg += `Row ${index + 1}: Please select a Machine.<br/>`;
+                errorMsg += `Row ${index + 1}: Please select a Mould.<br/>`;
             }
 
-            if (machineId && machineId !== "0") {
-                if (!selectedMoulds || selectedMoulds.length === 0) {
+            if (mouldId && mouldId !== "0") {
+                if (!selectedMachines || selectedMachines.length === 0) {
                     isValid = false;
-                    errorMsg += `Row ${index + 1}: Please select at least one Mould for the selected Machine.<br/>`;
+                    errorMsg += `Row ${index + 1}: Please select at least one Machine for the selected Mould.<br/>`;
                 }
             }
         });

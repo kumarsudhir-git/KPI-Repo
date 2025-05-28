@@ -249,5 +249,102 @@ namespace KPIWebAPI.Controllers
             }
             return Json(returnValue);
         }
+
+        [HttpGet]
+        public IHttpActionResult GetMouldMachineMappedData(int MouldId = 0)
+        {
+            MouldMastersResponse returnValue = new MouldMastersResponse();
+            try
+            {
+                List<MachineMouldMapping> machineMouldMappings = CommonFunctions.GetMouldMachineMappedData(MouldId);
+
+                returnValue.mouldMachineMapData = ConvertToMouldMachineMapDto(machineMouldMappings);
+
+                returnValue.Response.IsSuccessful();
+            }
+            catch (Exception ex)
+            {
+                returnValue.Response.ResponseCode = 500;
+                returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
+            }
+            return Json(returnValue);
+        }
+
+        [HttpPost]
+        public IHttpActionResult MapMouldMachine(List<KPILib.Models.MouldMachineMapping> mouldMachineMapping)
+        {
+            MouldMastersResponse returnValue = new MouldMastersResponse();
+            using (var scope = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (mouldMachineMapping == null || mouldMachineMapping.Count == 0)
+                    {
+                        returnValue.Response.ResponseCode = 400;
+                        returnValue.Response.ResponseMsg = "Invalid Machine or Mould ID.";
+                        return Json(returnValue);
+                    }
+
+                    foreach (var item in mouldMachineMapping)
+                    {
+                        if (item.MouldID != 0)
+                        {
+                            List<MachineMouldMapping> machineMouldMappings = CommonFunctions.GetMouldMachineMappedData(item.MouldID);
+
+                            if (machineMouldMappings != null && machineMouldMappings.Count > 0)
+                            {
+                                machineMouldMappings.ForEach(z =>
+                                {
+                                    z.IsDiscontinued = true;
+                                    z.ModifiedBy = item.UserID;
+                                    z.LastModifiedOn = DateTime.Now;
+                                    db.Entry(z).State = System.Data.Entity.EntityState.Modified;
+                                });
+                            }
+
+                            item.MachineID.ForEach(x =>
+                            {
+                                MachineMouldMapping machineMouldMap = new MachineMouldMapping
+                                {
+                                    MachineID = x,
+                                    MouldID = item.MouldID,
+                                    AddedOn = DateTime.Now,
+                                    AddedBy = item.UserID
+                                };
+                                db.MachineMouldMappings.Add(machineMouldMap);
+                            });
+                        }
+                    }
+                    db.SaveChanges();
+                    returnValue.Response.IsSuccessful();
+                    scope.Commit();
+                }
+                catch (Exception ex)
+                {
+                    returnValue.Response.ResponseCode = 500;
+                    returnValue.Response.ResponseMsg = ex.Message;
+                    CommonLogger.Error(ex, ex.Message);
+                    scope.Rollback();
+                }
+            }
+            return Json(returnValue);
+        }
+
+        private List<MouldMachineMapping> ConvertToMouldMachineMapDto(List<MachineMouldMapping> flatList)
+        {
+            var result = flatList
+                .Where(x => x.MouldID.HasValue) // Optional: filter out nulls
+                .GroupBy(x => x.MouldID)
+                .Select(group => new KPILib.Models.MouldMachineMapping
+                {
+                    MouldID = group.Key.Value,
+                    MachineID = group.Select(x => x.MachineID).Distinct().ToList()
+                })
+                .ToList();
+
+            return result;
+        }
+
     }
 }

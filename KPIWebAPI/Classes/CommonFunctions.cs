@@ -499,5 +499,18 @@ namespace KPIWebAPI.Classes
                 return machineMasters;
             }
         }
+
+        public static List<MachineMouldMapping> GetMouldMachineMappedData(int MouldId = 0)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                List<MachineMouldMapping> machineMouldMappings = (from MM in db.MachineMouldMappings
+                                                                  where MM.MouldID == MouldId
+                                                                  && !MM.IsDiscontinued
+                                                                  select MM).ToList();
+                return machineMouldMappings;
+            }
+        }
+
     }
 }

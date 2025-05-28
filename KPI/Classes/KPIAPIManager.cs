@@ -473,6 +473,26 @@ namespace KPI.Classes
             return result;
         }
 
+        public static MouldMastersResponse MapMouldMachine(List<KPILib.Models.MouldMachineMapping> machineMouldMapping)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("MouldAPI/MapMouldMachine", machineMouldMapping).Result.Content.ReadAsAsync<MouldMastersResponse>().Result;
+            return result;
+        }
+        public static MouldMastersResponse GetMouldMachineMappedData(int MouldId = 0)
+        {
+            if (MouldId == 0)
+            {
+                return new MouldMastersResponse()
+                {
+                    Response = new ResponseObj()
+                    {
+                        ResponseCode = 200
+                    }
+                };
+            }
+            var result = CommonFunctions.client.GetAsync("MouldAPI/GetMouldMachineMappedData?MouldId=" + MouldId).Result.Content.ReadAsAsync<MouldMastersResponse>().Result;
+            return result;
+        }
         #endregion    
 
         #region API calls for Machine
@@ -506,9 +526,9 @@ namespace KPI.Classes
             var result = CommonFunctions.client.GetAsync("MachineAPI/GetMachineStatusMasterList").Result.Content.ReadAsAsync<MachineStatusMasterResponse>().Result;
             return result;
         }
-        public static MachineMouldMappingResponse GetAllMachineMouldMappedData()
+        public static MachineMouldMappingResponse GetAllMachineMouldMappedData(string MapType = "Machine")
         {
-            var result = CommonFunctions.client.GetAsync("MachineAPI/GetAllMachineMouldMappedData").Result.Content.ReadAsAsync<MachineMouldMappingResponse>().Result;
+            var result = CommonFunctions.client.GetAsync("MachineAPI/GetAllMachineMouldMappedData?MapType=" + MapType).Result.Content.ReadAsAsync<MachineMouldMappingResponse>().Result;
             return result;
         }
 

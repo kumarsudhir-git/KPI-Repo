@@ -70,11 +70,13 @@ namespace KPILib.Models
     public class MouldMastersResponse
     {
         public List<Mould> data { get; set; }
+        public List<MouldMachineMapping> mouldMachineMapData { get; set; }
         public ResponseObj Response { get; set; }
 
         public MouldMastersResponse()
         {
             this.data = new List<Mould>();
+            mouldMachineMapData = new List<MouldMachineMapping>();
             this.Response = new ResponseObj();
         }
     }
@@ -87,5 +89,13 @@ namespace KPILib.Models
         public bool IsDiscontinued { get; set; }
         //public DateTime AddedOn { get; set; }
         //public DateTime? LastModifiedOn { get; set; }
+    }
+
+    public class MouldMachineMapping
+    {
+        public int MouldID { get; set; }
+        public List<int> MachineID { get; set; }
+        public int UserID { get; set; }
+        public DateTime AddedOn { get; set; }
     }
 }

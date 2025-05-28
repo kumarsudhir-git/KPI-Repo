@@ -269,12 +269,12 @@ namespace KPIWebAPI.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetAllMachineMouldMappedData()
+        public IHttpActionResult GetAllMachineMouldMappedData(string MapType = "Machine")
         {
             MachineMouldMappingResponse returnValue = new MachineMouldMappingResponse();
             try
             {
-                List<usp_GetMachineMouldMapData_Result> machineMouldMappings = CommonFunctions.GetMachineMouldMappingsData();
+                List<usp_GetMachineMouldMapData_Result> machineMouldMappings = CommonFunctions.GetMachineMouldMappingsData(MapType);
                 returnValue.data = mapper.Map<List<MachineMouldMappingModel>>(machineMouldMappings);
                 returnValue.Response.IsSuccessful();
             }
@@ -334,6 +334,8 @@ namespace KPIWebAPI.Controllers
                                 machineMouldMappings.ForEach(z =>
                                 {
                                     z.IsDiscontinued = true;
+                                    z.ModifiedBy = item.UserID;
+                                    z.LastModifiedOn = DateTime.Now;
                                     db.Entry(z).State = System.Data.Entity.EntityState.Modified;
                                 });
                             }
@@ -345,7 +347,7 @@ namespace KPIWebAPI.Controllers
                                     MachineID = item.MachineID,
                                     MouldID = x,
                                     AddedOn = DateTime.Now,
-                                    AddedBy = item.AddedBy
+                                    AddedBy = item.UserID
                                 };
                                 db.MachineMouldMappings.Add(machineMouldMap);
                             });
@@ -399,7 +401,7 @@ namespace KPIWebAPI.Controllers
 
         private List<KPILib.Models.MachineMouldMapping> ConvertToMachineMouldMapDto(List<MachineMouldMapping> flatList)
         {
-            var result = flatList
+            List<KPILib.Models.MachineMouldMapping> result = flatList
                 .Where(x => x.MouldID.HasValue) // Optional: filter out nulls
                 .GroupBy(x => x.MachineID)
                 .Select(group => new KPILib.Models.MachineMouldMapping

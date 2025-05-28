@@ -577,6 +577,8 @@
     <Content Include="Views\Machine\AddMachine.cshtml" />
     <Content Include="Views\Machine\GetAllMachineMouldMappedData.cshtml" />
     <Content Include="Views\Machine\MapMachineMould.cshtml" />
+    <Content Include="Views\Mould\GetAllMouldMachineMappedData.cshtml" />
+    <Content Include="Views\Mould\MapMouldMachine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
