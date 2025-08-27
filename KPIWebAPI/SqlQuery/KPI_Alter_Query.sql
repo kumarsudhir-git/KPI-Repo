@@ -799,5 +799,18 @@ VALUES
 ('M_Machines','Machine Mould Map',1,'GetAllMachineMouldMappedData/Machine'),
 ('M_Moulds','Mould Machine Map',1,'GetAllMouldMachineMappedData/Mould')
 
+------------------------------------------------25-08-2025----------------------------------------------------------------
+
+ALTER TABLE RawMaterialMaster ADD RMGrade NVARCHAR(MAX) NULL
+
+ALTER TABLE ProductMaster
+ADD MaximumSellingPrice DECIMAL(18,2) NOT NULL DEFAULT(0.00);	
+
+ALTER TABLE ProductMaster ADD Colour NVARCHAR(250) NULL;
+
+ALTER TABLE ProductRawMaterialMapping
+ADD RMQty DECIMAL(18,2) NOT NULL DEFAULT(0.00),
+    RMGrade NVARCHAR(20) NULL;
+
 ------------------------------------------------------END----------------------------------------------------------------
 

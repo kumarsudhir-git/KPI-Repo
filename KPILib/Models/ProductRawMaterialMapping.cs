@@ -21,6 +21,12 @@ namespace KPILib.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Required")]
         [Display(Name = "Unit Type")]
         public byte UnitType { get; set; }
+        
+        [Display(Name = "RM Quantity")]
+        public decimal RMQty { get; set; }
+
+        [Display(Name = "RM Grade")]
+        public string RMGrade { get; set; }
         public DateTime AddedOn { get; set; }
         public DateTime? LastModifiedOn { get; set; }
         public bool IsDeleted { get; set; }

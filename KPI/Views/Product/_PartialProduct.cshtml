@@ -14,14 +14,22 @@
             @Html.ValidationMessageFor(model => model.RawMaterialID, "", new { @class = "text-danger" })
         </td>
         <td>
+            @Html.EditorFor(model => model.RMGrade, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.RMGrade, "", new { @class = "text-danger" })
+        </td>
+        <td>
             @*@Html.LabelFor(model => model.RMReqdForUOMQty, htmlAttributes: new { @class = "control-label" })<br />*@
             @*@Html.EditorFor(model => model.RMReqdForUOMQty, new { htmlAttributes = new { @class = "form-control" } })*@
             @Html.EditorFor(model => model.RMGradeUsed, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.RMGradeUsed, "", new { @class = "text-danger" })
         </td>
+        <td>
+            @Html.EditorFor(model => model.RMQty, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.RMQty, "", new { @class = "text-danger" })
+        </td>
         <!--<td>-->
-            @*@Html.LabelFor(model => model.UnitType, htmlAttributes: new { @class = "control-label" })<br />*@
-            <!--@Html.DropDownListFor(model => model.UnitType, ViewBag.UnitMaster as SelectList, "--Select Unit--", new { @class = "form-control" })
+        @*@Html.LabelFor(model => model.UnitType, htmlAttributes: new { @class = "control-label" })<br />*@
+        <!--@Html.DropDownListFor(model => model.UnitType, ViewBag.UnitMaster as SelectList, "--Select Unit--", new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.UnitType, "", new { @class = "text-danger" })
         </td>-->
         <td>

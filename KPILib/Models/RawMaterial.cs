@@ -23,6 +23,8 @@ namespace KPILib.Models
         [DataType(DataType.Text)]
         [Display(Name = "Raw Matarial")]
         public string RawMaterialName { get; set; }
+        [Display(Name = "RM Grade")]
+        public string RMGrade { get; set; }
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Required")]

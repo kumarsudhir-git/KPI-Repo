@@ -53,7 +53,13 @@ namespace KPILib.Models
 
         [Display(Name = "Raw Material")]
         public int RawMaterialID { get; set; }
-        
+
+        [Display(Name = "Max Selling Price")]
+        public decimal MaximumSellingPrice { get; set; }
+
+        [Display(Name = "Colour")]
+        public string Colour { get; set; }
+
         //[Display(Name = "Raw Material")]
         //public string RawMaterial { get; set; }
         public List<RawMaterial> RawMaterials { get; set; }

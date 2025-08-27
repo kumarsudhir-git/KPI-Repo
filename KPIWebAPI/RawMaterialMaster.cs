@@ -33,6 +33,7 @@ namespace KPIWebAPI
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }
         public Nullable<int> VendorId { get; set; }
+        public string RMGrade { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductionProgramRMMapping> ProductionProgramRMMappings { get; set; }

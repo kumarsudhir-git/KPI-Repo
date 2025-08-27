@@ -380,6 +380,8 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="MaximumSellingPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Colour" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="ProductRawMaterialMapping">
           <Key>
@@ -394,6 +396,8 @@
           <Property Name="LastModifiedOn" Type="datetime" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="RMGradeUsed" Type="int" />
+          <Property Name="RMQty" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="RMGrade" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="PurchaseDetails">
           <Key>
@@ -501,6 +505,7 @@
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
           <Property Name="VendorId" Type="int" />
+          <Property Name="RMGrade" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="RMInventoryFinishedGood">
           <Key>
@@ -1794,6 +1799,9 @@
           <FunctionImport Name="usp_GetRMInventoryFinishedGood" ReturnType="Collection(KPIModel.usp_GetRMInventoryFinishedGood_Result)" />
           <FunctionImport Name="usp_GetRMInventoryMasterBatch" ReturnType="Collection(KPIModel.usp_GetRMInventoryMasterBatch_Result)" />
           <FunctionImport Name="usp_GetRMInventoryPackageBags" ReturnType="Collection(KPIModel.usp_GetRMInventoryPackageBags_Result)" />
+          <FunctionImport Name="usp_GetMachineMouldMapData" ReturnType="Collection(KPIModel.usp_GetMachineMouldMapData_Result)">
+          <Parameter Name="orderBy" Mode="In" Type="String" />
+          </FunctionImport>
           <EntitySet Name="CompanyLocationMasters" EntityType="KPIModel.CompanyLocationMaster" />
           <EntitySet Name="CompanyMasters" EntityType="KPIModel.CompanyMaster" />
           <EntitySet Name="CompanyTypeMasters" EntityType="KPIModel.CompanyTypeMaster" />
@@ -2094,9 +2102,6 @@
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="SalesMaster" EntitySet="SalesMasters" />
           </AssociationSet>
-          <FunctionImport Name="usp_GetMachineMouldMapData" ReturnType="Collection(KPIModel.usp_GetMachineMouldMapData_Result)">
-            <Parameter Name="orderBy" Mode="In" Type="String" />
-          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="sp_GetRMInventory_Result">
           <Property Type="Int32" Name="PalletID" Nullable="false" />
@@ -2160,6 +2165,15 @@
           <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
           <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
           <Property Type="String" Name="ModifiedByName" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="usp_GetMachineMouldMapData_Result">
+          <Property Type="Int32" Name="MachineMouldMappingID" Nullable="false" />
+          <Property Type="Int32" Name="MachineId" Nullable="false" />
+          <Property Type="String" Name="MachineName" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="MouldId" Nullable="true" />
+          <Property Type="String" Name="MouldName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="AddedBy" Nullable="false" MaxLength="20" />
+          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
         </ComplexType>
         <EntityType Name="CompanyLocationMaster">
           <Key>
@@ -2586,6 +2600,8 @@
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="MaximumSellingPrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Colour" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MouldMaster" Relationship="KPIModel.FK_ProductMaster_MouldMaster" FromRole="ProductMaster" ToRole="MouldMaster" />
           <NavigationProperty Name="ProdReadyStoreds" Relationship="KPIModel.FK_ProdReadyStored_ProductMaster" FromRole="ProductMaster" ToRole="ProdReadyStored" />
           <NavigationProperty Name="ProductGroupDetails" Relationship="KPIModel.FK_ProductGroupDetails_ProductMaster" FromRole="ProductMaster" ToRole="ProductGroupDetail" />
@@ -2611,6 +2627,8 @@
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="RMGradeUsed" Type="Int32" />
+          <Property Name="RMQty" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RMGrade" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ProductMaster" Relationship="KPIModel.FK_ProductMaster_ID" FromRole="ProductRawMaterialMapping" ToRole="ProductMaster" />
           <NavigationProperty Name="RawMaterialMaster" Relationship="KPIModel.FK_ProductRawMaterial_ID" FromRole="ProductRawMaterialMapping" ToRole="RawMaterialMaster" />
         </EntityType>
@@ -2745,6 +2763,7 @@
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
           <Property Name="VendorId" Type="Int32" />
+          <Property Name="RMGrade" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ProductionProgramRMMappings" Relationship="KPIModel.FK_RawMaterial_ID" FromRole="RawMaterialMaster" ToRole="ProductionProgramRMMapping" />
           <NavigationProperty Name="ProductionRawMaterials" Relationship="KPIModel.FK_ProductionRawMaterial_RawMaterialMaster" FromRole="RawMaterialMaster" ToRole="ProductionRawMaterial" />
           <NavigationProperty Name="ProductRawMaterialMappings" Relationship="KPIModel.FK_ProductRawMaterial_ID" FromRole="RawMaterialMaster" ToRole="ProductRawMaterialMapping" />
@@ -3742,15 +3761,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="usp_GetMachineMouldMapData_Result">
-          <Property Type="Int32" Name="MachineMouldMappingID" Nullable="false" />
-          <Property Type="Int32" Name="MachineId" Nullable="false" />
-          <Property Type="String" Name="MachineName" Nullable="false" MaxLength="50" />
-          <Property Type="Int32" Name="MouldId" Nullable="true" />
-          <Property Type="String" Name="MouldName" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="AddedBy" Nullable="false" MaxLength="20" />
-          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
-        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3840,6 +3850,19 @@
                 <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_GetMachineMouldMapData" FunctionName="KPIModel.Store.usp_GetMachineMouldMapData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KPIModel.usp_GetMachineMouldMapData_Result">
+                <ScalarProperty Name="MachineMouldMappingID" ColumnName="MachineMouldMappingID" />
+                <ScalarProperty Name="MachineId" ColumnName="MachineId" />
+                <ScalarProperty Name="MachineName" ColumnName="MachineName" />
+                <ScalarProperty Name="MouldId" ColumnName="MouldId" />
+                <ScalarProperty Name="MouldName" ColumnName="MouldName" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -4231,6 +4254,8 @@
           <EntitySetMapping Name="ProductMasters">
             <EntityTypeMapping TypeName="KPIModel.ProductMaster">
               <MappingFragment StoreEntitySet="ProductMaster">
+                <ScalarProperty Name="Colour" ColumnName="Colour" />
+                <ScalarProperty Name="MaximumSellingPrice" ColumnName="MaximumSellingPrice" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />
@@ -4252,6 +4277,8 @@
           <EntitySetMapping Name="ProductRawMaterialMappings">
             <EntityTypeMapping TypeName="KPIModel.ProductRawMaterialMapping">
               <MappingFragment StoreEntitySet="ProductRawMaterialMapping">
+                <ScalarProperty Name="RMGrade" ColumnName="RMGrade" />
+                <ScalarProperty Name="RMQty" ColumnName="RMQty" />
                 <ScalarProperty Name="RMGradeUsed" ColumnName="RMGradeUsed" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
@@ -4369,6 +4396,7 @@
           <EntitySetMapping Name="RawMaterialMasters">
             <EntityTypeMapping TypeName="KPIModel.RawMaterialMaster">
               <MappingFragment StoreEntitySet="RawMaterialMaster">
+                <ScalarProperty Name="RMGrade" ColumnName="RMGrade" />
                 <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
@@ -4626,19 +4654,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="usp_GetMachineMouldMapData" FunctionName="KPIModel.Store.usp_GetMachineMouldMapData">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="KPIModel.usp_GetMachineMouldMapData_Result">
-                <ScalarProperty Name="MachineMouldMappingID" ColumnName="MachineMouldMappingID" />
-                <ScalarProperty Name="MachineId" ColumnName="MachineId" />
-                <ScalarProperty Name="MachineName" ColumnName="MachineName" />
-                <ScalarProperty Name="MouldId" ColumnName="MouldId" />
-                <ScalarProperty Name="MouldName" ColumnName="MouldName" />
-                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
-                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

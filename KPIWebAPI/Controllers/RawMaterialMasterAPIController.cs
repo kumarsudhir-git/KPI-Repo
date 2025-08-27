@@ -136,6 +136,7 @@ namespace KPIWebAPI.Controllers
                 if (o != null)
                 {
                     o.RawMaterialName = data.RawMaterialName;
+                    o.RMGrade = data.RMGrade;
                     o.Description = data.Description;
                     o.UOMID = data.UOMID;
                     o.IsDiscontinued = data.IsDiscontinued;
