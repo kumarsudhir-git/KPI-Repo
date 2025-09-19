@@ -138,6 +138,9 @@ namespace KPIWebAPI.Controllers
                         o.RunningCavities = data.RunningCavities;
                         o.CorePins = data.CorePins;
                         o.LastModifiedOn = DateTime.Now;
+                        o.MaintenanceFrequency = data.MaintenanceFrequency;
+                        o.LastMaintenanceDate = data.LastMaintenanceDate;
+                        o.PurchaseDate = data.PurchaseDate;
 
                         db.Entry(o).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
@@ -170,6 +173,9 @@ namespace KPIWebAPI.Controllers
                     o.MouldTypeID = data.MouldTypeID; //TODO: Default UOM              //data.UOMID;
                     o.IsDiscontinued = data.IsDiscontinued;
                     o.LastModifiedOn = DateTime.Now;
+                    o.MaintenanceFrequency = data.MaintenanceFrequency;
+                    o.LastMaintenanceDate = data.LastMaintenanceDate;
+                    o.PurchaseDate = data.PurchaseDate;
 
                     db.Entry(o).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();

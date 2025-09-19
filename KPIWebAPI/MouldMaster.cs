@@ -34,6 +34,9 @@ namespace KPIWebAPI
         public string RunningCavities { get; set; }
         public string CorePins { get; set; }
         public Nullable<int> LocationId { get; set; }
+        public Nullable<int> MaintenanceFrequency { get; set; }
+        public Nullable<System.DateTime> LastMaintenanceDate { get; set; }
+        public Nullable<System.DateTime> PurchaseDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MachineMouldMapping> MachineMouldMappings { get; set; }

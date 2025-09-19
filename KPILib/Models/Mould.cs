@@ -46,6 +46,24 @@ namespace KPILib.Models
         public string RunningCavities { get; set; }
         [Display(Name = "Core Pins")]
         public string CorePins { get; set; }
+        [Display(Name = "Maintenance Frequency")]
+        public int? MaintenanceFrequency { get; set; }
+        [Display(Name = "Last Maintenance Date")]
+        public DateTime? LastMaintenanceDate { get; set; }
+        [Display(Name = "Date Of Purchase")]
+        public DateTime? PurchaseDate { get; set; }
+
+        // --- Calculated on the fly (not mapped to DB) ---
+        [Display(Name = "Maintenance Due Date")]
+        public DateTime? MaintenanceDueDate =>
+            (LastMaintenanceDate.HasValue && MaintenanceFrequency.HasValue)
+                ? LastMaintenanceDate.Value.AddDays(MaintenanceFrequency.Value)
+                : (DateTime?)null;
+        [Display(Name = "Due In (Days)")]
+        public int? DueInDays =>
+            MaintenanceDueDate.HasValue
+                ? (int)(MaintenanceDueDate.Value.Date - DateTime.Today).TotalDays
+                : (int?)null;
         public Mould()
         {
             Machines = new List<MachineMasterModel>();

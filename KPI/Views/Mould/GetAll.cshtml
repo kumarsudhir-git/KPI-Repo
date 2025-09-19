@@ -8,24 +8,24 @@
         @*<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>*@
 
         @*<style>
-            .dataTables_paginate .paginate_button {
-                background-color: #f2f2f2;
-                border: 1px solid #ddd;
-                padding: 5px 10px;
-                margin: 2px;
-                cursor: pointer;
-            }
-
-                .dataTables_paginate .paginate_button:hover {
-                    background-color: #ddd;
+                .dataTables_paginate .paginate_button {
+                    background-color: #f2f2f2;
+                    border: 1px solid #ddd;
+                    padding: 5px 10px;
+                    margin: 2px;
+                    cursor: pointer;
                 }
 
-                .dataTables_paginate .paginate_button.current {
-                    background-color: #4285f4;
-                    color: white;
-                    border: 1px solid #4285f4;
-                }
-        </style>*@
+                    .dataTables_paginate .paginate_button:hover {
+                        background-color: #ddd;
+                    }
+
+                    .dataTables_paginate .paginate_button.current {
+                        background-color: #4285f4;
+                        color: white;
+                        border: 1px solid #4285f4;
+                    }
+            </style>*@
 
     </head>
 }
@@ -89,7 +89,42 @@
                 { data: "TotalCavities", title: "Total No Of Cavities" },
                 { data: "RunningCavities", title: "Running Cavities" },
                 { data: "CorePins", title: "CorePins" },
-                { data: "MouldStatus", title: "Mould Status" }
+                { data: "MouldStatus", title: "Mould Status" },
+                {
+                    data: "LastMaintenanceDate", title: "Last Maintenance Date", "sType": "date",
+                    render: function (data) {
+                        if (data != null) {
+                            return new Date(Number(data.toString().substring(6, 19))).toShortDateFormat();
+                        }
+                        else {
+                            return "";
+                        }
+                    }
+                },
+                { data: "MaintenanceFrequency", title: "MaintenanceFrequency" },
+                {
+                    data: "MaintenanceDueDate", title: "Maintenance Due Date", "sType": "date",
+                    render: function (d) {
+                        if (d != null) {
+                            return new Date(Number(d.toString().substring(6, 19))).toShortDateFormat();
+                        }
+                        else {
+                            return "";
+                        }
+                    }
+                },
+                { data: "DueInDays", title: "DueInDays" },
+                {
+                    data: "PurchaseDate", title: "Date of Purchase", "sType": "date",
+                    render: function (data) {
+                        if (data != null) {
+                            return new Date(Number(data.toString().substring(6, 19))).toShortDateFormat();
+                        }
+                        else {
+                            return "";
+                        }
+                    }
+                },
             ]
         });
     });

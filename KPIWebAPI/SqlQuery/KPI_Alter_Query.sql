@@ -812,5 +812,12 @@ ALTER TABLE ProductRawMaterialMapping
 ADD RMQty DECIMAL(18,2) NOT NULL DEFAULT(0.00),
     RMGrade NVARCHAR(20) NULL;
 
+------------------------------------------------19-09-2025----------------------------------------------------------------
+ALTER TABLE MouldMaster
+ADD
+    MaintenanceFrequency INT NULL,
+    LastMaintenanceDate DATE NULL,
+    PurchaseDate DATE NULL;
+
 ------------------------------------------------------END----------------------------------------------------------------
 
