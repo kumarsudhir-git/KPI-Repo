@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Data.Entity;
 using KPIWebAPI.Classes;
+using Microsoft.Ajax.Utilities;
 
 namespace KPIWebAPI.Controllers
 {
@@ -31,6 +32,17 @@ namespace KPIWebAPI.Controllers
                                                     select VndrMstr).ToList();
 
                 returnValue.data = mapper.Map<List<VendorMaster>, List<KPILib.Models.VendorMasterModel>>(vendorMasters);
+                if (returnValue.data != null && returnValue.data.Count > 0)
+                {
+                    returnValue.data.ForEach(item =>
+                    {
+                        if (!string.IsNullOrEmpty(item.ItemType))
+                        {
+                            item.ItemTypeName = CommonFunctions.GetLookUpMasterDataFromLookupCode(item.ItemType)?.LookUpName;
+                        }
+                    });
+                    returnValue.data = returnValue.data.OrderByDescending(z => z.LastModifiedOn == null ? z.AddedOn : z.LastModifiedOn).ToList();
+                }
                 returnValue.Response.IsSuccessful();
             }
             catch (Exception ex)
@@ -94,6 +106,8 @@ namespace KPIWebAPI.Controllers
                                 vendorMaster.ContactNumber = vendorMasterModel.ContactNumber;
                                 vendorMaster.Address = vendorMasterModel.Address;
                                 vendorMaster.VendorType = vendorMasterModel.VendorType;
+                                vendorMaster.MOQ = vendorMasterModel.MOQ;
+                                vendorMaster.ItemType = vendorMasterModel.ItemType;
                                 vendorMaster.LastModifiedBy = vendorMasterModel.LastModifiedBy;
                                 vendorMaster.LastModifiedOn = DateTime.Now;
                                 db.Entry(vendorMaster).State = EntityState.Modified;

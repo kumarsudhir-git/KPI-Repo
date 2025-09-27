@@ -168,7 +168,8 @@ function InitializeDataTable() {
         "scrollCollapse": false,
         "paging": true,
         "select": false,
-        "orderBy": false
+        //"orderBy": false,
+        "order": []   // no initial ordering
     });
 }
 function InitializeNumericsOnly() {

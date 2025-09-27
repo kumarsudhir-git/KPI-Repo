@@ -739,6 +739,8 @@
           <Property Name="LastModifiedBy" Type="int" />
           <Property Name="LastModifiedOn" Type="datetime" />
           <Property Name="VendorType" Type="nvarchar" MaxLength="10" />
+          <Property Name="MOQ" Type="nvarchar(max)" />
+          <Property Name="ItemType" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK__Productio__Produ__18B6AB08">
           <End Role="ProductionProgram" Type="Self.ProductionProgram" Multiplicity="0..1" />
@@ -3034,6 +3036,8 @@
           <Property Name="LastModifiedBy" Type="Int32" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
           <Property Name="VendorType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="MOQ" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ItemType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_CompanyLocationMaster_CompanyMaster">
           <End Type="KPIModel.CompanyMaster" Role="CompanyMaster" Multiplicity="1" />
@@ -4649,6 +4653,8 @@
           <EntitySetMapping Name="VendorMasters">
             <EntityTypeMapping TypeName="KPIModel.VendorMaster">
               <MappingFragment StoreEntitySet="VendorMaster">
+                <ScalarProperty Name="ItemType" ColumnName="ItemType" />
+                <ScalarProperty Name="MOQ" ColumnName="MOQ" />
                 <ScalarProperty Name="VendorType" ColumnName="VendorType" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />

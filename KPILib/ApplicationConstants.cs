@@ -12,5 +12,6 @@ namespace KPILib
         public const string SMRateAccessLookUp = "SMRateAccess";
         public const string GMSTypeLookUp = "GMSType";
         public const string ColorLookUp = "Color";
+        public const string VendorItemType = "VendorItemType";
     }
 }

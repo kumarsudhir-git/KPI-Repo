@@ -25,5 +25,7 @@ namespace KPIWebAPI
         public Nullable<int> LastModifiedBy { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }
         public string VendorType { get; set; }
+        public string MOQ { get; set; }
+        public string ItemType { get; set; }
     }
 }

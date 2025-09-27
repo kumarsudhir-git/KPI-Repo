@@ -819,5 +819,20 @@ ADD
     LastMaintenanceDate DATE NULL,
     PurchaseDate DATE NULL;
 
+-------------------------------------------------27-09-2025----------------------------------------------------------------
+
+ALTER TABLE VendorMaster ADD MOQ NVARCHAR(MAX) NULL
+ALTER TABLE VendorMaster ADD ItemType NVARCHAR(50) NULL
+
+
+INSERT INTO LookupMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
+VALUES('VendorItemType','RM','VIT001','VendorItemType',1,1001,GETDATE()),
+('VendorItemType','FG','VIT002','VendorItemType',1,1001,GETDATE()),
+('VendorItemType','CONSUMABLES','VIT003','VendorItemType',1,1001,GETDATE()),
+('VendorItemType','CONSULTANTS','VIT004','VendorItemType',1,1001,GETDATE()),
+('VendorItemType','LOGISTICS','VIT005','VendorItemType',1,1001,GETDATE()),
+('VendorItemType','MACHINES','VIT006','VendorItemType',1,1001,GETDATE()),
+('VendorItemType','SPARES','VIT007','VendorItemType',1,1001,GETDATE())
+
 ------------------------------------------------------END----------------------------------------------------------------
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace KPILib.Models
 {
@@ -10,12 +9,19 @@ namespace KPILib.Models
         public int VendorId { get; set; }
         [Required(ErrorMessage = "Required")]
         public string VendorName { get; set; }
+        [Display(Name = "Item")]
         public string Notes { get; set; }
         public string Address { get; set; }
         [Required(ErrorMessage = "Required")]
         public string ContactNumber { get; set; }
         [Required(ErrorMessage = "Required")]
         public string VendorType { get; set; }
+        [Display(Name = "MOQ")]
+        public string MOQ { get; set; }
+        [Display(Name = "Item Type")]
+        public string ItemType { get; set; }
+        [Display(Name = "Item Type")]
+        public string ItemTypeName { get; set; }
         public bool IsDiscontinued { get; set; }
         public int AddedBy { get; set; }
         public string AddedByName { get; set; }

@@ -1,7 +1,9 @@
 ﻿using KPI.Classes;
 using KPI.Filters;
+using KPILib;
 using KPILib.Models;
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace KPI.Controllers
@@ -33,6 +35,12 @@ namespace KPI.Controllers
         [HttpGet]
         public ActionResult AddNew(int id = 0)
         {
+            ViewData["ItemType"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
+            LookUpMasterResponse colorLookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.VendorItemType);
+            if (colorLookUpMaster != null && colorLookUpMaster.Response.ResponseCode == 200)
+            {
+                ViewData["ItemType"] = new SelectList(colorLookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
+            }
             VendorMasterModelResponse response = KPIAPIManager.GetVendorMasterData(id);
             if (response.Response.ResponseCode == 200)
             {
