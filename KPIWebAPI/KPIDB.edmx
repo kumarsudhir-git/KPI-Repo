@@ -383,7 +383,7 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
-          <Property Name="MaximumSellingPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MinimumSellingPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Colour" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="ProductRawMaterialMapping">
@@ -2608,7 +2608,7 @@
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="MaximumSellingPrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MinimumSellingPrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="Colour" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MouldMaster" Relationship="KPIModel.FK_ProductMaster_MouldMaster" FromRole="ProductMaster" ToRole="MouldMaster" />
           <NavigationProperty Name="ProdReadyStoreds" Relationship="KPIModel.FK_ProdReadyStored_ProductMaster" FromRole="ProductMaster" ToRole="ProdReadyStored" />
@@ -4268,7 +4268,7 @@
             <EntityTypeMapping TypeName="KPIModel.ProductMaster">
               <MappingFragment StoreEntitySet="ProductMaster">
                 <ScalarProperty Name="Colour" ColumnName="Colour" />
-                <ScalarProperty Name="MaximumSellingPrice" ColumnName="MaximumSellingPrice" />
+                <ScalarProperty Name="MinimumSellingPrice" ColumnName="MinimumSellingPrice" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />

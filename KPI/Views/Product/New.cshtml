@@ -94,10 +94,10 @@
                 </div>
                 
                 <div class="col-md-3 col-sm-12">
-                    @Html.LabelFor(model => model.MaximumSellingPrice, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.MinimumSellingPrice, htmlAttributes: new { @class = "control-label" })
                     <div class="form-group">
-                        @Html.EditorFor(model => model.MaximumSellingPrice, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.MaximumSellingPrice, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.MinimumSellingPrice, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MinimumSellingPrice, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 

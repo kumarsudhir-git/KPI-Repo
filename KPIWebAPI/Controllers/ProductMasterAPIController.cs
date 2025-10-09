@@ -4,6 +4,7 @@ using KPIWebAPI.Classes;
 using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
@@ -202,7 +203,14 @@ namespace KPIWebAPI.Controllers
                 {
                     o.ProductName = data.ProductName;
                     o.Description = data.Description;
+                    o.MouldID = data.MouldID;
+                    o.ProductCode = data.ProductCode;
+                    o.MinQtyUOM = data.MinQtyUOM;
+                    o.PkgQty = data.PkgQty;
+                    o.PkgsPerRack = data.PkgsPerRack;
                     o.UOMID = 101; //TODO: Default UOM              //data.UOMID;
+                    o.MinimumSellingPrice = data.MinimumSellingPrice;
+                    o.Colour = data.Colour;
                     o.IsDiscontinued = data.IsDiscontinued;
                     o.LastModifiedOn = DateTime.Now;
 

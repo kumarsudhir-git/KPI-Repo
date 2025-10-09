@@ -42,7 +42,7 @@ namespace KPIWebAPI
         public bool IsDiscontinued { get; set; }
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }
-        public decimal MaximumSellingPrice { get; set; }
+        public decimal MinimumSellingPrice { get; set; }
         public string Colour { get; set; }
     
         public virtual MouldMaster MouldMaster { get; set; }

@@ -804,7 +804,9 @@ VALUES
 ALTER TABLE RawMaterialMaster ADD RMGrade NVARCHAR(MAX) NULL
 
 ALTER TABLE ProductMaster
-ADD MaximumSellingPrice DECIMAL(18,2) NOT NULL DEFAULT(0.00);	
+ADD MinimumSellingPrice DECIMAL(18,2) NOT NULL DEFAULT(0.00);	
+
+--EXEC sp_rename 'ProductMaster.MaximumSellingPrice', 'MinimumSellingPrice', 'COLUMN';
 
 ALTER TABLE ProductMaster ADD Colour NVARCHAR(250) NULL;
 
