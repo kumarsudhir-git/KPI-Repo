@@ -34,6 +34,8 @@ namespace KPIWebAPI
         public bool IsDiscontinued { get; set; }
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }
+        public string PreferredTransporter { get; set; }
+        public string Designation { get; set; }
     
         public virtual CompanyMaster CompanyMaster { get; set; }
     }

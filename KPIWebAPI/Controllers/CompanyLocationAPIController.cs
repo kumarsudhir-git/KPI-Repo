@@ -133,6 +133,8 @@ namespace KPIWebAPI.Controllers
                     o.PostalCode = data.PostalCode;
                     o.State = data.State;
                     o.Website = data.Website;
+                    o.Designation = data.Designation;
+                    o.PreferredTransporter = data.PreferredTransporter;
                     o.LastModifiedOn = DateTime.Now;
 
                     db.Entry(o).State = System.Data.Entity.EntityState.Modified;

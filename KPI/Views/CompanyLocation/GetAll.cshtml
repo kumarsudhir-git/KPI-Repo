@@ -30,7 +30,12 @@
                 {
                     data: null, title: "Contact Person",
                     render: function (data, type, row) {
-                        return data.ContactPerson + "<br/>(P) <a href='tel:" + data.Phone + "'>" + data.Phone + "</a><br/>(M) <a href='tel:" + data.Mobile + "'>" + data.Mobile + "</a><br/>(E) <a href='mailto:" + data.Email + "'>" + data.Email + "</a>";
+                        var contactPersionDesignation = "NA";
+                        if (data.Designation != null && data.Designation != "") {
+                            contactPersionDesignation = data.Designation;
+                        }
+
+                        return data.ContactPerson + "<br/>(P) <a href='tel:" + data.Phone + "'>" + data.Phone + "</a><br/>(M) <a href='tel:" + data.Mobile + "'>" + data.Mobile + "</a><br/>(E) <a href='mailto:" + data.Email + "'>" + data.Email + "</a><br/>(D) <a href='#'>" + contactPersionDesignation + "</a>";
                     }
                 },
                 {
@@ -45,6 +50,7 @@
                         return data.PAN + "<br/>" + data.GSTN;
                     }
                 },
+                { data: "PreferredTransporter", title: "Preferred Transporter" }
                 /*{ data: "CompanyTypes", title: "Company Types" }*/
             ]
         });

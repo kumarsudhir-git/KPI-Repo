@@ -29,6 +29,8 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="PreferredTransporter" Type="nvarchar(max)" />
+          <Property Name="Designation" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="CompanyMaster">
           <Key>
@@ -2204,6 +2206,8 @@
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="PreferredTransporter" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Designation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CompanyMaster" Relationship="KPIModel.FK_CompanyLocationMaster_CompanyMaster" FromRole="CompanyLocationMaster" ToRole="CompanyMaster" />
         </EntityType>
         <EntityType Name="CompanyMaster">
@@ -3879,6 +3883,8 @@
           <EntitySetMapping Name="CompanyLocationMasters">
             <EntityTypeMapping TypeName="KPIModel.CompanyLocationMaster">
               <MappingFragment StoreEntitySet="CompanyLocationMaster">
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="PreferredTransporter" ColumnName="PreferredTransporter" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />

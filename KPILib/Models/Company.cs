@@ -25,7 +25,6 @@ namespace KPILib.Models
         public int LocationCount { get; set; }
         public int CompanyTypeID { get; set; }
         public string LocationName { get; set; }
-
         public List<CompanyLocation> Locations { get; set; }
     }
 

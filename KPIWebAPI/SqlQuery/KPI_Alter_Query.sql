@@ -836,5 +836,10 @@ VALUES('VendorItemType','RM','VIT001','VendorItemType',1,1001,GETDATE()),
 ('VendorItemType','MACHINES','VIT006','VendorItemType',1,1001,GETDATE()),
 ('VendorItemType','SPARES','VIT007','VendorItemType',1,1001,GETDATE())
 
+---------------------------------------------------14-10-2025--------------------------------------------------------
+ALTER TABLE CompanyLocationMaster ADD Designation NVARCHAR(MAX) NULL
+
+ALTER TABLE CompanyLocationMaster ADD PreferredTransporter NVARCHAR(MAX) NULL
+
 ------------------------------------------------------END----------------------------------------------------------------
 

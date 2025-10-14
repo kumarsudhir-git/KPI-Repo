@@ -55,7 +55,10 @@ namespace KPILib.Models
 
         [Display(Name = "Type of Company")]
         public string TypeOfCompany { get; set; }
-
+        [Display(Name = "Designation")]
+        public string Designation { get; set; }
+        [Display(Name = "Preferred Transporter")]
+        public string PreferredTransporter { get; set; }
         public List<TypeOfCompany> CompanyTypes { get; set; }
     }
 
