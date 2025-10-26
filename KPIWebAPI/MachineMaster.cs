@@ -29,6 +29,8 @@ namespace KPIWebAPI
         public bool IsDiscontinued { get; set; }
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }
+        public Nullable<int> VendorId { get; set; }
+        public Nullable<int> LocationId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MachineHistory> MachineHistories { get; set; }

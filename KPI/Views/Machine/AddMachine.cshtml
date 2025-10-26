@@ -56,16 +56,33 @@
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="form-group">
-            <div class="col-md-12">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <input type="button" value="Reset" class="btn btn-danger" onclick="window.location.reload()" />
+
+        <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.VendorId, htmlAttributes: new { @class = "control-label  " })
+
+                @Html.DropDownListFor(model => model.VendorId, null, "--Select--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.VendorId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label  " })
+
+                @Html.DropDownListFor(model => model.LocationId, null, "--Select--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <div class="col-md-12">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="button" value="Reset" class="btn btn-danger" onclick="window.location.reload()" />
+                </div>
             </div>
         </div>
     </div>
-
 }
 
 @section Scripts {

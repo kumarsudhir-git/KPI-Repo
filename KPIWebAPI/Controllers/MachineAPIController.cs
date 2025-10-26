@@ -30,6 +30,15 @@ namespace KPIWebAPI.Controllers
                         machineMasterModel.MachineStatus = ((enumMachineStatus)obj.MachineHistories.LastOrDefault().MachineStatusID).ToString() + (((enumMachineStatus)obj.MachineHistories.LastOrDefault().MachineStatusID) == enumMachineStatus.InUse ? ": " + obj.MachineHistories.LastOrDefault().Description : "");
                     }
                     machineMasterModel.MachineTypeName = CommonFunctions.GetMachineTypeMasterData(obj.MachineTypeID)?.MachineType;
+                    if (obj.VendorId != null)
+                    {
+                        machineMasterModel.VendorName = CommonFunctions.GetVendorDetailsFromId((int)obj.VendorId)?.VendorName;
+                    }
+                    if (obj.LocationId != null)
+                    {
+                        machineMasterModel.LocationName = CommonFunctions.GetLocationMaster((int)obj.LocationId)?.LocationName;
+                    }
+
                     returnValue.data.Add(machineMasterModel);
                 }
 
@@ -112,6 +121,8 @@ namespace KPIWebAPI.Controllers
                             machineMaster.MachineName = machineMasterModel.MachineName;
                             machineMaster.Description = machineMasterModel.Description;
                             machineMaster.MachineTypeID = machineMasterModel.MachineTypeID;
+                            machineMaster.VendorId = machineMasterModel.VendorId;
+                            machineMaster.LocationId = machineMasterModel.LocationId;
                             machineMaster.IsDiscontinued = machineMasterModel.IsDiscontinued;
                             machineMaster.LastModifiedOn = DateTime.Now;
 

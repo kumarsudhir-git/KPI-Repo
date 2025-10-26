@@ -841,5 +841,10 @@ ALTER TABLE CompanyLocationMaster ADD Designation NVARCHAR(MAX) NULL
 
 ALTER TABLE CompanyLocationMaster ADD PreferredTransporter NVARCHAR(MAX) NULL
 
+---------------------------------------------------26-10-2025----------------------------------------------------------
+
+ALTER TABLE MachineMaster ADD VendorId INT NULL
+ALTER TABLE MachineMaster ADD LocationId INT NULL
+
 ------------------------------------------------------END----------------------------------------------------------------
 

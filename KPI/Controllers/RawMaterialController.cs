@@ -25,7 +25,7 @@ namespace KPI.Controllers
         }
         public ActionResult Get(int id)
         {
-            ViewData["VendorId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+            ViewData["VendorId"] = new SelectList(new List<SelectListItem>(), "VendorId", "VendorName");
 
             var response = KPIAPIManager.GetRawMaterial(id);
             if (response.Response.ResponseCode == 200)
@@ -53,7 +53,7 @@ namespace KPI.Controllers
         }
         public ActionResult New()
         {
-            ViewData["VendorId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+            ViewData["VendorId"] = new SelectList(new List<SelectListItem>(), "VendorId", "VendorName");
             var response = KPIAPIManager.GetRawMaterial(0);
             if (response.Response.ResponseCode == 200)
             {

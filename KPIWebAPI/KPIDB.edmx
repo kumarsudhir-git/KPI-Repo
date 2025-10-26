@@ -112,6 +112,8 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="VendorId" Type="int" />
+          <Property Name="LocationId" Type="int" />
         </EntityType>
         <EntityType Name="MachineMouldMapping">
           <Key>
@@ -2295,6 +2297,8 @@
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="VendorId" Type="Int32" />
+          <Property Name="LocationId" Type="Int32" />
           <NavigationProperty Name="MachineHistories" Relationship="KPIModel.FK_MachineHistory_MachineMaster" FromRole="MachineMaster" ToRole="MachineHistory" />
           <NavigationProperty Name="MachineTypeMaster" Relationship="KPIModel.FK_MachineMaster_MachineTypeMaster" FromRole="MachineMaster" ToRole="MachineTypeMaster" />
           <NavigationProperty Name="MachineMouldMappings" Relationship="KPIModel.FK_MachineMouldMapping_MachineMaster" FromRole="MachineMaster" ToRole="MachineMouldMapping" />
@@ -3986,6 +3990,8 @@
           <EntitySetMapping Name="MachineMasters">
             <EntityTypeMapping TypeName="KPIModel.MachineMaster">
               <MappingFragment StoreEntitySet="MachineMaster">
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />

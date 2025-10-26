@@ -31,6 +31,9 @@ namespace KPI.Controllers
             ViewData["MachineTypeID"] = new SelectList(new List<SelectListItem>(), "MachineTypeID", "MachineType");
             ViewData["MachineStatusID"] = new SelectList(new List<SelectListItem>(), "MachineStatusID", "MachineStatus");
 
+            ViewData["VendorId"] = new SelectList(new List<SelectListItem>(), "VendorId", "VendorName");
+            ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+
             MachineMasterResponse response = new MachineMasterResponse();
 
             response = KPIAPIManager.GetMachineData(MachineId);
@@ -40,6 +43,31 @@ namespace KPI.Controllers
                 ViewData["MachineTypeID"] = new SelectList(response.machineTypeMasterData, "MachineTypeID", "MachineType");
                 ViewData["MachineStatusID"] = new SelectList(response.machineStatusMasterData, "MachineStatusID", "MachineStatus");
 
+                VendorMasterModelResponse vendorMasterModel = KPIAPIManager.GetAllVendorData();
+
+                if (vendorMasterModel != null && vendorMasterModel.Response != null)
+                {
+                    if (vendorMasterModel.Response.ResponseCode == 200)
+                    {
+                        if (vendorMasterModel.data != null && vendorMasterModel.data.Count > 0)
+                        {
+                            ViewData["VendorId"] = new SelectList(vendorMasterModel.data, "VendorId", "VendorName");
+                        }
+                    }
+                }
+
+                LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
+
+                if (locationMasterResponse != null && locationMasterResponse.Response != null)
+                {
+                    if (locationMasterResponse.Response.ResponseCode == 200)
+                    {
+                        if (locationMasterResponse.data != null && locationMasterResponse.data.Count > 0)
+                        {
+                            ViewData["LocationId"] = new SelectList(locationMasterResponse.data, "LocationId", "LocationName");
+                        }
+                    }
+                }
                 return View(response.data);
             }
             else

@@ -29,6 +29,10 @@ namespace KPILib.Models
         [Required(ErrorMessage = "Required")]
         public int MachineStatusID { get; set; }
         public string MachineStatus { get; set; }
+        public int? VendorId { get; set; }
+        public string VendorName { get; set; }
+        public int? LocationId { get; set; }
+        public string LocationName { get; set; }
     }
 
 
