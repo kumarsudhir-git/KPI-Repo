@@ -26,5 +26,6 @@ namespace KPIWebAPI
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
         public Nullable<int> ColorId { get; set; }
+        public string ItemType { get; set; }
     }
 }

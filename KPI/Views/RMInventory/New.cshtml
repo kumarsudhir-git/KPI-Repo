@@ -7,86 +7,86 @@
 }
 
 <div class="top_header">
-<h2>@ViewBag.Title</h2>
+    <h2>@ViewBag.Title</h2>
     <div class="back_btn">
         @Html.ActionLink("Back to List", "GetAll")
     </div>
 </div>
 
-    @using (Html.BeginForm("Add", "RMInventory"))
-    {
-        @Html.AntiForgeryToken()
+@using (Html.BeginForm("Add", "RMInventory"))
+{
+    @Html.AntiForgeryToken()
 
-        
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        
-            <div class="row">
-                @*<div class="col-md-3 col-sm-12">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PalletNo, htmlAttributes: new { @class = "control-label" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                        @Html.DropDownListFor(model => model.PalletID, ViewBag.Pallets as SelectList, "--Select Pallet--", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.PalletID, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
 
-                <div class="col-md-3 col-sm-12">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.RawMaterialName, htmlAttributes: new { @class = "control-label" })
+    <div class="row">
+        @*<div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PalletNo, htmlAttributes: new { @class = "control-label" })
 
-                        @Html.DropDownListFor(model => model.RawMaterialID, ViewBag.RMs as SelectList, "--Select Raw Material--", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.RawMaterialID, "", new { @class = "text-danger" })
-                    </div>
+                    @Html.DropDownListFor(model => model.PalletID, ViewBag.Pallets as SelectList, "--Select Pallet--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PalletID, "", new { @class = "text-danger" })
                 </div>
+            </div>*@
 
-                <div class="col-md-3 col-sm-12">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.TagColour, htmlAttributes: new { @class = "control-label" })
+        <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.RawMaterialName, htmlAttributes: new { @class = "control-label" })
 
-                        @Html.DropDownListFor(model => model.TagColourID, ViewBag.Tags as SelectList, "--Select Tag Colour--", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.TagColourID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-12">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.MinOrderlevel, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.RawMaterialID, ViewBag.RMs as SelectList, "--Select Raw Material--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RawMaterialID, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-                        @Html.TextBoxFor(model => model.MinOrderlevel, new { @class = "form-control", @placeholder = "Enter Min Order Level" })
-                        @Html.ValidationMessageFor(model => model.MinOrderlevel, "", new { @class = "text-danger" })
-                    </div>
-                </div>                
-           
-                <div class="col-md-3 col-sm-12">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Qty, htmlAttributes: new { @class = "control-label" })
+        <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.TagColour, htmlAttributes: new { @class = "control-label" })
 
-                        @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control", @onchange = "calcKgs()" } })
-                        @Html.ValidationMessageFor(model => model.Qty, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-12">
-                    <div class="form-group">
-                    @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label" })
-                        @Html.DropDownListFor(model => model.LocationId, null, "--Select--", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-12">
-                    <label class="control-label">Qty (Kgs)</label>
-                    <div class="">
-                        <span class="col-md-2" id="lblQtyKgs">0</span>
-                    </div>
-                </div>
+                @Html.DropDownListFor(model => model.TagColourID, ViewBag.Tags as SelectList, "--Select Tag Colour--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TagColourID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.MinOrderlevel, htmlAttributes: new { @class = "control-label" })
+
+                @Html.TextBoxFor(model => model.MinOrderlevel, new { @class = "form-control", @placeholder = "Enter Min Order Level" })
+                @Html.ValidationMessageFor(model => model.MinOrderlevel, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Qty, htmlAttributes: new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control", @onchange = "calcKgs()" } })
+                @Html.ValidationMessageFor(model => model.Qty, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.LocationId, null, "--Select--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <label class="control-label">Qty (Kgs)</label>
+            <div class="">
+                <span class="col-md-2" id="lblQtyKgs">0</span>
+            </div>
+        </div>
 
 
-            </div> 
-                <div class="col-md-12"> 
-                    <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
-                    </div>
-                </div>
-    } 
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </div>
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

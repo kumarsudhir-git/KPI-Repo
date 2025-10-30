@@ -842,9 +842,62 @@ ALTER TABLE CompanyLocationMaster ADD Designation NVARCHAR(MAX) NULL
 ALTER TABLE CompanyLocationMaster ADD PreferredTransporter NVARCHAR(MAX) NULL
 
 ---------------------------------------------------26-10-2025----------------------------------------------------------
-
+GO
 ALTER TABLE MachineMaster ADD VendorId INT NULL
 ALTER TABLE MachineMaster ADD LocationId INT NULL
 
+GO
+update MenuMaster SET MenuName = 'CONSUMABLES' where MenuName = 'Package Bags'
+
+GO
+
+INSERT INTO LookUpMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
+VALUES
+('ItemType','Package bags','IT001','ItemType',1,1001,GETDATE()),
+('ItemType','Spares','IT002','ItemType',1,1001,GETDATE()),
+('ItemType','Tapes','IT003','ItemType',1,1001,GETDATE()),
+('ItemType','Cartons','IT004','ItemType',1,1001,GETDATE()),
+('ItemType','Stationery','IT005','ItemType',1,1001,GETDATE()),
+('ItemType','General','IT006','ItemType',1,1001,GETDATE())
+
+GO
+ALTER TABLE RMInventoryPackageBags ADD ItemType NVARCHAR(250) NULL
+
+GO
+ALTER PROCEDURE usp_GetRMInventoryPackageBags    
+    
+AS    
+BEGIN    
+    
+Select PB.PackageBagId,    
+PB.Size,    
+VM.VendorName,    
+PB.QtyInStock,    
+PB.MinOrderLevel,    
+PB.LocationId,    
+LM.LocationName,  
+TCM.TagColour AS 'ColorName',
+LKMSTR.LookUpName AS 'ItemTypeName',
+PB.AddedOn,    
+UM.Username AS 'AddedByName',    
+PB.ModifiedOn,    
+usrMstr.Username AS 'ModifiedByName'    
+from RMInventoryPackageBags PB    
+LEFT JOIN UserMaster UM    
+ON PB.AddedBy = UM.UserID    
+LEFT JOIN UserMaster usrMstr    
+ON PB.ModifiedBy = usrMstr.UserID    
+LEFT JOIN LocationMaster LM    
+ON PB.LocationId = LM.LocationId    
+LEFT JOIN VendorMaster VM    
+ON PB.VendorId = VM.VendorId   
+LEFT JOIN TagColourMaster TCM  
+ON PB.ColorId = TCM.TagColourID
+LEFT JOIN LookUpMaster LKMSTR
+ON PB.ItemType = LKMSTR.LookUpValue
+WHERE PB.IsActive = 1    
+ORDER BY CASE WHEN PB.ModifiedOn != null THEN PB.ModifiedOn ELSE PB.AddedOn END DESC    
+    
+END
 ------------------------------------------------------END----------------------------------------------------------------
 

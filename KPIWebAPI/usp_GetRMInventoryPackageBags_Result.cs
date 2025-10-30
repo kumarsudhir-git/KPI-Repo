@@ -20,6 +20,8 @@ namespace KPIWebAPI
         public Nullable<int> MinOrderLevel { get; set; }
         public Nullable<int> LocationId { get; set; }
         public string LocationName { get; set; }
+        public string ColorName { get; set; }
+        public string ItemTypeName { get; set; }
         public System.DateTime AddedOn { get; set; }
         public string AddedByName { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }

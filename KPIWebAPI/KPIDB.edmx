@@ -564,6 +564,7 @@
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedOn" Type="datetime" />
           <Property Name="ColorId" Type="int" />
+          <Property Name="ItemType" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="RoleMaster">
           <Key>
@@ -1800,14 +1801,12 @@
         <EntityContainer Name="KPIEntities" annotation:LazyLoadingEnabled="true">
           <FunctionImport Name="sp_GetEmptyPallets" ReturnType="Collection(Int32)" />
           <FunctionImport Name="sp_GetEmptyRacks" ReturnType="Collection(Int32)" />
-          <FunctionImport Name="sp_GetRMInventory" ReturnType="Collection(KPIModel.sp_GetRMInventory_Result)" />
           <FunctionImport Name="sp_GetAvailableMachineID" ReturnType="Collection(Int32)">
           <Parameter Name="MouldID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_GetLocationMasterAllData" ReturnType="Collection(KPIModel.usp_GetLocationMasterAllData_Result)" />
           <FunctionImport Name="usp_GetRMInventoryFinishedGood" ReturnType="Collection(KPIModel.usp_GetRMInventoryFinishedGood_Result)" />
           <FunctionImport Name="usp_GetRMInventoryMasterBatch" ReturnType="Collection(KPIModel.usp_GetRMInventoryMasterBatch_Result)" />
-          <FunctionImport Name="usp_GetRMInventoryPackageBags" ReturnType="Collection(KPIModel.usp_GetRMInventoryPackageBags_Result)" />
           <FunctionImport Name="usp_GetMachineMouldMapData" ReturnType="Collection(KPIModel.usp_GetMachineMouldMapData_Result)">
           <Parameter Name="orderBy" Mode="In" Type="String" />
           </FunctionImport>
@@ -2111,18 +2110,9 @@
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="SalesMaster" EntitySet="SalesMasters" />
           </AssociationSet>
+          <FunctionImport Name="sp_GetRMInventory" ReturnType="Collection(KPIModel.sp_GetRMInventory_Result)" />
+          <FunctionImport Name="usp_GetRMInventoryPackageBags" ReturnType="Collection(KPIModel.usp_GetRMInventoryPackageBags_Result)" />
           </EntityContainer>
-        <ComplexType Name="sp_GetRMInventory_Result">
-          <Property Type="Int32" Name="PalletID" Nullable="false" />
-          <Property Type="String" Name="PalletNo" Nullable="false" MaxLength="50" />
-          <Property Type="Int32" Name="TagColourID" Nullable="false" />
-          <Property Type="String" Name="TagColour" Nullable="false" MaxLength="50" />
-          <Property Type="Int32" Name="RawMaterialID" Nullable="false" />
-          <Property Type="String" Name="RawMaterialName" Nullable="false" MaxLength="50" />
-          <Property Type="Decimal" Name="Qty" Nullable="true" Precision="38" Scale="2" />
-          <Property Type="Int32" Name="QtyBags" Nullable="true" />
-          <Property Type="Int32" Name="QtyOpened" Nullable="true" />
-        </ComplexType>
         <ComplexType Name="usp_GetLocationMasterAllData_Result">
           <Property Type="Int32" Name="LocationId" Nullable="false" />
           <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
@@ -2155,19 +2145,6 @@
           <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
           <Property Type="Int32" Name="VendorId" Nullable="true" />
           <Property Type="String" Name="VendorName" Nullable="true" />
-          <Property Type="Int32" Name="LocationId" Nullable="true" />
-          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
-          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
-          <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
-          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
-          <Property Type="String" Name="ModifiedByName" Nullable="true" MaxLength="20" />
-        </ComplexType>
-        <ComplexType Name="usp_GetRMInventoryPackageBags_Result">
-          <Property Type="Int32" Name="PackageBagId" Nullable="false" />
-          <Property Type="String" Name="Size" Nullable="true" />
-          <Property Type="String" Name="VendorName" Nullable="true" />
-          <Property Type="Int32" Name="QtyInStock" Nullable="true" />
-          <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
           <Property Type="Int32" Name="LocationId" Nullable="true" />
           <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
           <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
@@ -2838,6 +2815,7 @@
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
           <Property Name="ColorId" Type="Int32" />
+          <Property Name="ItemType" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="RoleMaster">
           <Key>
@@ -3779,6 +3757,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="sp_GetRMInventory_Result">
+          <Property Type="Int32" Name="PalletID" Nullable="false" />
+          <Property Type="String" Name="PalletNo" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="TagColourID" Nullable="false" />
+          <Property Type="String" Name="TagColour" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="RawMaterialID" Nullable="false" />
+          <Property Type="String" Name="RawMaterialName" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Qty" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Int32" Name="QtyBags" Nullable="true" />
+          <Property Type="Int32" Name="QtyOpened" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_GetRMInventoryPackageBags_Result">
+          <Property Type="Int32" Name="PackageBagId" Nullable="false" />
+          <Property Type="String" Name="Size" Nullable="true" />
+          <Property Type="String" Name="VendorName" Nullable="true" />
+          <Property Type="Int32" Name="QtyInStock" Nullable="true" />
+          <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
+          <Property Type="Int32" Name="LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="ColorName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ItemTypeName" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
+          <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ModifiedByName" Nullable="true" MaxLength="20" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3787,21 +3791,6 @@
         <EntityContainerMapping StorageEntityContainer="KPIModelStoreContainer" CdmEntityContainer="KPIEntities">
           <FunctionImportMapping FunctionImportName="sp_GetEmptyPallets" FunctionName="KPIModel.Store.sp_GetEmptyPallets" />
           <FunctionImportMapping FunctionImportName="sp_GetEmptyRacks" FunctionName="KPIModel.Store.sp_GetEmptyRacks" />
-          <FunctionImportMapping FunctionImportName="sp_GetRMInventory" FunctionName="KPIModel.Store.sp_GetRMInventory">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="KPIModel.sp_GetRMInventory_Result">
-                <ScalarProperty Name="PalletID" ColumnName="PalletID" />
-                <ScalarProperty Name="PalletNo" ColumnName="PalletNo" />
-                <ScalarProperty Name="TagColourID" ColumnName="TagColourID" />
-                <ScalarProperty Name="TagColour" ColumnName="TagColour" />
-                <ScalarProperty Name="RawMaterialID" ColumnName="RawMaterialID" />
-                <ScalarProperty Name="RawMaterialName" ColumnName="RawMaterialName" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="QtyBags" ColumnName="QtyBags" />
-                <ScalarProperty Name="QtyOpened" ColumnName="QtyOpened" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_GetAvailableMachineID" FunctionName="KPIModel.Store.sp_GetAvailableMachineID" />
           <FunctionImportMapping FunctionImportName="usp_GetLocationMasterAllData" FunctionName="KPIModel.Store.usp_GetLocationMasterAllData">
             <ResultMapping>
@@ -3845,23 +3834,6 @@
                 <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
                 <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="VendorName" ColumnName="VendorName" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
-                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_GetRMInventoryPackageBags" FunctionName="KPIModel.Store.usp_GetRMInventoryPackageBags">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="KPIModel.usp_GetRMInventoryPackageBags_Result">
-                <ScalarProperty Name="PackageBagId" ColumnName="PackageBagId" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
-                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
-                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
@@ -4472,6 +4444,7 @@
           <EntitySetMapping Name="RMInventoryPackageBags">
             <EntityTypeMapping TypeName="KPIModel.RMInventoryPackageBag">
               <MappingFragment StoreEntitySet="RMInventoryPackageBags">
+                <ScalarProperty Name="ItemType" ColumnName="ItemType" />
                 <ScalarProperty Name="ColorId" ColumnName="ColorId" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
@@ -4681,6 +4654,40 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetRMInventory" FunctionName="KPIModel.Store.sp_GetRMInventory">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KPIModel.sp_GetRMInventory_Result">
+                <ScalarProperty Name="PalletID" ColumnName="PalletID" />
+                <ScalarProperty Name="PalletNo" ColumnName="PalletNo" />
+                <ScalarProperty Name="TagColourID" ColumnName="TagColourID" />
+                <ScalarProperty Name="TagColour" ColumnName="TagColour" />
+                <ScalarProperty Name="RawMaterialID" ColumnName="RawMaterialID" />
+                <ScalarProperty Name="RawMaterialName" ColumnName="RawMaterialName" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="QtyBags" ColumnName="QtyBags" />
+                <ScalarProperty Name="QtyOpened" ColumnName="QtyOpened" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_GetRMInventoryPackageBags" FunctionName="KPIModel.Store.usp_GetRMInventoryPackageBags">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KPIModel.usp_GetRMInventoryPackageBags_Result">
+                <ScalarProperty Name="PackageBagId" ColumnName="PackageBagId" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
+                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="ColorName" ColumnName="ColorName" />
+                <ScalarProperty Name="ItemTypeName" ColumnName="ItemTypeName" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

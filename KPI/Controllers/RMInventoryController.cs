@@ -1,5 +1,6 @@
 ﻿using KPI.Classes;
 using KPI.Filters;
+using KPILib;
 using KPILib.Models;
 using System;
 using System.Collections.Generic;
@@ -106,6 +107,7 @@ namespace KPI.Controllers
                         }
                     }
                 }
+
                 //ViewBag.QtyKgs = 
                 return View(response.data);
             }
@@ -295,6 +297,7 @@ namespace KPI.Controllers
             ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
             ViewData["VendorId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
             //ViewData["ColorId"] = new SelectList(new List<SelectListItem>(), "TagColourID", "TagColour");
+            ViewData["ItemType"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
 
             LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
 
@@ -321,7 +324,7 @@ namespace KPI.Controllers
                     }
                 }
             }
-            
+
             //TagColorMasterModelResponse tagColourMasterModel = KPIAPIManager.GetTagColorMasterData();
 
             //if (tagColourMasterModel != null && tagColourMasterModel.Response != null)
@@ -334,6 +337,13 @@ namespace KPI.Controllers
             //        }
             //    }
             //}
+
+            LookUpMasterResponse lookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.ItemType);
+
+            if (lookUpMaster != null && lookUpMaster.Response != null)
+            {
+                ViewData["ItemType"] = new SelectList(lookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
+            }
 
             RMInventoryPackageBagsModelResponse response = new RMInventoryPackageBagsModelResponse();
 

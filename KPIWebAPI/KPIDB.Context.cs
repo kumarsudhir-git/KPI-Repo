@@ -94,11 +94,6 @@ namespace KPIWebAPI
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_GetEmptyRacks");
         }
     
-        public virtual ObjectResult<sp_GetRMInventory_Result> sp_GetRMInventory()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetRMInventory_Result>("sp_GetRMInventory");
-        }
-    
         public virtual ObjectResult<Nullable<int>> sp_GetAvailableMachineID(Nullable<int> mouldID)
         {
             var mouldIDParameter = mouldID.HasValue ?
@@ -123,11 +118,6 @@ namespace KPIWebAPI
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryMasterBatch_Result>("usp_GetRMInventoryMasterBatch");
         }
     
-        public virtual ObjectResult<usp_GetRMInventoryPackageBags_Result> usp_GetRMInventoryPackageBags()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryPackageBags_Result>("usp_GetRMInventoryPackageBags");
-        }
-    
         public virtual ObjectResult<usp_GetMachineMouldMapData_Result> usp_GetMachineMouldMapData(string orderBy)
         {
             var orderByParameter = orderBy != null ?
@@ -135,6 +125,16 @@ namespace KPIWebAPI
                 new ObjectParameter("orderBy", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetMachineMouldMapData_Result>("usp_GetMachineMouldMapData", orderByParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetRMInventory_Result> sp_GetRMInventory()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetRMInventory_Result>("sp_GetRMInventory");
+        }
+    
+        public virtual ObjectResult<usp_GetRMInventoryPackageBags_Result> usp_GetRMInventoryPackageBags()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryPackageBags_Result>("usp_GetRMInventoryPackageBags");
         }
     }
 }

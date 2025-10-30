@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
 
 namespace KPILib.Models
@@ -169,6 +168,10 @@ namespace KPILib.Models
         [Display(Name = "Color")]
         public int? ColorId { get; set; }
         public string ColorName { get; set; }
+        [Display(Name = "Item Type")]
+        public string ItemType { get; set; }
+        [Display(Name = "Item Type")]
+        public string ItemTypeName { get; set; }
         public bool IsActive { get; set; }
         public int AddedBy { get; set; }
         public string AddedByName { get; set; }
