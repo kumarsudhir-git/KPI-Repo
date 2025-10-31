@@ -662,6 +662,8 @@ namespace KPIWebAPI.Controllers
                         rMInventory.ProductId = rMInventoryFinishedGood.ProductId;
                         rMInventory.Qty = rMInventoryFinishedGood.Qty;
                         rMInventory.RackId = rMInventoryFinishedGood.RackId;
+                        rMInventory.Colour = rMInventoryFinishedGood.Colour;
+                        rMInventory.Weight = rMInventoryFinishedGood.Weight;
                         rMInventory.ModifiedBy = rMInventoryFinishedGood.ModifiedBy;
                         rMInventory.ModifiedOn = DateTime.Now;
 

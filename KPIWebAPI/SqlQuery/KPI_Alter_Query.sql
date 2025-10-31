@@ -899,5 +899,54 @@ WHERE PB.IsActive = 1
 ORDER BY CASE WHEN PB.ModifiedOn != null THEN PB.ModifiedOn ELSE PB.AddedOn END DESC    
     
 END
+
+---------------------------------------------------------------31-10-2025------------------------------------------------
+
+GO
+ALTER TABLE RMInventoryFinishedGood
+ADD Colour NVARCHAR(50),
+    Weight DECIMAL(10, 2);
+
+GO
+
+ALTER PROCEDURE [dbo].[usp_GetRMInventoryFinishedGood]  
+  
+AS  
+BEGIN  
+  
+Select FG.FinishedGoodId,  
+FG.ProductId,  
+PM.ProductName,  
+FG.RackId,  
+RM.RackNo AS 'RackNumber',  
+FG.Package,  
+FG.Qty,  
+FG.MinOrderLevel,  
+FG.LocationId,  
+LM.LocationName,
+FG.Colour,
+FG.Weight,
+FG.AddedOn,  
+UM.Username AS 'AddedByName',  
+FG.ModifiedOn,  
+usrMstr.Username AS 'ModifiedByName'  
+from RMInventoryFinishedGood FG  
+LEFT JOIN UserMaster UM  
+ON FG.AddedBy = UM.UserID  
+LEFT JOIN UserMaster usrMstr  
+ON FG.ModifiedBy = usrMstr.UserID  
+LEFT JOIN LocationMaster LM  
+ON FG.LocationId = LM.LocationId  
+LEFT JOIN ProductMaster PM  
+ON FG.ProductId = PM.ProductID  
+LEFT JOIN RackMaster RM  
+ON FG.RackId = RM.RackID  
+WHERE FG.IsActive = 1  
+ORDER BY CASE WHEN FG.ModifiedOn != null THEN FG.ModifiedOn ELSE FG.AddedOn END DESC  
+  
+END
+
+GO
+
 ------------------------------------------------------END----------------------------------------------------------------
 
