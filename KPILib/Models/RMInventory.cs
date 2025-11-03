@@ -172,6 +172,7 @@ namespace KPILib.Models
         public string ItemType { get; set; }
         [Display(Name = "Item Type")]
         public string ItemTypeName { get; set; }
+        public string ItemDetail { get; set; }
         public bool IsActive { get; set; }
         public int AddedBy { get; set; }
         public string AddedByName { get; set; }
