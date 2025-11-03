@@ -127,14 +127,14 @@ namespace KPIWebAPI
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetRMInventory_Result>("sp_GetRMInventory");
         }
     
-        public virtual ObjectResult<usp_GetRMInventoryPackageBags_Result> usp_GetRMInventoryPackageBags()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryPackageBags_Result>("usp_GetRMInventoryPackageBags");
-        }
-    
         public virtual ObjectResult<usp_GetRMInventoryFinishedGood_Result> usp_GetRMInventoryFinishedGood()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryFinishedGood_Result>("usp_GetRMInventoryFinishedGood");
+        }
+    
+        public virtual ObjectResult<usp_GetRMInventoryPackageBags_Result> usp_GetRMInventoryPackageBags()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryPackageBags_Result>("usp_GetRMInventoryPackageBags");
         }
     }
 }

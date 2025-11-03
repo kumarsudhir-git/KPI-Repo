@@ -497,6 +497,8 @@ namespace KPIWebAPI.Controllers
                         rMInventoryPackageObj.Size = rMInventoryPackageBags.Size;
                         rMInventoryPackageObj.ColorId = rMInventoryPackageBags.ColorId;
                         rMInventoryPackageObj.VendorId = rMInventoryPackageBags.VendorId;
+                        rMInventoryPackageObj.ItemType = rMInventoryPackageBags.ItemType;
+                        rMInventoryPackageObj.ItemDetail = rMInventoryPackageBags.ItemDetail;
                         rMInventoryPackageObj.ModifiedBy = rMInventoryPackageBags.ModifiedBy;
                         rMInventoryPackageObj.ModifiedOn = DateTime.Now;
 
