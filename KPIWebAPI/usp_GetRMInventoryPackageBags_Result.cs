@@ -22,6 +22,7 @@ namespace KPIWebAPI
         public string LocationName { get; set; }
         public string ColorName { get; set; }
         public string ItemTypeName { get; set; }
+        public string ItemDetail { get; set; }
         public System.DateTime AddedOn { get; set; }
         public string AddedByName { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }

@@ -70,15 +70,30 @@
                         @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="col-md-3">
-                    <label>&nbsp;</label>
+                    @Html.LabelFor(model => model.Colour, htmlAttributes: new { @class = "control-label" })
                     <div class="">
-                        <input type="submit" value="Save" class="btn btn-primary" />
-                        <input type="button" value="Back" class="btn btn-danger" onclick="window.location.href='/RMInventory/GetAllFinishedGood'" />
+                        @Html.TextBoxFor(model => model.Colour, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Colour, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.TextBoxFor(model => model.Weight, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label>&nbsp;</label>
+                <div class="">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <input type="button" value="Back" class="btn btn-danger" onclick="window.location.href='/RMInventory/GetAllFinishedGood'" />
+                </div>
             </div>
         </div>
     }

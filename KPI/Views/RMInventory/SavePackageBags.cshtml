@@ -75,6 +75,13 @@
                         @Html.ValidationMessageFor(model => model.ItemType, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="col-md-3 col-sm-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ItemDetail, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.ItemDetail, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ItemDetail, "", new { @class = "text-danger" })
+                    </div>
+                </div>
                 <div class="col-md-3">
                     <label>&nbsp;</label>
                     <div class="">

@@ -172,6 +172,7 @@ namespace KPILib.Models
         public string ItemType { get; set; }
         [Display(Name = "Item Type")]
         public string ItemTypeName { get; set; }
+        public string ItemDetail { get; set; }
         public bool IsActive { get; set; }
         public int AddedBy { get; set; }
         public string AddedByName { get; set; }
@@ -207,10 +208,10 @@ namespace KPILib.Models
         public int RackId { get; set; }
         public string RackNumber { get; set; }
         [Required(ErrorMessage = "Required")]
-        [Display(Name = "Package")]
+        [Display(Name = "Unit per KG")]
         public int Package { get; set; }
         [Required(ErrorMessage = "Required")]
-        [Display(Name = "Quantity")]
+        [Display(Name = "Quantity (units)")]
         public int Qty { get; set; }
         [Required(ErrorMessage = "Required")]
         [Display(Name = "Min Order Level")]
@@ -219,6 +220,8 @@ namespace KPILib.Models
         [Display(Name = "Location")]
         public int LocationId { get; set; }
         public string LocationName { get; set; }
+        public string Colour { get; set; }
+        public decimal? Weight { get; set; }
         public bool IsActive { get; set; }
         public int AddedBy { get; set; }
         public string AddedByName { get; set; }

@@ -108,11 +108,6 @@ namespace KPIWebAPI
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetLocationMasterAllData_Result>("usp_GetLocationMasterAllData");
         }
     
-        public virtual ObjectResult<usp_GetRMInventoryFinishedGood_Result> usp_GetRMInventoryFinishedGood()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryFinishedGood_Result>("usp_GetRMInventoryFinishedGood");
-        }
-    
         public virtual ObjectResult<usp_GetRMInventoryMasterBatch_Result> usp_GetRMInventoryMasterBatch()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryMasterBatch_Result>("usp_GetRMInventoryMasterBatch");
@@ -130,6 +125,11 @@ namespace KPIWebAPI
         public virtual ObjectResult<sp_GetRMInventory_Result> sp_GetRMInventory()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetRMInventory_Result>("sp_GetRMInventory");
+        }
+    
+        public virtual ObjectResult<usp_GetRMInventoryFinishedGood_Result> usp_GetRMInventoryFinishedGood()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryFinishedGood_Result>("usp_GetRMInventoryFinishedGood");
         }
     
         public virtual ObjectResult<usp_GetRMInventoryPackageBags_Result> usp_GetRMInventoryPackageBags()
