@@ -97,25 +97,19 @@
                 url: "/LocationMaster/DeleteLocation",
                 method: "POST",
                 contentType: "application/json",
-                data: JSON.stringify({ LocationId: LocationId }),
+                data: JSON.stringify({
+                    LocationId: LocationId}),
                 async: false,
                 success: function (data) {
-                    if (data.Response.ResponseCode == 440) {
-                        alert(data.Response.ResponseMsg);
-                        window.location.href = "/Login/Login";
+                    if (data.success) {
+                        alert("Location deleted successfully!");
+                        // ✅ Now automatically redirect to GetAll
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        alert(data.message || "Failed to delete location");
                     }
-                    else if (data.Response.ResponseCode == 200) {
-                        alert('Location deleted successfully');
-                        window.location.reload();
-                    }
-                    else if (data.Response.ResponseCode == 401) {
-                        alert(data.Response.ResponseMsg);
-                        window.location.href = "/Login/Login";
-                    }
-                    else {
-                        alert(data.Response.ResponseMsg);
-                        return false;
-                    }
+               
+                   
                 },
                 error: function (response) {
                     alert("Something went wrong");

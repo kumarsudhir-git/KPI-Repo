@@ -74,15 +74,14 @@ namespace KPI.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteLocation(KPILib.Models.LocationMasterModel locationMasterObj)
+        public ActionResult DeleteLocation(int LocationId)
         {
             if (ModelState.IsValid)
             {
-                var response = KPIAPIManager.DeleteLocation(locationMasterObj);
+                var response = KPIAPIManager.DeleteLocation(LocationId);
                 if (response.Response.ResponseCode == 200)
                 {
-                    return RedirectToAction("GetAll");
+                    return Json(new { success = true, redirectUrl = Url.Action("GetAll", "LocationMaster") });
                 }
                 else
                 {
