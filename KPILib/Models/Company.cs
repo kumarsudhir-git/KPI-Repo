@@ -17,7 +17,12 @@ namespace KPILib.Models
         public string CompanyName { get; set; }
         public string Notes { get; set; }
 
+        public string Reference { get; set; }
+
+        public string PartnerSince { get; set; }
+
         [Display(Name = "Discontinued?")]
+
         public bool IsDiscontinued { get; set; }
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }

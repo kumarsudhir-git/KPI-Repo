@@ -17,8 +17,11 @@ namespace KPILib.Models
     {
         public int MouldID { get; set; }
         [Required(ErrorMessage = "Required")]
-        [Display(Name = "Mould Code")]
+        [Display(Name = "Mould Name")]
         public string MouldName { get; set; }
+
+        [Required(ErrorMessage = "{0} is required")]
+        [MaxLength(500)]
         public string Description { get; set; }
         [Display(Name = "Mould Type")]
         public int MouldTypeID { get; set; }
@@ -37,29 +40,45 @@ namespace KPILib.Models
         public string AllProducts { get; set; }
         public int? InProductionID { get; set; }
         [Display(Name = "Location")]
+        [Required(ErrorMessage = "{0} is required")]
         public int? LocationId { get; set; }
         [Display(Name = "Location Name")]
         public string LocationName { get; set; }
         [Display(Name = "Total No Of Cavities")]
+        [Required(ErrorMessage = "{0} is required")]
+
         public string TotalCavities { get; set; }
         [Display(Name = "Running Cavities")]
+        [Required(ErrorMessage = "{0} is required")]
+
         public string RunningCavities { get; set; }
         [Display(Name = "Core Pins")]
+        [Required(ErrorMessage = "{0} is required")]
+
         public string CorePins { get; set; }
         [Display(Name = "Maintenance Frequency")]
+        [Required(ErrorMessage = "{0} is required")]
         public int? MaintenanceFrequency { get; set; }
         [Display(Name = "Last Maintenance Date")]
+        [Required(ErrorMessage = "{0} is required")]
         public DateTime? LastMaintenanceDate { get; set; }
         [Display(Name = "Date Of Purchase")]
+        [Required(ErrorMessage = "{0} is required")]
+
+
         public DateTime? PurchaseDate { get; set; }
 
         // --- Calculated on the fly (not mapped to DB) ---
         [Display(Name = "Maintenance Due Date")]
+        [Required(ErrorMessage = "{0} is required")]
+
         public DateTime? MaintenanceDueDate =>
             (LastMaintenanceDate.HasValue && MaintenanceFrequency.HasValue)
                 ? LastMaintenanceDate.Value.AddDays(MaintenanceFrequency.Value)
                 : (DateTime?)null;
         [Display(Name = "Due In (Days)")]
+        [Required(ErrorMessage = "{0} is required")]
+
         public int? DueInDays =>
             MaintenanceDueDate.HasValue
                 ? (int)(MaintenanceDueDate.Value.Date - DateTime.Today).TotalDays

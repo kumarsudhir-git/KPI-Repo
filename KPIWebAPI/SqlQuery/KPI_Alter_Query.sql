@@ -950,5 +950,12 @@ END
 GO
 ALTER TABLE RMInventoryPackageBags Add ItemDetail NVARCHAR(MAX) NULL
 
+
+---------------------------------------------------------------05-11-2025------------------------------------------------
+
+ALTER TABLE CompanyMaster
+ADD 
+Reference VARCHAR(100),
+PartnerSince varchar(4);
 ------------------------------------------------------END----------------------------------------------------------------
 

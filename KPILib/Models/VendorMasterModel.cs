@@ -8,15 +8,18 @@ namespace KPILib.Models
     {
         public int VendorId { get; set; }
         [Required(ErrorMessage = "Required")]
+        [Display(Name = "Vendor Name")]
         public string VendorName { get; set; }
         [Display(Name = "Item")]
         public string Notes { get; set; }
         public string Address { get; set; }
-        [Required(ErrorMessage = "Required")]
+
+        [Display(Name = "Contact Number")]
         public string ContactNumber { get; set; }
         [Required(ErrorMessage = "Required")]
         public string VendorType { get; set; }
         [Display(Name = "MOQ")]
+        [Required(ErrorMessage = "Required")]
         public string MOQ { get; set; }
         [Display(Name = "Item Type")]
         public string ItemType { get; set; }

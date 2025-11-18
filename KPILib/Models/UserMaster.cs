@@ -20,10 +20,15 @@ namespace KPILib.Models
         public int RoleID { get; set; }
 
         [DataType(DataType.EmailAddress)]
+
+        [Required(ErrorMessage = "Required")]
+
         [RegularExpression(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}", ErrorMessage = "Please enter correct email")]
         public string Email { get; set; } = "";
 
         [DataType(DataType.PhoneNumber)]
+        [Required(ErrorMessage = "Required")]
+
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string Mobile { get; set; }
         public bool IsDiscontinued { get; set; }

@@ -18,6 +18,10 @@ namespace KPILib.Models
         public string RackNo { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]
+        [StringLength(500, MinimumLength = 1, ErrorMessage = "{0} should be minimum 1 characters and a maximum of 500 characters")]
+        [DataType(DataType.Text)]
+        [Display(Name = "Description")]
+
         public string Description { get; set; }
         
         [Display(Name = "Discontinued?")] 
