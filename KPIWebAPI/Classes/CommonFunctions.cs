@@ -512,5 +512,25 @@ namespace KPIWebAPI.Classes
             }
         }
 
+        public static PalletMaster GetPalletMaster(int palletID = 0)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                return (from PM in db.PalletMasters
+                        where !PM.IsDiscontinued && (palletID == 0 || PM.PalletID == palletID)
+                        select PM).FirstOrDefault();
+            }
+        }
+
+        public static RMInventoryRejectionMaterial GetRejectionMaterialModel(int RejectionMaterialId = 0)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                return (from RM in db.RMInventoryRejectionMaterials
+                        where RM.RejectionMaterialId == RejectionMaterialId
+                        select RM).FirstOrDefault();
+            }
+        }
+
     }
 }

@@ -950,5 +950,71 @@ END
 GO
 ALTER TABLE RMInventoryPackageBags Add ItemDetail NVARCHAR(MAX) NULL
 
+--------------------------------------------------------15-11-2025-------------------------------------------------------
+
+ALTER TABLE RawMaterialInventoryMaster ADD QtyBags DECIMAL(10,2) NULL
+GO
+
+--------------------------------------------------------23-11-2025-------------------------------------------------------
+
+INSERT INTO MenuMaster
+(MenuCode,MenuName,MenuParentID,Link, AddedOn,IsActive)
+VALUES
+('M_RMInventory','Rejection Material',2,'GetAllRejectionMaterials/RMInventory',GETDATE(),1)
+GO
+
+CREATE TABLE RMInventoryRejectionMaterial
+(
+    RejectionMaterialId INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerId INT NULL,
+    ProductId INT NULL,
+    ReasonForRejection NVARCHAR(MAX) NULL,
+    QtyReceived DECIMAL(18,2) NULL,
+    LocationId INT NULL,
+    ReceivedBy NVARCHAR(MAX) NULL,
+    IsActive BIT NOT NULL DEFAULT 1,
+    CreatedOn DATETIME NOT NULL DEFAULT GETDATE(),
+    CreatedBy INT NULL,
+    UpdatedOn DATETIME NULL,
+    UpdatedBy INT NULL
+)
+
+GO
+
+CREATE PROCEDURE [dbo].[sp_GetRMInventoryRejectionMaterial]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        r.RejectionMaterialId,
+        r.CustomerId,
+        c.CompanyName as 'CustomerName',
+        r.ProductId,
+        p.ProductName,
+        r.ReasonForRejection,
+        r.QtyReceived,
+        r.LocationId,
+		l.LocationName,
+        r.ReceivedBy,
+        r.IsActive,
+        r.CreatedOn,
+        r.CreatedBy,
+		u.Username as 'AddedBy',
+        r.UpdatedOn,
+        r.UpdatedBy,
+		um.Username as 'ModifiedBy'
+    FROM RMInventoryRejectionMaterial r
+    LEFT JOIN CompanyMaster c ON r.CustomerId = c.CompanyID
+    LEFT JOIN ProductMaster p ON r.ProductId = p.ProductId
+	LEFT JOIN UserMaster u ON r.CreatedBy = u.UserID
+	LEFT JOIN UserMaster um ON r.UpdatedBy = um.UserID
+	LEFT JOIN LocationMaster l ON r.LocationId = l.LocationId
+    WHERE r.IsActive = 1
+    ORDER BY CASE WHEN r.UpdatedOn != null THEN r.UpdatedOn ELSE r.CreatedOn END DESC;
+END;
+
+GO
+
 ------------------------------------------------------END----------------------------------------------------------------
 

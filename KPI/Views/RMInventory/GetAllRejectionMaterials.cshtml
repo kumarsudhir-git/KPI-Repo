@@ -1,0 +1,151 @@
+﻿@model IEnumerable<KPILib.Models.RMInventoryRejectionMaterialModel>
+
+@{
+    ViewBag.Title = "GetAllRejectionMaterials";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>Rejection Material</h2>
+
+<hr />
+<div class="col-md-12">
+    <div class="row">
+        <p>
+            @Html.ActionLink("Create New", "SaveRejectionMaterial", "", new { @class = "btn btn-primary" })
+        </p>
+    </div>
+</div>
+
+<div class="form-horizontal">
+
+    <table class="table help-page-table table-sm table-striped AddDataTable" cellspacing="0" style="border:1px solid #000">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReasonForRejection)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QtyReceived)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LocationId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReceivedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UpdatedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UpdatedBy)
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CustomerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReasonForRejection)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QtyReceived)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LocationName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReceivedBy)
+                    </td>
+                    <td>
+                        @if (item.CreatedOn != DateTime.MinValue)
+                        {
+                            <span>@item.CreatedOn.ToShortDateString()</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddedBy)
+                    </td>
+                    <td>
+                        @if (item.UpdatedOn.HasValue && item.UpdatedOn.Value != DateTime.MinValue)
+                        {
+                            <span>@item.UpdatedOn.Value.ToShortDateString()</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifiedBy)
+                    </td>
+                    <td>
+                        <a href="/RMInventory/SaveRejectionMaterial?RejectionMaterialId=@item.RejectionMaterialId" title="Edit" class="" id="UpdateMasterBatch"><i style="font-size:24px;" class="fa">&#xf044;</i></a>
+                        |
+                        <a href="#" title="Delete" class="" onclick="DeleteRejectionMaterialData('@item.RejectionMaterialId')"><i style="font-size:24px; color:red" class="fa">&#xf014;</i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    function DeleteRejectionMaterialData(RejectionMaterialId) {
+
+        if (confirm("Are you sure want to delete data")) {
+            $.ajax({
+                url: "/RMInventory/DeleteRejectionMaterial",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ RejectionMaterialId: RejectionMaterialId }),
+                async: false,
+                success: function (data) {
+                    if (data.Response.ResponseCode == 440) {
+                        alert(data.Response.ResponseMsg);
+                        window.location.href = "/Login/Login";
+                    }
+                    else if (data.Response.ResponseCode == 200) {
+                        alert('Data deleted successfully');
+                        window.location.reload();
+                    }
+                    else if (data.Response.ResponseCode == 401) {
+                        alert(data.Response.ResponseMsg);
+                        window.location.href = "/Login/Login";
+                    }
+                    else {
+                        alert(data.Response.ResponseMsg);
+                        return false;
+                    }
+                },
+                error: function (response) {
+                    alert("Something went wrong");
+                    return false;
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    }
+</script>

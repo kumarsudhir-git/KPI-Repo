@@ -520,5 +520,123 @@ namespace KPI.Controllers
 
         #endregion
 
+        #region Rejection Materials
+
+        [HttpGet]
+        public ActionResult GetAllRejectionMaterials()
+        {
+            var response = KPIAPIManager.GetAllRejectionMaterials();
+            if (response.Response.ResponseCode == 200)
+            {
+                return View(response.data);
+            }
+            else
+            {
+                ViewBag.Error = response.Response.ResponseMsg;
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult SaveRejectionMaterial(int RejectionMaterialId = 0)
+        {
+            ViewData["CustomerId"] = new SelectList(new List<SelectListItem>(), "CustomerId", "CompanyName");
+            ViewData["ProductId"] = new SelectList(new List<SelectListItem>(), "ProductId", "ProductName");
+            ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
+
+            RMInventoryRejectionMaterialResponse response = new RMInventoryRejectionMaterialResponse();
+            if (RejectionMaterialId > 0)
+            {
+                response = KPIAPIManager.GetRejectionMaterialData(RejectionMaterialId);
+            }
+            LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();
+
+            if (locationMasterResponse != null && locationMasterResponse.Response != null)
+            {
+                if (locationMasterResponse.Response.ResponseCode == 200)
+                {
+                    if (locationMasterResponse.data != null && locationMasterResponse.data.Count > 0)
+                    {
+                        ViewData["LocationId"] = new SelectList(locationMasterResponse.data, "LocationId", "LocationName");
+                    }
+                }
+            }
+
+            ProductsResponse productsResponse = KPIAPIManager.GetAllProducts();
+
+            if (productsResponse != null && productsResponse.Response != null)
+            {
+                if (productsResponse.Response.ResponseCode == 200)
+                {
+                    if (productsResponse.data != null && productsResponse.data.Count > 0)
+                    {
+                        ViewData["ProductId"] = new SelectList(productsResponse.data, "ProductID", "ProductName");
+                    }
+                }
+            }
+
+            CompaniesResponse companiesResponse = KPIAPIManager.GetAllCompanies();
+
+            if (companiesResponse != null && companiesResponse.Response != null)
+            {
+                if (companiesResponse.Response.ResponseCode == 200)
+                {
+                    if (companiesResponse.data != null && companiesResponse.data.Count > 0)
+                    {
+                        ViewData["CustomerId"] = new SelectList(companiesResponse.data, "CompanyID", "CompanyName");
+                    }
+                }
+            }
+
+            return View(response.rMInventoryRejectionMaterialModel);
+        }
+
+        [HttpPost]
+        public ActionResult SaveRejectionMaterial(RMInventoryRejectionMaterialModel rMInventoryRejectionMaterials)
+        {
+            if (rMInventoryRejectionMaterials.RejectionMaterialId == 0)
+            {
+                rMInventoryRejectionMaterials.CreatedBy = GetUserSessionID();
+            }
+            else
+            {
+                rMInventoryRejectionMaterials.UpdatedBy = GetUserSessionID();
+            }
+            var response = KPIAPIManager.SaveRejectionMaterial(rMInventoryRejectionMaterials);
+            if (response.Response.ResponseCode == 200)
+            {
+                return RedirectToAction("GetAllRejectionMaterials");
+            }
+            else
+            {
+                ViewBag.Error = response.Response.ResponseMsg;
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DeleteRejectionMaterial(int RejectionMaterialId)
+        {
+            RMInventoryRejectionMaterialResponse response = new RMInventoryRejectionMaterialResponse();
+            if (Request.IsAjaxRequest())
+            {
+                ResponseObj responseObj = CheckSessionForAjaxCall();
+                if (responseObj.ResponseCode == 440)
+                {
+                    response.Response = responseObj;
+                    return Json(response);
+                }
+            }
+            RMInventoryRejectionMaterialModel rMInventoryRejectionMaterials = new RMInventoryRejectionMaterialModel()
+            {
+                RejectionMaterialId = RejectionMaterialId,
+                UpdatedBy = GetUserSessionID()
+            };
+            response = KPIAPIManager.DeleteRejectionMaterial(rMInventoryRejectionMaterials);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
     }
 }

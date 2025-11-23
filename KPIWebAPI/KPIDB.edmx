@@ -499,6 +499,7 @@
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="LocationId" Type="int" />
           <Property Name="MinOrderlevel" Type="int" />
+          <Property Name="QtyBags" Type="decimal" Precision="10" Scale="2" />
         </EntityType>
         <EntityType Name="RawMaterialMaster">
           <Key>
@@ -568,6 +569,23 @@
           <Property Name="ColorId" Type="int" />
           <Property Name="ItemType" Type="nvarchar" MaxLength="250" />
           <Property Name="ItemDetail" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="RMInventoryRejectionMaterial">
+          <Key>
+            <PropertyRef Name="RejectionMaterialId" />
+          </Key>
+          <Property Name="RejectionMaterialId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="ProductId" Type="int" />
+          <Property Name="ReasonForRejection" Type="nvarchar(max)" />
+          <Property Name="QtyReceived" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="ReceivedBy" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
         </EntityType>
         <EntityType Name="RoleMaster">
           <Key>
@@ -1488,6 +1506,7 @@
         <Function Name="sp_GetEmptyPallets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_GetEmptyRacks" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_GetRMInventory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_GetRMInventoryRejectionMaterial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="usp_GetLocationMasterAllData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="usp_GetMachineMouldMapData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="orderBy" Type="nvarchar" Mode="In" />
@@ -1539,6 +1558,7 @@
           <EntitySet Name="RMInventoryFinishedGood" EntityType="Self.RMInventoryFinishedGood" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMInventoryMasterBatch" EntityType="Self.RMInventoryMasterBatch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RMInventoryPackageBags" EntityType="Self.RMInventoryPackageBags" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RMInventoryRejectionMaterial" EntityType="Self.RMInventoryRejectionMaterial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleMaster" EntityType="Self.RoleMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleRights" EntityType="Self.RoleRights" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SalesDetails" EntityType="Self.SalesDetails" Schema="dbo" store:Type="Tables" />
@@ -1814,6 +1834,7 @@
           </FunctionImport>
           <FunctionImport Name="sp_GetRMInventory" ReturnType="Collection(KPIModel.sp_GetRMInventory_Result)" />
           <FunctionImport Name="usp_GetRMInventoryFinishedGood" ReturnType="Collection(KPIModel.usp_GetRMInventoryFinishedGood_Result)" />
+          <FunctionImport Name="usp_GetRMInventoryPackageBags" ReturnType="Collection(KPIModel.usp_GetRMInventoryPackageBags_Result)" />
           <EntitySet Name="CompanyLocationMasters" EntityType="KPIModel.CompanyLocationMaster" />
           <EntitySet Name="CompanyMasters" EntityType="KPIModel.CompanyMaster" />
           <EntitySet Name="CompanyTypeMasters" EntityType="KPIModel.CompanyTypeMaster" />
@@ -1857,6 +1878,7 @@
           <EntitySet Name="RMInventoryFinishedGoods" EntityType="KPIModel.RMInventoryFinishedGood" />
           <EntitySet Name="RMInventoryMasterBatches" EntityType="KPIModel.RMInventoryMasterBatch" />
           <EntitySet Name="RMInventoryPackageBags" EntityType="KPIModel.RMInventoryPackageBag" />
+          <EntitySet Name="RMInventoryRejectionMaterials" EntityType="KPIModel.RMInventoryRejectionMaterial" />
           <EntitySet Name="RoleMasters" EntityType="KPIModel.RoleMaster" />
           <EntitySet Name="RoleRights" EntityType="KPIModel.RoleRight" />
           <EntitySet Name="SalesDetails" EntityType="KPIModel.SalesDetail" />
@@ -2114,7 +2136,7 @@
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="SalesMaster" EntitySet="SalesMasters" />
           </AssociationSet>
-          <FunctionImport Name="usp_GetRMInventoryPackageBags" ReturnType="Collection(KPIModel.usp_GetRMInventoryPackageBags_Result)" />
+          <FunctionImport Name="sp_GetRMInventoryRejectionMaterial" ReturnType="Collection(KPIModel.sp_GetRMInventoryRejectionMaterial_Result)" />
           </EntityContainer>
         <ComplexType Name="usp_GetLocationMasterAllData_Result">
           <Property Type="Int32" Name="LocationId" Nullable="false" />
@@ -2172,6 +2194,22 @@
           <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
           <Property Type="String" Name="Colour" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="Weight" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
+          <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ModifiedByName" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="usp_GetRMInventoryPackageBags_Result">
+          <Property Type="Int32" Name="PackageBagId" Nullable="false" />
+          <Property Type="String" Name="Size" Nullable="true" />
+          <Property Type="String" Name="VendorName" Nullable="true" />
+          <Property Type="Int32" Name="QtyInStock" Nullable="true" />
+          <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
+          <Property Type="Int32" Name="LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="ColorName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ItemTypeName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ItemDetail" Nullable="true" />
           <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
           <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
           <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
@@ -2755,6 +2793,7 @@
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="LocationId" Type="Int32" />
           <Property Name="MinOrderlevel" Type="Int32" />
+          <Property Name="QtyBags" Type="Decimal" Precision="10" Scale="2" />
           <NavigationProperty Name="PalletMaster" Relationship="KPIModel.FK_RawMaterialInventoryMaster_PalletMaster" FromRole="RawMaterialInventoryMaster" ToRole="PalletMaster" />
           <NavigationProperty Name="ProductionRawMaterials" Relationship="KPIModel.FK_ProductionRawMaterial_RawMaterialInventoryMaster" FromRole="RawMaterialInventoryMaster" ToRole="ProductionRawMaterial" />
           <NavigationProperty Name="RawMaterialMaster" Relationship="KPIModel.FK_RawMaterialInventoryMaster_RawMaterialMaster" FromRole="RawMaterialInventoryMaster" ToRole="RawMaterialMaster" />
@@ -2835,6 +2874,23 @@
           <Property Name="ColorId" Type="Int32" />
           <Property Name="ItemType" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="ItemDetail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RMInventoryRejectionMaterial">
+          <Key>
+            <PropertyRef Name="RejectionMaterialId" />
+          </Key>
+          <Property Name="RejectionMaterialId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="ProductId" Type="Int32" />
+          <Property Name="ReasonForRejection" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="QtyReceived" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="ReceivedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
         </EntityType>
         <EntityType Name="RoleMaster">
           <Key>
@@ -3776,21 +3832,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="usp_GetRMInventoryPackageBags_Result">
-          <Property Type="Int32" Name="PackageBagId" Nullable="false" />
-          <Property Type="String" Name="Size" Nullable="true" />
-          <Property Type="String" Name="VendorName" Nullable="true" />
-          <Property Type="Int32" Name="QtyInStock" Nullable="true" />
-          <Property Type="Int32" Name="MinOrderLevel" Nullable="true" />
+        <ComplexType Name="sp_GetRMInventoryRejectionMaterial_Result">
+          <Property Type="Int32" Name="RejectionMaterialId" Nullable="false" />
+          <Property Type="Int32" Name="CustomerId" Nullable="true" />
+          <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="ProductId" Nullable="true" />
+          <Property Type="String" Name="ProductName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ReasonForRejection" Nullable="true" />
+          <Property Type="Decimal" Name="QtyReceived" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Int32" Name="LocationId" Nullable="true" />
           <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
-          <Property Type="String" Name="ColorName" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="ItemTypeName" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="ItemDetail" Nullable="true" />
-          <Property Type="DateTime" Name="AddedOn" Nullable="false" Precision="23" />
-          <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
-          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
-          <Property Type="String" Name="ModifiedByName" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ReceivedBy" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedOn" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="String" Name="AddedBy" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="UpdatedOn" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="UpdatedBy" Nullable="true" />
+          <Property Type="String" Name="ModifiedBy" Nullable="true" MaxLength="20" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -3875,6 +3934,26 @@
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="Colour" ColumnName="Colour" />
                 <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_GetRMInventoryPackageBags" FunctionName="KPIModel.Store.usp_GetRMInventoryPackageBags">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KPIModel.usp_GetRMInventoryPackageBags_Result">
+                <ScalarProperty Name="PackageBagId" ColumnName="PackageBagId" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
+                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="ColorName" ColumnName="ColorName" />
+                <ScalarProperty Name="ItemTypeName" ColumnName="ItemTypeName" />
+                <ScalarProperty Name="ItemDetail" ColumnName="ItemDetail" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
@@ -4402,6 +4481,7 @@
           <EntitySetMapping Name="RawMaterialInventoryMasters">
             <EntityTypeMapping TypeName="KPIModel.RawMaterialInventoryMaster">
               <MappingFragment StoreEntitySet="RawMaterialInventoryMaster">
+                <ScalarProperty Name="QtyBags" ColumnName="QtyBags" />
                 <ScalarProperty Name="MinOrderlevel" ColumnName="MinOrderlevel" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
@@ -4486,6 +4566,24 @@
                 <ScalarProperty Name="VendorId" ColumnName="VendorId" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="PackageBagId" ColumnName="PackageBagId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RMInventoryRejectionMaterials">
+            <EntityTypeMapping TypeName="KPIModel.RMInventoryRejectionMaterial">
+              <MappingFragment StoreEntitySet="RMInventoryRejectionMaterial">
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="QtyReceived" ColumnName="QtyReceived" />
+                <ScalarProperty Name="ReasonForRejection" ColumnName="ReasonForRejection" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="RejectionMaterialId" ColumnName="RejectionMaterialId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4683,23 +4781,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="usp_GetRMInventoryPackageBags" FunctionName="KPIModel.Store.usp_GetRMInventoryPackageBags">
+          <FunctionImportMapping FunctionImportName="sp_GetRMInventoryRejectionMaterial" FunctionName="KPIModel.Store.sp_GetRMInventoryRejectionMaterial">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="KPIModel.usp_GetRMInventoryPackageBags_Result">
-                <ScalarProperty Name="PackageBagId" ColumnName="PackageBagId" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
-                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
-                <ScalarProperty Name="MinOrderLevel" ColumnName="MinOrderLevel" />
+              <ComplexTypeMapping TypeName="KPIModel.sp_GetRMInventoryRejectionMaterial_Result">
+                <ScalarProperty Name="RejectionMaterialId" ColumnName="RejectionMaterialId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ReasonForRejection" ColumnName="ReasonForRejection" />
+                <ScalarProperty Name="QtyReceived" ColumnName="QtyReceived" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="ColorName" ColumnName="ColorName" />
-                <ScalarProperty Name="ItemTypeName" ColumnName="ItemTypeName" />
-                <ScalarProperty Name="ItemDetail" ColumnName="ItemDetail" />
-                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
-                <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+                <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

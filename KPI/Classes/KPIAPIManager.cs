@@ -818,6 +818,7 @@ namespace KPI.Classes
 
         #endregion
 
+        #region RM Inventory API Calls
         #region Master Batch 
 
         public static RMInventoryMasterBatchResponse GetAllMasterBatch()
@@ -899,6 +900,36 @@ namespace KPI.Classes
             var result = CommonFunctions.client.PostAsJsonAsync("RMInventoryAPI/DeleteFinishedGood", data).Result.Content.ReadAsAsync<RMInventoryFinishedGoodResponse>().Result;
             return result;
         }
+
+        #endregion
+
+        #region Rejection Material
+
+        public static RMInventoryRejectionMaterialResponse GetAllRejectionMaterials()
+        {
+            var result = CommonFunctions.client.GetAsync("RMInventoryAPI/GetAllRejectionMaterial").Result.Content.ReadAsAsync<RMInventoryRejectionMaterialResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryRejectionMaterialResponse GetRejectionMaterialData(int RejectionMaterialId = 0)
+        {
+            var result = CommonFunctions.client.GetAsync("RMInventoryAPI/GetRejectionMaterialData?RejectionMaterialId=" + RejectionMaterialId.ToString()).Result.Content.ReadAsAsync<RMInventoryRejectionMaterialResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryRejectionMaterialResponse SaveRejectionMaterial(RMInventoryRejectionMaterialModel data)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RMInventoryAPI/SaveRejectionMaterial", data).Result.Content.ReadAsAsync<RMInventoryRejectionMaterialResponse>().Result;
+            return result;
+        }
+
+        public static RMInventoryRejectionMaterialResponse DeleteRejectionMaterial(RMInventoryRejectionMaterialModel data)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("RMInventoryAPI/DeleteRejectionMaterial", data).Result.Content.ReadAsAsync<RMInventoryRejectionMaterialResponse>().Result;
+            return result;
+        }
+
+        #endregion
 
         #endregion
     }

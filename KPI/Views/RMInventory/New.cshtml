@@ -66,20 +66,25 @@
             </div>
         </div>
         <div class="col-md-3 col-sm-12">
+            <label class="control-label">Qty (Kgs)</label>
+            <div class="">
+                <span class="col-md-2" id="lblQtyKgs">0</span>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.QtyBags, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.QtyBags, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.QtyBags, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
             <div class="form-group">
                 @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label" })
                 @Html.DropDownListFor(model => model.LocationId, null, "--Select--", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
             </div>
         </div>
-        <div class="col-md-3 col-sm-12">
-            <label class="control-label">Qty (Kgs)</label>
-            <div class="">
-                <span class="col-md-2" id="lblQtyKgs">0</span>
-            </div>
-        </div>
-
-
     </div>
     <div class="col-md-12">
         <div class="form-group">

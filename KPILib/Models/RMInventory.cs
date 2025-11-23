@@ -26,10 +26,10 @@ namespace KPILib.Models
         public List<TagColor> TagColours { get; set; }
 
         [Display(Name = "Qty (in Kgs)")]
-        public decimal Qty { get; set; } //bags
+        public decimal Qty { get; set; } //kgs
 
         [Display(Name = "Qty (Bags)")]
-        public decimal QtyBags { get; set; } //kgs
+        public decimal QtyBags { get; set; } //bags
 
         [Display(Name = "Open Bags")]
         public decimal QtyOpened { get; set; } //opened
@@ -250,4 +250,44 @@ namespace KPILib.Models
         }
     }
 
+    public class RMInventoryRejectionMaterialResponse
+    {
+        public RMInventoryRejectionMaterialModel rMInventoryRejectionMaterialModel { get; set; }
+        public List<RMInventoryRejectionMaterialModel> data { get; set; }
+        public ResponseObj Response { get; set; }
+        public RMInventoryRejectionMaterialResponse()
+        {
+            rMInventoryRejectionMaterialModel = new RMInventoryRejectionMaterialModel();
+            this.data = new List<RMInventoryRejectionMaterialModel>();
+            this.Response = new ResponseObj();
+        }
+    }
+
+    public class RMInventoryRejectionMaterialModel
+    {
+        public int RejectionMaterialId { get; set; }
+        [Display(Name = "Customer")]
+        public int? CustomerId { get; set; }
+        public string CustomerName { get; set; }
+        [Display(Name = "Product")]
+        public int? ProductId { get; set; }
+        [Display(Name = "Product Name")]
+        public string ProductName { get; set; }
+        [Display(Name = "Rejection Reason")]
+        public string ReasonForRejection { get; set; }
+        [Display(Name = "Qty Received (in Kgs)")]
+        public decimal? QtyReceived { get; set; }
+        [Display(Name = "Location")]
+        public int? LocationId { get; set; }
+        [Display(Name = "Location Name")]
+        public string LocationName { get; set; }
+        public string ReceivedBy { get; set; }
+        public bool IsActive { get; set; }
+        public System.DateTime CreatedOn { get; set; }
+        public int? CreatedBy { get; set; }
+        public string AddedBy { get; set; }
+        public DateTime? UpdatedOn { get; set; }
+        public int? UpdatedBy { get; set; }
+        public string ModifiedBy { get; set; }
+    }
 }

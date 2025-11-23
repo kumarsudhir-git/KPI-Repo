@@ -367,6 +367,9 @@
     <Compile Include="RMInventoryPackageBag.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="RMInventoryRejectionMaterial.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="RoleMaster.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
@@ -389,6 +392,9 @@
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
     <Compile Include="SalesStatusMaster.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_GetRMInventoryRejectionMaterial_Result.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
     <Compile Include="sp_GetRMInventory_Result.cs">

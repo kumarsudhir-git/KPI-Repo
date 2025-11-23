@@ -228,7 +228,18 @@ namespace KPIWebAPI.Controllers
                 var o = mapper.Map<RMInventory, RawMaterialInventoryMaster>(data);
                 o.AddedOn = DateTime.Now;
                 //o.LastModifiedOn = DateTime.Now;
-                //o.PalletID = 1002;// Hard coding this value as this field is not required as of now
+                PalletMaster palletMaster = CommonFunctions.GetPalletMaster();
+                if (palletMaster == null)
+                {
+                    //TODO - handle for pallet as it is eing referred as foreign key
+                    returnValue.Response.ResponseMsg = "";
+                    return Json(returnValue);
+                }
+                else
+                {
+                    o.PalletID = palletMaster.PalletID;
+                    //o.PalletID = 1002;// Hard coding this value as this field is not required as of now
+                }
                 db.RawMaterialInventoryMasters.Add(o);
                 db.SaveChanges();
 
@@ -256,10 +267,11 @@ namespace KPIWebAPI.Controllers
                 var o = db.RawMaterialInventoryMasters.SingleOrDefault(x => x.RMInventoryID == data.RMInventoryID);
                 if (o != null)
                 {
-                    o.PalletID = data.PalletID;
+                    //o.PalletID = data.PalletID;
                     //o.PalletID = 1002;// Hard coding this value as this field is not required as of now
                     o.RawMaterialID = data.RawMaterialID;
                     o.Qty = data.Qty;
+                    o.QtyBags = data.QtyBags;
                     o.MinOrderlevel = data.MinOrderlevel;
                     o.LastModifiedOn = DateTime.Now;
                     o.ModifiedBy = data.ModifiedBy;
@@ -726,6 +738,128 @@ namespace KPIWebAPI.Controllers
                                                     where FG.FinishedGoodId == FinishedGoodId
                                                     select FG).FirstOrDefault();
             return FinishedGood;
+        }
+
+        #endregion
+
+        #region Rejection Material
+
+        [HttpGet]
+        public IHttpActionResult GetAllRejectionMaterial()
+        {
+            RMInventoryRejectionMaterialResponse rMInventoryRejectionMaterial = new RMInventoryRejectionMaterialResponse();
+            try
+            {
+                List<sp_GetRMInventoryRejectionMaterial_Result> rejectionMaterials = db.sp_GetRMInventoryRejectionMaterial().ToList();
+                rMInventoryRejectionMaterial.data = mapper.Map<List<RMInventoryRejectionMaterialModel>>(rejectionMaterials);
+                rMInventoryRejectionMaterial.Response.IsSuccessful();
+            }
+            catch (Exception ex)
+            {
+                rMInventoryRejectionMaterial.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
+                rMInventoryRejectionMaterial.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
+            }
+            return Json(rMInventoryRejectionMaterial);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetRejectionMaterialData(int RejectionMaterialId = 0)
+        {
+            RMInventoryRejectionMaterialResponse rMInventoryRejectionMaterial = new RMInventoryRejectionMaterialResponse();
+            try
+            {
+                RMInventoryRejectionMaterial rMInventory = CommonFunctions.GetRejectionMaterialModel(RejectionMaterialId);
+                if (rMInventory != null)
+                {
+                    rMInventoryRejectionMaterial.rMInventoryRejectionMaterialModel = mapper.Map<RMInventoryRejectionMaterialModel>(rMInventory);
+                    rMInventoryRejectionMaterial.Response.IsSuccessful();
+                }
+                else
+                {
+                    rMInventoryRejectionMaterial.Response.ResponseCode = (int)HttpStatusCode.BadRequest;
+                    rMInventoryRejectionMaterial.Response.ResponseMsg = "No Data Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                rMInventoryRejectionMaterial.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
+                rMInventoryRejectionMaterial.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
+            }
+            return Json(rMInventoryRejectionMaterial);
+        }
+
+        [HttpPost]
+        public IHttpActionResult SaveRejectionMaterial(RMInventoryRejectionMaterialModel rMInventoryRejectionMaterialModel)
+        {
+            RMInventoryRejectionMaterialResponse rMInventoryRejectionMaterialResponse = new RMInventoryRejectionMaterialResponse();
+            try
+            {
+                if (rMInventoryRejectionMaterialModel.RejectionMaterialId == 0)
+                {
+                    RMInventoryRejectionMaterial rMInventory = mapper.Map<RMInventoryRejectionMaterial>(rMInventoryRejectionMaterialModel);
+                    rMInventory.IsActive = true;
+                    rMInventory.CreatedOn = DateTime.Now;
+                    db.RMInventoryRejectionMaterials.Add(rMInventory);
+                }
+                else
+                {
+                    RMInventoryRejectionMaterial rMInventory = CommonFunctions.GetRejectionMaterialModel(rMInventoryRejectionMaterialModel.RejectionMaterialId);
+                    if (rMInventory != null)
+                    {
+                        rMInventory.CustomerId = rMInventoryRejectionMaterialModel.CustomerId;
+                        rMInventory.LocationId = rMInventoryRejectionMaterialModel.LocationId;
+                        rMInventory.ReceivedBy = rMInventoryRejectionMaterialModel.ReceivedBy;
+                        rMInventory.QtyReceived = rMInventoryRejectionMaterialModel.QtyReceived;
+                        rMInventory.ProductId = rMInventoryRejectionMaterialModel.ProductId;
+                        rMInventory.ReasonForRejection = rMInventoryRejectionMaterialModel.ReasonForRejection;
+                        rMInventory.UpdatedBy = rMInventoryRejectionMaterialModel.UpdatedBy;
+                        rMInventory.UpdatedOn = DateTime.Now;
+                        db.Entry(rMInventory).State = System.Data.Entity.EntityState.Modified;
+                    }
+                }
+                db.SaveChanges();
+                rMInventoryRejectionMaterialResponse.Response.IsSuccessful();
+            }
+            catch (Exception ex)
+            {
+                rMInventoryRejectionMaterialResponse.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
+                rMInventoryRejectionMaterialResponse.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
+            }
+            return Json(rMInventoryRejectionMaterialResponse);
+        }
+
+        [HttpPost]
+        public IHttpActionResult DeleteRejectionMaterial(RMInventoryRejectionMaterialModel rMInventoryRejectionMaterialModel)
+        {
+            RMInventoryRejectionMaterialResponse rMInventoryRejectionMaterialResponse = new RMInventoryRejectionMaterialResponse();
+            try
+            {
+                RMInventoryRejectionMaterial rMInventory = CommonFunctions.GetRejectionMaterialModel(rMInventoryRejectionMaterialModel.RejectionMaterialId);
+                if (rMInventory != null)
+                {
+                    rMInventory.IsActive = false;
+                    rMInventory.UpdatedOn = DateTime.Now;
+                    rMInventory.UpdatedBy = rMInventoryRejectionMaterialModel.UpdatedBy;
+                    db.Entry(rMInventory).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    rMInventoryRejectionMaterialResponse.Response.IsSuccessful();
+                }
+                else
+                {
+                    rMInventoryRejectionMaterialResponse.Response.ResponseCode = (int)HttpStatusCode.BadRequest;
+                    rMInventoryRejectionMaterialResponse.Response.ResponseMsg = "Data Not Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                rMInventoryRejectionMaterialResponse.Response.ResponseCode = (int)HttpStatusCode.InternalServerError;
+                rMInventoryRejectionMaterialResponse.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
+            }
+            return Json(rMInventoryRejectionMaterialResponse);
         }
 
         #endregion

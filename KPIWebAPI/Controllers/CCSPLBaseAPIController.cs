@@ -188,6 +188,12 @@ namespace KPIWebAPI.Controllers
             
             cfg.CreateMap<MachineMouldMapping, KPILib.Models.MachineMouldMapping>();
             cfg.CreateMap<KPILib.Models.MachineMouldMapping, MachineMouldMapping>();
+            
+            cfg.CreateMap<sp_GetRMInventoryRejectionMaterial_Result, KPILib.Models.RMInventoryRejectionMaterialModel>();
+            cfg.CreateMap<KPILib.Models.RMInventoryRejectionMaterialModel, sp_GetRMInventoryRejectionMaterial_Result>();
+            
+            cfg.CreateMap<RMInventoryRejectionMaterial, KPILib.Models.RMInventoryRejectionMaterialModel>();
+            cfg.CreateMap<KPILib.Models.RMInventoryRejectionMaterialModel, RMInventoryRejectionMaterial>();
         });
 
         public static IMapper mapper = config.CreateMapper();
