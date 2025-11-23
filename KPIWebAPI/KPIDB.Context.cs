@@ -67,7 +67,6 @@ namespace KPIWebAPI
         public virtual DbSet<RackMaster> RackMasters { get; set; }
         public virtual DbSet<RawMaterialInventoryMaster> RawMaterialInventoryMasters { get; set; }
         public virtual DbSet<RawMaterialMaster> RawMaterialMasters { get; set; }
-        public virtual DbSet<RMInventoryFinishedGood> RMInventoryFinishedGoods { get; set; }
         public virtual DbSet<RMInventoryMasterBatch> RMInventoryMasterBatches { get; set; }
         public virtual DbSet<RMInventoryPackageBag> RMInventoryPackageBags { get; set; }
         public virtual DbSet<RMInventoryRejectionMaterial> RMInventoryRejectionMaterials { get; set; }
@@ -84,6 +83,8 @@ namespace KPIWebAPI
         public virtual DbSet<UOMMaster> UOMMasters { get; set; }
         public virtual DbSet<UserMaster> UserMasters { get; set; }
         public virtual DbSet<VendorMaster> VendorMasters { get; set; }
+        public virtual DbSet<RMInventoryFinishedGood> RMInventoryFinishedGoods { get; set; }
+        public virtual DbSet<RMInventoryPackageBag> RMInventoryPackageBags { get; set; }
     
         public virtual ObjectResult<Nullable<int>> sp_GetEmptyPallets()
         {

@@ -800,9 +800,9 @@ namespace KPI.Classes
             return result;
         }
 
-        public static LocationMasterResponse DeleteLocation(LocationMasterModel obj)
+        public static LocationMasterResponse DeleteLocation(int LocationId)
         {
-            var result = CommonFunctions.client.PostAsJsonAsync("LocationMasterAPI/DeleteLocation", obj).Result.Content.ReadAsAsync<LocationMasterResponse>().Result;
+            var result = CommonFunctions.client.DeleteAsync($"LocationMasterAPI/DeleteLocation?LocationId={LocationId}").Result.Content.ReadAsAsync<LocationMasterResponse>().Result;
             return result;
         }
         public static LocationMasterResponse GetListOfLocationMasterData()

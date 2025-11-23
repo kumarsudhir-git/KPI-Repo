@@ -16,11 +16,13 @@ namespace KPILib.Models
     {
         public int MachineID { get; set; }
         [Required(ErrorMessage = "Required")]
+        [MaxLength(50,ErrorMessage = "Machine Name Should not be greater than 50")]
         public string MachineName { get; set; }
         [Required(ErrorMessage = "Required")]
         public string Description { get; set; }
         [Required(ErrorMessage = "Required")]
         public int MachineTypeID { get; set; }
+        [Required(ErrorMessage = "Required")]
         public string MachineTypeName { get; set; }
         public bool IsDiscontinued { get; set; }
         public DateTime AddedOn { get; set; }

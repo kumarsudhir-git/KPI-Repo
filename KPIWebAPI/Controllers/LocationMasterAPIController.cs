@@ -108,6 +108,7 @@ namespace KPIWebAPI.Controllers
             return Json(returnValue);
         }
 
+        [HttpDelete]
         public IHttpActionResult DeleteLocation(int LocationId)
         {
             LocationMasterResponse returnValue = new LocationMasterResponse();

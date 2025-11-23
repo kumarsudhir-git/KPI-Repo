@@ -22,6 +22,7 @@ namespace KPILib.Models
     {
         public int LocationId { get; set; }
         [Required(ErrorMessage = "Required")]
+        [MaxLength(250, ErrorMessage = "Location Name should not be greater than 250 characters.")]
         public string LocationName { get; set; }
         public bool IsActive { get; set; }
         public int? AddedBy { get; set; }

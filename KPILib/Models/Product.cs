@@ -17,14 +17,17 @@ namespace KPILib.Models
         [Display(Name = "Product Name")]
         public string ProductName { get; set; }
 
+
+        [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Product Code")]
         [MaxLength(50)]
         public string ProductCode { get; set; }
 
         [MaxLength(200)]
+        [Required(ErrorMessage = "{0} is required")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "{0} is required")]
+       
         [Display(Name = "Product Category")]
         public int ProductCategoryID { get; set; }          //prodcat name, prodcats list
 
@@ -33,31 +36,41 @@ namespace KPILib.Models
 
         //public List<ProductCategory> ProductCategories { get; set; }
 
-        [Required(ErrorMessage = "{0} is required")]
+       
         [Display(Name = "Unit of Measurement")]
         public int UOMID { get; set; }
+
         [Display(Name = "Unit of Measurement")]
+        [Required(ErrorMessage = "required")]
         public string UOM { get; set; }
         public List<UOM> UOMs { get; set; }
 
         [Display(Name = "Min. Order Qty")]
+        [Required(ErrorMessage = "{0} is required")]
         [Range(0, 999999999)]
         public int MinQtyUOM { get; set; }
 
         [Range(0, 999999999)]
+       
         public int ConversionUOMID { get; set; }
         
         [Range(0, 999999999)]
+        
 
         public decimal ConversionQty { get; set; }
 
         [Display(Name = "Raw Material")]
+
         public int RawMaterialID { get; set; }
 
-        [Display(Name = "Mim Selling Price")]
+        [Display(Name = "Min Selling Price")]
+        [Required(ErrorMessage = "required")]
+        [Range(0, 999999999)]
+
         public decimal MinimumSellingPrice { get; set; }
 
         [Display(Name = "Colour")]
+
         public string Colour { get; set; }
 
         //[Display(Name = "Raw Material")]
@@ -74,6 +87,8 @@ namespace KPILib.Models
 
         [Display(Name = "RM Reqd for Min Qty (Kgs)")]
         [Range(0, 999999999)]
+
+        [Required(ErrorMessage = "{0} is required")]
         public decimal RMReqdForUOMQty { get; set; }
         
         [Display(Name = "Packaging Qty")]

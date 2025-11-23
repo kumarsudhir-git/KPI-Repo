@@ -21,10 +21,16 @@ namespace KPILib.Models
         [Required(ErrorMessage = "Required")]
         [StringLength(40, MinimumLength = 1, ErrorMessage = "{0} should be minimum 1 characters and a maximum of 40 characters")]
         [DataType(DataType.Text)]
-        [Display(Name = "Raw Matarial")]
+        [Display(Name = "Raw Material")]
+
         public string RawMaterialName { get; set; }
         [Display(Name = "RM Grade")]
+        [Required(ErrorMessage = "Required")]
         public string RMGrade { get; set; }
+
+        
+        [StringLength(1000, MinimumLength = 1, ErrorMessage = "{0} should be minimum 1 characters and a maximum of 1000 characters")]
+        [DataType(DataType.Text)]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Required")]
@@ -42,8 +48,12 @@ namespace KPILib.Models
         public decimal Ordered { get; set; }
         public decimal LoanedOut { get; set; }
         public decimal LoanedIn { get; set; }
+
         [Display(Name = "Vendor Name")]
-        public int? VendorId { get; set; }
+        [Required(ErrorMessage = "Required")]
+
+        public int VendorId { get; set; }
+
         [Display(Name = "Supplier Details")]
         public string VendorName { get; set; }
         public System.DateTime AddedOn { get; set; }
