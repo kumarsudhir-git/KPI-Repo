@@ -1835,6 +1835,7 @@
           <FunctionImport Name="sp_GetRMInventory" ReturnType="Collection(KPIModel.sp_GetRMInventory_Result)" />
           <FunctionImport Name="usp_GetRMInventoryFinishedGood" ReturnType="Collection(KPIModel.usp_GetRMInventoryFinishedGood_Result)" />
           <FunctionImport Name="usp_GetRMInventoryPackageBags" ReturnType="Collection(KPIModel.usp_GetRMInventoryPackageBags_Result)" />
+          <FunctionImport Name="sp_GetRMInventoryRejectionMaterial" ReturnType="Collection(KPIModel.sp_GetRMInventoryRejectionMaterial_Result)" />
           <EntitySet Name="CompanyLocationMasters" EntityType="KPIModel.CompanyLocationMaster" />
           <EntitySet Name="CompanyMasters" EntityType="KPIModel.CompanyMaster" />
           <EntitySet Name="CompanyTypeMasters" EntityType="KPIModel.CompanyTypeMaster" />
@@ -2136,7 +2137,6 @@
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="SalesMaster" EntitySet="SalesMasters" />
           </AssociationSet>
-          <FunctionImport Name="sp_GetRMInventoryRejectionMaterial" ReturnType="Collection(KPIModel.sp_GetRMInventoryRejectionMaterial_Result)" />
           </EntityContainer>
         <ComplexType Name="usp_GetLocationMasterAllData_Result">
           <Property Type="Int32" Name="LocationId" Nullable="false" />
@@ -2214,6 +2214,25 @@
           <Property Type="String" Name="AddedByName" Nullable="true" MaxLength="20" />
           <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
           <Property Type="String" Name="ModifiedByName" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="sp_GetRMInventoryRejectionMaterial_Result">
+          <Property Type="Int32" Name="RejectionMaterialId" Nullable="false" />
+          <Property Type="Int32" Name="CustomerId" Nullable="true" />
+          <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="ProductId" Nullable="true" />
+          <Property Type="String" Name="ProductName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ReasonForRejection" Nullable="true" />
+          <Property Type="Decimal" Name="QtyReceived" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="ReceivedBy" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedOn" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="String" Name="AddedBy" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="UpdatedOn" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="UpdatedBy" Nullable="true" />
+          <Property Type="String" Name="ModifiedBy" Nullable="true" MaxLength="20" />
         </ComplexType>
         <EntityType Name="CompanyLocationMaster">
           <Key>
@@ -3832,25 +3851,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="sp_GetRMInventoryRejectionMaterial_Result">
-          <Property Type="Int32" Name="RejectionMaterialId" Nullable="false" />
-          <Property Type="Int32" Name="CustomerId" Nullable="true" />
-          <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="200" />
-          <Property Type="Int32" Name="ProductId" Nullable="true" />
-          <Property Type="String" Name="ProductName" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="ReasonForRejection" Nullable="true" />
-          <Property Type="Decimal" Name="QtyReceived" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Int32" Name="LocationId" Nullable="true" />
-          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="250" />
-          <Property Type="String" Name="ReceivedBy" Nullable="true" />
-          <Property Type="Boolean" Name="IsActive" Nullable="false" />
-          <Property Type="DateTime" Name="CreatedOn" Nullable="false" Precision="23" />
-          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
-          <Property Type="String" Name="AddedBy" Nullable="true" MaxLength="20" />
-          <Property Type="DateTime" Name="UpdatedOn" Nullable="true" Precision="23" />
-          <Property Type="Int32" Name="UpdatedBy" Nullable="true" />
-          <Property Type="String" Name="ModifiedBy" Nullable="true" MaxLength="20" />
-        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3958,6 +3958,29 @@
                 <ScalarProperty Name="AddedByName" ColumnName="AddedByName" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="ModifiedByName" ColumnName="ModifiedByName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetRMInventoryRejectionMaterial" FunctionName="KPIModel.Store.sp_GetRMInventoryRejectionMaterial">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KPIModel.sp_GetRMInventoryRejectionMaterial_Result">
+                <ScalarProperty Name="RejectionMaterialId" ColumnName="RejectionMaterialId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ReasonForRejection" ColumnName="ReasonForRejection" />
+                <ScalarProperty Name="QtyReceived" ColumnName="QtyReceived" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -4781,29 +4804,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_GetRMInventoryRejectionMaterial" FunctionName="KPIModel.Store.sp_GetRMInventoryRejectionMaterial">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="KPIModel.sp_GetRMInventoryRejectionMaterial_Result">
-                <ScalarProperty Name="RejectionMaterialId" ColumnName="RejectionMaterialId" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="ReasonForRejection" ColumnName="ReasonForRejection" />
-                <ScalarProperty Name="QtyReceived" ColumnName="QtyReceived" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
-                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

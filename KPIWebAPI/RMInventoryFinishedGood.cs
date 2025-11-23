@@ -26,7 +26,7 @@ namespace KPIWebAPI
         public System.DateTime AddedOn { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
-        public string Colour { get; internal set; }
-        public decimal? Weight { get; internal set; }
+        public string Colour { get; set; }
+        public Nullable<decimal> Weight { get; set; }
     }
 }
