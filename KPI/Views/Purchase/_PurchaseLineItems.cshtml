@@ -6,7 +6,7 @@
     @using (Html.BeginCollectionItem("LineItems"))
     {
         <!--<td width="70px">-->
-            @*@Html.ImageActionLink("", "GetAll", "Rack", new { id = item.PurchaseDetailsID }, null, "~/images/garbage.png")*@
+        @*@Html.ImageActionLink("", "GetAll", "Rack", new { id = item.PurchaseDetailsID }, null, "~/images/garbage.png")*@
         <!--</td>-->
         @*<td>
                 @Html.DisplayFor(model => model.PurchaseDetailsID)
@@ -18,7 +18,15 @@
             @Html.ValidationMessage("Required", "", new { @class = "text-danger" })
         </td>
         <td>
-            @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control", @style="width:100px", @maxlength="5", @onchange = "calcKgs(this)" , @required = "required" } })
+            @Html.DropDownListFor(model => model.ItemType, null, "--Select--", new { @class = "form-control", @required = "required" })
+            @Html.ValidationMessageFor(model => model.ItemType, "", new { @class = "text-danger" })
+        </td>
+        <td>
+            @Html.EditorFor(model => model.RMGrade, new { htmlAttributes = new { @class = "form-control", @style = "width:100px" } })
+            @Html.ValidationMessageFor(model => model.RMGrade, "", new { @class = "text-danger" })
+        </td>
+        <td>
+            @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control", @style = "width:100px", @maxlength = "5", @onchange = "calcKgs(this)", @required = "required" } })
             @Html.ValidationMessageFor(model => model.Qty, "", new { @class = "text-danger" })
         </td>
         <td>

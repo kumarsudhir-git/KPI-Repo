@@ -1052,5 +1052,10 @@ VALUES
 
 GO
 
+ALTER TABLE PurchaseDetails ADD ItemType NVARCHAR(50) NULL
+ALTER TABLE PurchaseDetails ADD RMGrade NVARCHAR(MAX) NULL
+
+GO
+
 ------------------------------------------------------END----------------------------------------------------------------
 

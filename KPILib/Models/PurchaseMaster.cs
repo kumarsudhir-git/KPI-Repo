@@ -21,6 +21,7 @@ namespace KPILib.Models
 
         [Display(Name = "Vendor / Location")]
         public string CompanyLocation { get; set; }
+        [Required(ErrorMessage = "Required")]
         public string Instructions { get; set; }
 
         [Display(Name = "Status")]

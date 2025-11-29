@@ -151,7 +151,7 @@
                            style = "max-width:100%;"
                            //@disabled = "disabled"
                        })
-                            @*@Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })*@
+                            @Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
@@ -179,6 +179,12 @@
                                     Raw Material
                                 </th>
                                 <th>
+                                    Item Type
+                                </th>
+                                <th>
+                                    RM Grade
+                                </th>
+                                <th>
                                     Qty (in Kgs)
                                 </th>
                                 <th>
@@ -193,7 +199,8 @@
                         <tbody>
                             @foreach (var item in Model.LineItems)
                             {
-                                Html.RenderPartial("_PurchaseLineItems", item);
+                                //Html.RenderPartial("_PurchaseLineItems", item);
+                                Html.RenderAction("PurchaseLineItemsPartialAction", item);
 
                                 <!--<tr>
                                 <td width="70px">-->

@@ -416,6 +416,8 @@
           <Property Name="Qty" Type="int" Nullable="false" />
           <Property Name="Instructions" Type="varchar(max)" />
           <Property Name="RcvdQty" Type="int" Nullable="false" />
+          <Property Name="ItemType" Type="nvarchar" MaxLength="50" />
+          <Property Name="RMGrade" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="PurchaseMaster">
           <Key>
@@ -2716,6 +2718,8 @@
           <Property Name="Qty" Type="Int32" Nullable="false" />
           <Property Name="Instructions" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="RcvdQty" Type="Int32" Nullable="false" />
+          <Property Name="ItemType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RMGrade" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="PurchaseMaster" Relationship="KPIModel.FK_PurchaseDetails_PurchaseMaster" FromRole="PurchaseDetail" ToRole="PurchaseMaster" />
           <NavigationProperty Name="RawMaterialMaster" Relationship="KPIModel.FK_PurchaseDetails_RawMaterialMaster" FromRole="PurchaseDetail" ToRole="RawMaterialMaster" />
           <NavigationProperty Name="PurchaseRcvdDetails" Relationship="KPIModel.FK_PurchaseRcvdDetails_PurchaseDetails" FromRole="PurchaseDetail" ToRole="PurchaseRcvdDetail" />
@@ -4435,6 +4439,8 @@
           <EntitySetMapping Name="PurchaseDetails">
             <EntityTypeMapping TypeName="KPIModel.PurchaseDetail">
               <MappingFragment StoreEntitySet="PurchaseDetails">
+                <ScalarProperty Name="RMGrade" ColumnName="RMGrade" />
+                <ScalarProperty Name="ItemType" ColumnName="ItemType" />
                 <ScalarProperty Name="RcvdQty" ColumnName="RcvdQty" />
                 <ScalarProperty Name="Instructions" ColumnName="Instructions" />
                 <ScalarProperty Name="Qty" ColumnName="Qty" />

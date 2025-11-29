@@ -26,6 +26,8 @@ namespace KPIWebAPI
         public int Qty { get; set; }
         public string Instructions { get; set; }
         public int RcvdQty { get; set; }
+        public string ItemType { get; set; }
+        public string RMGrade { get; set; }
     
         public virtual PurchaseMaster PurchaseMaster { get; set; }
         public virtual RawMaterialMaster RawMaterialMaster { get; set; }

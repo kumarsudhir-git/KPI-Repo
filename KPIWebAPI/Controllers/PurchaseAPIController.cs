@@ -243,7 +243,13 @@ namespace KPIWebAPI.Controllers
                 var o = mapper.Map<KPILib.Models.PurchaseMaster, PurchaseMaster>(data);
                 foreach (var item in data.LineItems.Where(x => x.RawMatarialID != 0))
                 {
-                    o.PurchaseDetails.Add(new PurchaseDetail { RawMatarialID = item.RawMatarialID, Qty = item.Qty });
+                    o.PurchaseDetails.Add(new PurchaseDetail 
+                    {
+                        RawMatarialID = item.RawMatarialID,
+                        ItemType = item.ItemType,
+                        RMGrade = item.RMGrade,
+                        Qty = item.Qty 
+                    });
                 }
                 o.Instructions += "";
 
@@ -302,7 +308,7 @@ namespace KPIWebAPI.Controllers
                     o.Qty = data.Qty;
                     o.Amount = data.Amount;
                     o.FinalAmount = data.FinalAmount;
-                    o.Instructions = data.Instructions;
+                    o.Instructions = !string.IsNullOrEmpty(data.Instructions) ? data.Instructions : "";
                     o.PurchaseStatusID = 10;    //Ack Pending
 
                     //o.PurchaseDetails.Clear();
@@ -313,7 +319,13 @@ namespace KPIWebAPI.Controllers
 
                     foreach (var item in data.LineItems.Where(x => x.RawMatarialID != 0))
                     {
-                        o.PurchaseDetails.Add(new PurchaseDetail { RawMatarialID = item.RawMatarialID, Qty = item.Qty });
+                        o.PurchaseDetails.Add(new PurchaseDetail 
+                        {
+                            RawMatarialID = item.RawMatarialID,
+                            ItemType = item.ItemType,
+                            RMGrade = item.RMGrade,
+                            Qty = item.Qty 
+                        });
                     }
 
                     db.Entry(o).State = System.Data.Entity.EntityState.Modified;
