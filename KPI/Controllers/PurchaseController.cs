@@ -1,5 +1,6 @@
 ﻿using KPI.Classes;
 using KPI.Filters;
+using KPILib;
 using KPILib.Models;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,13 @@ namespace KPI.Controllers
         public ActionResult Get(int id)
         {
             ViewData["CompanyLocationID"] = new SelectList(new List<SelectListItem>(), "CompanyLocationID", "CompanyLocationName");
+            ViewData["GST"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpValue");
+
+            LookUpMasterResponse lookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.GSTType);
+            if (lookUpMaster != null && lookUpMaster.Response != null)
+            {
+                ViewData["GST"] = new SelectList(lookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
+            }
             var response = KPIAPIManager.GetPurchase(id);
             if (response.Response.ResponseCode == 200)
             {
@@ -70,6 +78,14 @@ namespace KPI.Controllers
         public ActionResult New()
         {
             ViewData["CompanyLocationID"] = new SelectList(new List<SelectListItem>(), "CompanyLocationID", "CompanyLocationName");
+            ViewData["GST"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpValue");
+
+            LookUpMasterResponse lookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.GSTType);
+            if (lookUpMaster != null && lookUpMaster.Response != null)
+            {
+                ViewData["GST"] = new SelectList(lookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
+            }
+
             var response = KPIAPIManager.GetPurchase(0);
             if (response.Response.ResponseCode == 200)
             {
@@ -87,18 +103,25 @@ namespace KPI.Controllers
         [HttpGet]
         public ActionResult PurchaseLineItemsPartialAction(PurchaseDetails purchaseDetails)
         {
+            ViewData["ItemType"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
             ViewBag.Materials = new SelectList(new List<SelectList>(), "Key", "Value");
             var response = KPIAPIManager.GetPurchase(0);
             if (response.Response.ResponseCode == 200)
             {
                 ViewBag.Materials = new SelectList(response.data.Materials, "Key", "Value");
             }
+            LookUpMasterResponse lookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.ItemType);
+
+            if (lookUpMaster != null && lookUpMaster.Response != null)
+            {
+                ViewData["ItemType"] = new SelectList(lookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
+            }
             return PartialView("_PurchaseLineItems", purchaseDetails);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add([Bind(Include = "PurchaseID,PurchaseDate,CompanyLocationID,Instructions,LineItems")] KPILib.Models.PurchaseMaster purchase)      //FormCollection frm)       //
+        public ActionResult Add(PurchaseMaster purchase)      //FormCollection frm)       //
         {
             //int i = 0;
             //foreach(var c in frm.AllKeys)
@@ -172,6 +195,13 @@ namespace KPI.Controllers
                 });
             }
             return Json(vendorMasterModel.data);
+        }
+
+        [HttpPost]
+        public ActionResult ValidatePONumber(string poNumber, int purchaseID)
+        {
+            var response = KPIAPIManager.ValidatePONumber(poNumber, purchaseID);
+            return Json(response);
         }
 
     }

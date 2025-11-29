@@ -14,5 +14,6 @@ namespace KPILib
         public const string ColorLookUp = "Color";
         public const string VendorItemType = "VendorItemType";
         public const string ItemType = "ItemType";
+        public const string GSTType = "GSTType";
     }
 }

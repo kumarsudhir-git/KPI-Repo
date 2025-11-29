@@ -12,14 +12,17 @@
         var table = $('#tblData').DataTable({
             "scrollCollapse": false,
             "paging": true,
+            "ordering": false,   // Disable all sorting
             select: false,
             data: @Html.Raw(Json.Encode(Model)),
             columns: [
                 {
-                    data: null, title: "PO No.", 
-                    render: function (data, type, row) {
-                        return "<a href='Get/" + data.PurchaseID + "'>" + data.PurchaseID + "</a>";
-                    }
+                    data: "PONumber", title: "PO No."
+                    //render: function (data, type, row) {
+                    //    if (data.PONumber != null && data.PONumber != '') {
+                    //        return "<a href='Get/" + data.PurchaseID + "'>" + data.PONumber + "</a>";
+                    //    }
+                    //}
                 },
                 {
                     data: "PurchaseDate", title: "PO Date", "sType": "date",
@@ -27,10 +30,36 @@
                         return new Date(Number(d.toString().substring(6, 19))).toShortDateFormat();
                     }
                 },
+                {
+                    data: "DelieveryDueDate", title: "Due Date", "sType": "date",
+                    render: function (d) {
+                        debugger
+                        if (d != null) {
+                            return new Date(Number(d.toString().substring(6, 19))).toShortDateFormat();
+                        }
+                        else {
+                            return "";
+                        }
+                    }
+                },
                 { data: "CompanyLocation", title: "Vendor / Location" },
+                { data: "GST", title: "GST" },
+                { data: "Rate", title: "Rate" },
+                { data: "Qty", title: "Quantity" },
+                { data: "Discount", title: "Discount" },
+                { data: "Amount", title: "Amount" },
+                { data: "FinalAmount", title: "Final Amount" },
                 { data: "User", title: "User" },
                 { data: "Status", title: "Status" },
-                { data: "Instructions", title: "Instructions" }
+                { data: "Instructions", title: "Instructions" },
+                {
+                    data: null, title: "Action",
+                    render: function (data, type, row) {
+                        if (data.PurchaseID != null && data.PurchaseID != '') {
+                            return "<a href='Get/" + data.PurchaseID + "'>" + '<i style="font-size:24px;" class="fa">&#xf044;</i>' + "</a>";
+                        }
+                    }
+                }
             ]
         });
     });

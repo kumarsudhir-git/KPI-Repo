@@ -27,6 +27,14 @@ namespace KPIWebAPI
         public string Instructions { get; set; }
         public int PurchaseStatusID { get; set; }
         public int UserID { get; set; }
+        public string PONumber { get; set; }
+        public string GST { get; set; }
+        public Nullable<decimal> Rate { get; set; }
+        public Nullable<decimal> Qty { get; set; }
+        public Nullable<decimal> Discount { get; set; }
+        public Nullable<decimal> Amount { get; set; }
+        public Nullable<decimal> FinalAmount { get; set; }
+        public Nullable<System.DateTime> DelieveryDueDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseDetail> PurchaseDetails { get; set; }

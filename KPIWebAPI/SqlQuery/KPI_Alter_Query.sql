@@ -1023,5 +1023,34 @@ END;
 
 GO
 
+------------------------------------------------------29-11-2025----------------------------------------------------------------
+
+ALTER TABLE PurchaseMaster
+ADD 
+	PONumber NVARCHAR(MAX) NULL,
+    DelieveryDueDate DATE NULL,
+    GST NVARCHAR(50) NULL,
+    Rate DECIMAL(18,2) NULL,
+    Qty DECIMAL(18,2) NULL,
+    Discount DECIMAL(18,2) NULL,
+    Amount DECIMAL(18,2) NULL, --AS (Rate * Qty) PERSISTED,   -- Optional: Remove if UI will calculate
+    FinalAmount DECIMAL(18,2) NULL --AS ((Rate * Qty) - Discount + GST) PERSISTED;   -- Optional
+
+GO
+
+INSERT INTO LookupMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
+VALUES
+('GSTType','CGST-9%','GST001','GSTType',1,1001,GETDATE()),
+('GSTType','SGST-9%','GST002','GSTType',1,1001,GETDATE()),
+('GSTType','IGST-18%','GST003','GSTType',1,1001,GETDATE()),
+('GSTType','CGST-6%','GST004','GSTType',1,1001,GETDATE()),
+('GSTType','SGST-6%','GST005','GSTType',1,1001,GETDATE()),
+('GSTType','IGST-12%','GST006','GSTType',1,1001,GETDATE()),
+('GSTType','CGST-2.5%','GST007','GSTType',1,1001,GETDATE()),
+('GSTType','SGST-2.5%','GST008','GSTType',1,1001,GETDATE()),
+('GSTType','IGST-5%','GST009','GSTType',1,1001,GETDATE())
+
+GO
+
 ------------------------------------------------------END----------------------------------------------------------------
 

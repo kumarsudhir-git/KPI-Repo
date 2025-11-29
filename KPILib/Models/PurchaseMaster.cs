@@ -8,7 +8,7 @@ namespace KPILib.Models
     public class PurchaseMaster
     {
         [Key]
-        [Display(Name = "PO Number")]
+        //[Display(Name = "PO Number")]
         public int PurchaseID { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
@@ -35,6 +35,20 @@ namespace KPILib.Models
         [Display(Name = "User")]
         [Editable(allowEdit: false)]
         public string User { get; set; }
+        [Required(ErrorMessage = "Required")]
+        [Display(Name = "PO Number")]
+        public string PONumber { get; set; }
+        public string GST { get; set; }
+        public decimal? Rate { get; set; }
+        [Display(Name = "Quantity")]
+        public decimal? Qty { get; set; }
+        public decimal? Discount { get; set; }
+        public decimal? Amount { get; set; }
+        public decimal? FinalAmount { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Delivery Due Date")]
+        public DateTime? DelieveryDueDate { get; set; }
 
         //public List<KeyValuePair> Locations { get; set; }
 

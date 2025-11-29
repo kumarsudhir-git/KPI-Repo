@@ -427,6 +427,14 @@
           <Property Name="Instructions" Type="varchar(max)" Nullable="false" />
           <Property Name="PurchaseStatusID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="PONumber" Type="nvarchar(max)" />
+          <Property Name="GST" Type="nvarchar" MaxLength="50" />
+          <Property Name="Rate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Qty" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Discount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FinalAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DelieveryDueDate" Type="date" />
         </EntityType>
         <EntityType Name="PurchaseRcvdDetails">
           <Key>
@@ -2722,6 +2730,14 @@
           <Property Name="Instructions" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="PurchaseStatusID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="PONumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GST" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Rate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Qty" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Discount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="FinalAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DelieveryDueDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="PurchaseDetails" Relationship="KPIModel.FK_PurchaseDetails_PurchaseMaster" FromRole="PurchaseMaster" ToRole="PurchaseDetail" />
           <NavigationProperty Name="PurchaseStatusMaster" Relationship="KPIModel.FK_PurchaseMaster_PurchaseStatusMaster" FromRole="PurchaseMaster" ToRole="PurchaseStatusMaster" />
           <NavigationProperty Name="UserMaster" Relationship="KPIModel.FK_PurchaseMaster_UserMaster" FromRole="PurchaseMaster" ToRole="UserMaster" />
@@ -4431,6 +4447,14 @@
           <EntitySetMapping Name="PurchaseMasters">
             <EntityTypeMapping TypeName="KPIModel.PurchaseMaster">
               <MappingFragment StoreEntitySet="PurchaseMaster">
+                <ScalarProperty Name="DelieveryDueDate" ColumnName="DelieveryDueDate" />
+                <ScalarProperty Name="FinalAmount" ColumnName="FinalAmount" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="GST" ColumnName="GST" />
+                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="PurchaseStatusID" ColumnName="PurchaseStatusID" />
                 <ScalarProperty Name="Instructions" ColumnName="Instructions" />

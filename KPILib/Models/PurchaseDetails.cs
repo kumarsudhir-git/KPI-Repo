@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace KPILib.Models
 {
@@ -10,7 +7,9 @@ namespace KPILib.Models
         [Key]
         public int PurchaseDetailsID { get; set; }
         public int PurchaseID { get; set; }
+        [Display(Name = "Item Type")]
         public int RawMatarialID { get; set; }
+        public string RMGrade { get; set; }
         public string RawMatarialName { get; set; }
 
         [Display(Name = "Qty (in Kgs)")]

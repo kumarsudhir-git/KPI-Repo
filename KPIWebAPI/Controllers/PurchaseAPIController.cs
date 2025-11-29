@@ -24,7 +24,11 @@ namespace KPIWebAPI.Controllers
 
             try
             {
-                var data = db.PurchaseMasters.OrderByDescending(x => x.PurchaseID).ToList();
+                var data = db.PurchaseMasters.OrderBy(pm => pm.DelieveryDueDate == null)   // Nulls last
+                                                    .ThenBy(pm => pm.DelieveryDueDate) // Order by date
+                                                    .ThenBy(pm => pm.PONumber == null) // Then by PO number
+                                                    .ThenBy(pm => pm.PONumber) // Then by PO number
+                                                    .ToList();
                 foreach (var obj in data)
                 {
                     var o = mapper.Map<PurchaseMaster, KPILib.Models.PurchaseMaster>(obj);
@@ -36,6 +40,14 @@ namespace KPIWebAPI.Controllers
                     }
                     o.Status = obj.PurchaseStatusMaster.PurchaseStatus;
                     o.User = obj.UserMaster.Username;
+                    if (!string.IsNullOrEmpty(obj.GST))
+                    {
+                        LookUpMaster lookUpMaster = CommonFunctions.GetLookUpMasterDataFromLookupCode(obj.GST);
+                        if (lookUpMaster != null)
+                        {
+                            o.GST = lookUpMaster.LookUpName;
+                        }
+                    }
 
                     returnValue.data.Add(o);
                 }
@@ -279,9 +291,18 @@ namespace KPIWebAPI.Controllers
                 var o = db.PurchaseMasters.SingleOrDefault(x => x.PurchaseID == data.PurchaseID);
                 if (o != null)
                 {
+                    o.PONumber = data.PONumber;
                     o.CompanyLocationID = data.CompanyLocationID;
                     o.Instructions = data.Instructions;
                     o.PurchaseDate = data.PurchaseDate;
+                    o.DelieveryDueDate = data.DelieveryDueDate;
+                    o.Rate = data.Rate;
+                    o.Discount = data.Discount;
+                    o.GST = data.GST;
+                    o.Qty = data.Qty;
+                    o.Amount = data.Amount;
+                    o.FinalAmount = data.FinalAmount;
+                    o.Instructions = data.Instructions;
                     o.PurchaseStatusID = 10;    //Ack Pending
 
                     //o.PurchaseDetails.Clear();
@@ -328,6 +349,31 @@ namespace KPIWebAPI.Controllers
             return Json(returnValue);
         }
 
+        [HttpGet]
+        public IHttpActionResult ValidatePONumber(string poNumber, int purchaseID)
+        {
+            var returnValue = new PurchaseMasterResponse();
+            try
+            {
+                var exists = db.PurchaseMasters.Any(x => x.PONumber == poNumber && x.PurchaseID != purchaseID);
+                if (exists)
+                {
+                    returnValue.Response.ResponseCode = 400;
+                    returnValue.Response.ResponseMsg = "PO Number already exists. Please use a different PO Number.";
+                }
+                else
+                {
+                    returnValue.Response.IsSuccessful();
+                }
+            }
+            catch (Exception ex)
+            {
+                //TODO error handling
+                returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
+            }
+            return Json(returnValue);
+        }
 
         private async Task<string> SendEmail(string TO_NAME, string TO_EMAIL, int PO_ID, Dictionary<string, string> keyValuePairs)
         {

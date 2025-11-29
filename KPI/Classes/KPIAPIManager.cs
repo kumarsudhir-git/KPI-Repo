@@ -225,6 +225,13 @@ namespace KPI.Classes
             var result = CommonFunctions.client.PostAsJsonAsync("PurchaseAPI/Edit", obj).Result.Content.ReadAsAsync<PurchaseMasterResponse>().Result;
             return result;
         }
+
+        public static PurchaseMasterResponse ValidatePONumber(string poNumber, int purchaseID)
+        {
+            var result = CommonFunctions.client.GetAsync("PurchaseAPI/ValidatePONumber?poNumber=" + poNumber + "&purchaseID=" + purchaseID).Result.Content.ReadAsAsync<PurchaseMasterResponse>().Result;
+            return result;
+        }
+
         #endregion
 
         #region API calls for PurchaseRcv

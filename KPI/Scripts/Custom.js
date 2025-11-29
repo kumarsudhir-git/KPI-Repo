@@ -121,7 +121,7 @@ function IniTializeMultiSelect() {
                 }
             }
         }
-    });      
+    });
 
     // Handle "Select All" option
     $('.multiselectDropDown').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
@@ -195,4 +195,62 @@ function InitializeSelect2() {
         allowClear: true,
         width: 'resolve'
     });
+}
+
+function CalculateAmountAndFinalAmount(obj) {
+    var $GSTType = $('#GST').val();
+    var $GST = $('#GST').find('option:selected').text();
+    var $Quantity = parseFloat($('#Qty').val()) || 0;
+    var $Discount = parseFloat($('#Discount').val()) || 0;
+    var $Rate = parseFloat($('#Rate').val()) || 0;
+
+    var $Amount = 0;
+    var $FinalAmount = 0;
+
+    // Calculate Amount
+    if ($Quantity > 0 && $Rate > 0) {
+        $Amount = $Quantity * $Rate;
+        $('#Amount').val($Amount.toFixed(2));
+    } else {
+        $('#Amount').val("0.00");
+    }
+
+    // Calculate Final Amount (with GST percentage)
+    if ($GSTType) {
+        var $splitGSTType = $GST.split('-');
+        if ($splitGSTType.length > 1) {
+            var $GSTPercentage = parseFloat($splitGSTType[1]) || 0;
+
+            // GST calculation
+            var $GSTAmount = ($Amount * $GSTPercentage) / 100;
+            // var $GSTAmount = $GSTPercentage / 100;
+
+            $FinalAmount = ($Amount - $Discount) + $GSTAmount;
+
+            $('#FinalAmount').val($FinalAmount.toFixed(2));
+        }
+    } else {
+        $('#FinalAmount').val("0.00");
+    }
+}
+
+function ValidatePONumber(obj, PurchaseID) {
+    var PONumber = $(obj).val();
+    if (PONumber != null && PONumber != "" && PONumber != undefined) {
+        $.ajax({
+            url: '/Purchase/ValidatePONumber',
+            type: 'POST',
+            data: { poNumber: PONumber, purchaseID: PurchaseID},
+            async: false,
+            success: function (response) {
+                if (response.Response.ResponseCode == 400) {
+                    alert("PO Number already exists. Please enter a different PO Number.");
+                    $(obj).val('');
+                    isValid = false;
+                } else {
+                    isValid = true;
+                }
+            }
+        });
+    }
 }
