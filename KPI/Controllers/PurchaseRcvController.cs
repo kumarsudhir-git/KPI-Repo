@@ -39,9 +39,9 @@ namespace KPI.Controllers
             ViewData["LocationId"] = new SelectList(new List<SelectListItem>(), "LocationId", "LocationName");
 
             string sPOID = frm["PONo"].ToString().Trim();
-            var iPOID = Convert.ToInt32(sPOID);
+            // var iPOID = Convert.ToInt32(sPOID);
 
-            var response = KPIAPIManager.GetNewRcv(iPOID);
+            var response = KPIAPIManager.GetNewRcv(sPOID);
             if (response.Response.ResponseCode == 200)
             {
                 LocationMasterResponse locationMasterResponse = KPIAPIManager.GetListOfLocationMasterData();

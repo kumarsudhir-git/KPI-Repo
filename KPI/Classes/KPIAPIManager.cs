@@ -241,9 +241,9 @@ namespace KPI.Classes
             return result;
         }
 
-        public static PurchaseRcvMastResponse GetNewRcv(int id) //pass PO ID
+        public static PurchaseRcvMastResponse GetNewRcv(string PONumber) //pass PO ID
         {
-            var result = CommonFunctions.client.GetAsync("PurchaseRcvAPI/GetNewRcv/" + id.ToString()).Result.Content.ReadAsAsync<PurchaseRcvMastResponse>().Result;
+            var result = CommonFunctions.client.GetAsync("PurchaseRcvAPI/GetNewRcv?PONumber=" + PONumber).Result.Content.ReadAsAsync<PurchaseRcvMastResponse>().Result;
             return result;
         }
 

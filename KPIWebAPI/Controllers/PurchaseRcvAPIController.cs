@@ -42,6 +42,7 @@ namespace KPIWebAPI.Controllers
 
                     var o = mapper.Map<PurchaseRcvdMaster, KPILib.Models.PurchaseRcvMast>(obj);
 
+                    o.PONumber = obj.PurchaseMaster.PONumber;
                     o.PurchaseDate = obj.PurchaseMaster.PurchaseDate;
                     o.CompanyLocation = vendorMaster?.VendorName + " [" + vendorMaster?.Address + "]";
                     o.LocationName = locationName;
@@ -69,7 +70,7 @@ namespace KPIWebAPI.Controllers
         }
 
         // GetNewRcv api/values/5
-        public IHttpActionResult GetNewRcv(int id)
+        public IHttpActionResult GetNewRcv(string PONumber)
         {
             var returnValue = new PurchaseRcvMastResponse();
 
@@ -77,7 +78,7 @@ namespace KPIWebAPI.Controllers
             {
                 var allUsers = db.UserMasters.ToList();
 
-                var po = db.PurchaseMasters.SingleOrDefault(x => x.PurchaseID == id);
+                var po = db.PurchaseMasters.SingleOrDefault(x => x.PONumber == PONumber);
                 if (po != null)
                 {
                     VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(po.CompanyLocationID);
@@ -89,6 +90,7 @@ namespace KPIWebAPI.Controllers
                         Instructions = po.Instructions,
                         PurchaseDate = po.PurchaseDate,
                         PurchaseID = po.PurchaseID,
+                        PONumber = po.PONumber,
                         Status = po.PurchaseStatusMaster.PurchaseStatus,
                         RcvdByUserID = po.UserID,//1001,
                         ReceivedByUser = allUsers.SingleOrDefault(x => x.UserID == po.UserID)?.Username,
@@ -115,7 +117,7 @@ namespace KPIWebAPI.Controllers
                 }
                 else
                 {
-                    returnValue.Response.ResponseMsg = "PO No. " + id.ToString() + " does not exist.";
+                    returnValue.Response.ResponseMsg = "PO No. " + PONumber + " does not exist.";
                 }
             }
             catch (Exception ex)

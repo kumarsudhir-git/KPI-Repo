@@ -15,8 +15,9 @@ namespace KPILib.Models
         [Display(Name = "Rcvd Date")]
         public DateTime RcvdDate { get; set; }
 
-        [Display(Name = "PO Number")]
         public int PurchaseID { get; set; }
+        [Display(Name = "PO Number")]
+        public string PONumber { get; set; }
 
         #region PurchaseDetails
 
