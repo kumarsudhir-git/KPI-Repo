@@ -9,12 +9,15 @@ namespace KPILib.Models
         public int SalesID { get; set; }
         public int ProductID { get; set; }
         public string ProductName { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Qty")]
         public int Qty { get; set; }
         [Display(Name = "Spl Instruction")]
         public string Instructions { get; set; }
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "Colour")]
         public string Color { get; set; }
+        [Required(ErrorMessage = "Required")]
         public string Gms { get; set; }
         public string GMSInfo { get; set; }
         public string Package { get; set; }
