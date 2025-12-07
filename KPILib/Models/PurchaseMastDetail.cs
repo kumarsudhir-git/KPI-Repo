@@ -10,6 +10,7 @@ namespace KPILib.Models
         [Key]
         public int PurchaseDetailsID { get; set; }
         public int PurchaseID { get; set; }
+        public string PONumber { get; set; }
         public int RawMaterialID { get; set; }
         public string RawMaterialName { get; set; }
         public int Qty { get; set; }

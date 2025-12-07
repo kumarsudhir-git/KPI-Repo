@@ -953,10 +953,10 @@ ALTER TABLE RMInventoryPackageBags Add ItemDetail NVARCHAR(MAX) NULL
 
 ---------------------------------------------------------------05-11-2025------------------------------------------------
 
-ALTER TABLE CompanyMaster
-ADD 
-Reference VARCHAR(100),
-PartnerSince varchar(4);
+--ALTER TABLE CompanyMaster
+--ADD 
+--Reference VARCHAR(100),
+--PartnerSince varchar(4);
 --------------------------------------------------------15-11-2025-------------------------------------------------------
 
 ALTER TABLE RawMaterialInventoryMaster ADD QtyBags DECIMAL(10,2) NULL
