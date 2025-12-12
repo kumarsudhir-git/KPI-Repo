@@ -245,12 +245,12 @@ namespace KPIWebAPI.Controllers
                 var o = mapper.Map<KPILib.Models.PurchaseMaster, PurchaseMaster>(data);
                 foreach (var item in data.LineItems.Where(x => x.RawMatarialID != 0))
                 {
-                    o.PurchaseDetails.Add(new PurchaseDetail 
+                    o.PurchaseDetails.Add(new PurchaseDetail
                     {
                         RawMatarialID = item.RawMatarialID,
                         ItemType = item.ItemType,
                         RMGrade = item.RMGrade,
-                        Qty = item.Qty 
+                        Qty = item.Qty
                     });
                 }
                 o.Instructions += "";
@@ -315,19 +315,36 @@ namespace KPIWebAPI.Controllers
 
                     //o.PurchaseDetails.Clear();
 
-                    foreach (var item in o.PurchaseDetails.ToList())
-                        //o.PurchaseDetails.Remove(item);
-                        db.Entry(item).State = System.Data.Entity.EntityState.Deleted;
+                    //foreach (var item in o.PurchaseDetails.ToList())
+                    //    //o.PurchaseDetails.Remove(item);
+                    //    db.Entry(item).State = System.Data.Entity.EntityState.Deleted;
 
                     foreach (var item in data.LineItems.Where(x => x.RawMatarialID != 0))
                     {
-                        o.PurchaseDetails.Add(new PurchaseDetail 
+                        if (item.PurchaseDetailsID == 0)
                         {
-                            RawMatarialID = item.RawMatarialID,
-                            ItemType = item.ItemType,
-                            RMGrade = item.RMGrade,
-                            Qty = item.Qty 
-                        });
+                            o.PurchaseDetails.Add(new PurchaseDetail
+                            {
+                                RawMatarialID = item.RawMatarialID,
+                                ItemType = item.ItemType,
+                                RMGrade = item.RMGrade,
+                                Qty = item.Qty,
+                                Instructions = item.Instructions
+                            });
+                        }
+                        else
+                        {
+                            var existingItem = o.PurchaseDetails.FirstOrDefault(x => x.PurchaseDetailsID == item.PurchaseDetailsID);
+                            if (existingItem != null)
+                            {
+                                existingItem.RawMatarialID = item.RawMatarialID;
+                                existingItem.ItemType = item.ItemType;
+                                existingItem.RMGrade = item.RMGrade;
+                                existingItem.Qty = item.Qty;
+                                existingItem.Instructions = item.Instructions;
+                                db.Entry(existingItem).State = System.Data.Entity.EntityState.Modified;
+                            }
+                        }
                     }
 
                     db.Entry(o).State = System.Data.Entity.EntityState.Modified;

@@ -5,6 +5,7 @@
 <tr>
     @using (Html.BeginCollectionItem("LineItems"))
     {
+        @Html.HiddenFor(model => model.PurchaseDetailsID)
         <!--<td width="70px">-->
         @*@Html.ImageActionLink("", "GetAll", "Rack", new { id = item.PurchaseDetailsID }, null, "~/images/garbage.png")*@
         <!--</td>-->
