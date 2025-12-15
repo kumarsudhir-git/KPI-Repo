@@ -41,7 +41,7 @@ namespace KPILib.Models
         public int UOMID { get; set; }
 
         [Display(Name = "Unit of Measurement")]
-        [Required(ErrorMessage = "required")]
+        // [Required(ErrorMessage = "required")]
         public string UOM { get; set; }
         public List<UOM> UOMs { get; set; }
 
