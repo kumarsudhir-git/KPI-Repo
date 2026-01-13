@@ -42,6 +42,14 @@
                         @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                
+                <div class="col-md-3 col-sm-12">
+                    @Html.LabelFor(model => model.IncomingProductName, htmlAttributes: new { @class = "control-label" })
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.IncomingProductName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.IncomingProductName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
                 <div class="col-md-3 col-sm-12">
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })

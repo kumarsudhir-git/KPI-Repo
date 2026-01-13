@@ -202,6 +202,7 @@ namespace KPIWebAPI.Controllers
                 if (o != null)
                 {
                     o.ProductName = data.ProductName;
+                    o.IncomingProductName = data.IncomingProductName;
                     o.Description = data.Description;
                     o.MouldID = data.MouldID;
                     o.ProductCode = data.ProductCode;

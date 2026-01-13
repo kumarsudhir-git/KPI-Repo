@@ -83,6 +83,8 @@ namespace KPIWebAPI.Controllers
                 {
                     VendorMaster vendorMaster = CommonFunctions.GetVendorDetailsFromId(po.CompanyLocationID);
 
+                    PurchaseRcvdMaster purchaseRcvdMaster = CommonFunctions.GetLatestPurchaseRcvdFromPurchaseId(po.PurchaseID);
+
                     returnValue.data = new PurchaseRcvMast
                     {
                         //CompanyLocation = po.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + po.CompanyLocationMaster.LocationName + "]",
@@ -95,6 +97,9 @@ namespace KPIWebAPI.Controllers
                         RcvdByUserID = po.UserID,//1001,
                         ReceivedByUser = allUsers.SingleOrDefault(x => x.UserID == po.UserID)?.Username,
                         User = po.UserMaster.Username,
+                        IsInwardQCCheck = purchaseRcvdMaster.IsInwardQCCheck,
+                        LocationId = purchaseRcvdMaster.LocationId ?? 0,
+                        CompanyLocationId = purchaseRcvdMaster.CompanyLocationId ?? 0,
                         LineItems = new List<PurchaseRcvDet>()
                     };
 
@@ -218,6 +223,7 @@ namespace KPIWebAPI.Controllers
                         o.LocationId = data.LocationId;
                         o.QCReceived = data.QCReceived;
                         o.QCStatus = data.QCStatus;
+                        o.IsInwardQCCheck = data.IsInwardQCCheck;
                         o.RcvdDate = DateTime.Now;
                         o.PurchaseRcvdDetails = new List<PurchaseRcvdDetail>();
 

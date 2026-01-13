@@ -532,5 +532,17 @@ namespace KPIWebAPI.Classes
             }
         }
 
+        public static PurchaseRcvdMaster GetLatestPurchaseRcvdFromPurchaseId(int PurchaseId = 0)
+        {
+            using (KPIEntities db = new KPIEntities())
+            {
+                PurchaseRcvdMaster purchaseRcvdMaster = (from prm in db.PurchaseRcvdMasters
+                                                         where prm.PurchaseID == PurchaseId
+                                                         orderby prm.PurchaseRcvdID descending
+                                                         select prm).FirstOrDefault();
+                return purchaseRcvdMaster;
+            }
+        }
+
     }
 }

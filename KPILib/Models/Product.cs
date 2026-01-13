@@ -16,6 +16,9 @@ namespace KPILib.Models
 
         [Display(Name = "Product Name")]
         public string ProductName { get; set; }
+        
+        [Display(Name = "Inc Product Name")]
+        public string IncomingProductName { get; set; }
 
 
         [Required(ErrorMessage = "{0} is required")]

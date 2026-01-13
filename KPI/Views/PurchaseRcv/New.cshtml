@@ -179,7 +179,7 @@
         </div>
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label col-md-12" })
                         <div class="">
@@ -189,19 +189,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <label>&nbsp;</label>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.IsInwardQCCheck, htmlAttributes: new { @class = "control-label col-md-12" })
+                    <div class="">
+                        @Html.CheckBoxFor(model => model.IsInwardQCCheck)
+                        @Html.ValidationMessageFor(model => model.IsInwardQCCheck, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label>&nbsp;</label>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
 
-                            <input type="submit" value="Save" class="btn btn-dark" />
-                        </div>
+                        <input type="submit" value="Save" class="btn btn-dark" />
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
+
 }
 
 @section Scripts {

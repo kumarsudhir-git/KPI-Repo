@@ -29,8 +29,8 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
-          <Property Name="PreferredTransporter" Type="nvarchar(max)" />
           <Property Name="Designation" Type="nvarchar(max)" />
+          <Property Name="PreferredTransporter" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="CompanyMaster">
           <Key>
@@ -387,8 +387,10 @@
           <Property Name="IsDiscontinued" Type="bit" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" Nullable="false" />
           <Property Name="LastModifiedOn" Type="datetime" />
-          <Property Name="MinimumSellingPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MaximumSellingPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Colour" Type="nvarchar" MaxLength="250" />
+          <Property Name="MinimumSellingPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IncomingProductName" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="ProductRawMaterialMapping">
           <Key>
@@ -430,13 +432,13 @@
           <Property Name="PurchaseStatusID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="PONumber" Type="nvarchar(max)" />
+          <Property Name="DelieveryDueDate" Type="date" />
           <Property Name="GST" Type="nvarchar" MaxLength="50" />
           <Property Name="Rate" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Qty" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Discount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="FinalAmount" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="DelieveryDueDate" Type="date" />
         </EntityType>
         <EntityType Name="PurchaseRcvdDetails">
           <Key>
@@ -460,6 +462,7 @@
           <Property Name="QCStatus" Type="nvarchar" MaxLength="250" />
           <Property Name="QCReceived" Type="bit" Nullable="false" />
           <Property Name="CompanyLocationId" Type="int" />
+          <Property Name="IsInwardQCCheck" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PurchaseRcvdStored">
           <Key>
@@ -2268,8 +2271,8 @@
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="PreferredTransporter" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Designation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PreferredTransporter" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CompanyMaster" Relationship="KPIModel.FK_CompanyLocationMaster_CompanyMaster" FromRole="CompanyLocationMaster" ToRole="CompanyMaster" />
         </EntityType>
         <EntityType Name="CompanyMaster">
@@ -2676,8 +2679,10 @@
           <Property Name="IsDiscontinued" Type="Boolean" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="MinimumSellingPrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MaximumSellingPrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="Colour" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MinimumSellingPrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="IncomingProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MouldMaster" Relationship="KPIModel.FK_ProductMaster_MouldMaster" FromRole="ProductMaster" ToRole="MouldMaster" />
           <NavigationProperty Name="ProdReadyStoreds" Relationship="KPIModel.FK_ProdReadyStored_ProductMaster" FromRole="ProductMaster" ToRole="ProdReadyStored" />
           <NavigationProperty Name="ProductGroupDetails" Relationship="KPIModel.FK_ProductGroupDetails_ProductMaster" FromRole="ProductMaster" ToRole="ProductGroupDetail" />
@@ -2735,13 +2740,13 @@
           <Property Name="PurchaseStatusID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="PONumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DelieveryDueDate" Type="DateTime" Precision="0" />
           <Property Name="GST" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Rate" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Qty" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Discount" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="FinalAmount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="DelieveryDueDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="PurchaseDetails" Relationship="KPIModel.FK_PurchaseDetails_PurchaseMaster" FromRole="PurchaseMaster" ToRole="PurchaseDetail" />
           <NavigationProperty Name="PurchaseStatusMaster" Relationship="KPIModel.FK_PurchaseMaster_PurchaseStatusMaster" FromRole="PurchaseMaster" ToRole="PurchaseStatusMaster" />
           <NavigationProperty Name="UserMaster" Relationship="KPIModel.FK_PurchaseMaster_UserMaster" FromRole="PurchaseMaster" ToRole="UserMaster" />
@@ -2772,6 +2777,7 @@
           <Property Name="QCStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="QCReceived" Type="Boolean" Nullable="false" />
           <Property Name="CompanyLocationId" Type="Int32" />
+          <Property Name="IsInwardQCCheck" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PurchaseMaster" Relationship="KPIModel.FK_PurchaseRcvdMaster_PurchaseMaster" FromRole="PurchaseRcvdMaster" ToRole="PurchaseMaster" />
           <NavigationProperty Name="PurchaseRcvdDetails" Relationship="KPIModel.FK_PurchaseRcvdDetails_PurchaseRcvdMaster" FromRole="PurchaseRcvdMaster" ToRole="PurchaseRcvdDetail" />
           <NavigationProperty Name="UserMaster" Relationship="KPIModel.FK_PurchaseRcvdMaster_UserMaster" FromRole="PurchaseRcvdMaster" ToRole="UserMaster" />
@@ -4007,8 +4013,8 @@
           <EntitySetMapping Name="CompanyLocationMasters">
             <EntityTypeMapping TypeName="KPIModel.CompanyLocationMaster">
               <MappingFragment StoreEntitySet="CompanyLocationMaster">
-                <ScalarProperty Name="Designation" ColumnName="Designation" />
                 <ScalarProperty Name="PreferredTransporter" ColumnName="PreferredTransporter" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />
@@ -4399,8 +4405,10 @@
           <EntitySetMapping Name="ProductMasters">
             <EntityTypeMapping TypeName="KPIModel.ProductMaster">
               <MappingFragment StoreEntitySet="ProductMaster">
-                <ScalarProperty Name="Colour" ColumnName="Colour" />
+                <ScalarProperty Name="IncomingProductName" ColumnName="IncomingProductName" />
                 <ScalarProperty Name="MinimumSellingPrice" ColumnName="MinimumSellingPrice" />
+                <ScalarProperty Name="Colour" ColumnName="Colour" />
+                <ScalarProperty Name="MaximumSellingPrice" ColumnName="MaximumSellingPrice" />
                 <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="IsDiscontinued" ColumnName="IsDiscontinued" />
@@ -4453,13 +4461,13 @@
           <EntitySetMapping Name="PurchaseMasters">
             <EntityTypeMapping TypeName="KPIModel.PurchaseMaster">
               <MappingFragment StoreEntitySet="PurchaseMaster">
-                <ScalarProperty Name="DelieveryDueDate" ColumnName="DelieveryDueDate" />
                 <ScalarProperty Name="FinalAmount" ColumnName="FinalAmount" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="Discount" ColumnName="Discount" />
                 <ScalarProperty Name="Qty" ColumnName="Qty" />
                 <ScalarProperty Name="Rate" ColumnName="Rate" />
                 <ScalarProperty Name="GST" ColumnName="GST" />
+                <ScalarProperty Name="DelieveryDueDate" ColumnName="DelieveryDueDate" />
                 <ScalarProperty Name="PONumber" ColumnName="PONumber" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="PurchaseStatusID" ColumnName="PurchaseStatusID" />
@@ -4483,6 +4491,7 @@
           <EntitySetMapping Name="PurchaseRcvdMasters">
             <EntityTypeMapping TypeName="KPIModel.PurchaseRcvdMaster">
               <MappingFragment StoreEntitySet="PurchaseRcvdMaster">
+                <ScalarProperty Name="IsInwardQCCheck" ColumnName="IsInwardQCCheck" />
                 <ScalarProperty Name="CompanyLocationId" ColumnName="CompanyLocationId" />
                 <ScalarProperty Name="QCReceived" ColumnName="QCReceived" />
                 <ScalarProperty Name="QCStatus" ColumnName="QCStatus" />

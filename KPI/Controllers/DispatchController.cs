@@ -23,6 +23,12 @@ namespace KPI.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult GetDispatchDetailData(int SalesId = 0) 
+        {
+            return PartialView();
+        }
+
         public ActionResult GetAllClosed()
         {
             var response = KPIAPIManager.GetAllDispatch01(1);

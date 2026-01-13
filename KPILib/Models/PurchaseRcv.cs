@@ -57,6 +57,7 @@ namespace KPILib.Models
         public string ReceivedByUser { get; set; }
 
         public string Notes { get; set; }
+        public bool IsInwardQCCheck { get; set; }
         public List<PurchaseRcvDet> LineItems { get; set; }
     }
 

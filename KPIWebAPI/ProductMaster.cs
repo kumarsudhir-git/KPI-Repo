@@ -42,8 +42,10 @@ namespace KPIWebAPI
         public bool IsDiscontinued { get; set; }
         public System.DateTime AddedOn { get; set; }
         public Nullable<System.DateTime> LastModifiedOn { get; set; }
-        public decimal MinimumSellingPrice { get; set; }
+        public decimal MaximumSellingPrice { get; set; }
         public string Colour { get; set; }
+        public decimal MinimumSellingPrice { get; set; }
+        public string IncomingProductName { get; set; }
     
         public virtual MouldMaster MouldMaster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

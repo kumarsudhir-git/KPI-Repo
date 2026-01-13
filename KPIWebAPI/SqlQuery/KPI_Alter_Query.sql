@@ -1057,5 +1057,12 @@ ALTER TABLE PurchaseDetails ADD RMGrade NVARCHAR(MAX) NULL
 
 GO
 
-------------------------------------------------------END----------------------------------------------------------------
+---------------------------------------------------------------13-01-2026-------------------------------------------------------
+
+
+ALTER TABLE PurchaseRcvdMaster ADD IsInwardQCCheck BIT NOT NULL DEFAULT 0
+
+ALTER TABLE ProductMaster ADD IncomingProductName NVARCHAR(MAX) NULL
+
+------------------------------------------------------END-----------------------------------------------------------------
 
