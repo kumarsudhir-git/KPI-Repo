@@ -29,7 +29,6 @@ namespace KPIWebAPI
         public string QCStatus { get; set; }
         public bool QCReceived { get; set; }
         public Nullable<int> CompanyLocationId { get; set; }
-        public bool IsInwardQCCheck { get; set; }
     
         public virtual PurchaseMaster PurchaseMaster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
