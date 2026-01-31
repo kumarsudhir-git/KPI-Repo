@@ -200,5 +200,40 @@ namespace KPIWebAPI.Controllers
 
             return Json(returnValue);
         }
+    
+        public IHttpActionResult GetDispatchDetails(int salesId)
+        {
+            var returnValue = new SalesDispatchMasterResponse();
+            try
+            {
+                var data = db.SalesDispatchDetails.Where(x => x.SalesDispatchID == salesId).OrderByDescending(x => x.DispatchDate);
+                foreach (var obj in data)
+                {
+                    SalesDispatchDetail sdd = new SalesDispatchDetail
+                    {
+                        SalesDispatchID = obj.SalesDispatchID,
+                        //SalesDetail = obj.SalesDetailsID,
+                        SalesDetailsID = obj.SalesDetailsID,
+                        ProductID = obj.ProductID,
+                        //ProductName = obj.ProductMaster.ProductName,
+                        DispatchQty = obj.DispatchQty,
+                        DispatchDate = obj.DispatchDate,
+                        UserID = obj.UserID,
+                        //User = obj.UserMaster.Username,
+                    };
+                    //returnValue.data.Add(sdd);
+                }
+                returnValue.Response.IsSuccessful();
+            }
+            catch (Exception ex)
+            {
+                //TODO error handling
+                returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
+            }
+            return Json(returnValue);
+        }
+
+
     }
 }

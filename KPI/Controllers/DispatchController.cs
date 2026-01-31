@@ -68,5 +68,21 @@ namespace KPI.Controllers
                 return View("Error");
             }
         }
+
+        [HttpGet]
+        public ActionResult GetDispatchDetails(int salesId)
+        {
+            var response = KPIAPIManager.GetDispatchDetails(salesId);
+            if (response.Response.ResponseCode == 200)
+            {
+                return View(response.data);
+            }
+            else
+            {
+                ViewBag.Error = response.Response.ResponseMsg;
+                return View("Error");
+            }
+        }
+
     }
 }

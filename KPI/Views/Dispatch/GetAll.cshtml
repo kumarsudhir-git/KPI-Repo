@@ -48,13 +48,12 @@
 <div class="top_header">
     <h2>@ViewBag.Title</h2>
 </div>
-    <div class="btn-group">
-        <div class="btn btn-info active" aria-current="page" style="cursor:default;">Open Sales Orders</div>
-        <a href="../Dispatch/GetAllClosed" class="btn btn-light">Closed Sales Orders</a>
-    </div>
+<div class="btn-group">
+    <div class="btn btn-info active" aria-current="page" style="cursor:default;">Open Sales Orders</div>
+    <a href="../Dispatch/GetAllClosed" class="btn btn-light">Closed Sales Orders</a>
+</div>
 
 <hr style="margin-top:0px;" />
-
 
 @*<table id="tblData" class="table table-sm table-striped" cellspacing="0" width="100%">
     </table>
@@ -88,7 +87,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td valign="middle">
+                <td valign="middle" @Html.Raw("onclick='loadDispatchDetailItem(" + Json.Encode(item) +")'")>
                     @Html.DisplayFor(modelItem => item.SalesID)
                 </td>
                 <td valign="middle">
@@ -159,7 +158,7 @@
 
 <div id='myModal' class='modal'>
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" >
+        <div class="modal-content">
             @*<div id='myModalContent'>*@
 
             <div>
@@ -255,7 +254,32 @@
     </div>
 </div>
 
+<div id="dispatchDetailModal" class="modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
 
+            <div class="header">
+                <div class="modal-header">
+                    <h4 class="modal-title">Dispatch Detail Data</h4>
+                    <button id="closDispatchDetailBtn" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+            </div>
+
+            @using (Html.BeginForm("SetBookingDispatch", "Dispatch", FormMethod.Post, new { onsubmit = "return validateDispatchDetailForm()" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="modal-body">
+                    <div class="row">
+                    </div>
+                </div>
+            }
+
+
+        </div>
+    </div>
+</div>
 
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
@@ -309,10 +333,10 @@
         txtToDispatch.max = childItem.QtyBal;
         txtBlocked.max = childItem.QtyBal;
 
-            var options = { "backdrop": "static", keyboard: true };
-            //$('#myModal').modal(options);
-            $('#myModal').modal('show');
-        }
+        var options = { "backdrop": "static", keyboard: true };
+        //$('#myModal').modal(options);
+        $('#myModal').modal('show');
+    }
 
     function qtyBlockedToDispatch() {
         //debugger;
@@ -332,7 +356,6 @@
     //}
 
     function validateForm() {
-        debugger;
         return doValidation();
     }
 
@@ -418,4 +441,24 @@
     $("#closbtn").click(function () {
         $('#myModal').modal('hide');
     });
+
+    // Disptch detail modal start region
+
+    function validateDispatchDetailForm() {
+        return false;
+    }
+
+    $("#closDispatchDetailBtn").click(function () {
+        $('#dispatchDetailModal').modal('hide');
+    });
+
+    function loadDispatchDetailItem(obj) {
+        //debugger;
+        var options = { "backdrop": "static", keyboard: true };
+        $('#dispatchDetailModal').modal(options);
+        $('#dispatchDetailModal').modal('show');
+    }
+
+    // Disptch detail modal end region
+
 </script>
