@@ -85,6 +85,15 @@ namespace KPIWebAPI
         public virtual DbSet<UserMaster> UserMasters { get; set; }
         public virtual DbSet<VendorMaster> VendorMasters { get; set; }
     
+        public virtual ObjectResult<Nullable<int>> sp_GetAvailableMachineID(Nullable<int> mouldID)
+        {
+            var mouldIDParameter = mouldID.HasValue ?
+                new ObjectParameter("MouldID", mouldID) :
+                new ObjectParameter("MouldID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_GetAvailableMachineID", mouldIDParameter);
+        }
+    
         public virtual ObjectResult<Nullable<int>> sp_GetEmptyPallets()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_GetEmptyPallets");
@@ -95,23 +104,19 @@ namespace KPIWebAPI
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_GetEmptyRacks");
         }
     
-        public virtual ObjectResult<Nullable<int>> sp_GetAvailableMachineID(Nullable<int> mouldID)
+        public virtual ObjectResult<sp_GetRMInventory_Result> sp_GetRMInventory()
         {
-            var mouldIDParameter = mouldID.HasValue ?
-                new ObjectParameter("MouldID", mouldID) :
-                new ObjectParameter("MouldID", typeof(int));
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetRMInventory_Result>("sp_GetRMInventory");
+        }
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_GetAvailableMachineID", mouldIDParameter);
+        public virtual ObjectResult<sp_GetRMInventoryRejectionMaterial_Result> sp_GetRMInventoryRejectionMaterial()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetRMInventoryRejectionMaterial_Result>("sp_GetRMInventoryRejectionMaterial");
         }
     
         public virtual ObjectResult<usp_GetLocationMasterAllData_Result> usp_GetLocationMasterAllData()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetLocationMasterAllData_Result>("usp_GetLocationMasterAllData");
-        }
-    
-        public virtual ObjectResult<usp_GetRMInventoryMasterBatch_Result> usp_GetRMInventoryMasterBatch()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryMasterBatch_Result>("usp_GetRMInventoryMasterBatch");
         }
     
         public virtual ObjectResult<usp_GetMachineMouldMapData_Result> usp_GetMachineMouldMapData(string orderBy)
@@ -123,24 +128,19 @@ namespace KPIWebAPI
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetMachineMouldMapData_Result>("usp_GetMachineMouldMapData", orderByParameter);
         }
     
-        public virtual ObjectResult<sp_GetRMInventory_Result> sp_GetRMInventory()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetRMInventory_Result>("sp_GetRMInventory");
-        }
-    
         public virtual ObjectResult<usp_GetRMInventoryFinishedGood_Result> usp_GetRMInventoryFinishedGood()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryFinishedGood_Result>("usp_GetRMInventoryFinishedGood");
         }
     
+        public virtual ObjectResult<usp_GetRMInventoryMasterBatch_Result> usp_GetRMInventoryMasterBatch()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryMasterBatch_Result>("usp_GetRMInventoryMasterBatch");
+        }
+    
         public virtual ObjectResult<usp_GetRMInventoryPackageBags_Result> usp_GetRMInventoryPackageBags()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetRMInventoryPackageBags_Result>("usp_GetRMInventoryPackageBags");
-        }
-    
-        public virtual ObjectResult<sp_GetRMInventoryRejectionMaterial_Result> sp_GetRMInventoryRejectionMaterial()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetRMInventoryRejectionMaterial_Result>("sp_GetRMInventoryRejectionMaterial");
         }
     }
 }

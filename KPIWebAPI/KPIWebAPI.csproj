@@ -436,20 +436,13 @@
     <Content Include="Global.asax" />
     <Content Include="KPIDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>KPIDB.Context.cs</LastGenOutput>
       <DependentUpon>KPIDB.edmx</DependentUpon>
+      <LastGenOutput>KPIDB.Context.cs</LastGenOutput>
     </Content>
     <Content Include="KPIDB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>KPIDB.edmx</DependentUpon>
       <LastGenOutput>KPIDB.cs</LastGenOutput>
-    </Content>
-    <EntityDeploy Include="KPIDB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>KPIDB.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="KPIDB.edmx.diagram">
-      <DependentUpon>KPIDB.edmx</DependentUpon>
     </Content>
     <Content Include="SqlQuery\KPI_Alter_Query.sql" />
     <Content Include="Templates\EMAIL_PO_INVITE.txt" />
@@ -468,6 +461,13 @@
     <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
+    <EntityDeploy Include="KPIDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>KPIDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="KPIDB.edmx.diagram">
+      <DependentUpon>KPIDB.edmx</DependentUpon>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
