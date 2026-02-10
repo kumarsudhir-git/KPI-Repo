@@ -27,6 +27,17 @@ namespace KPIWebAPI
         public int UserID { get; set; }
         public System.DateTime DispatchDate { get; set; }
         public string DispatchNotes { get; set; }
+        public Nullable<decimal> TransporterCharges { get; set; }
+        public string Transporter { get; set; }
+        public string DocketNo { get; set; }
+        public string DispatchStatus { get; set; }
+        public string DocketPhotoPath { get; set; }
+        public Nullable<bool> SmsSentFlag { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public System.DateTime CreatedOn { get; set; }
+        public Nullable<int> UpdatedBy { get; set; }
+        public Nullable<System.DateTime> UpdatedOn { get; set; }
+        public Nullable<decimal> TransportationCharge { get; set; }
     
         public virtual ProductMaster ProductMaster { get; set; }
         public virtual SalesDetail SalesDetail { get; set; }

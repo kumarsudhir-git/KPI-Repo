@@ -85,7 +85,7 @@ namespace KPIWebAPI.Controllers
             {
                 var data = db.SalesDetails.SingleOrDefault(x => x.SalesDetailsID == id);      //(x => x.SalesID == salesID && x.ProductID == prodID);
 
-                VendorMaster vendorMstr = CommonFunctions.GetVendorDetailsFromId(data.SalesMaster.CompanyLocationID);
+                CompanyMaster companyMstr = CommonFunctions.GetCompanyMasterById(data.SalesMaster.CompanyLocationID);
 
                 returnValue.data = new PackingDispatchMaster()
                 {
@@ -95,10 +95,10 @@ namespace KPIWebAPI.Controllers
                     //CompanyID = data.SalesMaster.CompanyLocationMaster.CompanyID,
                     CompanyID = data.SalesMaster.CompanyLocationID,
                     //CompanyName = data.SalesMaster.CompanyLocationMaster.CompanyMaster.CompanyName + " [" + data.SalesMaster.CompanyLocationMaster.LocationName + "]",
-                    CompanyName = vendorMstr.VendorName + " [" + vendorMstr.Address + "]",
+                    CompanyName = companyMstr != null ? companyMstr.CompanyName : "",
 
                     CompanyLocationID = data.SalesMaster.CompanyLocationID,
-                    CompanyLocation = vendorMstr.Address,
+                    CompanyLocation = companyMstr != null && companyMstr.CompanyLocationMasters != null ? string.Join(", ", companyMstr.CompanyLocationMasters.Select(z => z.LocationName)) : "",
                                       //vendorMstr.City + " " +
                                       //vendorMstr.State + " " +
                                       //vendorMstr.PostalCode + " " +
@@ -107,7 +107,7 @@ namespace KPIWebAPI.Controllers
                     //ContactPerson = data.SalesMaster.CompanyLocationMaster.ContactPerson,
                     //Phone = data.SalesMaster.CompanyLocationMaster.Phone,
                     //Phone = data.SalesMaster.CompanyLocationMaster.Phone,
-                    Mobile = vendorMstr.ContactNumber,
+                    //Mobile = companyMstr.ContactNumber,
                     //Email = data.SalesMaster.CompanyLocationMaster.Email,
 
                     Instructions = data.SalesMaster.Instructions,
@@ -125,14 +125,14 @@ namespace KPIWebAPI.Controllers
                         ProductName = data.ProductMaster.ProductName,
                         Instructions = data.Instructions,
                         QtyBooked = data.Qty,
-                        //QtyBlocked = data.QtyBlocked,
+                        QtyBlocked = data.QtyBlocked,
                         QtyToDispatch = data.QtyToDispatch,
                         QtyDispatched = data.SalesDispatchDetails.Sum(x => x.DispatchQty),      //replace with dispatched qty
                         QtyBal = data.QtyBal,
                         ////QtyAvailable = (int)data.ProductMaster.ProductInventoryMasters.Sum(x => x.Qty) - db.SalesDetails.Where(x => x.ProductID == data.ProductID).Sum(x => x.QtyBlocked + x.QtyToDispatch),
-                        //QtyAvailable = (int)data.ProductMaster.ProdReadyStoreds.Sum(x => x.Qty) - db.SalesDetails.Where(x => x.ProductID == data.ProductID).Sum(x => x.QtyBlocked + x.QtyToDispatch),
-                        //QtyToProduce = data.ProductionPrograms.Where(x => x.ProductID == data.ProductID && x.SalesDetailsID == data.SalesDetailsID && x.ProductQtyCompleted == 0 && x.InProductionQty == 0).Sum(x => x.ProductQty),
-                        //QtyInProduction = data.ProductionPrograms.Where(x => x.ProductID == data.ProductID && x.SalesDetailsID == data.SalesDetailsID).Sum(x => x.InProductionQty),
+                        QtyAvailable = (int)data.ProductMaster.ProdReadyStoreds.Sum(x => x.Qty) - db.SalesDetails.Where(x => x.ProductID == data.ProductID).Sum(x => x.QtyBlocked + x.QtyToDispatch),
+                        QtyToProduce = data.ProductionPrograms.Where(x => x.ProductID == data.ProductID && x.SalesDetailsID == data.SalesDetailsID && x.ProductQtyCompleted == 0 && x.InProductionQty == 0).Sum(x => x.ProductQty),
+                        QtyInProduction = data.ProductionPrograms.Where(x => x.ProductID == data.ProductID && x.SalesDetailsID == data.SalesDetailsID).Sum(x => x.InProductionQty),
                     }
                 };
 
@@ -140,7 +140,6 @@ namespace KPIWebAPI.Controllers
                 var prodStored = db.ProdReadyStoreds.Where(x => x.ProductID == data.ProductID && x.Qty > 0).OrderBy(x => x.RcvdDate);
 
                 var productsInRack = new List<ProductInRack>();     //TODO: For the print
-
 
                 returnValue.data.RackDetails = new List<ProductInRack>();
                 foreach (var obj in prodStored)
@@ -190,7 +189,6 @@ namespace KPIWebAPI.Controllers
                         break;
                 }
 
-
                 //Insert into SalesDispatchDetails
                 SalesDispatchDetail dispatch = new SalesDispatchDetail
                 {
@@ -202,7 +200,6 @@ namespace KPIWebAPI.Controllers
                     DispatchNotes = ""
                 };
                 db.SalesDispatchDetails.Add(dispatch);
-
 
                 //Update the SalesDetails entry
                 data.QtyDispatched = data.QtyDispatched + data.QtyToDispatch;

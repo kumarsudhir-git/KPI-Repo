@@ -457,7 +457,6 @@
 
     var bRMAvailable, bMouldAvailable, bMachineAvailable;
 
-
     var hidProductionProgramID02 = document.getElementById("hidProductionProgramID02");
     var spnProgramID02 = document.getElementById("spnProgramID02");
     var spnProgramDate02 = document.getElementById("spnProgramDate02");
@@ -555,7 +554,7 @@
         //for setting max and min
         let max = item.ProductQty - item.ProductQtyCompleted;
         txtProducedNow02.addEventListener("change", function () {
-            debugger
+            
             let num = parseInt(this.value);
             if (num < 0) this.value = 0;
             if (num > max) this.value = max;

@@ -41,9 +41,12 @@
             @Html.DropDownListFor(model => model.SalesStatusID, null, "--Select--", new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.SalesStatusID, "", new { @class = "text-danger" })
         </td>
-        <td>
-            <input type="button" value="Delete" class="btn btn-primary btn-sm" onclick="DeleteLineItemRow(this)" />
-        </td>
+        if (Model.ShowAction)
+        {
+            <td>
+                <input type="button" value="Delete" class="btn btn-primary btn-sm" onclick="DeleteLineItemRow(this)" />
+            </td>
+        }
     }
 </tr>
 

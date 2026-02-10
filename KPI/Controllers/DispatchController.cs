@@ -1,6 +1,12 @@
 ﻿using KPI.Classes;
 using KPI.Filters;
+using KPILib;
+using KPILib.Models;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Web;
 using System.Web.Mvc;
 
 namespace KPI.Controllers
@@ -21,12 +27,6 @@ namespace KPI.Controllers
                 ViewBag.Error = response.Response.ResponseMsg;
                 return View("Error");
             }
-        }
-
-        [HttpGet]
-        public ActionResult GetDispatchDetailData(int SalesId = 0) 
-        {
-            return PartialView();
         }
 
         public ActionResult GetAllClosed()
@@ -70,18 +70,49 @@ namespace KPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetDispatchDetails(int salesId)
+        public ActionResult GetSalesDispatchDetailData(int salesId)
         {
-            var response = KPIAPIManager.GetDispatchDetails(salesId);
+            ViewData["DispatchStatus"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
+            var response = KPIAPIManager.GetSalesDispatchDetailData(salesId);
             if (response.Response.ResponseCode == 200)
             {
-                return View(response.data);
+                LookUpMasterResponse GSMLookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.StatusType);
+                if (GSMLookUpMaster != null && GSMLookUpMaster.Response.ResponseCode == 200)
+                {
+                    ViewData["DispatchStatus"] = new SelectList(GSMLookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
+                }
+                return PartialView(response.salesDispatchDetailObj);
             }
             else
             {
                 ViewBag.Error = response.Response.ResponseMsg;
                 return View("Error");
             }
+        }
+        
+        [HttpPost]
+        public ActionResult SaveSalesDispatchDetailData(SalesDispatchDetailMaster salesDispatchDetail, HttpPostedFileBase DocketImageFile)
+        {
+            if (DocketImageFile != null && DocketImageFile.ContentLength > 0)
+            {
+                string fileName = Path.GetFileName(DocketImageFile.FileName);
+                string path = Path.Combine(Server.MapPath("~/Uploads/Dockets/"), fileName);
+
+                DocketImageFile.SaveAs(path);
+
+                salesDispatchDetail.DocketPhotoPath = "~/Uploads/Dockets/" + fileName;
+            }
+            return View();
+            //var response = KPIAPIManager.GetSalesDispatchDetailData(salesId);
+            //if (response.Response.ResponseCode == 200)
+            //{
+            //    return PartialView(response.salesDispatchDetailObj);
+            //}
+            //else
+            //{
+            //    ViewBag.Error = response.Response.ResponseMsg;
+            //    return View("Error");
+            //}
         }
 
     }

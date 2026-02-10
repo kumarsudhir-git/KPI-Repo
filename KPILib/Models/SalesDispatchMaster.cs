@@ -56,6 +56,50 @@ namespace KPILib.Models
         }
     }
 
+    public class SalesDispatchDetailMasterResponse
+    {
+        public SalesDispatchDetailMaster salesDispatchDetailObj { get; set; }
+        public List<SalesDispatchDetailMaster> data { get; set; }
+        public ResponseObj Response { get; set; }
+        public SalesDispatchDetailMasterResponse()
+        {
+            this.salesDispatchDetailObj = new SalesDispatchDetailMaster();
+            this.data = new List<SalesDispatchDetailMaster>();
+            this.Response = new ResponseObj();
+        }
+    }
+
+    public class SalesDispatchDetailMaster
+    {
+        public SalesDispatchDetailMaster()
+        {
+            SalesMasterObj = new KPILib.Models.SalesMaster();
+            SalesDetailListObj = new List<SalesDetails>();
+        }
+        public int SalesDispatchID { get; set; }
+        public int SalesDetailsID { get; set; }
+        public int ProductID { get; set; }
+        public int DispatchQty { get; set; }
+        public int UserID { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy}", ApplyFormatInEditMode = true, NullDisplayText = "")]
+        public DateTime? DispatchDate { get; set; }
+        public string DispatchNotes { get; set; }
+        public decimal? TransporterCharges { get; set; }
+        public decimal? TransportationCharge { get; set; }
+        public string Transporter { get; set; }
+        public string DocketNo { get; set; }
+        public string DispatchStatus { get; set; }
+        public string DocketPhotoPath { get; set; }
+        public bool? SmsSentFlag { get; set; }
+        public int? CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public int? UpdatedBy { get; set; }
+        public DateTime? UpdatedOn { get; set; }
+        public KPILib.Models.SalesMaster SalesMasterObj { get; set; }
+        //public List<ProductMaster> ProductMasterListObj { get; set; }
+        public List<SalesDetails> SalesDetailListObj { get; set; }
+    }
+
     //public class SalesDispatchMastersResponse
     //{
     //    public List<SalesDispatchMaster> data { get; set; }

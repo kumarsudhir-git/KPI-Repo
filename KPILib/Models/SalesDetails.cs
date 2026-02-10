@@ -25,5 +25,6 @@ namespace KPILib.Models
         public bool SampleReq { get; set; }
         [Display(Name = "Status")]
         public int SalesStatusID { get; set; }
+        public bool ShowAction { get; set; } = true;
     }
 }

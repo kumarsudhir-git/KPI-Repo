@@ -147,7 +147,7 @@ namespace KPIWebAPI.Controllers
                         ProductionProgramRMMapping productionProgramRMMapping = new ProductionProgramRMMapping()
                         {
                             ProductID = productRM.ProductID,
-                            RawMaterialID = productRM.RawMaterialID, 
+                            RawMaterialID = productRM.RawMaterialID,
                             RMQty = (int)Math.Round(productRM.RMReqdForUOMQty * (iToProduceQty / item.ProductMaster.MinQtyUOM), 0),
                             ProductionProgramID = program.ProductionProgramID
                         };
@@ -200,29 +200,27 @@ namespace KPIWebAPI.Controllers
 
             return Json(returnValue);
         }
-    
-        public IHttpActionResult GetDispatchDetails(int salesId)
+
+        public IHttpActionResult GetSalesDispatchDetailData(int salesId)
         {
-            var returnValue = new SalesDispatchMasterResponse();
+            var returnValue = new SalesDispatchDetailMasterResponse();
             try
             {
-                var data = db.SalesDispatchDetails.Where(x => x.SalesDispatchID == salesId).OrderByDescending(x => x.DispatchDate);
-                foreach (var obj in data)
+                var salesMasterData = db.SalesMasters.SingleOrDefault(x => x.SalesID == salesId);
+                if (salesMasterData != null)
                 {
-                    SalesDispatchDetail sdd = new SalesDispatchDetail
+                    returnValue.salesDispatchDetailObj.SalesMasterObj = mapper.Map<KPILib.Models.SalesMaster>(salesMasterData);
+
+                    var data = db.SalesDispatchDetails.Where(x => x.SalesDispatchID == salesId).OrderByDescending(x => x.DispatchDate).FirstOrDefault();
+                    if (data != null)
                     {
-                        SalesDispatchID = obj.SalesDispatchID,
-                        //SalesDetail = obj.SalesDetailsID,
-                        SalesDetailsID = obj.SalesDetailsID,
-                        ProductID = obj.ProductID,
-                        //ProductName = obj.ProductMaster.ProductName,
-                        DispatchQty = obj.DispatchQty,
-                        DispatchDate = obj.DispatchDate,
-                        UserID = obj.UserID,
-                        //User = obj.UserMaster.Username,
-                    };
-                    //returnValue.data.Add(sdd);
+                        returnValue.salesDispatchDetailObj = mapper.Map<SalesDispatchDetailMaster>(data);
+                    }
+
+                    var salesDetailsData = db.SalesDetails.Where(x => x.SalesID == salesId).ToList();
+                    returnValue.salesDispatchDetailObj.SalesDetailListObj = mapper.Map<List<SalesDetails>>(salesDetailsData);
                 }
+
                 returnValue.Response.IsSuccessful();
             }
             catch (Exception ex)
@@ -233,7 +231,5 @@ namespace KPIWebAPI.Controllers
             }
             return Json(returnValue);
         }
-
-
     }
 }

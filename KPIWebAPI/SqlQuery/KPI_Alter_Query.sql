@@ -1064,5 +1064,74 @@ ALTER TABLE PurchaseRcvdMaster ADD IsInwardQCCheck BIT NOT NULL DEFAULT 0
 
 ALTER TABLE ProductMaster ADD IncomingProductName NVARCHAR(MAX) NULL
 
-------------------------------------------------------END-----------------------------------------------------------------
+------------------------------------------------------------------------------01-02-2026----------------------------------------
+GO
+
+INSERT INTO LookUpMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
+VALUES('StatusType','IN PROCESS','ST001','Status Type',1,1001,GETDATE()),
+('StatusType','DONE','ST002','Status Type',1,1001,GETDATE()),
+('StatusType','SENT','ST003','Status Type',1,1001,GETDATE())
+
+GO
+
+INSERT INTO MachineHistory (MachineID, MachineStatusID, Description, AddedOn, NextReminderOn, IsDeleted)
+SELECT 
+    MM.MachineID,
+    101 AS MachineStatusID,
+    'First Entry' AS Description,
+    GETDATE() AS AddedOn,
+    NULL AS NextReminderOn,
+    0 AS IsDeleted
+FROM MachineMaster MM
+LEFT JOIN MachineHistory MH ON MH.MachineID = MM.MachineID
+WHERE MH.MachineID IS NULL;
+
+GO
+
+INSERT INTO MouldHistory (MouldID, MouldStatusID, Description, AddedOn, NextReminderOn)
+SELECT 
+    MM.MouldID,
+    101 AS MachineStatusID,
+    'First Entry' AS Description,
+    GETDATE() AS AddedOn,
+    NULL AS NextReminderOn
+FROM MouldMaster MM
+LEFT JOIN MouldHistory MH ON MH.MouldID = MM.MouldID
+WHERE MH.MouldID IS NULL;
+
+GO
+
+ALTER TABLE SalesDispatchDetails
+ADD 
+    TransporterCharges   DECIMAL(12,2) NULL,
+    Transporter          NVARCHAR(150) NULL,
+    DocketNo             NVARCHAR(100) NULL,
+    DispatchStatus       NVARCHAR(250) NULL,
+    DocketPhotoPath      NVARCHAR(255) NULL,
+    SmsSentFlag          BIT NOT NULL DEFAULT 0,
+    CreatedBy            INT NULL,
+    CreatedOn            DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedBy            INT NULL,
+    UpdatedOn            DATETIME NULL,
+    TransportationCharge DECIMAL(18,2) NULL; -- Need to confirm from Prerna
+
+-- ALTER TABLE SalesDispatchDetails ALTER COLUMN SmsSentFlag BIT;
+
+GO
+
+CREATE TABLE NotificationLog (
+    SmsId       INT PRIMARY KEY IDENTITY (1,1),
+    DispatchId  INT NOT NULL,
+    MobileNo    NVARCHAR(20) NOT NULL,
+    EmailId     NVARCHAR(255) NULL,
+    MessageText TEXT NOT NULL,
+    SentAt      DATETIME DEFAULT CURRENT_TIMESTAMP,
+    SmsStatus   NVARCHAR(50) DEFAULT 'ST003', -- SENT
+    CreatedBy   INT NULL,
+    CreatedOn   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    Updatedy    INT NULL,
+    UpdatedOn   DATETIME NULL
+);
+
+------------------------------------------------------END-------------------------------------------------------------------------------------
 

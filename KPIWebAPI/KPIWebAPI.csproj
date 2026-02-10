@@ -291,6 +291,9 @@
     <Compile Include="MouldTypeMaster.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="NotificationLog.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="OrderStatusMaster.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>

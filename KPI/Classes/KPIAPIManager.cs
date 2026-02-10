@@ -368,9 +368,9 @@ namespace KPI.Classes
             return result;
         }
 
-        public static SalesDispatchMasterResponse GetDispatchDetails(int salesId) 
+        public static SalesDispatchDetailMasterResponse GetSalesDispatchDetailData(int salesId)
         {
-            var result = CommonFunctions.client.GetAsync("DispatchAPI/GetDispatchDetails/" + salesId.ToString()).Result.Content.ReadAsAsync<SalesDispatchMasterResponse>().Result;
+            var result = CommonFunctions.client.GetAsync("DispatchAPI/GetSalesDispatchDetailData?salesId=" + salesId.ToString()).Result.Content.ReadAsAsync<SalesDispatchDetailMasterResponse>().Result;
             return result;
         }
 

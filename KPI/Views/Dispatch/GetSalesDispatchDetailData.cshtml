@@ -1,0 +1,196 @@
+﻿@model KPILib.Models.SalesDispatchDetailMaster
+
+@{
+    ViewBag.Title = "SetBookingDispatch";
+    Layout = null;
+    //Layout = "~/Views/Shared/_MainLayout.cshtml";
+
+    <style>
+        .docket-image-box {
+            position: absolute;
+            /*top: 0px;*/
+            right: 20px;
+            width: 180px;
+            text-align: center;
+        }
+
+            .docket-image-box img {
+                width: 150px;
+                height: 150px;
+                border: 1px solid #ccc;
+                object-fit: cover;
+                margin-bottom: 5px;
+            }
+    </style>
+}
+
+<div class="SalesDispatchDetailData">
+
+    <div class="position-relative">
+
+        <!-- Docket Image floating -->
+        <div class="docket-image-box">
+            <label>Docket Image</label>
+            <img id="previewImage" src="@(string.IsNullOrEmpty(Model.DocketPhotoPath)
+                    ? Url.Content("~/images/default-image.png")
+                    : Url.Content(Model.DocketPhotoPath))" />
+
+            <input type="file" id="DocketImageFile" name="DocketImageFile"
+                   accept="image/*" class="form-control" />
+
+            @Html.HiddenFor(model => model.DocketPhotoPath)
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="row">
+
+            <!-- Sales No -->
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Sales No</label>
+                    <div>
+                        @Html.DisplayFor(model => model.SalesDetailsID)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales Date -->
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Sales Date</label>
+                    <div>
+                        @(Model.SalesMasterObj.CommittedDate != null &&
+                      Model.SalesMasterObj.CommittedDate != DateTime.MinValue
+                        ? Model.SalesMasterObj.CommittedDate.Value.ToString("dd-MM-yyyy")
+                        : "-")
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer -->
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Customer</label>
+                    @Html.DisplayFor(model => model.SalesMasterObj.CompanyLocation)
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SECOND ROW -->
+        <div class="row mt-3">
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Dispatch Status</label>
+                    @Html.DropDownListFor(model => model.DispatchStatus, null, "--Select--", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Transporter</label>
+                    @Html.TextBoxFor(model => model.Transporter, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Docket No</label>
+                    @Html.TextBoxFor(model => model.DocketNo, new { @class = "form-control" })
+                </div>
+            </div>
+
+        </div>
+
+        <!-- THIRD ROW -->
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Dispatch Date</label>
+                    @Html.TextBoxFor(modelItem => modelItem.DispatchDate, "{0:dd/MMM/yyyy}", new { @class = "form-control datepicker", @placeholder = "Select Date Of Dispatch", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Transportation Charge</label>
+                    @Html.TextBoxFor(modelItem => modelItem.TransportationCharge, new { @class = "form-control", @placeholder = "Enter Transportation Charge" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <div>
+                        <input type="submit" class="btn btn-primary" onclick="return validateDispatchDetailForm()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div>Product Detail</div>
+            <div class="ProductDetailDiv">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="SalesOrderTbl">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Product
+                                </th>
+                                <th>
+                                    Colour
+                                </th>
+                                <th>
+                                    Gms
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Package
+                                </th>
+                                <th>
+                                    Rate
+                                </th>
+                                <th>
+                                    Sample Req
+                                </th>
+                                <th>
+                                    Spl. Instructions
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.SalesDetailListObj)
+                            {
+                                item.ShowAction = false;
+                                Html.RenderAction("GetSalesLineItemPartial", "Sales", item);
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#DocketImageFile").change(function () {
+        let input = this;
+
+        if (input.files && input.files[0]) {
+            let reader = new FileReader();
+
+            reader.onload = function (e) {
+                $("#previewImage").attr("src", e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+</script>

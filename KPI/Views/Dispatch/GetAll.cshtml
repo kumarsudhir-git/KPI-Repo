@@ -63,95 +63,100 @@
     <br />*@
 <div class="table-responsive">
     <table class="table table-sm table-striped table-hover" style="display:normal;">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SalesID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SalesDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CompanyLocation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                Product
-            </th>
-            <th style="text-align:center;">
-                Block / Dispatch Quantites
-            </th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
+        <thead>
             <tr>
-                <td valign="middle" @Html.Raw("onclick='loadDispatchDetailItem(" + Json.Encode(item) +")'")>
-                    @Html.DisplayFor(modelItem => item.SalesID)
-                </td>
-                <td valign="middle">
-                    @Html.DisplayFor(modelItem => item.SalesDate)
-                </td>
-                <td valign="middle">
-                    @Html.DisplayFor(modelItem => item.CompanyLocation)
-                </td>
-                <td valign="middle">
-                    @Html.DisplayFor(modelItem => item.User)
-                </td>
-                <td valign="middle">
-                    @Html.DisplayFor(modelItem => item.Item.ProductName)
-                </td>
-                <td valign="middle" align="center">
-                    @{
-                        var bDispatch = (item.Item.QtyAvailable > 0 && item.Item.QtyBal > 0);
-                        var bBlocked = (item.Item.QtyAvailable > 0 && item.Item.QtyBal > 0 && item.Item.QtyBlocked < item.Item.QtyBal);
-                        var bToProduce = (item.Item.QtyBal > (item.Item.QtyBlocked + item.Item.QtyToDispatch));
-                    }
-                    <div class="row dispatch_tbl">
-                        <!--<div class="col-sm-3">
+                <th>
+                    @Html.DisplayNameFor(model => model.SalesID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SalesDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompanyLocation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+                <th>
+                    Product
+                </th>
+                <th style="text-align:center;">
+                    Block / Dispatch Quantites
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td valign="middle" @Html.Raw("onclick='loadSalesDispatchDetailData(" + Json.Encode(item) + ")'")>
+                        <a href="#">
+                            @Html.DisplayFor(modelItem => item.SalesID)
+                        </a>
+                    </td>
+                    <td valign="middle">
+                        @Html.DisplayFor(modelItem => item.SalesDate)
+                    </td>
+                    <td valign="middle">
+                        @Html.DisplayFor(modelItem => item.CompanyLocation)
+                    </td>
+                    <td valign="middle">
+                        @Html.DisplayFor(modelItem => item.User)
+                    </td>
+                    <td valign="middle">
+                        @Html.DisplayFor(modelItem => item.Item.ProductName)
+                    </td>
+                    <td valign="middle" align="center">
+                        @{
+                            var bDispatch = (item.Item.QtyAvailable > 0 && item.Item.QtyBal > 0);
+                            var bBlocked = (item.Item.QtyAvailable > 0 && item.Item.QtyBal > 0 && item.Item.QtyBlocked < item.Item.QtyBal);
+                            var bToProduce = (item.Item.QtyBal > (item.Item.QtyBlocked + item.Item.QtyToDispatch));
+                        }
+                        <div class="row dispatch_tbl">
+                            <!--<div class="col-sm-3">
                             @Html.DisplayFor(modelItem => item.Item.ProductName)-->
-                        <!--</div>-->
-                        <div class="col-sm-12">
-                            <div class="row eight-cols">
-                                <div class="qty col-md-1" style="padding: 5px;">
-                                    @Html.DisplayFor(modelItem => item.Item.QtyBooked)
-                                    <div class="qtyCap">Ordered</div>
-                                </div>
-                                <div class="qty col-md-1" style="padding: 5px;">
-                                    @Html.DisplayFor(modelItem => item.Item.QtyDispatched)
-                                    <div class="qtyCap">Dispatched</div>
-                                </div>
-                                <div class="qty col-md-1 red" style="padding: 5px;">
-                                    @Html.DisplayFor(modelItem => item.Item.QtyBal)
-                                    <div class="qtyCap">Balance</div>
-                                </div>
-                                <div id="divBlocked" class="qty col-md-1 blue" style="padding: 5px; @if (bBlocked) { @Html.Raw(" background-color: #daeaf6; cursor: pointer;"); }" @if (bBlocked) { @Html.Raw("onclick='loadItem(" + Json.Encode(item) + "," + Json.Encode(item.Item) + ");'") ; }>
-                                    @Html.DisplayFor(modelItem => item.Item.QtyBlocked)
-                                    <div class="qtyCap">Blocked</div>
-                                </div>
-                                <div id="divToDispatch" class="qty col-md-1" style="padding: 5px; @if (bDispatch) { @Html.Raw(" background-color: #ffee93; cursor: pointer;"); }" @if (bDispatch) { @Html.Raw("onclick='loadItem(" + Json.Encode(item) + "," + Json.Encode(item.Item) + ");'") ; }>
-                                    @Html.DisplayFor(modelItem => item.Item.QtyToDispatch)
-                                    <div class="qtyCap">To Dispatch</div>
-                                </div>
-                                <div class="qty col-md-1 green" style="padding: 5px;">
-                                    @Html.DisplayFor(modelItem => item.Item.QtyAvailable)
-                                    <div class="qtyCap">Available</div>
-                                </div>
-                                <div class="qty col-md-1" style="padding: 5px;">
-                                    @Html.DisplayFor(modelItem => item.Item.QtyInProduction)
-                                    <div class="qtyCap">In Production</div>
-                                </div>
-                                <div class="qty col-md-1" style="padding: 5px; @if (bToProduce) { @Html.Raw(" background-color: lightgreen; cursor: pointer;"); }" @if (bToProduce) { @Html.Raw("onclick='loadItem(" + Json.Encode(item) + "," + Json.Encode(item.Item) + ");'") ; }>
-                                    @Html.DisplayFor(modelItem => item.Item.QtyToProduce)
-                                    <div class="qtyCap">To Produce</div>
+                            <!--</div>-->
+                            <div class="col-sm-12">
+                                <div class="row eight-cols">
+                                    <div class="qty col-md-1" style="padding: 5px;">
+                                        @Html.DisplayFor(modelItem => item.Item.QtyBooked)
+                                        <div class="qtyCap">Ordered</div>
+                                    </div>
+                                    <div class="qty col-md-1" style="padding: 5px;">
+                                        @Html.DisplayFor(modelItem => item.Item.QtyDispatched)
+                                        <div class="qtyCap">Dispatched</div>
+                                    </div>
+                                    <div class="qty col-md-1 red" style="padding: 5px;">
+                                        @Html.DisplayFor(modelItem => item.Item.QtyBal)
+                                        <div class="qtyCap">Balance</div>
+                                    </div>
+                                    <div id="divBlocked" class="qty col-md-1 blue" style="padding: 5px; @if (bBlocked) { @Html.Raw(" background-color: #daeaf6; cursor: pointer;"); }" @if (bBlocked) { @Html.Raw("onclick='loadItem(" + Json.Encode(item) + "," + Json.Encode(item.Item) + ");'") ; }>
+                                        @Html.DisplayFor(modelItem => item.Item.QtyBlocked)
+                                        <div class="qtyCap">Blocked</div>
+                                    </div>
+                                    <div id="divToDispatch" class="qty col-md-1" style="padding: 5px; @if (bDispatch) { @Html.Raw(" background-color: #ffee93; cursor: pointer;"); }" @if (bDispatch) { @Html.Raw("onclick='loadItem(" + Json.Encode(item) + "," + Json.Encode(item.Item) + ");'") ; }>
+                                        @Html.DisplayFor(modelItem => item.Item.QtyToDispatch)
+                                        <div class="qtyCap">To Dispatch</div>
+                                    </div>
+                                    <div class="qty col-md-1 green" style="padding: 5px;">
+                                        @Html.DisplayFor(modelItem => item.Item.QtyAvailable)
+                                        <div class="qtyCap">Available</div>
+                                    </div>
+                                    <div class="qty col-md-1" style="padding: 5px;">
+                                        @Html.DisplayFor(modelItem => item.Item.QtyInProduction)
+                                        <div class="qtyCap">In Production</div>
+                                    </div>
+                                    <div class="qty col-md-1" style="padding: 5px; @if (bToProduce) { @Html.Raw(" background-color: lightgreen; cursor: pointer;"); }" @if (bToProduce) { @Html.Raw("onclick='loadItem(" + Json.Encode(item) + "," + Json.Encode(item.Item) + ");'") ; }>
+                                        @Html.DisplayFor(modelItem => item.Item.QtyToProduce)
+                                        <div class="qtyCap">To Produce</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-        }
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
 
 </div>
@@ -276,7 +281,6 @@
                 </div>
             }
 
-
         </div>
     </div>
 </div>
@@ -339,13 +343,11 @@
     }
 
     function qtyBlockedToDispatch() {
-        //debugger;
         txtToDispatch.value = parseInt(txtToDispatch.value) + parseInt(txtBlocked.value);
         txtBlocked.value = 0;
     }
 
     function qtyChanged() {
-        //debugger;
         txtAvailable.innerText = parseInt(hidAvailable.value) - (parseInt(txtBlocked.value) - parseInt(hidBlocked.value)) - (parseInt(txtToDispatch.value) - parseInt(hidToDispatch.value));
         doValidation();
     }
@@ -452,8 +454,20 @@
         $('#dispatchDetailModal').modal('hide');
     });
 
-    function loadDispatchDetailItem(obj) {
-        //debugger;
+    function loadSalesDispatchDetailData(obj) {
+        
+        $.ajax({
+            url: '../Dispatch/GetSalesDispatchDetailData',
+            type: 'GET',
+            data: { salesId: obj.SalesID },
+            success: function (data) {
+                $('#dispatchDetailModal .modal-body .row').html(data);
+            },
+            error: function () {
+                alert("An error occurred while fetching dispatch detail data.");
+            }
+        });
+        InitializeDatePicker();
         var options = { "backdrop": "static", keyboard: true };
         $('#dispatchDetailModal').modal(options);
         $('#dispatchDetailModal').modal('show');

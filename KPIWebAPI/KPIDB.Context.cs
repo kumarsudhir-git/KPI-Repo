@@ -45,6 +45,7 @@ namespace KPIWebAPI
         public virtual DbSet<MouldMaster> MouldMasters { get; set; }
         public virtual DbSet<MouldStatusMaster> MouldStatusMasters { get; set; }
         public virtual DbSet<MouldTypeMaster> MouldTypeMasters { get; set; }
+        public virtual DbSet<NotificationLog> NotificationLogs { get; set; }
         public virtual DbSet<OrderStatusMaster> OrderStatusMasters { get; set; }
         public virtual DbSet<PalletMaster> PalletMasters { get; set; }
         public virtual DbSet<ProdReadyStored> ProdReadyStoreds { get; set; }

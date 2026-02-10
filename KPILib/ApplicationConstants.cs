@@ -15,5 +15,6 @@ namespace KPILib
         public const string VendorItemType = "VendorItemType";
         public const string ItemType = "ItemType";
         public const string GSTType = "GSTType";
+        public const string StatusType = "StatusType";
     }
 }

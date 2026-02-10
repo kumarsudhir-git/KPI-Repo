@@ -1,7 +1,8 @@
-﻿using System;
+﻿using AutoMapper;
+using KPILib.Models;
+using System;
 using System.Configuration;
 using System.Web.Http;
-using AutoMapper;
 
 namespace KPIWebAPI.Controllers
 {
@@ -146,54 +147,57 @@ namespace KPIWebAPI.Controllers
 
             cfg.CreateMap<RMInventoryMasterBatch, KPILib.Models.RMInventoryMasterBatchModel>();
             cfg.CreateMap<KPILib.Models.RMInventoryMasterBatchModel, RMInventoryMasterBatch>();
-            
+
             cfg.CreateMap<usp_GetRMInventoryMasterBatch_Result, KPILib.Models.RMInventoryMasterBatchModel>();
             cfg.CreateMap<KPILib.Models.RMInventoryMasterBatchModel, usp_GetRMInventoryMasterBatch_Result>();
 
             cfg.CreateMap<RMInventoryPackageBag, KPILib.Models.RMInventoryPackageBagsModel>();
             cfg.CreateMap<KPILib.Models.RMInventoryPackageBagsModel, RMInventoryPackageBag>();
-            
+
             cfg.CreateMap<usp_GetRMInventoryPackageBags_Result, KPILib.Models.RMInventoryPackageBagsModel>();
             cfg.CreateMap<KPILib.Models.RMInventoryPackageBagsModel, usp_GetRMInventoryPackageBags_Result>();
 
             cfg.CreateMap<RMInventoryFinishedGood, KPILib.Models.RMInventoryFinishedGoodModel>();
             cfg.CreateMap<KPILib.Models.RMInventoryFinishedGoodModel, RMInventoryFinishedGood>();
-            
+
             cfg.CreateMap<usp_GetRMInventoryFinishedGood_Result, KPILib.Models.RMInventoryFinishedGoodModel>();
             cfg.CreateMap<KPILib.Models.RMInventoryFinishedGoodModel, usp_GetRMInventoryFinishedGood_Result>();
 
             cfg.CreateMap<MachineTypeMaster, KPILib.Models.MachineTypeMasterModel>();
             cfg.CreateMap<KPILib.Models.MachineTypeMasterModel, MachineTypeMaster>();
-            
+
             cfg.CreateMap<usp_GetRMInventoryFinishedGood_Result, KPILib.Models.RMInventoryFinishedGoodModel>();
             cfg.CreateMap<KPILib.Models.RMInventoryFinishedGoodModel, usp_GetRMInventoryFinishedGood_Result>();
 
             cfg.CreateMap<MachineStatusMaster, KPILib.Models.MachineStatusMasterModel>();
             cfg.CreateMap<KPILib.Models.MachineStatusMasterModel, MachineStatusMaster>();
-            
+
             cfg.CreateMap<TagColourMaster, KPILib.Models.TagColorMasterModel>();
             cfg.CreateMap<KPILib.Models.TagColorMasterModel, TagColourMaster>();
-            
+
             cfg.CreateMap<LookUpMaster, KPILib.Models.LookUpMasterModel>();
             cfg.CreateMap<KPILib.Models.LookUpMasterModel, LookUpMaster>();
-            
+
             cfg.CreateMap<SalesStatusMaster, KPILib.Models.SalesStatusMaster>();
             cfg.CreateMap<KPILib.Models.SalesStatusMaster, SalesStatusMaster>();
-            
+
             cfg.CreateMap<usp_GetMachineMouldMapData_Result, KPILib.Models.MachineMouldMappingModel>();
             cfg.CreateMap<KPILib.Models.MachineMouldMappingModel, usp_GetMachineMouldMapData_Result>();
-            
+
             cfg.CreateMap<MachineMouldMapping, KPILib.Models.MachineMouldMappingModel>();
             cfg.CreateMap<KPILib.Models.MachineMouldMappingModel, MachineMouldMapping>();
-            
+
             cfg.CreateMap<MachineMouldMapping, KPILib.Models.MachineMouldMapping>();
             cfg.CreateMap<KPILib.Models.MachineMouldMapping, MachineMouldMapping>();
-            
+
             cfg.CreateMap<sp_GetRMInventoryRejectionMaterial_Result, KPILib.Models.RMInventoryRejectionMaterialModel>();
             cfg.CreateMap<KPILib.Models.RMInventoryRejectionMaterialModel, sp_GetRMInventoryRejectionMaterial_Result>();
-            
+
             cfg.CreateMap<RMInventoryRejectionMaterial, KPILib.Models.RMInventoryRejectionMaterialModel>();
             cfg.CreateMap<KPILib.Models.RMInventoryRejectionMaterialModel, RMInventoryRejectionMaterial>();
+
+            cfg.CreateMap<SalesDispatchDetail, SalesDispatchDetailMaster>();
+            cfg.CreateMap<SalesDispatchDetailMaster, SalesDispatchDetail>();
         });
 
         public static IMapper mapper = config.CreateMapper();
