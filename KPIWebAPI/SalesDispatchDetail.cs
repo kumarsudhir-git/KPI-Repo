@@ -27,7 +27,6 @@ namespace KPIWebAPI
         public int UserID { get; set; }
         public System.DateTime DispatchDate { get; set; }
         public string DispatchNotes { get; set; }
-        public Nullable<decimal> TransporterCharges { get; set; }
         public string Transporter { get; set; }
         public string DocketNo { get; set; }
         public string DispatchStatus { get; set; }

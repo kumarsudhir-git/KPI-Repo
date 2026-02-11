@@ -273,7 +273,8 @@
             @using (Html.BeginForm("SetBookingDispatch", "Dispatch", FormMethod.Post, new { onsubmit = "return validateDispatchDetailForm()" }))
             {
                 @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.ValidationSummary(false)*@
 
                 <div class="modal-body">
                     <div class="row">
@@ -447,7 +448,17 @@
     // Disptch detail modal start region
 
     function validateDispatchDetailForm() {
-        return false;
+
+        var dispatchStatus = $('#DispatchStatus').val();
+        var transporter = $('#Transporter').val();
+        var docketNo = $('#DocketNo').val();
+
+        // Check if any value is null, empty, or undefined
+        if (!dispatchStatus || !transporter || !docketNo) {
+            return false;
+        }
+
+        return true;
     }
 
     $("#closDispatchDetailBtn").click(function () {
@@ -462,12 +473,15 @@
             data: { salesId: obj.SalesID },
             success: function (data) {
                 $('#dispatchDetailModal .modal-body .row').html(data);
+                $("form").removeData("validator");
+                $("form").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse("form");
+                InitializeDatePicker();
             },
             error: function () {
                 alert("An error occurred while fetching dispatch detail data.");
             }
         });
-        InitializeDatePicker();
         var options = { "backdrop": "static", keyboard: true };
         $('#dispatchDetailModal').modal(options);
         $('#dispatchDetailModal').modal('show');

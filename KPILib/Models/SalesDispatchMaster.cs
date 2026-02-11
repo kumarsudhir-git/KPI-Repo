@@ -84,10 +84,12 @@ namespace KPILib.Models
         [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy}", ApplyFormatInEditMode = true, NullDisplayText = "")]
         public DateTime? DispatchDate { get; set; }
         public string DispatchNotes { get; set; }
-        public decimal? TransporterCharges { get; set; }
         public decimal? TransportationCharge { get; set; }
+        [Required(ErrorMessage = "Required")]
         public string Transporter { get; set; }
+        [Required(ErrorMessage = "Required")]
         public string DocketNo { get; set; }
+        [Required(ErrorMessage = "Required")]
         public string DispatchStatus { get; set; }
         public string DocketPhotoPath { get; set; }
         public bool? SmsSentFlag { get; set; }

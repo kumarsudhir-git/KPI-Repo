@@ -680,7 +680,6 @@
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="DispatchDate" Type="date" Nullable="false" />
           <Property Name="DispatchNotes" Type="varchar" MaxLength="1000" />
-          <Property Name="TransporterCharges" Type="decimal" Precision="12" Scale="2" />
           <Property Name="Transporter" Type="nvarchar" MaxLength="150" />
           <Property Name="DocketNo" Type="nvarchar" MaxLength="100" />
           <Property Name="DispatchStatus" Type="nvarchar" MaxLength="250" />
@@ -3051,7 +3050,6 @@
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="DispatchDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="DispatchNotes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="TransporterCharges" Type="Decimal" Precision="12" Scale="2" />
           <Property Name="Transporter" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="DocketNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="DispatchStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
@@ -4791,7 +4789,6 @@
                 <ScalarProperty Name="DispatchStatus" ColumnName="DispatchStatus" />
                 <ScalarProperty Name="DocketNo" ColumnName="DocketNo" />
                 <ScalarProperty Name="Transporter" ColumnName="Transporter" />
-                <ScalarProperty Name="TransporterCharges" ColumnName="TransporterCharges" />
                 <ScalarProperty Name="DispatchNotes" ColumnName="DispatchNotes" />
                 <ScalarProperty Name="DispatchDate" ColumnName="DispatchDate" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />

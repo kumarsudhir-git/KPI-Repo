@@ -95,25 +95,36 @@ namespace KPI.Controllers
         {
             if (DocketImageFile != null && DocketImageFile.ContentLength > 0)
             {
+                string folderPath = Server.MapPath("~/Uploads/Dockets/");
                 string fileName = Path.GetFileName(DocketImageFile.FileName);
-                string path = Path.Combine(Server.MapPath("~/Uploads/Dockets/"), fileName);
+                string filePath = Path.Combine(folderPath, fileName);
 
-                DocketImageFile.SaveAs(path);
+                // Create folder if not exists
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                // Save file
+                DocketImageFile.SaveAs(filePath);
+
 
                 salesDispatchDetail.DocketPhotoPath = "~/Uploads/Dockets/" + fileName;
             }
-            return View();
-            //var response = KPIAPIManager.GetSalesDispatchDetailData(salesId);
-            //if (response.Response.ResponseCode == 200)
-            //{
-            //    return PartialView(response.salesDispatchDetailObj);
-            //}
-            //else
-            //{
-            //    ViewBag.Error = response.Response.ResponseMsg;
-            //    return View("Error");
-            //}
+            int sessionUserId = Session["UserID"] != null ? Convert.ToInt32(Session["UserID"]) : 0;
+            salesDispatchDetail.UserID = sessionUserId;
+            salesDispatchDetail.CreatedBy = sessionUserId;
+            salesDispatchDetail.UpdatedBy = sessionUserId;
+            var response = KPIAPIManager.SaveSalesDispatchDetailData(salesDispatchDetail);
+            if (response.Response.ResponseCode == 200)
+            {
+                return RedirectToAction("GetAll");
+            }
+            else
+            {
+                ViewBag.Error = response.Response.ResponseMsg;
+                return View("Error");
+            }
         }
-
     }
 }

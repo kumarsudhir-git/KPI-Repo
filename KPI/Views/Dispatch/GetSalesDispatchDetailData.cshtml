@@ -84,6 +84,7 @@
                 <div class="form-group">
                     <label>Dispatch Status</label>
                     @Html.DropDownListFor(model => model.DispatchStatus, null, "--Select--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.DispatchStatus, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -91,6 +92,7 @@
                 <div class="form-group">
                     <label>Transporter</label>
                     @Html.TextBoxFor(model => model.Transporter, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Transporter, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -98,6 +100,7 @@
                 <div class="form-group">
                     <label>Docket No</label>
                     @Html.TextBoxFor(model => model.DocketNo, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.DocketNo, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -193,4 +196,23 @@
             reader.readAsDataURL(input.files[0]);
         }
     });
+
+    //function UpdateFormOnDispathStatus(obj) {
+    //    var statusId = $(obj).val();
+
+    //    var fields = ["#Transporter", "#DocketNo", "#DispatchDate"];
+
+    //    if (statusId === "ST002") {
+    //        // Make fields readonly
+    //        fields.forEach(function (field) {
+    //            $(field).prop("readonly", true);
+    //        });
+    //    } else {
+    //        // Remove readonly
+    //        fields.forEach(function (field) {
+    //            $(field).prop("readonly", false);
+    //        });
+    //    }
+    //}
+
 </script>

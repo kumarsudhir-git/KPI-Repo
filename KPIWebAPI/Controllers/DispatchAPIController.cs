@@ -231,5 +231,48 @@ namespace KPIWebAPI.Controllers
             }
             return Json(returnValue);
         }
+
+        [HttpPost]
+        public IHttpActionResult SaveSalesDispatchDetailData(SalesDispatchDetailMaster salesDispatchDetailMaster)
+        {
+            var returnValue = new SalesDispatchDetailMasterResponse();
+
+            try
+            {
+                SalesDispatchDetail salesDispatchDetail = mapper.Map<SalesDispatchDetailMaster, SalesDispatchDetail>(salesDispatchDetailMaster);
+
+                if (salesDispatchDetail.SalesDispatchID > 0)
+                {
+                    SalesDispatchDetail dispatchDetailObj = db.SalesDispatchDetails.SingleOrDefault(x => x.SalesDispatchID == salesDispatchDetail.SalesDispatchID && x.SalesDetailsID == salesDispatchDetail.SalesDetailsID);
+
+                    dispatchDetailObj.DispatchDate = salesDispatchDetail.DispatchDate;
+                    //dispatchDetailObj.DispatchNotes = salesDispatchDetail.DispatchNotes;
+                    //dispatchDetailObj.DispatchQty = salesDispatchDetail.DispatchQty;
+                    dispatchDetailObj.DispatchStatus = salesDispatchDetail.DispatchStatus;
+                    dispatchDetailObj.DocketNo = salesDispatchDetail.DocketNo;
+                    dispatchDetailObj.DocketPhotoPath = salesDispatchDetail.DocketPhotoPath;
+                    dispatchDetailObj.SmsSentFlag = salesDispatchDetail.SmsSentFlag;
+                    dispatchDetailObj.Transporter = salesDispatchDetail.Transporter;
+                    dispatchDetailObj.TransportationCharge = salesDispatchDetail.TransportationCharge;
+                    dispatchDetailObj.UserID = salesDispatchDetail.UserID;
+                    dispatchDetailObj.UpdatedBy = salesDispatchDetail.UpdatedBy;
+                    dispatchDetailObj.UpdatedOn = DateTime.Now;
+                    db.Entry(dispatchDetailObj).State = System.Data.Entity.EntityState.Modified;
+                }
+                else
+                {
+                    salesDispatchDetail.CreatedOn = DateTime.Now;
+                    db.SalesDispatchDetails.Add(salesDispatchDetail);
+                }
+                returnValue.Response.IsSuccessful();
+            }
+            catch (Exception ex)
+            {
+                //TODO error handling
+                returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
+            }
+            return Json(returnValue);
+        }
     }
 }

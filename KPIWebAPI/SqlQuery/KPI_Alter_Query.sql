@@ -1069,8 +1069,10 @@ GO
 
 INSERT INTO LookUpMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
 VALUES('StatusType','IN PROCESS','ST001','Status Type',1,1001,GETDATE()),
-('StatusType','DONE','ST002','Status Type',1,1001,GETDATE()),
-('StatusType','SENT','ST003','Status Type',1,1001,GETDATE())
+('StatusType','DONE','ST002','Status Type',1,1001,GETDATE())
+
+INSERT INTO LookUpMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
+VALUES('NotificationStatus','SENT','NS001','Status Type',1,1001,GETDATE())
 
 GO
 
@@ -1103,7 +1105,7 @@ GO
 
 ALTER TABLE SalesDispatchDetails
 ADD 
-    TransporterCharges   DECIMAL(12,2) NULL,
+    TransportationCharge DECIMAL(18,2) NULL,
     Transporter          NVARCHAR(150) NULL,
     DocketNo             NVARCHAR(100) NULL,
     DispatchStatus       NVARCHAR(250) NULL,
@@ -1112,8 +1114,7 @@ ADD
     CreatedBy            INT NULL,
     CreatedOn            DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UpdatedBy            INT NULL,
-    UpdatedOn            DATETIME NULL,
-    TransportationCharge DECIMAL(18,2) NULL; -- Need to confirm from Prerna
+    UpdatedOn            DATETIME NULL;
 
 -- ALTER TABLE SalesDispatchDetails ALTER COLUMN SmsSentFlag BIT;
 
@@ -1126,7 +1127,7 @@ CREATE TABLE NotificationLog (
     EmailId     NVARCHAR(255) NULL,
     MessageText TEXT NOT NULL,
     SentAt      DATETIME DEFAULT CURRENT_TIMESTAMP,
-    SmsStatus   NVARCHAR(50) DEFAULT 'ST003', -- SENT
+    SmsStatus   NVARCHAR(50) DEFAULT 'NS001', -- SENT
     CreatedBy   INT NULL,
     CreatedOn   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     Updatedy    INT NULL,

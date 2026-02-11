@@ -374,6 +374,12 @@ namespace KPI.Classes
             return result;
         }
 
+        public static SalesDispatchDetailMasterResponse SaveSalesDispatchDetailData(SalesDispatchDetailMaster salesDispatchDetailMaster)
+        {
+            var result = CommonFunctions.client.PostAsJsonAsync("DispatchAPI/SaveSalesDispatchDetailData", salesDispatchDetailMaster).Result.Content.ReadAsAsync<SalesDispatchDetailMasterResponse>().Result;
+            return result;
+        }
+
         //public static SalesMastDetailsResponse GetAllByProductID(int id)
         //{
         //    var result = CommonFunctions.client.GetAsync("SalesAPI/GetAllByProductID/" + id.ToString()).Result.Content.ReadAsAsync<SalesMastDetailsResponse>().Result;
@@ -397,6 +403,7 @@ namespace KPI.Classes
         //    var result = CommonFunctions.client.PostAsJsonAsync("SalesAPI/Edit", obj).Result.Content.ReadAsAsync<SalesMasterResponse>().Result;
         //    return result;
         //}
+
         #endregion
 
         #region API calls for Production
