@@ -211,6 +211,16 @@ namespace KPIWebAPI.Controllers
                 {
                     returnValue.salesDispatchDetailObj.SalesMasterObj = mapper.Map<KPILib.Models.SalesMaster>(salesMasterData);
 
+                    if (returnValue.salesDispatchDetailObj.SalesMasterObj.CompanyLocationID != 0)
+                    {
+                        CompanyMaster companyMaster = CommonFunctions.GetCompanyMasterById(returnValue.salesDispatchDetailObj.SalesMasterObj.CompanyLocationID);
+
+                        if (companyMaster != null)
+                        {
+                            returnValue.salesDispatchDetailObj.SalesMasterObj.CompanyLocation = companyMaster.CompanyName;
+                        }
+                    }
+
                     var data = db.SalesDispatchDetails.Where(x => x.SalesDispatchID == salesId).OrderByDescending(x => x.DispatchDate).FirstOrDefault();
                     if (data != null)
                     {

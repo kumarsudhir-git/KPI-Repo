@@ -49,7 +49,7 @@
                 <div class="form-group">
                     <label>Sales No</label>
                     <div>
-                        @Html.DisplayFor(model => model.SalesDetailsID)
+                        @Html.DisplayFor(model => model.SalesMasterObj.SalesID)
                     </div>
                 </div>
             </div>
@@ -91,7 +91,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Transporter</label>
-                    @Html.TextBoxFor(model => model.Transporter, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Transporter, new { @class = "form-control", @placeholder = "Enter Transporter" })
                     @Html.ValidationMessageFor(model => model.Transporter, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -99,7 +99,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Docket No</label>
-                    @Html.TextBoxFor(model => model.DocketNo, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.DocketNo, new { @class = "form-control", @placeholder = "Enter Docket Number" })
                     @Html.ValidationMessageFor(model => model.DocketNo, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -112,19 +112,21 @@
                 <div class="form-group">
                     <label>Dispatch Date</label>
                     @Html.TextBoxFor(modelItem => modelItem.DispatchDate, "{0:dd/MMM/yyyy}", new { @class = "form-control datepicker", @placeholder = "Select Date Of Dispatch", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.DispatchDate, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Transportation Charge</label>
                     @Html.TextBoxFor(modelItem => modelItem.TransportationCharge, new { @class = "form-control", @placeholder = "Enter Transportation Charge" })
+                    @Html.ValidationMessageFor(model => model.TransportationCharge, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label>&nbsp;</label>
                     <div>
-                        <input type="submit" class="btn btn-primary" onclick="return validateDispatchDetailForm()" />
+                        <input type="submit" class="btn btn-primary" value="Save" @*onclick="return validateDispatchDetailForm()"*@ />
                     </div>
                 </div>
             </div>

@@ -270,16 +270,12 @@
                 </div>
             </div>
 
-            @using (Html.BeginForm("SetBookingDispatch", "Dispatch", FormMethod.Post, new { onsubmit = "return validateDispatchDetailForm()" }))
+            @using (Html.BeginForm("SaveSalesDispatchDetailData", "Dispatch", FormMethod.Post, new { onsubmit = "return validateDispatchDetailForm()" }))
             {
                 @Html.AntiForgeryToken()
-                @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.ValidationSummary(false)*@
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                <div class="modal-body">
-                    <div class="row">
-                    </div>
-                </div>
+                <div class="modal-body" id="dispatchDetailContainer"></div>
             }
 
         </div>
@@ -472,10 +468,25 @@
             type: 'GET',
             data: { salesId: obj.SalesID },
             success: function (data) {
-                $('#dispatchDetailModal .modal-body .row').html(data);
+                $('#dispatchDetailContainer').html(data);
+
+                //var form = $("#dispatchDetailModal").find("form");
+                //form.removeData("validator");
+                //form.removeData("unobtrusiveValidation");
+
+                //$.validator.unobtrusive.parse(form);
+
+                //var form = $("#dispatchForm");
+
+                //form.removeData("validator");
+                //form.removeData("unobtrusiveValidation");
+
+                //$.validator.unobtrusive.parse(form);
+
                 $("form").removeData("validator");
                 $("form").removeData("unobtrusiveValidation");
                 $.validator.unobtrusive.parse("form");
+
                 InitializeDatePicker();
             },
             error: function () {
