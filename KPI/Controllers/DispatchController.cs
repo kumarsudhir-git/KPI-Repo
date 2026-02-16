@@ -74,24 +74,24 @@ namespace KPI.Controllers
         {
             ViewData["DispatchStatus"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
             var response = KPIAPIManager.GetSalesDispatchDetailData(salesId);
-            if (response.Response.ResponseCode == 200)
+            if (response.responseObj.ResponseCode == 200)
             {
                 LookUpMasterResponse GSMLookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.StatusType);
                 if (GSMLookUpMaster != null && GSMLookUpMaster.Response.ResponseCode == 200)
                 {
                     ViewData["DispatchStatus"] = new SelectList(GSMLookUpMaster.lookupMasterList, "LookUpValue", "LookUpName");
                 }
-                return PartialView(response.salesDispatchDetailObj);
+                return PartialView(response.transporterDetailsMasterObj);
             }
             else
             {
-                ViewBag.Error = response.Response.ResponseMsg;
+                ViewBag.Error = response.responseObj.ResponseMsg;
                 return View("Error");
             }
         }
         
         [HttpPost]
-        public ActionResult SaveSalesDispatchDetailData(SalesDispatchDetailMaster salesDispatchDetail, HttpPostedFileBase DocketImageFile)
+        public ActionResult SaveSalesDispatchDetailData(SalesDispatchTransporterDetailsMaster salesDispatchDetailMaster, HttpPostedFileBase DocketImageFile)
         {
             if (DocketImageFile != null && DocketImageFile.ContentLength > 0)
             {
@@ -104,25 +104,32 @@ namespace KPI.Controllers
                 {
                     Directory.CreateDirectory(folderPath);
                 }
-
                 // Save file
                 DocketImageFile.SaveAs(filePath);
 
 
-                salesDispatchDetail.DocketPhotoPath = "~/Uploads/Dockets/" + fileName;
+                salesDispatchDetailMaster.DocketPhotoPath = "~/Uploads/Dockets/" + fileName;
             }
             int sessionUserId = Session["UserID"] != null ? Convert.ToInt32(Session["UserID"]) : 0;
-            salesDispatchDetail.UserID = sessionUserId;
-            salesDispatchDetail.CreatedBy = sessionUserId;
-            salesDispatchDetail.UpdatedBy = sessionUserId;
-            var response = KPIAPIManager.SaveSalesDispatchDetailData(salesDispatchDetail);
-            if (response.Response.ResponseCode == 200)
+
+            if (salesDispatchDetailMaster.SDTRDId > 0)
+            {
+                salesDispatchDetailMaster.UpdatedBy = sessionUserId;
+            }
+            else
+            {
+                salesDispatchDetailMaster.CreatedBy = sessionUserId;
+            }
+            salesDispatchDetailMaster.SalesDetailsID = salesDispatchDetailMaster.SalesMasterObj.SalesID;
+
+            var response = KPIAPIManager.SaveSalesDispatchDetailData(salesDispatchDetailMaster);
+            if (response.responseObj.ResponseCode == 200)
             {
                 return RedirectToAction("GetAll");
             }
             else
             {
-                ViewBag.Error = response.Response.ResponseMsg;
+                ViewBag.Error = response.responseObj.ResponseMsg;
                 return View("Error");
             }
         }

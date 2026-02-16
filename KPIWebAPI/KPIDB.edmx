@@ -680,16 +680,6 @@
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="DispatchDate" Type="date" Nullable="false" />
           <Property Name="DispatchNotes" Type="varchar" MaxLength="1000" />
-          <Property Name="Transporter" Type="nvarchar" MaxLength="150" />
-          <Property Name="DocketNo" Type="nvarchar" MaxLength="100" />
-          <Property Name="DispatchStatus" Type="nvarchar" MaxLength="250" />
-          <Property Name="DocketPhotoPath" Type="nvarchar" MaxLength="255" />
-          <Property Name="SmsSentFlag" Type="bit" />
-          <Property Name="CreatedBy" Type="int" />
-          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
-          <Property Name="UpdatedBy" Type="int" />
-          <Property Name="UpdatedOn" Type="datetime" />
-          <Property Name="TransportationCharge" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="SalesDispatchRacks">
           <Key>
@@ -701,6 +691,26 @@
           <Property Name="RackID" Type="int" Nullable="false" />
           <Property Name="Qty" Type="int" Nullable="false" />
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SalesDispatchTransporterDetails">
+          <Key>
+            <PropertyRef Name="SDTRDId" />
+          </Key>
+          <Property Name="SDTRDId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Transporter" Type="nvarchar" MaxLength="150" />
+          <Property Name="TransportationCharge" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DocketNo" Type="nvarchar" MaxLength="100" />
+          <Property Name="DispatchStatus" Type="nvarchar" MaxLength="250" />
+          <Property Name="DocketPhotoPath" Type="nvarchar" MaxLength="255" />
+          <Property Name="BillNo" Type="nvarchar" MaxLength="100" />
+          <Property Name="PackedBy" Type="nvarchar" MaxLength="150" />
+          <Property Name="SmsSentFlag" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedBy" Type="int" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="SalesDetailsID" Type="int" />
+          <Property Name="DispatchDate" Type="datetime" />
         </EntityType>
         <EntityType Name="SalesMaster">
           <Key>
@@ -1604,6 +1614,7 @@
           <EntitySet Name="SalesDetails" EntityType="Self.SalesDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SalesDispatchDetails" EntityType="Self.SalesDispatchDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SalesDispatchRacks" EntityType="Self.SalesDispatchRacks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SalesDispatchTransporterDetails" EntityType="Self.SalesDispatchTransporterDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SalesMaster" EntityType="Self.SalesMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SalesRMMapping" EntityType="Self.SalesRMMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SalesStatusMaster" EntityType="Self.SalesStatusMaster" Schema="dbo" store:Type="Tables" />
@@ -1926,6 +1937,7 @@
           <EntitySet Name="SalesDetails" EntityType="KPIWebAPI.SalesDetail" />
           <EntitySet Name="SalesDispatchDetails" EntityType="KPIWebAPI.SalesDispatchDetail" />
           <EntitySet Name="SalesDispatchRacks" EntityType="KPIWebAPI.SalesDispatchRack" />
+          <EntitySet Name="SalesDispatchTransporterDetails" EntityType="KPIWebAPI.SalesDispatchTransporterDetail" />
           <EntitySet Name="SalesMasters" EntityType="KPIWebAPI.SalesMaster" />
           <EntitySet Name="SalesRMMappings" EntityType="KPIWebAPI.SalesRMMapping" />
           <EntitySet Name="SalesStatusMasters" EntityType="KPIWebAPI.SalesStatusMaster" />
@@ -3050,16 +3062,6 @@
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="DispatchDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="DispatchNotes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="Transporter" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="DocketNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DispatchStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="DocketPhotoPath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SmsSentFlag" Type="Boolean" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdatedBy" Type="Int32" />
-          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
-          <Property Name="TransportationCharge" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="ProductMaster" Relationship="KPIWebAPI.FK_SalesDispatchDetails_ProductMaster" FromRole="SalesDispatchDetail" ToRole="ProductMaster" />
           <NavigationProperty Name="SalesDetail" Relationship="KPIWebAPI.FK_SalesDispatchDetails_SalesDetails" FromRole="SalesDispatchDetail" ToRole="SalesDetail" />
           <NavigationProperty Name="UserMaster" Relationship="KPIWebAPI.FK_SalesDispatchDetails_UserMaster" FromRole="SalesDispatchDetail" ToRole="UserMaster" />
@@ -3078,6 +3080,26 @@
           <NavigationProperty Name="ProductMaster" Relationship="KPIWebAPI.FK_SalesDispatchRacks_ProductMaster" FromRole="SalesDispatchRack" ToRole="ProductMaster" />
           <NavigationProperty Name="RackMaster" Relationship="KPIWebAPI.FK_SalesDispatchRacks_RackMaster" FromRole="SalesDispatchRack" ToRole="RackMaster" />
           <NavigationProperty Name="SalesDispatchDetail" Relationship="KPIWebAPI.FK_SalesDispatchRacks_SalesDispatchDetails" FromRole="SalesDispatchRack" ToRole="SalesDispatchDetail" />
+        </EntityType>
+        <EntityType Name="SalesDispatchTransporterDetail">
+          <Key>
+            <PropertyRef Name="SDTRDId" />
+          </Key>
+          <Property Name="SDTRDId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Transporter" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="TransportationCharge" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DocketNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DispatchStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DocketPhotoPath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BillNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PackedBy" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SmsSentFlag" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="SalesDetailsID" Type="Int32" />
+          <Property Name="DispatchDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="SalesMaster">
           <Key>
@@ -4779,16 +4801,6 @@
           <EntitySetMapping Name="SalesDispatchDetails">
             <EntityTypeMapping TypeName="KPIWebAPI.SalesDispatchDetail">
               <MappingFragment StoreEntitySet="SalesDispatchDetails">
-                <ScalarProperty Name="TransportationCharge" ColumnName="TransportationCharge" />
-                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="SmsSentFlag" ColumnName="SmsSentFlag" />
-                <ScalarProperty Name="DocketPhotoPath" ColumnName="DocketPhotoPath" />
-                <ScalarProperty Name="DispatchStatus" ColumnName="DispatchStatus" />
-                <ScalarProperty Name="DocketNo" ColumnName="DocketNo" />
-                <ScalarProperty Name="Transporter" ColumnName="Transporter" />
                 <ScalarProperty Name="DispatchNotes" ColumnName="DispatchNotes" />
                 <ScalarProperty Name="DispatchDate" ColumnName="DispatchDate" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -4808,6 +4820,27 @@
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="SalesDispatchID" ColumnName="SalesDispatchID" />
                 <ScalarProperty Name="SalesDispatchRackID" ColumnName="SalesDispatchRackID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SalesDispatchTransporterDetails">
+            <EntityTypeMapping TypeName="KPIWebAPI.SalesDispatchTransporterDetail">
+              <MappingFragment StoreEntitySet="SalesDispatchTransporterDetails">
+                <ScalarProperty Name="DispatchDate" ColumnName="DispatchDate" />
+                <ScalarProperty Name="SalesDetailsID" ColumnName="SalesDetailsID" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="SmsSentFlag" ColumnName="SmsSentFlag" />
+                <ScalarProperty Name="PackedBy" ColumnName="PackedBy" />
+                <ScalarProperty Name="BillNo" ColumnName="BillNo" />
+                <ScalarProperty Name="DocketPhotoPath" ColumnName="DocketPhotoPath" />
+                <ScalarProperty Name="DispatchStatus" ColumnName="DispatchStatus" />
+                <ScalarProperty Name="DocketNo" ColumnName="DocketNo" />
+                <ScalarProperty Name="TransportationCharge" ColumnName="TransportationCharge" />
+                <ScalarProperty Name="Transporter" ColumnName="Transporter" />
+                <ScalarProperty Name="SDTRDId" ColumnName="SDTRDId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

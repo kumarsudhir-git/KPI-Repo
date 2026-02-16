@@ -198,6 +198,9 @@ namespace KPIWebAPI.Controllers
 
             cfg.CreateMap<SalesDispatchDetail, SalesDispatchDetailMaster>();
             cfg.CreateMap<SalesDispatchDetailMaster, SalesDispatchDetail>();
+            
+            cfg.CreateMap<SalesDispatchTransporterDetail, SalesDispatchTransporterDetailsMaster>();
+            cfg.CreateMap<SalesDispatchTransporterDetailsMaster, SalesDispatchTransporterDetail>();
         });
 
         public static IMapper mapper = config.CreateMapper();

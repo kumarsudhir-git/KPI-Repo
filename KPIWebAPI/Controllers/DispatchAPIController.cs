@@ -203,68 +203,67 @@ namespace KPIWebAPI.Controllers
 
         public IHttpActionResult GetSalesDispatchDetailData(int salesId)
         {
-            var returnValue = new SalesDispatchDetailMasterResponse();
+            var returnValue = new SalesDispatchTransporterDetailsResponse();
             try
             {
+                var data = db.SalesDispatchTransporterDetails.Where(x => x.SalesDetailsID == salesId).OrderByDescending(x => x.DispatchDate).FirstOrDefault();
+                if (data != null)
+                {
+                    returnValue.transporterDetailsMasterObj = mapper.Map<SalesDispatchTransporterDetailsMaster>(data);
+                }
+
                 var salesMasterData = db.SalesMasters.SingleOrDefault(x => x.SalesID == salesId);
                 if (salesMasterData != null)
                 {
-                    returnValue.salesDispatchDetailObj.SalesMasterObj = mapper.Map<KPILib.Models.SalesMaster>(salesMasterData);
+                    returnValue.transporterDetailsMasterObj.SalesMasterObj = mapper.Map<KPILib.Models.SalesMaster>(salesMasterData);
 
-                    if (returnValue.salesDispatchDetailObj.SalesMasterObj.CompanyLocationID != 0)
+                    if (returnValue.transporterDetailsMasterObj.SalesMasterObj.CompanyLocationID != 0)
                     {
-                        CompanyMaster companyMaster = CommonFunctions.GetCompanyMasterById(returnValue.salesDispatchDetailObj.SalesMasterObj.CompanyLocationID);
+                        CompanyMaster companyMaster = CommonFunctions.GetCompanyMasterById(returnValue.transporterDetailsMasterObj.SalesMasterObj.CompanyLocationID);
 
                         if (companyMaster != null)
                         {
-                            returnValue.salesDispatchDetailObj.SalesMasterObj.CompanyLocation = companyMaster.CompanyName;
+                            returnValue.transporterDetailsMasterObj.SalesMasterObj.CompanyLocation = companyMaster.CompanyName;
                         }
                     }
 
-                    var data = db.SalesDispatchDetails.Where(x => x.SalesDispatchID == salesId).OrderByDescending(x => x.DispatchDate).FirstOrDefault();
-                    if (data != null)
-                    {
-                        returnValue.salesDispatchDetailObj = mapper.Map<SalesDispatchDetailMaster>(data);
-                    }
-
                     var salesDetailsData = db.SalesDetails.Where(x => x.SalesID == salesId).ToList();
-                    returnValue.salesDispatchDetailObj.SalesDetailListObj = mapper.Map<List<SalesDetails>>(salesDetailsData);
+                    returnValue.transporterDetailsMasterObj.SalesDetailListObj = mapper.Map<List<SalesDetails>>(salesDetailsData);
                 }
 
-                returnValue.Response.IsSuccessful();
+                returnValue.responseObj.IsSuccessful();
             }
             catch (Exception ex)
             {
                 //TODO error handling
-                returnValue.Response.ResponseMsg = ex.Message;
+                returnValue.responseObj.ResponseMsg = ex.Message;
                 CommonLogger.Error(ex, ex.Message);
             }
             return Json(returnValue);
         }
 
         [HttpPost]
-        public IHttpActionResult SaveSalesDispatchDetailData(SalesDispatchDetailMaster salesDispatchDetailMaster)
+        public IHttpActionResult SaveSalesDispatchDetailData(SalesDispatchTransporterDetailsMaster salesDispatchDetailMaster)
         {
-            var returnValue = new SalesDispatchDetailMasterResponse();
+            var returnValue = new SalesDispatchTransporterDetailsResponse();
 
             try
             {
-                SalesDispatchDetail salesDispatchDetail = mapper.Map<SalesDispatchDetailMaster, SalesDispatchDetail>(salesDispatchDetailMaster);
+                SalesDispatchTransporterDetail salesDispatchDetail = mapper.Map<SalesDispatchTransporterDetailsMaster, SalesDispatchTransporterDetail>(salesDispatchDetailMaster);
 
-                if (salesDispatchDetail.SalesDispatchID > 0)
+                if (salesDispatchDetail.SDTRDId > 0)
                 {
-                    SalesDispatchDetail dispatchDetailObj = db.SalesDispatchDetails.SingleOrDefault(x => x.SalesDispatchID == salesDispatchDetail.SalesDispatchID && x.SalesDetailsID == salesDispatchDetail.SalesDetailsID);
+                    SalesDispatchTransporterDetail dispatchDetailObj = db.SalesDispatchTransporterDetails.SingleOrDefault(x => x.SDTRDId == salesDispatchDetail.SDTRDId);
 
                     dispatchDetailObj.DispatchDate = salesDispatchDetail.DispatchDate;
-                    //dispatchDetailObj.DispatchNotes = salesDispatchDetail.DispatchNotes;
-                    //dispatchDetailObj.DispatchQty = salesDispatchDetail.DispatchQty;
                     dispatchDetailObj.DispatchStatus = salesDispatchDetail.DispatchStatus;
                     dispatchDetailObj.DocketNo = salesDispatchDetail.DocketNo;
                     dispatchDetailObj.DocketPhotoPath = salesDispatchDetail.DocketPhotoPath;
                     dispatchDetailObj.SmsSentFlag = salesDispatchDetail.SmsSentFlag;
                     dispatchDetailObj.Transporter = salesDispatchDetail.Transporter;
                     dispatchDetailObj.TransportationCharge = salesDispatchDetail.TransportationCharge;
-                    dispatchDetailObj.UserID = salesDispatchDetail.UserID;
+                    dispatchDetailObj.BillNo = salesDispatchDetail.BillNo;
+                    dispatchDetailObj.PackedBy = salesDispatchDetail.PackedBy;
                     dispatchDetailObj.UpdatedBy = salesDispatchDetail.UpdatedBy;
                     dispatchDetailObj.UpdatedOn = DateTime.Now;
                     db.Entry(dispatchDetailObj).State = System.Data.Entity.EntityState.Modified;
@@ -272,14 +271,15 @@ namespace KPIWebAPI.Controllers
                 else
                 {
                     salesDispatchDetail.CreatedOn = DateTime.Now;
-                    db.SalesDispatchDetails.Add(salesDispatchDetail);
+                    db.SalesDispatchTransporterDetails.Add(salesDispatchDetail);
                 }
-                returnValue.Response.IsSuccessful();
+                db.SaveChanges();
+                returnValue.responseObj.IsSuccessful();
             }
             catch (Exception ex)
             {
                 //TODO error handling
-                returnValue.Response.ResponseMsg = ex.Message;
+                returnValue.responseObj.ResponseMsg = ex.Message;
                 CommonLogger.Error(ex, ex.Message);
             }
             return Json(returnValue);

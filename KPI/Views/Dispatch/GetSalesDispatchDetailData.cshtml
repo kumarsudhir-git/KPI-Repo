@@ -1,4 +1,4 @@
-﻿@model KPILib.Models.SalesDispatchDetailMaster
+﻿@model KPILib.Models.SalesDispatchTransporterDetailsMaster
 
 @{
     ViewBag.Title = "SetBookingDispatch";
@@ -35,9 +35,10 @@
                     ? Url.Content("~/images/default-image.png")
                     : Url.Content(Model.DocketPhotoPath))" />
 
-            <input type="file" id="DocketImageFile" name="DocketImageFile"
-                   accept="image/*" class="form-control" />
+            <input type="file" id="DocketImageFile" name="DocketImageFile" accept="image/*" class="form-control" />
 
+            @Html.HiddenFor(model => model.SDTRDId)
+            @Html.HiddenFor(model => model.SalesMasterObj.SalesID)
             @Html.HiddenFor(model => model.DocketPhotoPath)
         </div>
 
@@ -120,6 +121,24 @@
                     <label>Transportation Charge</label>
                     @Html.TextBoxFor(modelItem => modelItem.TransportationCharge, new { @class = "form-control", @placeholder = "Enter Transportation Charge" })
                     @Html.ValidationMessageFor(model => model.TransportationCharge, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Bill No</label>
+                    @Html.TextBoxFor(modelItem => modelItem.BillNo, new { @class = "form-control", @placeholder = "Enter Bill Number" })
+                    @Html.ValidationMessageFor(model => model.BillNo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Packed By</label>
+                    @Html.TextBoxFor(modelItem => modelItem.PackedBy, new { @class = "form-control", @placeholder = "Enter Packed By" })
+                    @Html.ValidationMessageFor(model => model.PackedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-md-3">

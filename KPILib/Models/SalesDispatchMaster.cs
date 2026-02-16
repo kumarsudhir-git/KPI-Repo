@@ -71,11 +71,6 @@ namespace KPILib.Models
 
     public class SalesDispatchDetailMaster
     {
-        public SalesDispatchDetailMaster()
-        {
-            SalesMasterObj = new KPILib.Models.SalesMaster();
-            SalesDetailListObj = new List<SalesDetails>();
-        }
         public int SalesDispatchID { get; set; }
         public int SalesDetailsID { get; set; }
         public int ProductID { get; set; }
@@ -84,34 +79,46 @@ namespace KPILib.Models
         [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy}", ApplyFormatInEditMode = true, NullDisplayText = "")]
         public DateTime? DispatchDate { get; set; }
         public string DispatchNotes { get; set; }
-        public decimal? TransportationCharge { get; set; }
+    }
+
+    public class SalesDispatchTransporterDetailsResponse
+    {
+        public SalesDispatchTransporterDetailsMaster transporterDetailsMasterObj { get; set; }
+        public List<SalesDispatchTransporterDetailsMaster> data { get; set; }
+        public ResponseObj responseObj { get; set; }
+
+        public SalesDispatchTransporterDetailsResponse()
+        {
+            this.transporterDetailsMasterObj = new SalesDispatchTransporterDetailsMaster();
+            this.data = new List<SalesDispatchTransporterDetailsMaster>();
+            this.responseObj = new ResponseObj();
+        }
+    }
+
+    public class SalesDispatchTransporterDetailsMaster 
+    {
+        public SalesDispatchTransporterDetailsMaster()
+        {
+             this.SalesDetailListObj = new List<SalesDetails>();
+        }
+        public int SDTRDId { get; set; }
+        public int SalesDetailsID { get; set; }
         [Required(ErrorMessage = "Required")]
         public string Transporter { get; set; }
         [Required(ErrorMessage = "Required")]
+        public decimal? TransportationCharge { get; set; }
+        public DateTime? DispatchDate { get; set; }
         public string DocketNo { get; set; }
-        [Required(ErrorMessage = "Required")]
         public string DispatchStatus { get; set; }
         public string DocketPhotoPath { get; set; }
-        public bool? SmsSentFlag { get; set; }
+        public string BillNo { get; set; }
+        public string PackedBy { get; set; }
+        public bool SmsSentFlag { get; set; } = false;
         public int? CreatedBy { get; set; }
-        public DateTime CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
         public int? UpdatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
-        public KPILib.Models.SalesMaster SalesMasterObj { get; set; }
-        //public List<ProductMaster> ProductMasterListObj { get; set; }
+        public SalesMaster SalesMasterObj { get; set; }
         public List<SalesDetails> SalesDetailListObj { get; set; }
     }
-
-    //public class SalesDispatchMastersResponse
-    //{
-    //    public List<SalesDispatchMaster> data { get; set; }
-    //    public ResponseObj Response { get; set; }
-
-    //    public SalesDispatchMastersResponse()
-    //    {
-    //        this.data = new List<SalesDispatchMaster>();
-    //        this.Response = new ResponseObj();
-    //    }
-    //}
-
 }

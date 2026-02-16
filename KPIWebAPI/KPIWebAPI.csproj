@@ -388,6 +388,9 @@
     <Compile Include="SalesDispatchRack.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="SalesDispatchTransporterDetail.cs">
+      <DependentUpon>KPIDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="SalesMaster.cs">
       <DependentUpon>KPIDB.tt</DependentUpon>
     </Compile>

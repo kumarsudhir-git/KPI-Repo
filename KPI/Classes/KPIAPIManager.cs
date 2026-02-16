@@ -368,15 +368,15 @@ namespace KPI.Classes
             return result;
         }
 
-        public static SalesDispatchDetailMasterResponse GetSalesDispatchDetailData(int salesId)
+        public static SalesDispatchTransporterDetailsResponse GetSalesDispatchDetailData(int salesId)
         {
-            var result = CommonFunctions.client.GetAsync("DispatchAPI/GetSalesDispatchDetailData?salesId=" + salesId.ToString()).Result.Content.ReadAsAsync<SalesDispatchDetailMasterResponse>().Result;
+            var result = CommonFunctions.client.GetAsync("DispatchAPI/GetSalesDispatchDetailData?salesId=" + salesId.ToString()).Result.Content.ReadAsAsync<SalesDispatchTransporterDetailsResponse>().Result;
             return result;
         }
 
-        public static SalesDispatchDetailMasterResponse SaveSalesDispatchDetailData(SalesDispatchDetailMaster salesDispatchDetailMaster)
+        public static SalesDispatchTransporterDetailsResponse SaveSalesDispatchDetailData(SalesDispatchTransporterDetailsMaster salesDispatchDetailMaster)
         {
-            var result = CommonFunctions.client.PostAsJsonAsync("DispatchAPI/SaveSalesDispatchDetailData", salesDispatchDetailMaster).Result.Content.ReadAsAsync<SalesDispatchDetailMasterResponse>().Result;
+            var result = CommonFunctions.client.PostAsJsonAsync("DispatchAPI/SaveSalesDispatchDetailData", salesDispatchDetailMaster).Result.Content.ReadAsAsync<SalesDispatchTransporterDetailsResponse>().Result;
             return result;
         }
 

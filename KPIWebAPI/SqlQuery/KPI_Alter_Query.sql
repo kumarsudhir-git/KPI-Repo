@@ -1103,18 +1103,24 @@ WHERE MH.MouldID IS NULL;
 
 GO
 
-ALTER TABLE SalesDispatchDetails
-ADD 
-    TransportationCharge DECIMAL(18,2) NULL,
+CREATE TABLE SalesDispatchTransporterDetails
+(
+    SDTRDId              INT IDENTITY(1,1) PRIMARY KEY,
+    SalesDetailsID       INT NULL,
     Transporter          NVARCHAR(150) NULL,
+    TransportationCharge DECIMAL(18,2) NULL,
+    DispatchDate         DATETIME NULL,
     DocketNo             NVARCHAR(100) NULL,
     DispatchStatus       NVARCHAR(250) NULL,
     DocketPhotoPath      NVARCHAR(255) NULL,
+    BillNo               NVARCHAR(100) NULL,
+    PackedBy             NVARCHAR(150) NULL,
     SmsSentFlag          BIT NOT NULL DEFAULT 0,
     CreatedBy            INT NULL,
     CreatedOn            DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UpdatedBy            INT NULL,
-    UpdatedOn            DATETIME NULL;
+    UpdatedOn            DATETIME NULL
+);
 
 -- ALTER TABLE SalesDispatchDetails ALTER COLUMN SmsSentFlag BIT;
 

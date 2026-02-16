@@ -77,6 +77,7 @@ namespace KPIWebAPI
         public virtual DbSet<SalesDetail> SalesDetails { get; set; }
         public virtual DbSet<SalesDispatchDetail> SalesDispatchDetails { get; set; }
         public virtual DbSet<SalesDispatchRack> SalesDispatchRacks { get; set; }
+        public virtual DbSet<SalesDispatchTransporterDetail> SalesDispatchTransporterDetails { get; set; }
         public virtual DbSet<SalesMaster> SalesMasters { get; set; }
         public virtual DbSet<SalesRMMapping> SalesRMMappings { get; set; }
         public virtual DbSet<SalesStatusMaster> SalesStatusMasters { get; set; }
