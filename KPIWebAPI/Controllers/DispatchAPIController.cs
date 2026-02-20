@@ -3,6 +3,7 @@ using KPIWebAPI.AuthFilters;
 using KPIWebAPI.Classes;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 
@@ -249,40 +250,61 @@ namespace KPIWebAPI.Controllers
 
             try
             {
-                SalesDispatchTransporterDetail salesDispatchDetail = mapper.Map<SalesDispatchTransporterDetailsMaster, SalesDispatchTransporterDetail>(salesDispatchDetailMaster);
+                SalesDispatchTransporterDetail salesDispatchDetail =
+                    mapper.Map<SalesDispatchTransporterDetailsMaster, SalesDispatchTransporterDetail>(salesDispatchDetailMaster);
 
+                SalesDispatchTransporterDetail dispatchDetailObj = null;
+
+                // Try load existing by primary key
                 if (salesDispatchDetail.SDTRDId > 0)
                 {
-                    SalesDispatchTransporterDetail dispatchDetailObj = db.SalesDispatchTransporterDetails.SingleOrDefault(x => x.SDTRDId == salesDispatchDetail.SDTRDId);
+                    dispatchDetailObj = db.SalesDispatchTransporterDetails.SingleOrDefault(x => x.SDTRDId == salesDispatchDetail.SDTRDId);
+                }
+                // Otherwise lookup by SalesDetailsID
+                else if (salesDispatchDetail.SalesDetailsID > 0)
+                {
+                    dispatchDetailObj = db.SalesDispatchTransporterDetails.FirstOrDefault(x => x.SalesDetailsID == salesDispatchDetail.SalesDetailsID);
+                }
 
-                    dispatchDetailObj.DispatchDate = salesDispatchDetail.DispatchDate;
-                    dispatchDetailObj.DispatchStatus = salesDispatchDetail.DispatchStatus;
-                    dispatchDetailObj.DocketNo = salesDispatchDetail.DocketNo;
-                    dispatchDetailObj.DocketPhotoPath = salesDispatchDetail.DocketPhotoPath;
-                    dispatchDetailObj.SmsSentFlag = salesDispatchDetail.SmsSentFlag;
-                    dispatchDetailObj.Transporter = salesDispatchDetail.Transporter;
-                    dispatchDetailObj.TransportationCharge = salesDispatchDetail.TransportationCharge;
-                    dispatchDetailObj.BillNo = salesDispatchDetail.BillNo;
-                    dispatchDetailObj.PackedBy = salesDispatchDetail.PackedBy;
-                    dispatchDetailObj.UpdatedBy = salesDispatchDetail.UpdatedBy;
+                if (dispatchDetailObj != null)
+                {
+                    ApplyUpdates(dispatchDetailObj, salesDispatchDetail);
                     dispatchDetailObj.UpdatedOn = DateTime.Now;
-                    db.Entry(dispatchDetailObj).State = System.Data.Entity.EntityState.Modified;
+                    db.Entry(dispatchDetailObj).State = EntityState.Modified;
                 }
                 else
                 {
                     salesDispatchDetail.CreatedOn = DateTime.Now;
                     db.SalesDispatchTransporterDetails.Add(salesDispatchDetail);
                 }
+
                 db.SaveChanges();
                 returnValue.responseObj.IsSuccessful();
             }
             catch (Exception ex)
             {
-                //TODO error handling
                 returnValue.responseObj.ResponseMsg = ex.Message;
                 CommonLogger.Error(ex, ex.Message);
             }
+
             return Json(returnValue);
+        }
+
+        /// <summary>
+        /// Assigns mapped fields without repeating code
+        /// </summary>
+        private void ApplyUpdates(SalesDispatchTransporterDetail target, SalesDispatchTransporterDetail source)
+        {
+            target.DispatchDate = source.DispatchDate;
+            target.DispatchStatus = source.DispatchStatus;
+            target.DocketNo = source.DocketNo;
+            target.DocketPhotoPath = source.DocketPhotoPath;
+            target.SmsSentFlag = source.SmsSentFlag;
+            target.Transporter = source.Transporter;
+            target.TransportationCharge = source.TransportationCharge;
+            target.BillNo = source.BillNo;
+            target.PackedBy = source.PackedBy;
+            target.UpdatedBy = source.UpdatedBy;
         }
     }
 }
