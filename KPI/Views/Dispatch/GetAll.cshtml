@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Sales Orders";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-
+    var successMessage = TempData["SuccessMsg"] as string ?? "";
 }
 @*<script>
         $(document).ready(function () {
@@ -113,6 +113,7 @@
                             var bToProduce = (item.Item.QtyBal > (item.Item.QtyBlocked + item.Item.QtyToDispatch));
                         }
                         <div class="row dispatch_tbl">
+
                             <!--<div class="col-sm-3">
                             @Html.DisplayFor(modelItem => item.Item.ProductName)-->
                             <!--</div>-->
@@ -270,7 +271,9 @@
                 </div>
             </div>
 
-            @using (Html.BeginForm("SaveSalesDispatchDetailData", "Dispatch", FormMethod.Post, new { enctype = "multipart/form-data"@*, onsubmit = "return validateDispatchDetailForm()"*@ }))
+            @using (Html.BeginForm("SaveSalesDispatchDetailData", "Dispatch", FormMethod.Post, new
+            {
+                enctype = "multipart/form-data"@*, onsubmit = "return validateDispatchDetailForm()"*@ }))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -443,6 +446,12 @@
 
     // Disptch detail modal start region
 
+    $(function () {
+        if (@(!string.IsNullOrEmpty(successMessage) ? "true" : "false")) {
+            alert("@successMessage");
+        }
+    });
+
     function validateDispatchDetailForm() {
 
         var dispatchStatus = $('#DispatchStatus').val();
@@ -462,7 +471,7 @@
     });
 
     function loadSalesDispatchDetailData(obj) {
-        
+
         $.ajax({
             url: '../Dispatch/GetSalesDispatchDetailData',
             type: 'GET',

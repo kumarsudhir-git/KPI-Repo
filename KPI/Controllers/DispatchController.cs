@@ -125,6 +125,7 @@ namespace KPI.Controllers
             var response = KPIAPIManager.SaveSalesDispatchDetailData(salesDispatchDetailMaster);
             if (response.responseObj.ResponseCode == 200)
             {
+                TempData["SuccessMsg"] = "Data saved successfully !";
                 return RedirectToAction("GetAll");
             }
             else

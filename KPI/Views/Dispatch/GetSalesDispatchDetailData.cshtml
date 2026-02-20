@@ -33,7 +33,8 @@
             <label>Docket Image</label>
             <img id="previewImage" src="@(string.IsNullOrEmpty(Model.DocketPhotoPath)
                     ? Url.Content("~/images/default-image.png")
-                    : Url.Content(Model.DocketPhotoPath))" />
+                    : Url.Content(Model.DocketPhotoPath))"
+                 title="@(string.IsNullOrEmpty(Model.DocketPhotoPath) ? "default-image.png" : System.IO.Path.GetFileName(Model.DocketPhotoPath))" />
 
             <input type="file" id="DocketImageFile" name="DocketImageFile" accept="image/*" class="form-control" />
 
@@ -72,7 +73,9 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Customer</label>
-                    @Html.DisplayFor(model => model.SalesMasterObj.CompanyLocation)
+                    <div class="">
+                        @Html.DisplayFor(model => model.SalesMasterObj.CompanyLocation)
+                    </div>
                 </div>
             </div>
 
@@ -96,12 +99,11 @@
                     @Html.ValidationMessageFor(model => model.Transporter, "", new { @class = "text-danger" })
                 </div>
             </div>
-
             <div class="col-md-3">
                 <div class="form-group">
-                    <label>Docket No</label>
-                    @Html.TextBoxFor(model => model.DocketNo, new { @class = "form-control", @placeholder = "Enter Docket Number" })
-                    @Html.ValidationMessageFor(model => model.DocketNo, "", new { @class = "text-danger" })
+                    <label>Transportation Charge</label>
+                    @Html.TextBoxFor(modelItem => modelItem.TransportationCharge, new { @class = "form-control", @placeholder = "Enter Transportation Charge" })
+                    @Html.ValidationMessageFor(model => model.TransportationCharge, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -116,14 +118,15 @@
                     @Html.ValidationMessageFor(model => model.DispatchDate, "", new { @class = "text-danger" })
                 </div>
             </div>
+
             <div class="col-md-3">
                 <div class="form-group">
-                    <label>Transportation Charge</label>
-                    @Html.TextBoxFor(modelItem => modelItem.TransportationCharge, new { @class = "form-control", @placeholder = "Enter Transportation Charge" })
-                    @Html.ValidationMessageFor(model => model.TransportationCharge, "", new { @class = "text-danger" })
+                    <label>Docket No</label>
+                    @Html.TextBoxFor(model => model.DocketNo, new { @class = "form-control", @placeholder = "Enter Docket Number" })
+                    @Html.ValidationMessageFor(model => model.DocketNo, "", new { @class = "text-danger" })
                 </div>
             </div>
-            
+
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Bill No</label>
@@ -131,7 +134,7 @@
                     @Html.ValidationMessageFor(model => model.BillNo, "", new { @class = "text-danger" })
                 </div>
             </div>
-            
+
         </div>
         <div class="row">
             <div class="col-md-3">
@@ -212,11 +215,13 @@
 
             reader.onload = function (e) {
                 $("#previewImage").attr("src", e.target.result);
+                $("#previewImage").attr("title", input.files[0].name);  // Set tooltip text
             }
 
             reader.readAsDataURL(input.files[0]);
         }
     });
+
 
     //function UpdateFormOnDispathStatus(obj) {
     //    var statusId = $(obj).val();
