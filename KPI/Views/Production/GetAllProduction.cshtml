@@ -69,9 +69,13 @@
                             </div>
                             <div class="@cssMould" title="mould"><span class="badge rounded-pill bg-info">@Html.DisplayFor(modelItem => item.MouldName)</span></div>
                             <div class="@cssMachine" title="machine">
-                                @foreach (var itm in item.MachineNames.Split('|'))
+                                @if (item.MachineNames != null)
                                 {
-                                    <span class="badge rounded-pill bg-dark">@itm.Trim()</span>
+                                    foreach (var itm in item.MachineNames.Split('|'))
+                                    {
+                                        <span class="badge rounded-pill bg-dark">@itm.Trim()</span>
+                                    }
+
                                 }
                             </div>
                         }

@@ -3,7 +3,7 @@
 <tr>
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-   
+
     @{
         var cssMaterial = (Model.RMAvailable ? "available" : "notavailable");
         var cssMould = (Model.MouldAvailable ? "available" : "notavailable");
@@ -22,42 +22,41 @@
             }
         </div>
     </td>
+    @{
+        var materialClass = Model.ProgramInProgress ? cssMachine : cssMaterial;
+        var mouldClass = Model.ProgramInProgress ? cssMachine : cssMould;
+        var machineClass = cssMachine; // same in both cases
+    }
     <td>
-        @if (!Model.ProgramInProgress)
-        {
-            <div class="@cssMaterial" title="raw material">
-                @foreach (var rmItem in Model.MappedRawMaterials)
-                {
-                    <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName</span>
-                }
-            </div>
+        <!-- Raw Material -->
+        <div class="@materialClass" title="raw material">
+            @foreach (var rmItem in Model.MappedRawMaterials)
+            {
+                <span class="badge rounded-pill bg-success">
+                    @rmItem.RawMaterialName
+                </span>
+            }
+        </div>
 
-            <div class="@cssMould" title="mould"><span class="badge rounded-pill bg-info">@Html.DisplayFor(modelItem => Model.MouldName)</span></div>
-            <div class="@cssMachine" title="machine">
-                @foreach (var itm in Model.MachineNames.Split('|'))
-                {
-                    <span class="badge rounded-pill bg-dark">@itm.Trim()</span>
-                }
-            </div>
-        }
-        @if (Model.ProgramInProgress)
-        {
-            <div class="@cssMachine" title="raw material">
-                @foreach (var rmItem in Model.MappedRawMaterials)
-                {
-                    <span class="badge rounded-pill bg-success">@rmItem.RawMaterialName</span>
-                }
-            </div>
+        <!-- Mould -->
+        <div class="@mouldClass" title="mould">
+            <span class="badge rounded-pill bg-info">
+                @Html.DisplayFor(modelItem => Model.MouldName)
+            </span>
+        </div>
 
-            <div class="@cssMachine" title="mould"><span class="badge rounded-pill bg-info">@Html.DisplayFor(modelItem => Model.MouldName)</span></div>
-            @*<div title="machine"><span class="badge rounded-pill bg-dark">@Html.DisplayFor(modelItem => Model.MachineName)</span></div>*@
-            <div class="@cssMachine" title="machine">
-                @foreach (var itm in Model.MachineNames.Split('|'))
+        <!-- Machine -->
+        <div class="@machineClass" title="machine">
+            @if (!string.IsNullOrEmpty(Model.MachineNames))
+            {
+                foreach (var itm in Model.MachineNames.Split('|'))
                 {
-                    <span class="badge rounded-pill bg-dark">@itm.Trim()</span>
+                    <span class="badge rounded-pill bg-dark">
+                        @itm.Trim()
+                    </span>
                 }
-            </div>
-        }
+            }
+        </div>
     </td>
     <td>
         <div class="@cssMaterial" title="raw material">

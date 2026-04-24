@@ -44,7 +44,7 @@ namespace KPIWebAPI.Controllers
 
                     o.MouldName = obj.MouldMaster.MouldName;
 
-                    o.MachineName = obj.MachineMaster.MachineName;
+                    o.MachineName = obj.MachineMaster != null ? obj.MachineMaster.MachineName : string.Empty;
                     o.BalanceQty = obj.ProductQty - obj.ProductQtyCompleted;
 
                     var machines = db.MachineMouldMappings.Where(x => x.MouldID == obj.MouldID).ToList();
@@ -114,7 +114,7 @@ namespace KPIWebAPI.Controllers
                     o.RMQty = obj.ProductionProgramRMMappings.Sum(a => a.RMQty);
 
                     o.MouldAvailable = (obj.MouldMaster.MouldHistories.LastOrDefault().MouldStatusID == (int)enumMouldStatus.NotInUse);           // ### NotInUse
-                    o.MachineAvailable = (obj.MachineMaster.MachineHistories.LastOrDefault().MachineStatusID == (int)enumMachineStatus.NotInUse);   // ### NotInUse
+                    o.MachineAvailable = obj.MachineMaster != null && obj.MachineMaster.MachineHistories.LastOrDefault() != null && obj.MachineMaster.MachineHistories.LastOrDefault().MachineStatusID == (int)enumMachineStatus.NotInUse;   // ### NotInUse
 
                     if (o.Machines.Count() > 0)
                     {
@@ -127,7 +127,7 @@ namespace KPIWebAPI.Controllers
                         o.MachineName = obj.MachineMaster.MachineName;
                     }
 
-                    o.ProgramInProgress = (obj.ProductionRawMaterials.Count() > 0);
+                    o.ProgramInProgress = IsProgramInProgress(obj);
 
                     returnValue.data.Add(o);
                 }
@@ -154,6 +154,12 @@ namespace KPIWebAPI.Controllers
             try
             {
                 ProductionProgram productionObj = db.ProductionPrograms.Where(x => x.ProductionProgramID == ProductionProgramID).OrderBy(x => x.ProductionProgramID).FirstOrDefault();
+
+                if (productionObj == null)
+                {
+                    returnValue.Response.ResponseMsg = "Production program not found.";
+                    return Json(returnValue);
+                }
 
                 KPILib.Models.ProductionPrograme productionProgrameObj = mapper.Map<ProductionProgram, KPILib.Models.ProductionPrograme>(productionObj);
 
@@ -231,9 +237,9 @@ namespace KPIWebAPI.Controllers
                 if (productionObj.MachineID.HasValue)
                 {
                     productionProgrameObj.MachineID = productionObj.MachineID.Value;
-                    productionProgrameObj.MachineName = productionObj.MachineMaster.MachineName;
+                    productionProgrameObj.MachineName = productionObj.MachineMaster != null ? productionObj.MachineMaster.MachineName : string.Empty;
                 }
-                productionProgrameObj.ProgramInProgress = (productionObj.ProductionRawMaterials.Count() > 0);
+                productionProgrameObj.ProgramInProgress = IsProgramInProgress(productionObj);
 
                 List<ProductionProgramBatch> programBatches = productionObj.ProductionProgramBatches.Where(z => z.ProductionProgramID == ProductionProgramID).ToList();
 
@@ -258,7 +264,7 @@ namespace KPIWebAPI.Controllers
                         item.RMQty = productionProgrameObj.RMQty;
                         item.CanProduceQty = productionProgrameObj.CanProduceQty != item.ProductQty ? item.ProductQty : productionProgrameObj.CanProduceQty;
                         item.MappedRawMaterials = productionProgrameObj.MappedRawMaterials;
-                        item.ProgramInProgress = productionProgrameObj.ProgramInProgress;
+                        item.ProgramInProgress = item.InProductionQty > 0 || productionProgrameObj.ProgramInProgress;
                         item.RMAvailable = productionProgrameObj.RMAvailable;
                         item.MouldAvailable = productionProgrameObj.MouldAvailable;
                         item.MachineAvailable = productionProgrameObj.MachineAvailable;
@@ -358,9 +364,33 @@ namespace KPIWebAPI.Controllers
                         ////    }
                         ////}
 
-                        productionProgram.MachineID = db.sp_GetAvailableMachineID(productionProgram.MouldID).First().Value;
+                        if (productionProgram == null)
+                        {
+                            returnValue.ResponseMsg = "Production program not found.";
+                            return Json(returnValue);
+                        }
+
+                        var availableMachine = db.sp_GetAvailableMachineID(productionProgram.MouldID).FirstOrDefault();
+                        if (!availableMachine.HasValue)
+                        {
+                            returnValue.ResponseMsg = "No machine is available to start this production program.";
+                            return Json(returnValue);
+                        }
+
+                        var salesDetail = productionProgram.SalesDetail;
+                        if (salesDetail == null)
+                        {
+                            returnValue.ResponseMsg = "Sales detail not found for this production program.";
+                            return Json(returnValue);
+                        }
+
+                        productionProgram.MachineID = availableMachine.Value;
                         productionProgram.InProductionQty += iProduceQty;
                         db.Entry(productionProgram).State = System.Data.Entity.EntityState.Modified;
+
+                        salesDetail.QtyInProduction += iProduceQty;
+                        salesDetail.SalesStatusID = (int)enumSalesStatus.In_Production;
+                        db.Entry(salesDetail).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
 
                         ProductionProgramBatch programBatch = new ProductionProgramBatch()
@@ -377,7 +407,7 @@ namespace KPIWebAPI.Controllers
 
                         foreach (var pp in productRMMapping)
                         {
-                            var iRMQty = (int)Math.Round(pp.RMReqdForUOMQty * (iProduceQty / productionProgram.ProductMaster.MinQtyUOM), 0);
+                            var iRMQty = (int)Math.Ceiling(pp.RMReqdForUOMQty * (decimal)iProduceQty / productionProgram.ProductMaster.MinQtyUOM);
                             var iRMQtyUsed = iRMQty;
 
                             while (iRMQtyUsed > 0)
@@ -556,7 +586,7 @@ namespace KPIWebAPI.Controllers
 
                 o.MouldName = data.MouldMaster.MouldName;
 
-                o.MachineName = data.MachineMaster.MachineName;
+                o.MachineName = data.MachineMaster != null ? data.MachineMaster.MachineName : string.Empty;
 
                 o.ProductionUser = data.UserMaster.Username;
 
@@ -600,110 +630,101 @@ namespace KPIWebAPI.Controllers
                     try
                     {
                         var productionProgram = db.ProductionPrograms.SingleOrDefault(x => x.ProductionProgramID == iProductionProgramID);
-                        //var bRMWasAvailable = true;
+                        if (productionProgram == null)
+                        {
+                            returnValue.ResponseMsg = "Production program not found.";
+                            return Json(returnValue);
+                        }
+
+                        ProductionProgramBatch programBatch = db.ProductionProgramBatches.Where(z => z.ProgramBatchID == iBatchId).FirstOrDefault();
+                        if (programBatch == null)
+                        {
+                            returnValue.ResponseMsg = "Production batch not found.";
+                            return Json(returnValue);
+                        }
 
                         var prod = productionProgram.ProductMaster;
+                        var salesDetail = productionProgram.SalesDetail;
+                        // || !prod.PkgsPerRack.HasValue || prod.PkgsPerRack.Value <= 0
+                        if (!prod.PkgQty.HasValue || prod.PkgQty.Value <= 0)
+                        {
+                            returnValue.ResponseMsg = "Product packaging configuration is invalid.";
+                            return Json(returnValue);
+                        }
 
-                        ////var qtyToStore = new List<int>();
-                        ////var rackToStore = new Dictionary<int, int>();
+                        if (iProducedNow <= 0)
+                        {
+                            returnValue.ResponseMsg = "Produced quantity must be greater than zero.";
+                            return Json(returnValue);
+                        }
 
-                        ////while (iQty > 0)
-                        ////{
-                        ////    if (iQty <= prod.PkgQty)
-                        ////    {
-                        ////        qtyToStore.Add(iQty);
-                        ////        iQty = 0;
-                        ////    }
-                        ////    else
-                        ////    {
-                        ////        qtyToStore.Add(prod.PkgQty.Value);
-                        ////        iQty -= prod.PkgQty.Value;
-                        ////    }
-                        ////}
-
-
-                        //var prodRacks = prod.ProdReadyStoreds.Where(x => x.Qty > 0);
-
-                        //var racks = new List<KPILib.Models.RackMaster>();
-
-                        //foreach(var pr in prodRacks)
-                        //{
-                        //    var itm = racks.SingleOrDefault(x => x.RackID == pr.RackID);
-                        //    if(itm == null)
-                        //    {
-                        //        var newItm = new KPILib.Models.RackMaster() { RackID = pr.RackID, Qty = pr.Qty };
-                        //    }
-                        //    else
-                        //    {
-                        //        itm.Qty += pr.Qty;
-                        //    }
-                        //}
-
-                        //racks = racks.Where(x => x.Qty < prod.PkgQty * (prod.PkgsPerRack-1)).OrderBy(x => x.Qty).ToList();                        
+                        var batchInProductionQty = programBatch.InProductionQty;
+                        if (batchInProductionQty < iProducedNow)
+                        {
+                            returnValue.ResponseMsg = "Produced quantity cannot be greater than quantity currently in production.";
+                            return Json(returnValue);
+                        }
 
                         DateTime timestamp = DateTime.Now;
+                        var stagedRackEntries = new List<ProdReadyStored>();
+                        var pkgQty = prod.PkgQty.Value;
+                        var pkgsPerRack = prod.PkgsPerRack.Value;
+                        var rackCapacity = pkgQty * pkgsPerRack;
 
-                        while (iQty > 0)
+                        var racks = db.ProdReadyStoreds
+                            .Where(x => x.ProductID == prod.ProductID)
+                            .GroupBy(x => x.RackID)
+                            .Select(y => new { y.Key, Qty = y.Sum(z => z.Qty) })
+                            .Where(x => x.Qty < (pkgQty * (pkgsPerRack - 1)))
+                            .OrderBy(r => r.Qty)
+                            .ToList();
+
+                        foreach (var r in racks)
                         {
-                            var racks = db.ProdReadyStoreds.Where(x => x.ProductID == prod.ProductID).GroupBy(x => x.RackID).Select(y => new { y.Key, Qty = y.Sum(z => z.Qty) }).Where(x => x.Qty < (prod.PkgQty * (prod.PkgsPerRack - 1))).OrderBy(r => r.Qty);
-
-                            foreach (var r in racks)
+                            var availableQty = rackCapacity - r.Qty;
+                            while (availableQty >= pkgQty && iQty >= pkgQty)
                             {
-                                var availableQty = (prod.PkgQty * prod.PkgsPerRack) - r.Qty;
-
-                                while (availableQty >= prod.PkgQty && iQty >= prod.PkgQty)
-                                {
-                                    var newRackStoreEntry = new ProdReadyStored() { ProductionProgramID = productionProgram.ProductionProgramID, RackID = r.Key, ProductID = prod.ProductID, Qty = prod.PkgQty.Value, RcvdDate = timestamp };
-                                    db.ProdReadyStoreds.Add(newRackStoreEntry);
-                                    db.SaveChanges();
-
-                                    availableQty -= prod.PkgQty.Value;
-                                    iQty -= prod.PkgQty.Value;
-                                }
-                                if (availableQty >= iQty && iQty <= prod.PkgQty && iQty > 0)
-                                {
-                                    var newRackStoreEntry = new ProdReadyStored() { ProductionProgramID = productionProgram.ProductionProgramID, RackID = r.Key, ProductID = prod.ProductID, Qty = iQty, RcvdDate = timestamp };
-                                    db.ProdReadyStoreds.Add(newRackStoreEntry);
-                                    db.SaveChanges();
-
-                                    availableQty -= iQty;
-                                    iQty -= iQty;
-
-                                    break;
-                                }
+                                stagedRackEntries.Add(CreateProdReadyStored(productionProgram.ProductionProgramID, r.Key, prod.ProductID, pkgQty, timestamp));
+                                availableQty -= pkgQty;
+                                iQty -= pkgQty;
                             }
-
-                            if (iQty > 0 && racks.Count() == 0)
+                            if (availableQty >= iQty && iQty <= pkgQty && iQty > 0)
+                            {
+                                stagedRackEntries.Add(CreateProdReadyStored(productionProgram.ProductionProgramID, r.Key, prod.ProductID, iQty, timestamp));
+                                iQty = 0;
                                 break;
+                            }
                         }
 
                         while (iQty > 0)
                         {
-                            //var racks = db.ProdReadyStoreds.GroupBy(x => x.RackMaster.RackID).Select(y => new { y.Key, Qty = y.Sum(z => z.Qty) }).Where(x => x.Qty == 0);
                             var emptyRackID = db.sp_GetEmptyRacks().SingleOrDefault();
 
                             if (emptyRackID.HasValue)
                             {
-                                var availableQty = (prod.PkgQty * prod.PkgsPerRack);
+                                var availableQty = rackCapacity;
+                                var entriesForRack = new List<ProdReadyStored>();
 
-                                while (availableQty >= prod.PkgQty && iQty >= prod.PkgQty) //&& iQty > 0 
+                                while (availableQty >= pkgQty && iQty >= pkgQty) //&& iQty > 0 
                                 {
-                                    var newRackStoreEntry = new ProdReadyStored() { ProductionProgramID = productionProgram.ProductionProgramID, RackID = emptyRackID.Value, ProductID = prod.ProductID, Qty = prod.PkgQty.Value, RcvdDate = timestamp };
-                                    db.ProdReadyStoreds.Add(newRackStoreEntry);
-                                    db.SaveChanges();
-
-                                    availableQty -= prod.PkgQty.Value;
-                                    iQty -= prod.PkgQty.Value;
+                                    entriesForRack.Add(CreateProdReadyStored(productionProgram.ProductionProgramID, emptyRackID.Value, prod.ProductID, pkgQty, timestamp));
+                                    availableQty -= pkgQty;
+                                    iQty -= pkgQty;
                                 }
-                                if (availableQty >= iQty && iQty <= prod.PkgQty)
+                                if (availableQty >= iQty && iQty <= pkgQty)
                                 {
-                                    var newRackStoreEntry = new ProdReadyStored() { ProductionProgramID = productionProgram.ProductionProgramID, RackID = emptyRackID.Value, ProductID = prod.ProductID, Qty = iQty, RcvdDate = timestamp };
-                                    db.ProdReadyStoreds.Add(newRackStoreEntry);
+                                    entriesForRack.Add(CreateProdReadyStored(productionProgram.ProductionProgramID, emptyRackID.Value, prod.ProductID, iQty, timestamp));
+                                    iQty = 0;
+                                }
+
+                                if (entriesForRack.Count > 0)
+                                {
+                                    db.ProdReadyStoreds.AddRange(entriesForRack);
                                     db.SaveChanges();
+                                }
 
-                                    availableQty -= iQty;
-                                    iQty -= iQty;
-
+                                if (iQty == 0)
+                                {
                                     break;
                                 }
                             }
@@ -715,30 +736,49 @@ namespace KPIWebAPI.Controllers
                             }
                         }
 
+                        if (stagedRackEntries.Count > 0)
+                        {
+                            db.ProdReadyStoreds.AddRange(stagedRackEntries);
+                        }
+
                         productionProgram.InProductionQty -= iProducedNow;
+                        if (productionProgram.InProductionQty < 0)
+                        {
+                            productionProgram.InProductionQty = 0;
+                        }
                         productionProgram.ProductQtyCompleted += iProducedNow;
                         productionProgram.LastModifiedOn = timestamp;
                         db.Entry(productionProgram).State = System.Data.Entity.EntityState.Modified;
-                        db.SaveChanges();
 
-                        ProductionProgramBatch programBatch = db.ProductionProgramBatches.Where(z => z.ProgramBatchID == iBatchId).FirstOrDefault();
-                        if (programBatch != null)
+                        if (salesDetail != null)
                         {
-                            programBatch.ProductQtyCompleted += iProducedNow;
-                            programBatch.InProductionQty -= iProducedNow;
-
-                            AddUpdateProductionBatch(programBatch);
+                            salesDetail.QtyInProduction = Math.Max(0, salesDetail.QtyInProduction - iProducedNow);
+                            salesDetail.QtyProduced += iProducedNow;
+                            salesDetail.SalesStatusID = salesDetail.QtyBal <= 0
+                                ? (int)enumSalesStatus.Completed_Closed
+                                : (int)enumSalesStatus.In_Production;
+                            db.Entry(salesDetail).State = System.Data.Entity.EntityState.Modified;
                         }
+
+                        programBatch.ProductQtyCompleted += iProducedNow;
+                        programBatch.InProductionQty -= iProducedNow;
+                        db.Entry(programBatch).State = System.Data.Entity.EntityState.Modified;
 
                         //if (productionProgram.ProductQtyCompleted >= productionProgram.ProductQty)
                         if (programBatch.InProductionQty == 0)
                         {
                             var mouldHistory = new MouldHistory() { MouldID = productionProgram.MouldID, MouldStatusID = (int)enumMouldStatus.NotInUse, Description = "Completed production " + productionProgram.ProductionProgramID, AddedOn = timestamp };
                             db.MouldHistories.Add(mouldHistory);
-                            db.SaveChanges();
 
                             var machineHistory = new MachineHistory() { MachineID = productionProgram.MachineID.Value, MachineStatusID = (int)enumMachineStatus.NotInUse, Description = "Completed production " + productionProgram.ProductionProgramID, AddedOn = timestamp };
                             db.MachineHistories.Add(machineHistory);
+                        }
+
+                        db.SaveChanges();
+
+                        if (salesDetail != null && salesDetail.SalesMaster != null)
+                        {
+                            RecalculateSalesMasterStatus(salesDetail.SalesMaster);
                             db.SaveChanges();
                         }
 
@@ -758,6 +798,18 @@ namespace KPIWebAPI.Controllers
             }
 
             return Json(returnValue);
+        }
+
+        private ProdReadyStored CreateProdReadyStored(int productionProgramId, int rackId, int productId, int qty, DateTime timestamp)
+        {
+            return new ProdReadyStored
+            {
+                ProductionProgramID = productionProgramId,
+                RackID = rackId,
+                ProductID = productId,
+                Qty = qty,
+                RcvdDate = timestamp
+            };
         }
 
         public IHttpActionResult GetRackingPlan(int id)
@@ -784,7 +836,7 @@ namespace KPIWebAPI.Controllers
 
                 o.MouldName = data.MouldMaster.MouldName;
 
-                o.MachineName = data.MachineMaster.MachineName;
+                o.MachineName = data.MachineMaster != null ? data.MachineMaster.MachineName : string.Empty;
 
                 o.ProductionUser = data.UserMaster.Username;
 
@@ -830,6 +882,46 @@ namespace KPIWebAPI.Controllers
                 db.Entry(productionBatches).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
             }
+        }
+
+        private bool IsProgramInProgress(ProductionProgram program)
+        {
+            if (program == null)
+            {
+                return false;
+            }
+
+            if (program.InProductionQty > 0)
+            {
+                return true;
+            }
+
+            if (program.ProductionProgramBatches != null && program.ProductionProgramBatches.Any(x => x.InProductionQty > 0))
+            {
+                return true;
+            }
+
+            return program.ProductionRawMaterials != null && program.ProductionRawMaterials.Count() > 0;
+        }
+
+        private void RecalculateSalesMasterStatus(SalesMaster salesMaster)
+        {
+            if (salesMaster == null)
+            {
+                return;
+            }
+
+            var activeSalesDetails = salesMaster.SalesDetails.Where(x => x.IsActive).ToList();
+            if (activeSalesDetails.Count == 0)
+            {
+                return;
+            }
+
+            salesMaster.SalesStatusID = activeSalesDetails.All(x => x.QtyBal <= 0)
+                ? (int)enumSalesStatus.Completed_Closed
+                : activeSalesDetails.Max(x => x.SalesStatusID);
+
+            db.Entry(salesMaster).State = System.Data.Entity.EntityState.Modified;
         }
     }
 }

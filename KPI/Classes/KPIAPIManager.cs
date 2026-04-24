@@ -361,6 +361,12 @@ namespace KPI.Classes
             return result;
         }
 
+        public static SalesOrderDispatchSummaryResponse GetOpenSalesOrderDispatchSummary()
+        {
+            var result = CommonFunctions.client.GetAsync("DispatchAPI/GetOpenSalesOrderDispatchSummary").Result.Content.ReadAsAsync<SalesOrderDispatchSummaryResponse>().Result;
+            return result;
+        }
+
         public static ResponseObj SetNewDispatchBlockValues(int iSalesDetailsID, int iBlockedQty, int iToDispatchQty, int iToProduceQty, int userID)
         {
             var parameters = new Dictionary<string, int> { { "iSalesDetailsID", iSalesDetailsID }, { "iBlockedQty", iBlockedQty }, { "iToDispatchQty", iToDispatchQty }, { "iToProduceQty", iToProduceQty }, { "UserID", userID } };
@@ -368,9 +374,15 @@ namespace KPI.Classes
             return result;
         }
 
-        public static SalesDispatchTransporterDetailsResponse GetSalesDispatchDetailData(int salesId)
+        public static SalesDispatchTransporterDetailsResponse GetSalesDispatchDetailData(int salesId, int? salesDetailsId = null)
         {
-            var result = CommonFunctions.client.GetAsync("DispatchAPI/GetSalesDispatchDetailData?salesId=" + salesId.ToString()).Result.Content.ReadAsAsync<SalesDispatchTransporterDetailsResponse>().Result;
+            var url = "DispatchAPI/GetSalesDispatchDetailData?salesId=" + salesId.ToString();
+            if (salesDetailsId.HasValue)
+            {
+                url += "&salesDetailsId=" + salesDetailsId.Value;
+            }
+
+            var result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<SalesDispatchTransporterDetailsResponse>().Result;
             return result;
         }
 
@@ -625,8 +637,7 @@ namespace KPI.Classes
             }
             catch (System.Exception ex)
             {
-
-                throw;
+                throw ex;
             }
         }
 

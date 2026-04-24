@@ -121,4 +121,50 @@ namespace KPILib.Models
         public SalesMaster SalesMasterObj { get; set; }
         public List<SalesDetails> SalesDetailListObj { get; set; }
     }
+
+    public class SalesOrderDispatchSummary
+    {
+        public SalesOrderDispatchSummary()
+        {
+            Products = new List<SalesOrderDispatchProduct>();
+        }
+        public int SalesDetailsID { get; set; }
+        public int SalesID { get; set; }
+        public DateTime SalesDate { get; set; }
+        public string CustomerName { get; set; }
+        public string LocationName { get; set; }
+        public string ProductDisplay { get; set; }
+        public string PackagingDisplay { get; set; }
+        public DateTime? CommittedDate { get; set; }
+        public string SalesExecutive { get; set; }
+        public int ProductCount { get; set; }
+        public List<SalesOrderDispatchProduct> Products { get; set; }
+    }
+
+    public class SalesOrderDispatchProduct
+    {
+        public int SalesDetailsID { get; set; }
+        public int ProductID { get; set; }
+        public string ProductName { get; set; }
+        public string Packaging { get; set; }
+        public int Quantity { get; set; }
+        public int ReadyQty { get; set; }
+        public string Color { get; set; }
+        public string Gms { get; set; }
+        public string Instructions { get; set; }
+        public string DispatchStatus { get; set; }
+        public bool CanDispatch { get; set; }
+    }
+
+    public class SalesOrderDispatchSummaryResponse
+    {
+        public SalesOrderDispatchSummaryResponse()
+        {
+            data = new List<SalesOrderDispatchSummary>();
+            Response = new ResponseObj();
+        }
+
+        public List<SalesOrderDispatchSummary> data { get; set; }
+        public ResponseObj Response { get; set; }
+    }
 }

@@ -115,9 +115,12 @@
 
                             <div class="@cssMould" title="mould"><span class="badge rounded-pill bg-info">@Html.DisplayFor(modelItem => item.MouldName)</span></div>
                             <div class="@cssMachine" title="machine">
-                                @foreach (var itm in item.MachineNames.Split('|'))
+                                @if (item.MachineNames != null && item.MachineNames.Count() > 0)
                                 {
-                                    <span class="badge rounded-pill bg-dark">@itm.Trim()</span>
+                                    foreach (var itm in item.MachineNames.Split('|'))
+                                    {
+                                        <span class="badge rounded-pill bg-dark">@itm.Trim()</span>
+                                    }
                                 }
                             </div>
                         }
@@ -197,7 +200,7 @@
             <div>
                 <div class="modal-header">
                     <h4 class="modal-title">Start Production Program</h4>
-                    <button id="closbtn" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <button id="closbtn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
 
                 @using (Html.BeginForm("StartProduction", "Production", FormMethod.Post, new { onsubmit = "return validateForm()" }))
@@ -307,13 +310,13 @@
 
 <div id='myModal02' class='modal'>
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" >
+        <div class="modal-content">
             @*<div id='myModalContent'>*@
 
             <div>
                 <div class="modal-header">
                     <h4 class="modal-title">Update Production Program</h4>
-                    <button id="closbtn02" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <button id="closbtn02" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
 
                 @using (Html.BeginForm("UpdateProduction", "Production", FormMethod.Post, new { onsubmit = "return validateForm()" }))
@@ -554,7 +557,7 @@
         //for setting max and min
         let max = item.ProductQty - item.ProductQtyCompleted;
         txtProducedNow02.addEventListener("change", function () {
-            
+
             let num = parseInt(this.value);
             if (num < 0) this.value = 0;
             if (num > max) this.value = max;

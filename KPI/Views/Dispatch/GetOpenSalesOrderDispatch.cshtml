@@ -1,0 +1,226 @@
+@model IEnumerable<KPILib.Models.SalesOrderDispatchSummary>
+
+@{
+    ViewBag.Title = "Open Sales Orders";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+
+    var successMessage = TempData["SuccessMsg"] as string ?? "";
+}
+
+<div class="top_header">
+    <h2>@ViewBag.Title</h2>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-sm table-striped table-hover">
+        <thead>
+            <tr>
+                <th>SO No</th>
+                <th>SO Date</th>
+                <th>Cust Name</th>
+                <th>Location</th>
+                <th>Product Details</th>
+                <th>Packaging</th>
+                <th>Committed Date</th>
+                <th>Sales Executive</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td @Html.Raw(item.ProductCount == 1
+                        ? "onclick='loadSalesDispatchDetailData(" + Json.Encode(item) + ")'"
+                        : "onclick='showProductDetails(" + Json.Encode(item) + ")'")>
+                        <a href="#">
+                            @item.SalesID
+                        </a>
+                    </td>
+                    <td>@item.SalesDate.ToString("dd-MMM-yyyy")</td>
+                    <td>@item.CustomerName</td>
+                    <td>@item.LocationName</td>
+                    <td>
+                        @if (item.ProductCount > 1)
+                        {
+                            <a href="javascript:void(0);" onclick='showProductDetails(@Html.Raw(Json.Encode(item)))'>@item.ProductCount Products</a>
+                        }
+                        else
+                        {
+                            @item.ProductDisplay
+                        }
+                    </td>
+                    <td>@item.PackagingDisplay</td>
+                    <td>@(item.CommittedDate.HasValue ? item.CommittedDate.Value.ToString("dd-MMM-yyyy") : "-")</td>
+                    <td>@item.SalesExecutive</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div id="productDetailModal" class="modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Product Details</h4>
+                <button id="closeProductDetailBtn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-4"><b>SO No:</b> <span id="productDetailSalesId"></span></div>
+                    <div class="col-md-4"><b>Customer:</b> <span id="productDetailCustomer"></span></div>
+                    <div class="col-md-4"><b>Location:</b> <span id="productDetailLocation"></span></div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Packaging</th>
+                                <th>Ready Qty</th>
+                                <th>Status</th>
+                                <th>Qty</th>
+                                <th>Colour</th>
+                                <th>Gms</th>
+                                <th>Instructions</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productDetailTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="dispatchDetailModal" class="modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="header">
+                <div class="modal-header">
+                    <h4 class="modal-title">Dispatch Detail Data</h4>
+                    <button id="closDispatchDetailBtn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+            </div>
+
+            @using (Html.BeginForm("SaveSalesDispatchDetailData", "Dispatch", FormMethod.Post, new
+            {
+                enctype = "multipart/form-data"@*, onsubmit = "return validateDispatchDetailForm()"*@ }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="modal-body" id="dispatchDetailContainer"></div>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    function showProductDetails(item) {
+        $("#productDetailSalesId").text(item.SalesID);
+        $("#productDetailCustomer").text(item.CustomerName || "");
+        $("#productDetailLocation").text(item.LocationName || "");
+
+        var rows = "";
+        for (var i = 0; i < item.Products.length; i++) {
+            var product = item.Products[i];
+            rows += "<tr>"
+                + "<td>" + (product.ProductName || "") + "</td>"
+                + "<td>" + (product.Packaging || "") + "</td>"
+                + "<td>" + (product.ReadyQty || 0) + "</td>"
+                + "<td>" + (product.DispatchStatus || "-") + "</td>"
+                + "<td>" + product.Quantity + "</td>"
+                + "<td>" + (product.Color || "") + "</td>"
+                + "<td>" + (product.Gms || "") + "</td>"
+                + "<td>" + (product.Instructions || "") + "</td>"
+                + "<td>" + (product.CanDispatch
+                    ? "<button type='button' class='btn btn-sm btn-primary' onclick='loadSalesDispatchDetailData({SalesID:" + item.SalesID + ",SalesDetailsID:" + product.SalesDetailsID + "});$(\"#productDetailModal\").modal(\"hide\");'>Dispatch</button>"
+                    : "<span class='text-muted'>Not Ready</span>") + "</td>"
+                + "</tr>";
+        }
+
+        $("#productDetailTableBody").html(rows);
+        $("#productDetailModal").modal({ backdrop: "static", keyboard: true });
+        $("#productDetailModal").modal("show");
+    }
+
+    $("#closeProductDetailBtn").click(function () {
+        $("#productDetailModal").modal("hide");
+    });
+
+    // Disptch detail modal start region
+
+$(function () {
+    if (@(!string.IsNullOrEmpty(successMessage) ? "true" : "false")) {
+        alert("@successMessage");
+    }
+});
+
+function validateDispatchDetailForm() {
+
+    var dispatchStatus = $('#DispatchStatus').val();
+    var transporter = $('#Transporter').val();
+    var docketNo = $('#DocketNo').val();
+
+    // Check if any value is null, empty, or undefined
+    if (!dispatchStatus || !transporter || !docketNo) {
+        return false;
+    }
+
+    return true;
+}
+
+$("#closDispatchDetailBtn").click(function () {
+    $('#dispatchDetailModal').modal('hide');
+});
+
+function loadSalesDispatchDetailData(obj) {
+
+    $('#dispatchDetailContainer').html('');
+
+    $.ajax({
+        url: '../Dispatch/GetSalesDispatchDetailData',
+        type: 'GET',
+        data: { salesId: obj.SalesID, salesDetailsId: obj.SalesDetailsID },
+        success: function (data) {
+            $('#dispatchDetailContainer').html(data);
+
+            //var form = $("#dispatchDetailModal").find("form");
+            //form.removeData("validator");
+            //form.removeData("unobtrusiveValidation");
+
+            //$.validator.unobtrusive.parse(form);
+
+            //var form = $("#dispatchForm");
+
+            //form.removeData("validator");
+            //form.removeData("unobtrusiveValidation");
+
+            //$.validator.unobtrusive.parse(form);
+
+            $("form").removeData("validator");
+            $("form").removeData("unobtrusiveValidation");
+            $.validator.unobtrusive.parse("form");
+
+            InitializeDatePicker();
+        },
+        error: function () {
+            alert("An error occurred while fetching dispatch detail data.");
+        }
+    });
+    var options = { "backdrop": "static", keyboard: true };
+    $('#dispatchDetailModal').modal(options);
+    $('#dispatchDetailModal').modal('show');
+}
+
+// Disptch detail modal end region
+</script>

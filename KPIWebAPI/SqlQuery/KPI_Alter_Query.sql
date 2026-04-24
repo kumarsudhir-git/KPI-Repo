@@ -1140,5 +1140,20 @@ CREATE TABLE NotificationLog (
     UpdatedOn   DATETIME NULL
 );
 
+---------------------------------------------------------------15-04-2026-------------------------------------------------------
+GO
+Update MenuMaster Set Link = 'GetOpenSalesOrderDispatch/Dispatch' where MenuName = 'Dispatch'
+
+GO
+--UPDATE ProductMaster
+--SET PkgsPerRack = 20
+--WHERE ProductID = 1264;
+
+
+--UPDATE ProductMaster
+--SET PkgsPerRack = 20
+--WHERE ProductID = 1189;
+
+
 ------------------------------------------------------END-------------------------------------------------------------------------------------
 

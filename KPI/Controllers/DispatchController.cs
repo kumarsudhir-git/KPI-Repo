@@ -5,7 +5,6 @@ using KPILib.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
@@ -32,6 +31,21 @@ namespace KPI.Controllers
         public ActionResult GetAllClosed()
         {
             var response = KPIAPIManager.GetAllDispatch01(1);
+            if (response.Response.ResponseCode == 200)
+            {
+                return View(response.data);
+            }
+            else
+            {
+                ViewBag.Error = response.Response.ResponseMsg;
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult GetOpenSalesOrderDispatch()
+        {
+            var response = KPIAPIManager.GetOpenSalesOrderDispatchSummary();
             if (response.Response.ResponseCode == 200)
             {
                 return View(response.data);
@@ -70,10 +84,10 @@ namespace KPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetSalesDispatchDetailData(int salesId)
+        public ActionResult GetSalesDispatchDetailData(int salesId, int? salesDetailsId = null)
         {
             ViewData["DispatchStatus"] = new SelectList(new List<SelectListItem>(), "LookUpValue", "LookUpName");
-            var response = KPIAPIManager.GetSalesDispatchDetailData(salesId);
+            var response = KPIAPIManager.GetSalesDispatchDetailData(salesId, salesDetailsId);
             if (response.responseObj.ResponseCode == 200)
             {
                 LookUpMasterResponse GSMLookUpMaster = KPIAPIManager.GetLookUpData(ApplicationConstants.StatusType);
@@ -120,13 +134,11 @@ namespace KPI.Controllers
             {
                 salesDispatchDetailMaster.CreatedBy = sessionUserId;
             }
-            salesDispatchDetailMaster.SalesDetailsID = salesDispatchDetailMaster.SalesMasterObj.SalesID;
-
             var response = KPIAPIManager.SaveSalesDispatchDetailData(salesDispatchDetailMaster);
             if (response.responseObj.ResponseCode == 200)
             {
                 TempData["SuccessMsg"] = "Data saved successfully !";
-                return RedirectToAction("GetAll");
+                return RedirectToAction("GetOpenSalesOrderDispatch");
             }
             else
             {

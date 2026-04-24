@@ -39,6 +39,7 @@
             <input type="file" id="DocketImageFile" name="DocketImageFile" accept="image/*" class="form-control" />
 
             @Html.HiddenFor(model => model.SDTRDId)
+            @Html.HiddenFor(model => model.SalesDetailsID)
             @Html.HiddenFor(model => model.SalesMasterObj.SalesID)
             @Html.HiddenFor(model => model.DocketPhotoPath)
         </div>

@@ -408,6 +408,7 @@ namespace KPIWebAPI.Controllers
 
         private async Task<string> SendEmail(string TO_NAME, string TO_EMAIL, int PO_ID, Dictionary<string, string> keyValuePairs)
         {
+            await Task.Delay(100); // Simulate async work
             string response = "";
 
             //StringBuilder sb = new StringBuilder();
