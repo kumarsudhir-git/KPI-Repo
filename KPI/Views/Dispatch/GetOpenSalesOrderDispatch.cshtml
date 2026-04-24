@@ -1,7 +1,7 @@
 @model IEnumerable<KPILib.Models.SalesOrderDispatchSummary>
 
 @{
-    ViewBag.Title = "Open Sales Orders";
+    ViewBag.Title = "Ready To Dispatch";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 
     var successMessage = TempData["SuccessMsg"] as string ?? "";
@@ -9,6 +9,11 @@
 
 <div class="top_header">
     <h2>@ViewBag.Title</h2>
+</div>
+
+<div class="btn-group" style="margin-bottom: 15px;">
+    <div class="btn btn-info active" aria-current="page" style="cursor:default;">Ready To Dispatch</div>
+    <a href="../Dispatch/GetDispatchedHistory" class="btn btn-light">Dispatched History</a>
 </div>
 
 <div class="table-responsive">
@@ -21,21 +26,19 @@
                 <th>Location</th>
                 <th>Product Details</th>
                 <th>Packaging</th>
+                <th>Ready Qty</th>
                 <th>Committed Date</th>
                 <th>Sales Executive</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
+                var readyQty = item.Products.Sum(x => x.ReadyQty);
+                var canDispatch = item.Products.Any(x => x.CanDispatch);
                 <tr>
-                    <td @Html.Raw(item.ProductCount == 1
-                        ? "onclick='loadSalesDispatchDetailData(" + Json.Encode(item) + ")'"
-                        : "onclick='showProductDetails(" + Json.Encode(item) + ")'")>
-                        <a href="#">
-                            @item.SalesID
-                        </a>
-                    </td>
+                    <td @Html.Raw(item.ProductCount == 1 ? "onclick='loadSalesDispatchDetailData(" + Json.Encode(item) + ")'" : "onclick='showProductDetails(" + Json.Encode(item) + ")'")> <a href="#"> @item.SalesID </a> </td>
                     <td>@item.SalesDate.ToString("dd-MMM-yyyy")</td>
                     <td>@item.CustomerName</td>
                     <td>@item.LocationName</td>
@@ -50,8 +53,26 @@
                         }
                     </td>
                     <td>@item.PackagingDisplay</td>
+                    <td>@readyQty</td>
                     <td>@(item.CommittedDate.HasValue ? item.CommittedDate.Value.ToString("dd-MMM-yyyy") : "-")</td>
                     <td>@item.SalesExecutive</td>
+                    <td>
+                        @if (canDispatch)
+                        {
+                            if (item.ProductCount == 1)
+                            {
+                                <button type="button" class="btn btn-sm btn-primary" onclick='loadSalesDispatchDetailData(@Html.Raw(Json.Encode(new { SalesID = item.SalesID, SalesDetailsID = item.SalesDetailsID })))'>Dispatch</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-sm btn-primary" onclick='showProductDetails(@Html.Raw(Json.Encode(item)))'>Select Product</button>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-muted">Not Ready</span>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>
@@ -78,7 +99,6 @@
                                 <th>Product</th>
                                 <th>Packaging</th>
                                 <th>Ready Qty</th>
-                                <th>Status</th>
                                 <th>Qty</th>
                                 <th>Colour</th>
                                 <th>Gms</th>
@@ -137,7 +157,6 @@
                 + "<td>" + (product.ProductName || "") + "</td>"
                 + "<td>" + (product.Packaging || "") + "</td>"
                 + "<td>" + (product.ReadyQty || 0) + "</td>"
-                + "<td>" + (product.DispatchStatus || "-") + "</td>"
                 + "<td>" + product.Quantity + "</td>"
                 + "<td>" + (product.Color || "") + "</td>"
                 + "<td>" + (product.Gms || "") + "</td>"
@@ -190,22 +209,9 @@ function loadSalesDispatchDetailData(obj) {
     $.ajax({
         url: '../Dispatch/GetSalesDispatchDetailData',
         type: 'GET',
-        data: { salesId: obj.SalesID, salesDetailsId: obj.SalesDetailsID },
+        data: { salesId: obj.SalesID, salesDetailsId: obj.SalesDetailsID || null },
         success: function (data) {
             $('#dispatchDetailContainer').html(data);
-
-            //var form = $("#dispatchDetailModal").find("form");
-            //form.removeData("validator");
-            //form.removeData("unobtrusiveValidation");
-
-            //$.validator.unobtrusive.parse(form);
-
-            //var form = $("#dispatchForm");
-
-            //form.removeData("validator");
-            //form.removeData("unobtrusiveValidation");
-
-            //$.validator.unobtrusive.parse(form);
 
             $("form").removeData("validator");
             $("form").removeData("unobtrusiveValidation");
@@ -214,7 +220,7 @@ function loadSalesDispatchDetailData(obj) {
             InitializeDatePicker();
         },
         error: function () {
-            alert("An error occurred while fetching dispatch detail data.");
+            alert("An error occurred while fetching transporter detail data.");
         }
     });
     var options = { "backdrop": "static", keyboard: true };

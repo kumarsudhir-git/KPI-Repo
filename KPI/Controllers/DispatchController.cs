@@ -5,6 +5,7 @@ using KPILib.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -16,21 +17,18 @@ namespace KPI.Controllers
         // GET: Dispatch
         public ActionResult GetAll()
         {
-            var response = KPIAPIManager.GetAllDispatch01(0);
-            if (response.Response.ResponseCode == 200)
-            {
-                return View(response.data);
-            }
-            else
-            {
-                ViewBag.Error = response.Response.ResponseMsg;
-                return View("Error");
-            }
+            return RedirectToAction("GetOpenSalesOrderDispatch");
         }
 
         public ActionResult GetAllClosed()
         {
-            var response = KPIAPIManager.GetAllDispatch01(1);
+            return RedirectToAction("GetDispatchedHistory");
+        }
+
+        [HttpGet]
+        public ActionResult GetOpenSalesOrderDispatch()
+        {
+            var response = KPIAPIManager.GetOpenSalesOrderDispatchSummary();
             if (response.Response.ResponseCode == 200)
             {
                 return View(response.data);
@@ -43,12 +41,24 @@ namespace KPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetOpenSalesOrderDispatch()
+        public ActionResult GetDispatchedHistory(DateTime? fromDate = null, DateTime? toDate = null, int page = 1, int pageSize = 20)
         {
-            var response = KPIAPIManager.GetOpenSalesOrderDispatchSummary();
+            var response = KPIAPIManager.GetDispatchedHistory(fromDate, toDate);
             if (response.Response.ResponseCode == 200)
             {
-                return View(response.data);
+                var history = response.data.OrderByDescending(x => x.DispatchDate ?? DateTime.MinValue).ToList();
+                var totalRecords = history.Count;
+                var totalPages = totalRecords == 0 ? 1 : (int)Math.Ceiling((double)totalRecords / pageSize);
+                page = Math.Max(1, Math.Min(page, totalPages));
+
+                ViewBag.FromDate = fromDate;
+                ViewBag.ToDate = toDate;
+                ViewBag.Page = page;
+                ViewBag.PageSize = pageSize;
+                ViewBag.TotalPages = totalPages;
+                ViewBag.TotalRecords = totalRecords;
+
+                return View(history.Skip((page - 1) * pageSize).Take(pageSize).ToList());
             }
             else
             {

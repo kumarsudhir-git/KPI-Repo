@@ -1,5 +1,6 @@
 ﻿using KPILib.Models;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -389,6 +390,28 @@ namespace KPI.Classes
         public static SalesDispatchTransporterDetailsResponse SaveSalesDispatchDetailData(SalesDispatchTransporterDetailsMaster salesDispatchDetailMaster)
         {
             var result = CommonFunctions.client.PostAsJsonAsync("DispatchAPI/SaveSalesDispatchDetailData", salesDispatchDetailMaster).Result.Content.ReadAsAsync<SalesDispatchTransporterDetailsResponse>().Result;
+            return result;
+        }
+
+        public static SalesDispatchHistoryResponse GetDispatchedHistory(DateTime? fromDate = null, DateTime? toDate = null)
+        {
+            var url = "DispatchAPI/GetDispatchedHistory";
+            var query = new List<string>();
+            if (fromDate.HasValue)
+            {
+                query.Add("fromDate=" + fromDate.Value.ToString("yyyy-MM-dd"));
+            }
+            if (toDate.HasValue)
+            {
+                query.Add("toDate=" + toDate.Value.ToString("yyyy-MM-dd"));
+            }
+
+            if (query.Count > 0)
+            {
+                url += "?" + string.Join("&", query);
+            }
+
+            var result = CommonFunctions.client.GetAsync(url).Result.Content.ReadAsAsync<SalesDispatchHistoryResponse>().Result;
             return result;
         }
 

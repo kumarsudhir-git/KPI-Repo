@@ -1,4 +1,5 @@
-﻿using KPILib.Models;
+﻿using KPILib;
+using KPILib.Models;
 using KPIWebAPI.AuthFilters;
 using KPIWebAPI.Classes;
 using System;
@@ -84,33 +85,44 @@ namespace KPIWebAPI.Controllers
 
             try
             {
-                var salesOrders = db.SalesMasters
-                    .Where(x => x.SalesStatusID < (int)enumSalesStatus.Completed_Closed)
+                var readySalesDetails = db.SalesDetails
+                    .Include(x => x.SalesMaster.UserMaster)
+                    .Include(x => x.ProductMaster)
+                    .Where(x => x.IsActive
+                        && x.QtyBal > 0
+                        && x.SalesMaster.SalesStatusID < (int)enumSalesStatus.Completed_Closed
+                        && x.QtyProduced > x.QtyDispatched)
                     .OrderByDescending(x => x.SalesID)
-                    .ToList()
-                    .Where(x => x.SalesDetails.Any(sd => IsDispatchEligibleLine(sd)))
+                    .ThenBy(x => x.SalesDetailsID)
                     .ToList();
 
-                //var salesOrderData = (from SM in db.SalesMasters
-                //                      join SD in db.SalesDetails on SM.SalesID equals SD.SalesID
-                //                      join PP in db.ProductionPrograms on SD.SalesDetailsID equals PP.SalesDetailsID
-                //                      where PP.ProductQtyCompleted > 0 && SD.SalesStatusID == (int)enumSalesStatus.Completed_Closed
+                var salesOrders = readySalesDetails
+                    .GroupBy(x => x.SalesID)
+                    .OrderByDescending(x => x.Key)
+                    .ToList();
 
+                var locationIds = readySalesDetails
+                    .Select(x => x.SalesMaster.CompanyLocationID)
+                    .Distinct()
+                    .ToList();
+                var companyLocations = db.CompanyLocationMasters
+                    .Include(x => x.CompanyMaster)
+                    .Where(x => locationIds.Contains(x.CompanyLocationID))
+                    .ToList()
+                    .ToDictionary(x => x.CompanyLocationID, x => x);
+                var dispatchStatusMap = GetDispatchStatusDisplayMap(readySalesDetails.Select(x => x.SalesDetailsID).ToList());
 
-                foreach (var salesOrder in salesOrders)
+                foreach (var salesOrderGroup in salesOrders)
                 {
-                    var openProducts = salesOrder.SalesDetails
-                        .Where(x => IsDispatchEligibleLine(x))
+                    var salesOrder = salesOrderGroup.First().SalesMaster;
+                    var openProducts = salesOrderGroup
                         .OrderBy(x => x.SalesDetailsID)
                         .ToList();
-
-                    var companyLocation = db.CompanyLocationMasters
-                        .Include(x => x.CompanyMaster)
-                        .SingleOrDefault(x => x.CompanyLocationID == salesOrder.CompanyLocationID);
+                    companyLocations.TryGetValue(salesOrder.CompanyLocationID, out var companyLocation);
 
                     var summary = new SalesOrderDispatchSummary
                     {
-                        SalesDetailsID = salesOrder.SalesDetails.FirstOrDefault(x => IsDispatchEligibleLine(x))?.SalesDetailsID ?? 0,
+                        SalesDetailsID = openProducts.FirstOrDefault()?.SalesDetailsID ?? 0,
                         SalesID = salesOrder.SalesID,
                         SalesDate = salesOrder.SalesDate,
                         CustomerName = companyLocation != null && companyLocation.CompanyMaster != null ? companyLocation.CompanyMaster.CompanyName : string.Empty,
@@ -122,6 +134,7 @@ namespace KPIWebAPI.Controllers
 
                     foreach (var product in openProducts)
                     {
+                        var readyQty = GetReadyQty(product);
                         summary.Products.Add(new SalesOrderDispatchProduct
                         {
                             SalesDetailsID = product.SalesDetailsID,
@@ -129,12 +142,12 @@ namespace KPIWebAPI.Controllers
                             ProductName = product.ProductMaster != null ? product.ProductMaster.ProductName : string.Empty,
                             Packaging = product.Package,
                             Quantity = product.QtyBal,
-                            ReadyQty = GetReadyQty(product),
+                            ReadyQty = readyQty,
                             Color = product.Color,
                             Gms = product.Gms,
                             Instructions = product.Instructions,
-                            DispatchStatus = GetDispatchStatusDisplay(product.SalesDetailsID),
-                            CanDispatch = GetReadyQty(product) > 0 || product.QtyToDispatch > 0
+                            DispatchStatus = dispatchStatusMap.ContainsKey(product.SalesDetailsID) ? dispatchStatusMap[product.SalesDetailsID] : string.Empty,
+                            CanDispatch = readyQty > 0
                         });
                     }
 
@@ -154,6 +167,80 @@ namespace KPIWebAPI.Controllers
                     }
 
                     returnValue.data.Add(summary);
+                }
+
+                returnValue.Response.IsSuccessful();
+            }
+            catch (Exception ex)
+            {
+                returnValue.Response.ResponseMsg = ex.Message;
+                CommonLogger.Error(ex, ex.Message);
+            }
+
+            return Json(returnValue);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetDispatchedHistory(DateTime? fromDate = null, DateTime? toDate = null)
+        {
+            var returnValue = new SalesDispatchHistoryResponse();
+
+            try
+            {
+                var dispatchDetailsQuery = db.SalesDispatchDetails
+                    .Include(x => x.SalesDetail.SalesMaster.UserMaster)
+                    .Include(x => x.SalesDetail.ProductMaster)
+                    .AsQueryable();
+
+                if (fromDate.HasValue)
+                {
+                    var from = fromDate.Value.Date;
+                    dispatchDetailsQuery = dispatchDetailsQuery.Where(x => DbFunctions.TruncateTime(x.DispatchDate) >= from);
+                }
+
+                if (toDate.HasValue)
+                {
+                    var to = toDate.Value.Date;
+                    dispatchDetailsQuery = dispatchDetailsQuery.Where(x => DbFunctions.TruncateTime(x.DispatchDate) <= to);
+                }
+
+                var dispatchDetails = dispatchDetailsQuery
+                    .OrderByDescending(x => x.DispatchDate)
+                    .ToList();
+
+                var locationIds = dispatchDetails.Select(x => x.SalesDetail.SalesMaster.CompanyLocationID).Distinct().ToList();
+                var companyLocations = db.CompanyLocationMasters
+                    .Include(x => x.CompanyMaster)
+                    .Where(x => locationIds.Contains(x.CompanyLocationID))
+                    .ToList()
+                    .ToDictionary(x => x.CompanyLocationID, x => x);
+                var salesDetailIds = dispatchDetails.Select(x => x.SalesDetailsID).Distinct().ToList();
+                var transporterDetailsMap = GetLatestTransporterDetailMap(salesDetailIds);
+                var dispatchStatusMap = GetDispatchStatusDisplayMap(salesDetailIds);
+
+                foreach (var dispatch in dispatchDetails)
+                {
+                    transporterDetailsMap.TryGetValue(dispatch.SalesDetailsID, out var transporterDetail);
+                    companyLocations.TryGetValue(dispatch.SalesDetail.SalesMaster.CompanyLocationID, out var companyLocation);
+
+                    returnValue.data.Add(new SalesDispatchHistoryItem
+                    {
+                        SalesDispatchID = dispatch.SalesDispatchID,
+                        SalesID = dispatch.SalesDetail.SalesID,
+                        SalesDetailsID = dispatch.SalesDetailsID,
+                        SalesDate = dispatch.SalesDetail.SalesMaster.SalesDate,
+                        CustomerName = companyLocation != null && companyLocation.CompanyMaster != null ? companyLocation.CompanyMaster.CompanyName : string.Empty,
+                        LocationName = companyLocation != null ? companyLocation.LocationName : string.Empty,
+                        ProductName = dispatch.SalesDetail.ProductMaster != null ? dispatch.SalesDetail.ProductMaster.ProductName : string.Empty,
+                        Packaging = dispatch.SalesDetail.Package,
+                        DispatchQty = dispatch.DispatchQty,
+                        DispatchDate = transporterDetail != null && transporterDetail.DispatchDate.HasValue ? transporterDetail.DispatchDate : dispatch.DispatchDate,
+                        DispatchStatus = dispatchStatusMap.ContainsKey(dispatch.SalesDetailsID) ? dispatchStatusMap[dispatch.SalesDetailsID] : string.Empty,
+                        Transporter = transporterDetail != null ? transporterDetail.Transporter : string.Empty,
+                        DocketNo = transporterDetail != null ? transporterDetail.DocketNo : string.Empty,
+                        BillNo = transporterDetail != null ? transporterDetail.BillNo : string.Empty,
+                        PackedBy = transporterDetail != null ? transporterDetail.PackedBy : string.Empty
+                    });
                 }
 
                 returnValue.Response.IsSuccessful();
@@ -244,11 +331,36 @@ namespace KPIWebAPI.Controllers
                         }
                     }
 
-                    var salesDetailsData = db.SalesDetails.Where(x => x.SalesID == salesId).ToList();
-                    returnValue.transporterDetailsMasterObj.SalesDetailListObj = mapper.Map<List<SalesDetails>>(salesDetailsData);
+                    var salesDetailsData = db.SalesDetails.Where(x => x.SalesID == salesId);
+                    if (detailId > 0)
+                    {
+                        salesDetailsData = salesDetailsData.Where(x => x.SalesDetailsID == detailId);
+                    }
+
+                    returnValue.transporterDetailsMasterObj.SalesDetailListObj = salesDetailsData
+                        .ToList()
+                        .Select(x =>
+                        {
+                            var salesDetail = mapper.Map<SalesDetails>(x);
+                            salesDetail.ProductName = x.ProductMaster != null ? x.ProductMaster.ProductName : string.Empty;
+                            salesDetail.ReadyQty = GetReadyQty(x);
+                            return salesDetail;
+                        })
+                        .ToList();
                     if (returnValue.transporterDetailsMasterObj.SalesDetailsID == 0 && detailId > 0)
                     {
                         returnValue.transporterDetailsMasterObj.SalesDetailsID = detailId;
+                    }
+                    if (detailId > 0)
+                    {
+                        var selectedLine = returnValue.transporterDetailsMasterObj.SalesDetailListObj
+                            .FirstOrDefault(x => x.SalesDetailsID == detailId);
+                        if (selectedLine != null)
+                        {
+                            returnValue.transporterDetailsMasterObj.DispatchQty = selectedLine.QtyToDispatch > 0
+                                ? selectedLine.QtyToDispatch
+                                : selectedLine.ReadyQty;
+                        }
                     }
                 }
 
@@ -272,6 +384,37 @@ namespace KPIWebAPI.Controllers
             {
                 using (var transaction = db.Database.BeginTransaction())
                 {
+                    if (salesDispatchDetailMaster.SalesDetailsID <= 0)
+                    {
+                        throw new InvalidOperationException("Please select a product line to dispatch.");
+                    }
+
+                    var selectedSalesDetail = db.SalesDetails
+                        .Include(x => x.ProductMaster.ProdReadyStoreds)
+                        .SingleOrDefault(x => x.SalesDetailsID == salesDispatchDetailMaster.SalesDetailsID);
+                    if (selectedSalesDetail == null)
+                    {
+                        throw new InvalidOperationException("Sales detail not found.");
+                    }
+
+                    var requestedDispatchQty = Math.Max(0, salesDispatchDetailMaster.DispatchQty);
+                    if (requestedDispatchQty > 0)
+                    {
+                        var readyQty = GetReadyQty(selectedSalesDetail);
+                        if (requestedDispatchQty > readyQty)
+                        {
+                            throw new InvalidOperationException("Dispatch quantity cannot be greater than ready quantity.");
+                        }
+
+                        if (requestedDispatchQty > selectedSalesDetail.QtyBal)
+                        {
+                            throw new InvalidOperationException("Dispatch quantity cannot be greater than balance quantity.");
+                        }
+
+                        selectedSalesDetail.QtyToDispatch = requestedDispatchQty;
+                        db.Entry(selectedSalesDetail).State = EntityState.Modified;
+                    }
+
                     SalesDispatchTransporterDetail salesDispatchDetail =
                         mapper.Map<SalesDispatchTransporterDetailsMaster, SalesDispatchTransporterDetail>(salesDispatchDetailMaster);
 
@@ -534,16 +677,14 @@ namespace KPIWebAPI.Controllers
                 .FirstOrDefault();
         }
 
-        private bool IsDispatchEligibleLine(SalesDetail salesDetail)
+        private bool IsReadyToDispatchLine(SalesDetail salesDetail)
         {
             if (salesDetail == null || !salesDetail.IsActive || salesDetail.QtyBal <= 0)
             {
                 return false;
             }
 
-            return GetReadyQty(salesDetail) > 0
-                || salesDetail.QtyToDispatch > 0
-                || db.SalesDispatchTransporterDetails.Any(x => x.SalesDetailsID == salesDetail.SalesDetailsID);
+            return GetReadyQty(salesDetail) > 0;
         }
 
         private int GetReadyQty(SalesDetail salesDetail)
@@ -556,25 +697,58 @@ namespace KPIWebAPI.Controllers
             return Math.Max(0, salesDetail.QtyProduced - salesDetail.QtyDispatched);
         }
 
-        private string GetDispatchStatusDisplay(int salesDetailsId)
+        private Dictionary<int, SalesDispatchTransporterDetail> GetLatestTransporterDetailMap(List<int> salesDetailIds)
         {
-            var latestStatusCode = db.SalesDispatchTransporterDetails
-                .Where(x => x.SalesDetailsID == salesDetailsId && x.DispatchStatus != null)
-                .OrderByDescending(x => x.UpdatedOn ?? x.CreatedOn)
-                .Select(x => x.DispatchStatus)
-                .FirstOrDefault();
-
-            if (string.IsNullOrWhiteSpace(latestStatusCode))
+            if (salesDetailIds == null || salesDetailIds.Count == 0)
             {
-                return string.Empty;
+                return new Dictionary<int, SalesDispatchTransporterDetail>();
             }
 
-            var statusLookup = db.LookUpMasters
-                .Where(x => x.LookUpType == ApplicationConstants.StatusType && x.LookUpValue == latestStatusCode && x.IsActive)
-                .Select(x => x.LookUpName)
-                .FirstOrDefault();
+            return db.SalesDispatchTransporterDetails
+                .Where(x => x.SalesDetailsID.HasValue && salesDetailIds.Contains(x.SalesDetailsID.Value))
+                .ToList()
+                .GroupBy(x => x.SalesDetailsID.Value)
+                .ToDictionary(
+                    x => x.Key,
+                    x => x.OrderByDescending(y => y.UpdatedOn ?? y.CreatedOn).FirstOrDefault());
+        }
 
-            return string.IsNullOrWhiteSpace(statusLookup) ? latestStatusCode : statusLookup;
+        private Dictionary<int, string> GetDispatchStatusDisplayMap(List<int> salesDetailIds)
+        {
+            if (salesDetailIds == null || salesDetailIds.Count == 0)
+            {
+                return new Dictionary<int, string>();
+            }
+
+            var latestStatusCodes = db.SalesDispatchTransporterDetails
+                .Where(x => x.SalesDetailsID.HasValue
+                    && salesDetailIds.Contains(x.SalesDetailsID.Value)
+                    && x.DispatchStatus != null)
+                .ToList()
+                .GroupBy(x => x.SalesDetailsID.Value)
+                .ToDictionary(
+                    x => x.Key,
+                    x => x.OrderByDescending(y => y.UpdatedOn ?? y.CreatedOn)
+                        .Select(y => y.DispatchStatus)
+                        .FirstOrDefault());
+
+            var statusLookup = db.LookUpMasters
+                .Where(x => x.LookUpType == ApplicationConstants.StatusType && x.IsActive)
+                .ToList()
+                .GroupBy(x => x.LookUpValue)
+                .ToDictionary(x => x.Key, x => x.First().LookUpName);
+
+            return latestStatusCodes.ToDictionary(
+                x => x.Key,
+                x => string.IsNullOrWhiteSpace(x.Value)
+                    ? string.Empty
+                    : (statusLookup.ContainsKey(x.Value) ? statusLookup[x.Value] : x.Value));
+        }
+
+        private string GetDispatchStatusDisplay(int salesDetailsId)
+        {
+            var dispatchStatusMap = GetDispatchStatusDisplayMap(new List<int> { salesDetailsId });
+            return dispatchStatusMap.ContainsKey(salesDetailsId) ? dispatchStatusMap[salesDetailsId] : string.Empty;
         }
 
         private bool IsDispatchCompleted(string dispatchStatusCode)

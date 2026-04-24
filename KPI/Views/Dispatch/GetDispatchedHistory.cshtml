@@ -1,0 +1,108 @@
+@model IEnumerable<KPILib.Models.SalesDispatchHistoryItem>
+@using System.Linq
+
+@{
+    ViewBag.Title = "Dispatched History";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+
+    DateTime? fromDate = ViewBag.FromDate != null ? (DateTime?)ViewBag.FromDate : null;
+    DateTime? toDate = ViewBag.ToDate != null ? (DateTime?)ViewBag.ToDate : null;
+    int page = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+}
+
+<div class="top_header">
+    <h2>@ViewBag.Title</h2>
+</div>
+
+<div class="btn-group" style="margin-bottom: 15px;">
+    <a href="../Dispatch/GetOpenSalesOrderDispatch" class="btn btn-light">Ready To Dispatch</a>
+    <div class="btn btn-info active" aria-current="page" style="cursor:default;">Dispatched History</div>
+</div>
+
+@using (Html.BeginForm("GetDispatchedHistory", "Dispatch", FormMethod.Get, new { @class = "form-inline", style = "margin-bottom: 15px;" }))
+{
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-md-3">
+            <label>From Date</label>
+            <input type="date" name="fromDate" value="@(fromDate.HasValue ? fromDate.Value.ToString("yyyy-MM-dd") : string.Empty)" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label>To Date</label>
+            <input type="date" name="toDate" value="@(toDate.HasValue ? toDate.Value.ToString("yyyy-MM-dd") : string.Empty)" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label>&nbsp;</label>
+            <div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="table-responsive">
+    <table class="table table-sm table-striped table-hover">
+        <thead>
+            <tr>
+                <th>SO No</th>
+                <th>SO Date</th>
+                <th>Customer</th>
+                <th>Location</th>
+                <th>Product</th>
+                <th>Packaging</th>
+                <th>Dispatch Qty</th>
+                <th>Dispatch Date</th>
+                <th>Status</th>
+                <th>Transporter</th>
+                <th>Docket No</th>
+                <th>Bill No</th>
+                <th>Packed By</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.SalesID</td>
+                        <td>@item.SalesDate.ToString("dd-MMM-yyyy")</td>
+                        <td>@item.CustomerName</td>
+                        <td>@item.LocationName</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Packaging</td>
+                        <td>@item.DispatchQty</td>
+                        <td>@(item.DispatchDate.HasValue ? item.DispatchDate.Value.ToString("dd-MMM-yyyy") : "-")</td>
+                        <td>@(string.IsNullOrWhiteSpace(item.DispatchStatus) ? "-" : item.DispatchStatus)</td>
+                        <td>@item.Transporter</td>
+                        <td>@item.DocketNo</td>
+                        <td>@item.BillNo</td>
+                        <td>@item.PackedBy</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="13" class="text-center">No dispatched records found for the selected range.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="col-md-12" style="display:flex; justify-content:space-between; align-items:center;">
+        <div>Page @page of @totalPages</div>
+        <div class="btn-group">
+            @if (page > 1)
+            {
+                <a class="btn btn-light" href="@Url.Action("GetDispatchedHistory", new { fromDate = fromDate.HasValue ? fromDate.Value.ToString("yyyy-MM-dd") : null, toDate = toDate.HasValue ? toDate.Value.ToString("yyyy-MM-dd") : null, page = page - 1 })">Previous</a>
+            }
+            @if (page < totalPages)
+            {
+                <a class="btn btn-light" href="@Url.Action("GetDispatchedHistory", new { fromDate = fromDate.HasValue ? fromDate.Value.ToString("yyyy-MM-dd") : null, toDate = toDate.HasValue ? toDate.Value.ToString("yyyy-MM-dd") : null, page = page + 1 })">Next</a>
+            }
+        </div>
+    </div>
+</div>

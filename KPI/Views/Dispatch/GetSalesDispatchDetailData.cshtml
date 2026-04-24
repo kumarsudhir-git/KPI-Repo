@@ -40,6 +40,7 @@
 
             @Html.HiddenFor(model => model.SDTRDId)
             @Html.HiddenFor(model => model.SalesDetailsID)
+            @Html.HiddenFor(model => model.DispatchQty)
             @Html.HiddenFor(model => model.SalesMasterObj.SalesID)
             @Html.HiddenFor(model => model.DocketPhotoPath)
         </div>
@@ -147,9 +148,17 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
+                    <label>Selected Dispatch</label>
+                    <div id="selectedDispatchSummary" class="form-control" style="height:auto; min-height:34px;">
+                        Select a product line below
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
                     <label>&nbsp;</label>
                     <div>
-                        <input type="submit" class="btn btn-primary" value="Save" @*onclick="return validateDispatchDetailForm()"*@ />
+                        <input type="submit" id="btnSaveDispatchDetail" class="btn btn-primary" value="Save" />
                     </div>
                 </div>
             </div>
@@ -177,6 +186,12 @@
                                     Quantity
                                 </th>
                                 <th>
+                                    Ready Qty
+                                </th>
+                                <th>
+                                    Dispatched Qty
+                                </th>
+                                <th>
                                     Package
                                 </th>
                                 <th>
@@ -191,13 +206,56 @@
                                 <th>
                                     Status
                                 </th>
+                                <th>
+                                    Dispatch Now
+                                </th>
+                                <th>
+                                    Action
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model.SalesDetailListObj)
                             {
-                                item.ShowAction = false;
-                                Html.RenderAction("GetSalesLineItemPartial", "Sales", item);
+                                var defaultDispatchQty = item.QtyToDispatch > 0 ? item.QtyToDispatch : item.ReadyQty;
+                                var isSelectedLine = Model.SalesDetailsID == item.SalesDetailsID;
+                                <tr class="dispatch-line-row @(isSelectedLine ? "table-primary" : "")" data-salesdetailsid="@item.SalesDetailsID" data-productname="@item.ProductName" data-readyqty="@item.ReadyQty">
+                                    <td>@item.ProductName</td>
+                                    <td>@item.Color</td>
+                                    <td>@item.Gms</td>
+                                    <td>@item.Qty</td>
+                                    <td>@item.ReadyQty</td>
+                                    <td>@item.QtyDispatched</td>
+                                    <td>@item.Package</td>
+                                    <td>@item.Rate</td>
+                                    <td>@(item.SampleReq ? "Yes" : "No")</td>
+                                    <td>@item.Instructions</td>
+                                    <td>@item.SalesStatusID</td>
+                                    <td style="width:130px;">
+                                        <input type="number"
+                                               class="form-control dispatch-qty-input"
+                                               min="0"
+                                               max="@item.ReadyQty"
+                                               value="@(isSelectedLine ? Model.DispatchQty : defaultDispatchQty)"
+                                               data-salesdetailsid="@item.SalesDetailsID"
+                                               data-productname="@item.ProductName"
+                                               data-readyqty="@item.ReadyQty" />
+                                    </td>
+                                    <td>
+                                        @if (item.ReadyQty > 0)
+                                        {
+                                            <button type="button"
+                                                    class="btn btn-sm btn-primary"
+                                                    onclick="selectDispatchLine(@item.SalesDetailsID, '@HttpUtility.JavaScriptStringEncode(item.ProductName)', @item.ReadyQty)">
+                                                Use Qty
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Not Ready</span>
+                                        }
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -241,5 +299,80 @@
     //        });
     //    }
     //}
+
+    function updateSelectedDispatchSummary(productName, qty) {
+        if (productName && qty > 0) {
+            $("#selectedDispatchSummary").text(productName + " - Qty " + qty);
+        } else {
+            $("#selectedDispatchSummary").text("Select a product line below");
+        }
+    }
+
+    function selectDispatchLine(salesDetailsId, productName, readyQty) {
+        var $input = $(".dispatch-qty-input[data-salesdetailsid='" + salesDetailsId + "']");
+        var qty = parseInt($input.val(), 10) || 0;
+
+        if (qty <= 0) {
+            alert("Enter dispatch quantity greater than 0.");
+            $input.focus();
+            return;
+        }
+
+        if (qty > readyQty) {
+            alert("Dispatch quantity cannot be greater than ready quantity.");
+            $input.val(readyQty);
+            $input.focus();
+            return;
+        }
+
+        $("#SalesDetailsID").val(salesDetailsId);
+        $("#DispatchQty").val(qty);
+        $(".dispatch-line-row").removeClass("table-primary");
+        $(".dispatch-line-row[data-salesdetailsid='" + salesDetailsId + "']").addClass("table-primary");
+        updateSelectedDispatchSummary(productName, qty);
+    }
+
+    $(".dispatch-qty-input").on("change keyup", function () {
+        var readyQty = parseInt($(this).data("readyqty"), 10) || 0;
+        var currentQty = parseInt($(this).val(), 10) || 0;
+
+        if (currentQty < 0) {
+            $(this).val(0);
+            currentQty = 0;
+        }
+
+        if (currentQty > readyQty) {
+            $(this).val(readyQty);
+            currentQty = readyQty;
+        }
+
+        if ($("#SalesDetailsID").val() === $(this).data("salesdetailsid").toString()) {
+            $("#DispatchQty").val(currentQty);
+            updateSelectedDispatchSummary($(this).data("productname"), currentQty);
+        }
+    });
+
+    $("#btnSaveDispatchDetail").on("click", function (e) {
+        if ($("#DispatchStatus").val() === "ST002") {
+            var dispatchQty = parseInt($("#DispatchQty").val(), 10) || 0;
+            if (!(parseInt($("#SalesDetailsID").val(), 10) > 0) || dispatchQty <= 0) {
+                e.preventDefault();
+                alert("Select a product line and dispatch quantity before saving DONE status.");
+            }
+        }
+    });
+
+    $(function () {
+        var selectedSalesDetailsId = parseInt($("#SalesDetailsID").val(), 10) || 0;
+        if (selectedSalesDetailsId > 0) {
+            var $selectedInput = $(".dispatch-qty-input[data-salesdetailsid='" + selectedSalesDetailsId + "']");
+            if ($selectedInput.length) {
+                selectDispatchLine(
+                    selectedSalesDetailsId,
+                    $selectedInput.data("productname"),
+                    parseInt($selectedInput.data("readyqty"), 10) || 0);
+            }
+        }
+    });
 
 </script>

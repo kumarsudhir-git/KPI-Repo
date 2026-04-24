@@ -577,6 +577,7 @@
     <Content Include="Views\RMInventory\SaveRejectionMaterial.cshtml" />
     <Content Include="Views\Dispatch\GetSalesDispatchDetailData.cshtml" />
     <Content Include="Views\Dispatch\GetOpenSalesOrderDispatch.cshtml" />
+    <Content Include="Views\Dispatch\GetDispatchedHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

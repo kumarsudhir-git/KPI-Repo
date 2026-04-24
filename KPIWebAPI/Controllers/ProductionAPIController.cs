@@ -4,6 +4,7 @@ using KPIWebAPI.Classes;
 using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 
@@ -629,7 +630,10 @@ namespace KPIWebAPI.Controllers
                 {
                     try
                     {
-                        var productionProgram = db.ProductionPrograms.SingleOrDefault(x => x.ProductionProgramID == iProductionProgramID);
+                        var productionProgram = db.ProductionPrograms
+                            .Include(x => x.ProductMaster)
+                            .Include(x => x.SalesDetail.SalesMaster.SalesDetails.Select(y => y.ProductionPrograms))
+                            .SingleOrDefault(x => x.ProductionProgramID == iProductionProgramID);
                         if (productionProgram == null)
                         {
                             returnValue.ResponseMsg = "Production program not found.";
@@ -645,8 +649,7 @@ namespace KPIWebAPI.Controllers
 
                         var prod = productionProgram.ProductMaster;
                         var salesDetail = productionProgram.SalesDetail;
-                        // || !prod.PkgsPerRack.HasValue || prod.PkgsPerRack.Value <= 0
-                        if (!prod.PkgQty.HasValue || prod.PkgQty.Value <= 0)
+                        if (!prod.PkgQty.HasValue || prod.PkgQty.Value <= 0 || !prod.PkgsPerRack.HasValue || prod.PkgsPerRack.Value <= 0)
                         {
                             returnValue.ResponseMsg = "Product packaging configuration is invalid.";
                             return Json(returnValue);
@@ -675,52 +678,55 @@ namespace KPIWebAPI.Controllers
                             .Where(x => x.ProductID == prod.ProductID)
                             .GroupBy(x => x.RackID)
                             .Select(y => new { y.Key, Qty = y.Sum(z => z.Qty) })
-                            .Where(x => x.Qty < (pkgQty * (pkgsPerRack - 1)))
+                            .Where(x => x.Qty < rackCapacity)
                             .OrderBy(r => r.Qty)
                             .ToList();
 
                         foreach (var r in racks)
                         {
                             var availableQty = rackCapacity - r.Qty;
-                            while (availableQty >= pkgQty && iQty >= pkgQty)
+                            while (availableQty > 0 && iQty > 0)
                             {
-                                stagedRackEntries.Add(CreateProdReadyStored(productionProgram.ProductionProgramID, r.Key, prod.ProductID, pkgQty, timestamp));
-                                availableQty -= pkgQty;
-                                iQty -= pkgQty;
+                                var qtyToStore = Math.Min(iQty >= pkgQty ? pkgQty : iQty, availableQty);
+                                if (qtyToStore <= 0)
+                                {
+                                    break;
+                                }
+
+                                stagedRackEntries.Add(CreateProdReadyStored(productionProgram.ProductionProgramID, r.Key, prod.ProductID, qtyToStore, timestamp));
+                                availableQty -= qtyToStore;
+                                iQty -= qtyToStore;
                             }
-                            if (availableQty >= iQty && iQty <= pkgQty && iQty > 0)
+
+                            if (iQty == 0)
                             {
-                                stagedRackEntries.Add(CreateProdReadyStored(productionProgram.ProductionProgramID, r.Key, prod.ProductID, iQty, timestamp));
-                                iQty = 0;
                                 break;
                             }
                         }
 
+                        var emptyRackIds = iQty > 0
+                            ? db.sp_GetEmptyRacks().Where(x => x.HasValue).Select(x => x.Value).ToList()
+                            : new List<int>();
+                        var emptyRackIndex = 0;
+
                         while (iQty > 0)
                         {
-                            var emptyRackID = db.sp_GetEmptyRacks().SingleOrDefault();
-
-                            if (emptyRackID.HasValue)
+                            if (emptyRackIndex < emptyRackIds.Count)
                             {
+                                var emptyRackID = emptyRackIds[emptyRackIndex++];
                                 var availableQty = rackCapacity;
-                                var entriesForRack = new List<ProdReadyStored>();
 
-                                while (availableQty >= pkgQty && iQty >= pkgQty) //&& iQty > 0 
+                                while (availableQty > 0 && iQty > 0)
                                 {
-                                    entriesForRack.Add(CreateProdReadyStored(productionProgram.ProductionProgramID, emptyRackID.Value, prod.ProductID, pkgQty, timestamp));
-                                    availableQty -= pkgQty;
-                                    iQty -= pkgQty;
-                                }
-                                if (availableQty >= iQty && iQty <= pkgQty)
-                                {
-                                    entriesForRack.Add(CreateProdReadyStored(productionProgram.ProductionProgramID, emptyRackID.Value, prod.ProductID, iQty, timestamp));
-                                    iQty = 0;
-                                }
+                                    var qtyToStore = Math.Min(iQty >= pkgQty ? pkgQty : iQty, availableQty);
+                                    if (qtyToStore <= 0)
+                                    {
+                                        break;
+                                    }
 
-                                if (entriesForRack.Count > 0)
-                                {
-                                    db.ProdReadyStoreds.AddRange(entriesForRack);
-                                    db.SaveChanges();
+                                    stagedRackEntries.Add(CreateProdReadyStored(productionProgram.ProductionProgramID, emptyRackID, prod.ProductID, qtyToStore, timestamp));
+                                    availableQty -= qtyToStore;
+                                    iQty -= qtyToStore;
                                 }
 
                                 if (iQty == 0)
@@ -774,13 +780,12 @@ namespace KPIWebAPI.Controllers
                             db.MachineHistories.Add(machineHistory);
                         }
 
-                        db.SaveChanges();
-
                         if (salesDetail != null && salesDetail.SalesMaster != null)
                         {
                             RecalculateSalesMasterStatus(salesDetail.SalesMaster);
-                            db.SaveChanges();
                         }
+
+                        db.SaveChanges();
 
                         transaction.Commit();
 

@@ -113,6 +113,7 @@ namespace KPILib.Models
         public string DocketPhotoPath { get; set; }
         public string BillNo { get; set; }
         public string PackedBy { get; set; }
+        public int DispatchQty { get; set; }
         public bool SmsSentFlag { get; set; } = false;
         public int? CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
@@ -165,6 +166,37 @@ namespace KPILib.Models
         }
 
         public List<SalesOrderDispatchSummary> data { get; set; }
+        public ResponseObj Response { get; set; }
+    }
+
+    public class SalesDispatchHistoryItem
+    {
+        public int SalesDispatchID { get; set; }
+        public int SalesID { get; set; }
+        public int SalesDetailsID { get; set; }
+        public DateTime SalesDate { get; set; }
+        public string CustomerName { get; set; }
+        public string LocationName { get; set; }
+        public string ProductName { get; set; }
+        public string Packaging { get; set; }
+        public int DispatchQty { get; set; }
+        public DateTime? DispatchDate { get; set; }
+        public string DispatchStatus { get; set; }
+        public string Transporter { get; set; }
+        public string DocketNo { get; set; }
+        public string BillNo { get; set; }
+        public string PackedBy { get; set; }
+    }
+
+    public class SalesDispatchHistoryResponse
+    {
+        public SalesDispatchHistoryResponse()
+        {
+            data = new List<SalesDispatchHistoryItem>();
+            Response = new ResponseObj();
+        }
+
+        public List<SalesDispatchHistoryItem> data { get; set; }
         public ResponseObj Response { get; set; }
     }
 }

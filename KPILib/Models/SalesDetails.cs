@@ -23,6 +23,11 @@ namespace KPILib.Models
         public string Package { get; set; }
         public string Rate { get; set; }
         public bool SampleReq { get; set; }
+        public int QtyProduced { get; set; }
+        public int QtyToDispatch { get; set; }
+        public int QtyDispatched { get; set; }
+        public int QtyBal { get; set; }
+        public int ReadyQty { get; set; }
         [Display(Name = "Status")]
         public int SalesStatusID { get; set; }
         public bool ShowAction { get; set; } = true;
