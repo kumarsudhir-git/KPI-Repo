@@ -52,7 +52,7 @@ namespace KPIWebAPI.Controllers
                             QtyDispatched = obj.SalesDispatchDetails.Sum(x => x.DispatchQty),      //replace with dispatched qty
                             QtyBal = obj.QtyBal,
                             //QtyAvailable = (int)obj.ProductMaster.ProductInventoryMasters.Sum(x => x.Qty) - db.SalesDetails.Where(x => x.ProductID == obj.ProductID).Sum(x => x.QtyBlocked + x.QtyToDispatch),
-                            QtyAvailable = (int)obj.ProductMaster.ProdReadyStoreds.Sum(x => x.Qty) - db.SalesDetails.Where(x => x.ProductID == obj.ProductID).Sum(x => x.QtyBlocked + x.QtyToDispatch),
+                            QtyAvailable = Math.Max(0, (int)obj.ProductMaster.ProdReadyStoreds.Sum(x => x.Qty) - db.SalesDetails.Where(x => x.ProductID == obj.ProductID).Sum(x => x.QtyBlocked + x.QtyToDispatch)),
                             QtyToProduce = obj.ProductionPrograms.Where(x => x.ProductID == obj.ProductID && x.SalesDetailsID == obj.SalesDetailsID && x.ProductQtyCompleted == 0 && x.InProductionQty == 0).Sum(x => x.ProductQty),
                             QtyInProduction = obj.ProductionPrograms.Where(x => x.ProductID == obj.ProductID && x.SalesDetailsID == obj.SalesDetailsID).Sum(x => x.InProductionQty),
                         },
@@ -87,13 +87,15 @@ namespace KPIWebAPI.Controllers
             {
                 var readySalesDetails = db.SalesDetails
                     .Include(x => x.SalesMaster.UserMaster)
-                    .Include(x => x.ProductMaster)
+                    .Include(x => x.ProductMaster.ProdReadyStoreds)
                     .Where(x => x.IsActive
                         && x.QtyBal > 0
                         && x.SalesMaster.SalesStatusID < (int)enumSalesStatus.Completed_Closed
-                        && x.QtyProduced > x.QtyDispatched)
+                        && (x.QtyProduced > 0 || x.QtyToDispatch > 0 || x.QtyDispatched > 0))
                     .OrderByDescending(x => x.SalesID)
                     .ThenBy(x => x.SalesDetailsID)
+                    .ToList()
+                    .Where(x => GetReadyQty(x) > 0)
                     .ToList();
 
                 var salesOrders = readySalesDetails
@@ -399,6 +401,9 @@ namespace KPIWebAPI.Controllers
                     }
 
                     var requestedDispatchQty = Math.Max(0, salesDispatchDetailMaster.DispatchQty);
+                    selectedSalesDetail.QtyToDispatch = requestedDispatchQty;
+                    db.Entry(selectedSalesDetail).State = EntityState.Modified;
+
                     if (requestedDispatchQty > 0)
                     {
                         var readyQty = GetReadyQty(selectedSalesDetail);
@@ -411,9 +416,6 @@ namespace KPIWebAPI.Controllers
                         {
                             throw new InvalidOperationException("Dispatch quantity cannot be greater than balance quantity.");
                         }
-
-                        selectedSalesDetail.QtyToDispatch = requestedDispatchQty;
-                        db.Entry(selectedSalesDetail).State = EntityState.Modified;
                     }
 
                     SalesDispatchTransporterDetail salesDispatchDetail =
@@ -592,10 +594,14 @@ namespace KPIWebAPI.Controllers
                 return;
             }
 
-            var machineId = GetAvailableMachineId(item.ProductMaster.MouldID);
-            if (!machineId.HasValue)
+            if (item.ProductMaster == null)
             {
-                throw new InvalidOperationException("No machine is currently available for the selected mould.");
+                throw new InvalidOperationException("Product not found for the selected sales order line.");
+            }
+
+            if (item.ProductMaster.MouldID <= 0)
+            {
+                throw new InvalidOperationException("No mould is configured for the selected product.");
             }
 
             var timestamp = DateTime.Now;
@@ -613,7 +619,7 @@ namespace KPIWebAPI.Controllers
             }
 
             targetProgram.ProductQty = toProduceQty;
-            targetProgram.MachineID = machineId.Value;
+            targetProgram.MachineID = null;
             targetProgram.InProductionQty = 0;
             targetProgram.ProductQtyCompleted = 0;
             targetProgram.UserID = userId;
@@ -683,25 +689,6 @@ namespace KPIWebAPI.Controllers
             return (int)Math.Ceiling(rmReqdForUomQty * (decimal)toProduceQty / minQtyUom);
         }
 
-        private int? GetAvailableMachineId(int mouldId)
-        {
-            return db.MachineMouldMappings
-                .Where(x => x.MouldID == mouldId && !x.IsDiscontinued && !x.MachineMaster.IsDiscontinued)
-                .Select(x => new
-                {
-                    x.MachineID,
-                    LatestHistoryId = x.MachineMaster.MachineHistories.Max(h => (int?)h.MachineHistoryID)
-                })
-                .Join(
-                    db.MachineHistories,
-                    machine => machine.LatestHistoryId,
-                    history => (int?)history.MachineHistoryID,
-                    (machine, history) => new { machine.MachineID, history.MachineStatusID })
-                .Where(x => x.MachineStatusID == (int)enumMachineStatus.NotInUse)
-                .Select(x => (int?)x.MachineID)
-                .FirstOrDefault();
-        }
-
         private bool IsReadyToDispatchLine(SalesDetail salesDetail)
         {
             if (salesDetail == null || !salesDetail.IsActive || salesDetail.QtyBal <= 0)
@@ -719,7 +706,26 @@ namespace KPIWebAPI.Controllers
                 return 0;
             }
 
-            return Math.Max(0, salesDetail.QtyProduced - salesDetail.QtyDispatched);
+            var lineReadyQty = Math.Max(0, salesDetail.QtyProduced - salesDetail.QtyDispatched);
+            if (lineReadyQty == 0 || salesDetail.ProductMaster == null)
+            {
+                return lineReadyQty;
+            }
+
+            var availableProductStock = salesDetail.ProductMaster.ProdReadyStoreds != null
+                ? salesDetail.ProductMaster.ProdReadyStoreds.Where(x => x.Qty > 0).Sum(x => x.Qty)
+                : db.ProdReadyStoreds.Where(x => x.ProductID == salesDetail.ProductID && x.Qty > 0).Sum(x => x.Qty);
+
+            var reservedForOtherLines = db.SalesDetails
+                .Where(x => x.IsActive
+                    && x.ProductID == salesDetail.ProductID
+                    && x.SalesDetailsID != salesDetail.SalesDetailsID)
+                .Select(x => (int?)x.QtyToDispatch)
+                .DefaultIfEmpty(0)
+                .Sum() ?? 0;
+
+            var dispatchableQty = Math.Max(0, availableProductStock - reservedForOtherLines);
+            return Math.Min(salesDetail.QtyBal, Math.Min(lineReadyQty, dispatchableQty));
         }
 
         private Dictionary<int, SalesDispatchTransporterDetail> GetLatestTransporterDetailMap(List<int> salesDetailIds)
@@ -783,18 +789,22 @@ namespace KPIWebAPI.Controllers
                 return false;
             }
 
-            if (string.Equals(dispatchStatusCode, ApplicationStatus.Done, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(dispatchStatusCode, ApplicationStatus.Done, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(dispatchStatusCode.Trim(), "Done", StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
 
             var statusLookup = db.LookUpMasters
-                .Where(x => x.LookUpType == ApplicationConstants.StatusType && x.LookUpValue == dispatchStatusCode && x.IsActive)
-                .Select(x => x.LookUpName)
+                .Where(x => x.LookUpType == ApplicationConstants.StatusType
+                    && x.IsActive
+                    && (x.LookUpValue == dispatchStatusCode || x.LookUpName == dispatchStatusCode))
+                .Select(x => new { x.LookUpValue, x.LookUpName })
                 .FirstOrDefault();
 
-            return !string.IsNullOrWhiteSpace(statusLookup)
-                && string.Equals(statusLookup.Trim(), ApplicationStatus.Done, StringComparison.OrdinalIgnoreCase);
+            return statusLookup != null
+                && (string.Equals(statusLookup.LookUpValue, ApplicationStatus.Done, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals((statusLookup.LookUpName ?? string.Empty).Trim(), "Done", StringComparison.OrdinalIgnoreCase));
         }
 
         private void RecalculateSalesStatuses(SalesMaster salesMaster)

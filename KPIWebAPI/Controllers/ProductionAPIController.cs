@@ -335,7 +335,10 @@ namespace KPIWebAPI.Controllers
                 {
                     try
                     {
-                        var productionProgram = db.ProductionPrograms.SingleOrDefault(x => x.ProductionProgramID == iProductionProgramID);
+                        var productionProgram = db.ProductionPrograms
+                            .Include(x => x.ProductMaster.ProductRawMaterialMappings)
+                            .Include(x => x.SalesDetail.SalesMaster.SalesDetails.Select(y => y.ProductionPrograms))
+                            .SingleOrDefault(x => x.ProductionProgramID == iProductionProgramID);
                         //var productionProgramRMMapping = db.ProductionProgramRMMappings.Where(x => x.ProductionProgramID == iProductionProgramID);
                         //var bRMWasAvailable = true;
 
@@ -371,6 +374,25 @@ namespace KPIWebAPI.Controllers
                             return Json(returnValue);
                         }
 
+                        if (iProduceQty <= 0)
+                        {
+                            returnValue.ResponseMsg = "Production quantity must be greater than zero.";
+                            return Json(returnValue);
+                        }
+
+                        var remainingQty = productionProgram.ProductQty - productionProgram.ProductQtyCompleted - productionProgram.InProductionQty;
+                        if (remainingQty <= 0)
+                        {
+                            returnValue.ResponseMsg = "This production program has no balance quantity left to start.";
+                            return Json(returnValue);
+                        }
+
+                        if (iProduceQty > remainingQty)
+                        {
+                            returnValue.ResponseMsg = "Production quantity cannot be greater than the remaining balance quantity.";
+                            return Json(returnValue);
+                        }
+
                         var availableMachine = db.sp_GetAvailableMachineID(productionProgram.MouldID).FirstOrDefault();
                         if (!availableMachine.HasValue)
                         {
@@ -390,8 +412,8 @@ namespace KPIWebAPI.Controllers
                         db.Entry(productionProgram).State = System.Data.Entity.EntityState.Modified;
 
                         salesDetail.QtyInProduction += iProduceQty;
-                        salesDetail.SalesStatusID = (int)enumSalesStatus.In_Production;
                         db.Entry(salesDetail).State = System.Data.Entity.EntityState.Modified;
+                        RecalculateSalesStatuses(salesDetail.SalesMaster);
                         db.SaveChanges();
 
                         ProductionProgramBatch programBatch = new ProductionProgramBatch()
@@ -649,11 +671,11 @@ namespace KPIWebAPI.Controllers
 
                         var prod = productionProgram.ProductMaster;
                         var salesDetail = productionProgram.SalesDetail;
-                        //if (!prod.PkgQty.HasValue || prod.PkgQty.Value <= 0 || !prod.PkgsPerRack.HasValue || prod.PkgsPerRack.Value <= 0)
-                        //{
-                        //    returnValue.ResponseMsg = "Product packaging configuration is invalid.";
-                        //    return Json(returnValue);
-                        //}
+                        if (prod == null || !prod.PkgQty.HasValue || prod.PkgQty.Value <= 0 || !prod.PkgsPerRack.HasValue || prod.PkgsPerRack.Value <= 0)
+                        {
+                            returnValue.ResponseMsg = "Product packaging configuration is invalid.";
+                            return Json(returnValue);
+                        }
 
                         if (iProducedNow <= 0)
                         {
@@ -760,9 +782,6 @@ namespace KPIWebAPI.Controllers
                         {
                             salesDetail.QtyInProduction = Math.Max(0, salesDetail.QtyInProduction - iProducedNow);
                             salesDetail.QtyProduced += iProducedNow;
-                            salesDetail.SalesStatusID = salesDetail.QtyBal <= 0
-                                ? (int)enumSalesStatus.Completed_Closed
-                                : (int)enumSalesStatus.In_Production;
                             db.Entry(salesDetail).State = System.Data.Entity.EntityState.Modified;
                         }
 
@@ -782,7 +801,7 @@ namespace KPIWebAPI.Controllers
 
                         if (salesDetail != null && salesDetail.SalesMaster != null)
                         {
-                            RecalculateSalesMasterStatus(salesDetail.SalesMaster);
+                            RecalculateSalesStatuses(salesDetail.SalesMaster);
                         }
 
                         db.SaveChanges();
@@ -927,6 +946,38 @@ namespace KPIWebAPI.Controllers
                 : activeSalesDetails.Max(x => x.SalesStatusID);
 
             db.Entry(salesMaster).State = System.Data.Entity.EntityState.Modified;
+        }
+
+        private void RecalculateSalesStatuses(SalesMaster salesMaster)
+        {
+            if (salesMaster == null)
+            {
+                return;
+            }
+
+            foreach (var salesDetail in salesMaster.SalesDetails.Where(x => x.IsActive))
+            {
+                if (salesDetail.QtyBal <= 0)
+                {
+                    salesDetail.SalesStatusID = (int)enumSalesStatus.Completed_Closed;
+                }
+                else if (salesDetail.QtyInProduction > 0 || salesDetail.QtyProduced > 0 || salesDetail.QtyToDispatch > 0 || salesDetail.QtyDispatched > 0)
+                {
+                    salesDetail.SalesStatusID = (int)enumSalesStatus.In_Production;
+                }
+                else if (salesDetail.ProductionPrograms.Any(x => x.ProductQty > x.ProductQtyCompleted))
+                {
+                    salesDetail.SalesStatusID = (int)enumSalesStatus.Awaiting_Production;
+                }
+                else
+                {
+                    salesDetail.SalesStatusID = (int)enumSalesStatus.Procure_Material;
+                }
+
+                db.Entry(salesDetail).State = EntityState.Modified;
+            }
+
+            RecalculateSalesMasterStatus(salesMaster);
         }
     }
 }
