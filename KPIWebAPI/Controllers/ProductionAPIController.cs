@@ -649,11 +649,11 @@ namespace KPIWebAPI.Controllers
 
                         var prod = productionProgram.ProductMaster;
                         var salesDetail = productionProgram.SalesDetail;
-                        if (!prod.PkgQty.HasValue || prod.PkgQty.Value <= 0 || !prod.PkgsPerRack.HasValue || prod.PkgsPerRack.Value <= 0)
-                        {
-                            returnValue.ResponseMsg = "Product packaging configuration is invalid.";
-                            return Json(returnValue);
-                        }
+                        //if (!prod.PkgQty.HasValue || prod.PkgQty.Value <= 0 || !prod.PkgsPerRack.HasValue || prod.PkgsPerRack.Value <= 0)
+                        //{
+                        //    returnValue.ResponseMsg = "Product packaging configuration is invalid.";
+                        //    return Json(returnValue);
+                        //}
 
                         if (iProducedNow <= 0)
                         {

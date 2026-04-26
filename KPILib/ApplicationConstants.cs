@@ -17,4 +17,11 @@ namespace KPILib
         public const string GSTType = "GSTType";
         public const string StatusType = "StatusType";
     }
+
+    public static class ApplicationStatus
+    {
+        public const string InProcess = "ST001";
+        public const string Done = "ST002";
+        public const string PartialDone = "ST003";
+    }
 }

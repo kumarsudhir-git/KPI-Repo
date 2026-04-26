@@ -15,14 +15,33 @@ namespace KPI.Controllers
     public class DispatchController : CCSPLBaseController
     {
         // GET: Dispatch
+        // GET: Dispatch
         public ActionResult GetAll()
         {
-            return RedirectToAction("GetOpenSalesOrderDispatch");
+            var response = KPIAPIManager.GetAllDispatch01(0);
+            if (response.Response.ResponseCode == 200)
+            {
+                return View(response.data);
+            }
+            else
+            {
+                ViewBag.Error = response.Response.ResponseMsg;
+                return View("Error");
+            }
         }
 
         public ActionResult GetAllClosed()
         {
-            return RedirectToAction("GetDispatchedHistory");
+            var response = KPIAPIManager.GetAllDispatch01(1);
+            if (response.Response.ResponseCode == 200)
+            {
+                return View(response.data);
+            }
+            else
+            {
+                ViewBag.Error = response.Response.ResponseMsg;
+                return View("Error");
+            }
         }
 
         [HttpGet]

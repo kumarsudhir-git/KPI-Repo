@@ -1069,7 +1069,8 @@ GO
 
 INSERT INTO LookUpMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
 VALUES('StatusType','IN PROCESS','ST001','Status Type',1,1001,GETDATE()),
-('StatusType','DONE','ST002','Status Type',1,1001,GETDATE())
+('StatusType','DONE','ST002','Status Type',1,1001,GETDATE()),
+('StatusType','Partially Done','ST003','Status Type',1,1001,GETDATE())
 
 INSERT INTO LookUpMaster (LookUpType,LookUpName,LookUpValue,Description,IsActive,CreatedBy,CreatedDate)
 VALUES('NotificationStatus','SENT','NS001','Status Type',1,1001,GETDATE())

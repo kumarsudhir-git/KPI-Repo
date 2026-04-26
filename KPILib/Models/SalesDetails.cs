@@ -30,6 +30,7 @@ namespace KPILib.Models
         public int ReadyQty { get; set; }
         [Display(Name = "Status")]
         public int SalesStatusID { get; set; }
+        public string SalesStatusName { get; set; }
         public bool ShowAction { get; set; } = true;
     }
 }

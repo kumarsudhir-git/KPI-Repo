@@ -344,6 +344,7 @@ namespace KPIWebAPI.Controllers
                             var salesDetail = mapper.Map<SalesDetails>(x);
                             salesDetail.ProductName = x.ProductMaster != null ? x.ProductMaster.ProductName : string.Empty;
                             salesDetail.ReadyQty = GetReadyQty(x);
+                            salesDetail.SalesStatusName = x.SalesStatusID > 0 ? x.SalesMaster.SalesStatusMaster.SalesStatus : string.Empty;
                             return salesDetail;
                         })
                         .ToList();
@@ -461,6 +462,30 @@ namespace KPIWebAPI.Controllers
 
             return Json(returnValue);
         }
+
+        //private void SubmitSalesDispatchRacks(int salesDetailsId, List<int> rackIds, int userId)
+        //{
+        //    var existingRacks = db.SalesDispatchRacks.Where(x => x.SalesDetailsID == salesDetailsId).ToList();
+        //    if (existingRacks.Count > 0)
+        //    {
+        //        db.SalesDispatchRacks.RemoveRange(existingRacks);
+        //        db.SaveChanges();
+        //    }
+        //    if (rackIds != null && rackIds.Count > 0)
+        //    {
+        //        foreach (var rackId in rackIds)
+        //        {
+        //            db.SalesDispatchRacks.Add(new SalesDispatchRack
+        //            {
+        //                SalesDispatchID = salesDetailsId,
+        //                RackID = rackId,
+        //                UserID = userId,
+        //                CreatedOn = DateTime.Now
+        //            });
+        //        }
+        //        db.SaveChanges();
+        //    }
+        //}
 
         /// <summary>
         /// Assigns mapped fields without repeating code
@@ -758,7 +783,7 @@ namespace KPIWebAPI.Controllers
                 return false;
             }
 
-            if (string.Equals(dispatchStatusCode, "ST002", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(dispatchStatusCode, ApplicationStatus.Done, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -769,7 +794,7 @@ namespace KPIWebAPI.Controllers
                 .FirstOrDefault();
 
             return !string.IsNullOrWhiteSpace(statusLookup)
-                && string.Equals(statusLookup.Trim(), "DONE", StringComparison.OrdinalIgnoreCase);
+                && string.Equals(statusLookup.Trim(), ApplicationStatus.Done, StringComparison.OrdinalIgnoreCase);
         }
 
         private void RecalculateSalesStatuses(SalesMaster salesMaster)
